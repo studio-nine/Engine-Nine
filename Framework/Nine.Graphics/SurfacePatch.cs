@@ -142,6 +142,7 @@
 
         private BoundingBox baseBounds;
         private Heightmap heightmap;
+        private float distanceToCamera;
         #endregion
 
         #region ILightable
@@ -175,7 +176,7 @@
         /// <summary>
         /// Gets the triangle vertices of the target geometry.
         /// </summary>        
-        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
+        public bool TryGetTriangles(out Vector3[] vertices, out ushort[] indices)
         {
             if (this.geometryPositions == null)
             {
@@ -198,6 +199,7 @@
             }
             vertices = this.geometryPositions;
             indices = this.geometryIndices;
+            return true;
         }
         Vector3[] geometryPositions;
         ushort[] geometryIndices;
@@ -296,8 +298,16 @@
         /// </summary>
         public void OnAddedToView(DrawingContext context)
         {
-            materialForRendering = surface.Material ??
-                surface.MaterialLevels.UpdateLevelOfDetail(Vector3.Distance(context.EyePosition, Center));
+            Vector3.Distance(ref context.matrices.cameraPosition, ref center, out distanceToCamera);
+            materialForRendering = surface.Material ?? surface.MaterialLevels.UpdateLevelOfDetail(distanceToCamera);
+        }
+
+        /// <summary>
+        /// Gets the squared distance from the position of the object to the current camera.
+        /// </summary>
+        public float GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            return distanceToCamera;
         }
 
         /// <summary>

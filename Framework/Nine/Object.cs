@@ -23,12 +23,7 @@ namespace Nine
             get { return name; }
             set { name = value; }
         }
-        internal string name = "";
-
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        public object Tag { get; set; }
+        internal string name = string.Empty;
         #endregion
 
         #region IAttachedPropertyStore
@@ -119,7 +114,7 @@ namespace Nine
         public override string ToString()
         {
             var typeName = GetType().Name;
-            return name != null ? string.Concat(name, ":", typeName) : typeName;
+            return !string.IsNullOrEmpty(name) ? string.Concat(name, ":", typeName) : typeName;
         }
         #endregion
     }

@@ -5,7 +5,6 @@
     using System.ComponentModel;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.Design;
     using Nine.Graphics.Drawing;
     using Nine.Graphics;
 
@@ -33,7 +32,9 @@
         /// <summary>
         /// Gets or sets the state of the blend of this post effect.
         /// </summary>
-        [TypeConverter(typeof(BlendStateConverter))]
+#if WINDOWS
+        [TypeConverter(typeof(Nine.Graphics.Design.BlendStateConverter))]
+#endif
         public BlendState BlendState { get; set; }
         
         /// <summary>

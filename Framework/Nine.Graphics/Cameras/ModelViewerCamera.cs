@@ -7,66 +7,64 @@
     /// <summary>
     /// Defines a camera used to view models.
     /// </summary>
-    public class ModelViewerCamera : ICamera
+    public class ModelViewerCamera : Camera
     {
-        public Input Input { get; private set; }
-        public GraphicsDevice GraphicsDevice { get; private set; }
-
-        public Viewport? Viewport { get; set; }
         public float Radius { get; set; }
         public float MinRadius { get; set; }
         public float MaxRadius { get; set; }
-        public Vector3 Center { get; set; }
-        public Vector3 Up { get; set; }
-        public float Sensitivity { get; set; }
+        public float WheelSpeed { get; set; }
 
+        public Vector3 Center 
+        {
+            get { return center; }
+            set { center = value; }
+        }
+
+        public bool MouseWheelEnabled { get; set; }
+        public MouseButtons RotateButton { get; set; }
+
+        private Input input;
+        private Vector3 center;
         private Vector3 start = Vector3.Zero;
         private Vector3 end = Vector3.Zero;
-        private Matrix rotate = Matrix.Identity;
-        private Matrix world = Matrix.Identity;
-        private Matrix worldStart = Matrix.Identity;
+        private Matrix rotation = Matrix.Identity;
+        private Matrix rotationStart = Matrix.Identity;
 
-
-        public Matrix View
+        public ModelViewerCamera(GraphicsDevice graphics) : this(graphics, 20, 1, 100) { }
+        public ModelViewerCamera(GraphicsDevice graphics, float radius, float minRadius, float maxRadius) : base(graphics)
         {
-            get 
-            {
-                return Matrix.CreateTranslation(-Center) * world * 
-                       Matrix.CreateLookAt(Vector3.UnitZ * Radius, Vector3.Zero, Up); 
-            }
-        }
-
-        public Matrix Projection 
-        {
-            get 
-            {
-                return Matrix.CreatePerspectiveFieldOfView(
-                    MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, MinRadius, MaxRadius * 10);
-            }
-        }
-
-
-        public ModelViewerCamera(GraphicsDevice graphics) : this(graphics, 20, 1, 100, Vector3.Up) { }
-
-        public ModelViewerCamera(GraphicsDevice graphics, float radius, float minRadius, float maxRadius, Vector3 up)
-        {
-            if (graphics == null)
-                throw new ArgumentNullException("graphics");
-
-            GraphicsDevice = graphics;
-            
+#if WINDOWS_PHONE
+            RotationButton = MouseButtons.Left;
+#else
+            RotateButton = MouseButtons.Right;
+#endif
             Radius = radius;
             MinRadius = minRadius;
             MaxRadius = maxRadius;
-            Up = up;
-            Sensitivity = 1;
+            WheelSpeed = 1;
+            MouseWheelEnabled = true;
 
-            Input = new Input();
+            input = new Input();
 
-            Input.MouseDown += new EventHandler<MouseEventArgs>(Input_ButtonDown);
-            Input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
-            Input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
-            Input.Update += new EventHandler<EventArgs>(Input_Update);
+            input.MouseDown += new EventHandler<MouseEventArgs>(Input_ButtonDown);
+            input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
+            input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
+            input.Update += new EventHandler<EventArgs>(Input_Update);
+        }
+
+        public override void Update(TimeSpan elapsedTime)
+        {
+            transform = Matrix.Identity;
+            transform.M43 = -Radius;
+
+            Matrix.Multiply(ref rotation, ref transform, out transform);
+            Matrix.Invert(ref transform, out transform);
+
+            transform.M41 += center.X;
+            transform.M42 += center.Y;
+            transform.M43 += center.Z;
+
+            NotifyTransformChanged();
         }
 
         void Input_Update(object sender, EventArgs e)
@@ -91,11 +89,10 @@
 
         void Input_ButtonDown(object sender, MouseEventArgs e)
         {
-#if WINDOWS_PHONE
-            if (e.Button == MouseButtons.Left)
-#else
-            if (e.Button == MouseButtons.Right)
-#endif
+            if (!Enabled)
+                return;
+
+            if (e.Button == RotateButton)
             {
                 BeginRotation(e.X, e.Y);
             }
@@ -103,20 +100,21 @@
 
         void Input_MouseMove(object sender, MouseEventArgs e)
         {
-#if WINDOWS_PHONE
-            if (e.IsButtonDown(MouseButtons.Left))
-#else
-            if (e.IsButtonDown(MouseButtons.Right))
-#endif
+            if (!Enabled)
+                return;
+
+            if (e.IsButtonDown(RotateButton))
             {
                 EndRotation(e.X, e.Y);
             }
         }
 
-
         void Input_Wheel(object sender, MouseEventArgs e)
-        {   
-            Radius -= e.WheelDelta * (MaxRadius - MinRadius) * 0.0001f * Sensitivity;
+        {
+            if (!Enabled)
+                return;
+
+            Radius -= e.WheelDelta * (MaxRadius - MinRadius) * 0.0001f * WheelSpeed;
 
             if (Radius < MinRadius)
                 Radius = MinRadius;
@@ -127,23 +125,26 @@
         private void BeginRotation(float x, float y)
         {
             start = ScreenToArcBall(x, y);
-            worldStart = world;
+            rotationStart = rotation;
         }
 
         private void EndRotation(float x, float y)
         {
             end = ScreenToArcBall(x, y);
 
-            Vector3 v = Vector3.Cross(start, end);
+            Vector3 v;
+            Vector3.Cross(ref start, ref end, out v);
             v.Normalize();
 
-            float angle = (float)(Math.Acos(Vector3.Dot(start, end)));
+            float dot;
+            Vector3.Dot(ref start, ref end, out dot);
+            float angle = (float)(Math.Acos(dot));
 
             if (angle != 0 && v.LengthSquared() > 0)
             {
-                rotate = Matrix.CreateFromAxisAngle(v, angle);
-
-                world = Matrix.Multiply(worldStart, rotate);
+                Matrix rotate;
+                Matrix.CreateFromAxisAngle(ref v, angle, out rotate);
+                Matrix.Multiply(ref rotationStart, ref rotate, out rotation);
             }
         }
         

@@ -20,6 +20,7 @@ namespace Nine
     {
         protected override Nine.BounceCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.BounceCurve existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BounceCurve();
             existingInstance.Strength = input.ReadSingle();
@@ -36,6 +37,7 @@ namespace Nine
     {
         protected override Nine.CustomCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.CustomCurve existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             existingInstance.Curve = input.ReadObject<Microsoft.Xna.Framework.Curve>();
             return existingInstance;
         }
@@ -50,6 +52,7 @@ namespace Nine
     {
         protected override Nine.ElasticCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ElasticCurve existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ElasticCurve();
             existingInstance.Strength = input.ReadSingle();
@@ -66,6 +69,7 @@ namespace Nine
     {
         protected override Nine.ExponentialCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ExponentialCurve existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ExponentialCurve();
             existingInstance.Power = input.ReadSingle();
@@ -82,8 +86,9 @@ namespace Nine
     {
         protected override Nine.Group Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Group existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
-                existingInstance = new Group();
+                existingInstance = new Group(input.ContentManager.ServiceProvider);
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; ++i)
@@ -92,7 +97,33 @@ namespace Nine
             existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Instance</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class InstanceReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Instance>
+    {
+        protected override Nine.Instance Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Instance existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+                existingInstance = new Instance();
+            existingInstance.Template = input.ReadObject<System.String>();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; ++i)
+                    existingInstance.Properties.Add(
+                        input.ReadObject<System.String>(),
+                        input.ReadObject<System.Object>());
+            }
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -107,6 +138,7 @@ namespace Nine
     {
         protected override Nine.LinearCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.LinearCurve existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new LinearCurve();
             return existingInstance;
@@ -122,8 +154,9 @@ namespace Nine
     {
         protected override Nine.Scene Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Scene existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
-                existingInstance = new Scene();
+                existingInstance = new Scene(input.ContentManager.ServiceProvider);
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; ++i)
@@ -132,7 +165,6 @@ namespace Nine
             existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -147,6 +179,7 @@ namespace Nine
     {
         protected override Nine.SinCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SinCurve existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SinCurve();
             return existingInstance;
@@ -162,6 +195,7 @@ namespace Nine
     {
         protected override Nine.SmoothCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SmoothCurve existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SmoothCurve();
             return existingInstance;
@@ -180,6 +214,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.AnimationGroup Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationGroup existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new AnimationGroup();
             {
@@ -189,7 +224,6 @@ namespace Nine.Animations
             }
             existingInstance.Repeat = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -204,6 +238,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.AnimationPlayer Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationPlayer existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new AnimationPlayer();
             {
@@ -217,6 +252,25 @@ namespace Nine.Animations
         }
     }
     /// <summary>
+    /// Content reader for <c>AnimationReference</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class AnimationReferenceReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.AnimationReference>
+    {
+        protected override Nine.Animations.AnimationReference Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationReference existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+                existingInstance = new AnimationReference();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>AnimationSequence</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -226,6 +280,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.AnimationSequence Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationSequence existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new AnimationSequence();
             {
@@ -235,7 +290,6 @@ namespace Nine.Animations
             }
             existingInstance.Repeat = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -250,6 +304,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.BooleanAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.BooleanAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BooleanAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<System.Boolean>>();
@@ -268,7 +323,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -283,6 +337,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.ByteAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.ByteAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ByteAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<System.Byte>>();
@@ -301,7 +356,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -316,6 +370,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.CharAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.CharAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new CharAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<System.Char>>();
@@ -334,7 +389,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -349,6 +403,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.ColorAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.ColorAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ColorAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Color>>();
@@ -367,7 +422,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -382,6 +436,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.DecimalAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DecimalAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DecimalAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<System.Decimal>>();
@@ -400,7 +455,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -415,11 +469,11 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.DelayAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DelayAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DelayAnimation();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -434,6 +488,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.DoubleAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DoubleAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DoubleAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<System.Double>>();
@@ -452,7 +507,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -467,6 +521,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.Int16Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Int16Animation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Int16Animation();
             existingInstance.From = input.ReadObject<System.Nullable<System.Int16>>();
@@ -485,7 +540,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -500,6 +554,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.Int32Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Int32Animation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Int32Animation();
             existingInstance.From = input.ReadObject<System.Nullable<System.Int32>>();
@@ -518,7 +573,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -533,6 +587,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.Int64Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Int64Animation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Int64Animation();
             existingInstance.From = input.ReadObject<System.Nullable<System.Int64>>();
@@ -551,7 +606,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -566,6 +620,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.MatrixAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.MatrixAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new MatrixAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
@@ -584,7 +639,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -599,6 +653,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.PointAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.PointAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new PointAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Point>>();
@@ -617,7 +672,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -632,6 +686,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.QuaternionAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.QuaternionAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new QuaternionAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Quaternion>>();
@@ -650,7 +705,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -665,6 +719,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.RectangleAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.RectangleAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new RectangleAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
@@ -683,7 +738,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -698,6 +752,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.SingleAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SingleAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SingleAnimation();
             existingInstance.From = input.ReadObject<System.Nullable<System.Single>>();
@@ -716,7 +771,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -731,6 +785,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.TweenAnimation<T> Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TweenAnimation<T> existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new TweenAnimation<T>();
             existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
@@ -746,7 +801,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -761,6 +815,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.Vector2Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Vector2Animation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Vector2Animation();
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
@@ -779,7 +834,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -794,6 +848,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.Vector3Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Vector3Animation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Vector3Animation();
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector3>>();
@@ -812,7 +867,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -827,6 +881,7 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.Vector4Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Vector4Animation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Vector4Animation();
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector4>>();
@@ -845,7 +900,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }

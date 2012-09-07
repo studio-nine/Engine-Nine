@@ -120,14 +120,30 @@ namespace Nine
                 invocationTarget = target;
                 invocationMember = GetMember(targetType, currentProperty);
 
-                if (invocationMember == null)
+                var hasItem = false;
+                if (dot >= 0 && invocationMember == null)
                 {
-                    throw new ArgumentException(string.Format(
-                        "Type {0} does not have a valid public property or field {1}.", targetType.FullName, currentProperty));
+                    // String dictionary
+                    var items = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(string) });
+                    if (items != null)
+                    {
+                        invocationTarget = GetValue(target, items, currentProperty);
+                        if (invocationTarget != null)
+                            hasItem = true;
+                    }
                 }
 
-                if (dot >= 0)
-                    invocationTarget = GetValue(target, invocationMember);
+                if (!hasItem)
+                {
+                    if (invocationMember == null)
+                    {
+                        throw new ArgumentException(string.Format(
+                            "Type {0} does not have a valid public property or field {1}.", targetType.FullName, currentProperty));
+                    }
+
+                    if (dot >= 0)
+                        invocationTarget = GetValue(target, invocationMember);
+                }
             }
 
             if (dot >= 0)

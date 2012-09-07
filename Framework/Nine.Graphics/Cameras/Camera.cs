@@ -4,14 +4,15 @@ namespace Nine.Graphics.Cameras
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics;
+    using Nine.Graphics.Drawing;
 
     /// <summary>
     /// Defines a camera that can be attacked to a <see cref="Transformable"/>.
     /// </summary>
-    [ContentSerializable]
-    public class Camera : Transformable, ICamera
+    public class Camera : Transformable, ICamera, ISceneObject, Nine.IUpdateable
     {
         #region View
+        private bool viewMatrixNeedsUpdate;
         private Matrix view = Matrix.Identity;
 
         /// <summary>
@@ -19,7 +20,15 @@ namespace Nine.Graphics.Cameras
         /// </summary>
         public Matrix View
         {
-            get { return view; }
+            get 
+            {
+                if (viewMatrixNeedsUpdate)
+                {
+                    view = Matrix.Invert(AbsoluteTransform);
+                    viewMatrixNeedsUpdate = false;
+                }
+                return view; 
+            }
         }
 
         /// <summary>
@@ -27,7 +36,7 @@ namespace Nine.Graphics.Cameras
         /// </summary>
         protected override void OnTransformChanged()
         {
-            view = Matrix.Invert(AbsoluteTransform);
+            viewMatrixNeedsUpdate = true;
         }
         #endregion
 
@@ -122,7 +131,7 @@ namespace Nine.Graphics.Cameras
             get { return viewport; }
             set { viewport = value; projectionMatrixNeedsUpdate = true; }
         }
-        private Viewport? viewport;
+        internal Viewport? viewport;
 
         /// <summary>
         /// Gets or sets the scale factor that is applied to the viewport.
@@ -139,7 +148,12 @@ namespace Nine.Graphics.Cameras
         /// <summary>
         /// Gets a value indicating whether this <see cref="Camera"/> is enabled.
         /// </summary>
-        public bool Enabled { get; private set; }
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
+        internal bool enabled = true;
 
         /// <summary>
         /// Gets the graphics device.
@@ -147,20 +161,43 @@ namespace Nine.Graphics.Cameras
         public GraphicsDevice GraphicsDevice { get; private set; }
         #endregion
 
-        #region Constructor
+        #region Methods
         /// <summary>
         /// Initializes a new instance of the <see cref="Camera"/> class.
-        /// If a valid graphics device is specified, the camera will automatically adjust 
-        /// its aspect ratio based on the default viewport settings of the graphics device.
         /// </summary>
         public Camera(GraphicsDevice graphics)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            Enabled = true;
             GraphicsDevice = graphics;            
             projectionMatrixNeedsUpdate = true;
+        }
+
+        void Nine.IUpdateable.Update(TimeSpan elapsedTime)
+        {
+            if (Enabled)
+                Update(elapsedTime);
+        }
+
+        /// <summary>
+        /// Updates this camera.
+        /// </summary>
+        public virtual void Update(TimeSpan elapsedTime)
+        {
+
+        }
+
+        void ISceneObject.OnAdded(DrawingContext context)
+        {
+            if (context.camera == null)
+                context.camera = this;
+        }
+
+        void ISceneObject.OnRemoved(DrawingContext context)
+        {
+            if (context.camera == this)
+                context.camera = null;
         }
         #endregion
     }

@@ -12,8 +12,6 @@
     /// Represents a full screen quad.
     /// </summary>
     [ContentSerializable]
-    [RuntimeNameProperty("Name")]
-    [DictionaryKeyProperty("Name")]
     [ContentProperty("Material")]
     public class FullScreenQuad : Nine.Object, IDrawableObject
     {
@@ -28,16 +26,20 @@
         public bool Visible { get; set; }
 
         /// <summary>
-        /// Gets the material of the object.
+        /// Gets or sets the material of the object.
         /// </summary>
         public Material Material { get; set; }
+
+        /// <summary>
+        /// Gets or sets the texture to display in this quad.
+        /// </summary>
+        public Texture2D Texture { get; set; }
 
         /// <summary>
         /// The vertex buffer and index buffers are shared between FullScreenQuads.
         /// </summary>
         private VertexBuffer vertexBuffer;
         private IndexBuffer indexBuffer;
-        private static Dictionary<GraphicsDevice, KeyValuePair<VertexBuffer, IndexBuffer>> SharedBuffers;
 
         /// <summary>
         /// Always use this pass through material as the vertex shader when drawing full screen quads.
@@ -57,40 +59,22 @@
             GraphicsDevice = graphics;
             vertexPassThrough2 = new VertexPassThrough2Material(graphics);
 
-            KeyValuePair<VertexBuffer, IndexBuffer> sharedBuffer;     
-                   
-            if (SharedBuffers == null)
-                SharedBuffers = new Dictionary<GraphicsDevice, KeyValuePair<VertexBuffer, IndexBuffer>>();
-
-            if (!SharedBuffers.TryGetValue(graphics, out sharedBuffer))
-            {
-                sharedBuffer = new KeyValuePair<VertexBuffer, IndexBuffer>(
-                    new VertexBuffer(graphics, typeof(VertexPositionTexture), 4, BufferUsage.WriteOnly)
-                  , new IndexBuffer(graphics, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly));
-
-                sharedBuffer.Key.SetData(new[] 
-                {
-                    new VertexPositionTexture() { Position = new Vector3(-1, 1, 0), TextureCoordinate = new Vector2(0, 0) },
-                    new VertexPositionTexture() { Position = new Vector3(1, 1, 0), TextureCoordinate = new Vector2(1, 0) },
-                    new VertexPositionTexture() { Position = new Vector3(1, -1, 0), TextureCoordinate = new Vector2(1, 1) },
-                    new VertexPositionTexture() { Position = new Vector3(-1, -1, 0), TextureCoordinate = new Vector2(0, 1) },
-                });
-
-                sharedBuffer.Value.SetData<ushort>(new ushort[] { 0, 1, 2, 0, 2, 3 });
-                SharedBuffers.Add(graphics, sharedBuffer);
-            }
-
-            vertexBuffer = sharedBuffer.Key;
-            indexBuffer = sharedBuffer.Value;
+            Sprite.GetSpriteBuffers(graphics, out vertexBuffer, out indexBuffer);
         }
 
         public void Draw(DrawingContext context, Material material)
         {
+            if (Texture != null)
+                material.texture = Texture;
             material.BeginApply(context);
 
             context.SetVertexBuffer(vertexBuffer, 0);
             GraphicsDevice.Indices = indexBuffer;
 
+#if SILVERLIGHT
+            vertexPassThrough2.BeginApply(context);
+            GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+#else
             // Apply a vertex pass through material in case the specified material does
             // not have a vertex shader.
             //
@@ -114,10 +98,12 @@
                 vertexPassThrough3.BeginApply(context);
                 GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
             }
+#endif
 
             material.EndApply(context);
         }
 
         void IDrawableObject.OnAddedToView(DrawingContext context) { }
+        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition) { return 0; }
     }
 }

@@ -42,7 +42,10 @@ namespace Nine
         /// </summary>
         /// <param name="vertices">Output vertex buffer</param>
         /// <param name="indices">Output index buffer</param>
-        void GetTriangles(out Vector3[] vertices, out ushort[] indices);
+        /// <returns>
+        /// Returns whether the result contains any triangles.
+        /// </returns>
+        bool TryGetTriangles(out Vector3[] vertices, out ushort[] indices);
     }
 
     /// <summary>
@@ -165,5 +168,16 @@ namespace Nine
         /// </summary>
         /// <returns>Distance to the start of the ray.</returns>
         float? Intersects(Ray ray);
+    }
+
+    /// <summary>
+    /// Interface for creating new types of objects.
+    /// </summary>
+    public interface IObjectFactory
+    {
+        /// <summary>
+        /// Creates a new instance of the object using the specified service provider.
+        /// </summary>
+        object CreateInstance(IServiceProvider serviceProvider);
     }
 }

@@ -10,7 +10,6 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// A post processing screen effect that blurs the whole screen.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public partial class BlurMaterial
     {
         public const float MaxBlurAmount = 10;
@@ -114,8 +113,8 @@ namespace Nine.Graphics.Materials
             }
 
             // Tell the effect about our new filter 
-            effect.CurrentTechnique = DepthBufferEnabled ? effect.Techniques[1] : effect.Techniques[0];
-            effect.shaderIndex.SetValue(shaderIndex);
+            effect.CurrentTechnique = DepthBufferEnabled ? effect.Techniques[shaderIndex + 8]
+                                                         : effect.Techniques[shaderIndex];
             effect.sampleOffsets.SetValue(sampleOffsets);
             effect.sampleWeights.SetValue(sampleWeights);
         }

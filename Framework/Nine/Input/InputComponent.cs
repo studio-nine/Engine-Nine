@@ -8,6 +8,7 @@ namespace Nine
     using Keys = System.Windows.Input.Key;
 #else
     using Keys = Microsoft.Xna.Framework.Input.Keys;
+    using Microsoft.Xna.Framework.Input.Touch;
 #endif
 
     public enum InputRaiseMode

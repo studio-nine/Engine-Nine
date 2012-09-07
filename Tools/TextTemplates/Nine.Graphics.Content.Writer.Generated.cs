@@ -11,6 +11,50 @@
 namespace Nine.Content.Pipeline.Animations
 {
     /// <summary>
+    /// Content writer for <c>BoneAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BoneAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.BoneAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.BoneAnimation value)
+        {
+            {
+                output.Write(value.Controllers.Count);
+                for (var i = 0; i < value.Controllers.Count; ++i)
+                    output.WriteObject(value.Controllers[i]);
+            }
+            output.Write(value.BlendEnabled);
+            WriteObject(output, value, "BlendDuration", value.BlendDuration);
+            WriteObject(output, value, "KeyController", value.KeyController);
+            output.Write(value.IsSychronized);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.BoneAnimationReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.BoneAnimation, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>BoneAnimationClip</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -48,6 +92,54 @@ namespace Nine.Content.Pipeline.Animations
         }
     }
     /// <summary>
+    /// Content writer for <c>BoneAnimationController</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BoneAnimationControllerWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.BoneAnimationController>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.BoneAnimationController value)
+        {
+            output.Write(value.InterpolationEnabled);
+            output.WriteObject(value.BeginFrame);
+            output.WriteObject(value.EndFrame);
+            output.Write(value.FramesPerSecond);
+            WriteObject(output, value, "Ending", value.Ending);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.BoneAnimationControllerReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.BoneAnimationController, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>SpriteAnimation</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -58,7 +150,7 @@ namespace Nine.Content.Pipeline.Animations
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.SpriteAnimation value)
         {
-            WriteObject(output, value, "TextureList", value.TextureList);
+            WriteObject(output, value, "Source", value.Source);
             WriteObject(output, value, "TargetProperty", value.TargetProperty);
             output.WriteObject(value.BeginFrame);
             output.WriteObject(value.EndFrame);
@@ -73,7 +165,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -114,7 +205,6 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Enabled);
             output.Write(value.AmbientLightColor);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -164,7 +254,6 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "FadeDuration", value.FadeDuration);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -199,6 +288,8 @@ namespace Nine.Content.Pipeline.Graphics
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.DirectionalLight value)
         {
+            output.Write(value.ShadowStart);
+            output.Write(value.ShadowEnd);
             output.Write(value.Direction);
             output.Write(value.SpecularColor);
             output.Write(value.DiffuseColor);
@@ -208,7 +299,6 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -248,7 +338,6 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.FogColor);
             output.Write(value.Enabled);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -285,8 +374,8 @@ namespace Nine.Content.Pipeline.Graphics
         {
             output.Write(value.Visible);
             WriteObject(output, value, "Material", value.Material);
+            WriteObject(output, value, "Texture", value.Texture);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -326,7 +415,6 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "BoundingBox", value.BoundingBox);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -406,9 +494,9 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "instanceTransforms", value.instanceTransforms);
             output.Write(value.Visible);
             WriteObject(output, value, "Template", value.Template);
+            output.Write(value.BoundingBoxPadding);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -452,6 +540,7 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.Visible);
+            output.Write(value.AnimationCullingEnabled);
             output.Write(value.UseModelTextures);
             output.Write(value.MultiPassLightingEnabled);
             output.Write(value.MaxAffectingLights);
@@ -459,6 +548,7 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.ReceiveShadow);
             output.Write(value.MaxReceivedShadows);
             output.Write(value.MultiPassShadowEnabled);
+            output.WriteObject(value.OrientedBoundingBox);
             WriteObject(output, value, "SharedSkeleton", value.SharedSkeleton);
             {
                 output.Write(value.Attachments.Count);
@@ -467,7 +557,6 @@ namespace Nine.Content.Pipeline.Graphics
             }
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -579,7 +668,6 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.WriteObject(value.UseModelTextures);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -730,7 +818,6 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -772,7 +859,6 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -811,7 +897,6 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Color);
             WriteObject(output, value, "Texture", value.Texture);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -859,7 +944,6 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -881,6 +965,57 @@ namespace Nine.Content.Pipeline.Graphics
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.SpotLight, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>Sprite</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class SpriteWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Sprite>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Sprite value)
+        {
+            output.Write(value.Visible);
+            WriteObject(output, value, "Material", value.Material);
+            output.Write(value.Alpha);
+            output.Write(value.Color);
+            output.Write(value.IsAdditive);
+            output.Write(value.IsTransparent);
+            output.Write(value.FlipX);
+            output.Write(value.FlipY);
+            output.Write(value.Position);
+            output.Write(value.Scale);
+            output.Write(value.Rotation);
+            output.Write(value.Anchor);
+            output.Write(value.ZOrder);
+            WriteObject(output, value, "Texture", value.Texture);
+            output.WriteObject(value.SourceRectangle);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.SpriteReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Sprite, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -908,7 +1043,6 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.ReceiveShadow);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -932,9 +1066,108 @@ namespace Nine.Content.Pipeline.Graphics
             return "Nine.Graphics.Surface, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
+    /// <summary>
+    /// Content writer for <c>TextSprite</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class TextSpriteWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.TextSprite>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.TextSprite value)
+        {
+            output.Write(value.Visible);
+            WriteObject(output, value, "Text", value.Text);
+            output.Write(value.Alpha);
+            output.Write(value.Color);
+            output.Write(value.IsAdditive);
+            output.Write(value.Position);
+            output.Write(value.Scale);
+            output.Write(value.Rotation);
+            output.Write(value.Anchor);
+            output.Write(value.ZOrder);
+            WriteObject(output, value, "Font", value.Font);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.TextSpriteReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.TextSprite, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
 }
 namespace Nine.Content.Pipeline.Graphics.Cameras
 {
+    /// <summary>
+    /// Content writer for <c>BirdEyeCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BirdEyeCameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Cameras.BirdEyeCamera>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Cameras.BirdEyeCamera value)
+        {
+            output.Write(value.Yaw);
+            output.Write(value.Pitch);
+            output.Write(value.Radius);
+            output.Write(value.MinRadius);
+            output.Write(value.MaxRadius);
+            output.Write(value.WheelSpeed);
+            output.Write(value.Speed);
+            WriteObject(output, value, "RotateButton", value.RotateButton);
+            WriteObject(output, value, "TranslateButton", value.TranslateButton);
+            output.Write(value.LookAt);
+            output.Write(value.NearPlane);
+            output.Write(value.FarPlane);
+            output.Write(value.FieldOfView);
+            output.WriteObject(value.Viewport);
+            WriteObject(output, value, "ViewportScale", value.ViewportScale);
+            output.Write(value.Enabled);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.BirdEyeCameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.BirdEyeCamera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
     /// <summary>
     /// Content writer for <c>Camera</c>.
     /// </summary>
@@ -951,9 +1184,9 @@ namespace Nine.Content.Pipeline.Graphics.Cameras
             output.Write(value.FieldOfView);
             output.WriteObject(value.Viewport);
             WriteObject(output, value, "ViewportScale", value.ViewportScale);
+            output.Write(value.Enabled);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -975,6 +1208,156 @@ namespace Nine.Content.Pipeline.Graphics.Cameras
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.Cameras.Camera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>FreeCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class FreeCameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Cameras.FreeCamera>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Cameras.FreeCamera value)
+        {
+            output.Write(value.Angle);
+            output.Write(value.Position);
+            output.Write(value.TurnSpeed);
+            output.Write(value.Speed);
+            output.Write(value.PrecisionModeSpeed);
+            WriteObject(output, value, "ForwardKey", value.ForwardKey);
+            WriteObject(output, value, "BackwardKey", value.BackwardKey);
+            WriteObject(output, value, "LeftKey", value.LeftKey);
+            WriteObject(output, value, "RightKey", value.RightKey);
+            WriteObject(output, value, "UpKey", value.UpKey);
+            WriteObject(output, value, "DownKey", value.DownKey);
+            WriteObject(output, value, "PrecisionModeKey", value.PrecisionModeKey);
+            output.Write(value.NearPlane);
+            output.Write(value.FarPlane);
+            output.Write(value.FieldOfView);
+            output.WriteObject(value.Viewport);
+            WriteObject(output, value, "ViewportScale", value.ViewportScale);
+            output.Write(value.Enabled);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.FreeCameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.FreeCamera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ModelViewerCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ModelViewerCameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Cameras.ModelViewerCamera>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Cameras.ModelViewerCamera value)
+        {
+            output.Write(value.Radius);
+            output.Write(value.MinRadius);
+            output.Write(value.MaxRadius);
+            output.Write(value.WheelSpeed);
+            output.Write(value.Center);
+            output.Write(value.MouseWheelEnabled);
+            WriteObject(output, value, "RotateButton", value.RotateButton);
+            output.Write(value.NearPlane);
+            output.Write(value.FarPlane);
+            output.Write(value.FieldOfView);
+            output.WriteObject(value.Viewport);
+            WriteObject(output, value, "ViewportScale", value.ViewportScale);
+            output.Write(value.Enabled);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.ModelViewerCameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.ModelViewerCamera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ScreenCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ScreenCameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Cameras.ScreenCamera>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Cameras.ScreenCamera value)
+        {
+            output.Write(value.Enabled);
+            WriteObject(output, value, "CoordinateType", value.CoordinateType);
+            output.Write(value.Zoom);
+            output.Write(value.MinZoom);
+            output.Write(value.MaxZoom);
+            output.Write(value.X);
+            output.Write(value.Y);
+            output.Write(value.Z);
+            output.Write(value.NearClip);
+            output.Write(value.FarClip);
+            output.Write(value.WheelSpeed);
+            output.Write(value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.ScreenCameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.ScreenCamera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }
@@ -1003,7 +1386,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.TwoSided);
             WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1053,7 +1435,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.TwoSided);
             WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1098,7 +1479,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                 }
             }
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1142,7 +1522,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.TwoSided);
             WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1187,7 +1566,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.TwoSided);
             WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1234,7 +1612,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.TwoSided);
             WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1283,7 +1660,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.TwoSided);
             WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1366,7 +1742,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                     output.WriteObject(value.MaterialParts[i]);
             }
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1415,7 +1790,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.TwoSided);
             WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1457,7 +1831,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "AlphaFunction", value.AlphaFunction);
             output.Write(value.ReferenceAlpha);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1494,7 +1867,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1531,7 +1903,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1569,7 +1940,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.ColorMatrix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1606,7 +1976,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1643,7 +2012,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1680,7 +2048,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1721,7 +2088,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.Distance);
             output.Write(value.DetailTextureScale);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1765,7 +2131,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.OverlayColor);
             WriteObject(output, value, "TextureAlphaUsage", value.TextureAlphaUsage);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1802,7 +2167,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1840,7 +2204,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Texture2", value.Texture2);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1881,7 +2244,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "EmissiveMap", value.EmissiveMap);
             output.Write(value.EmissiveColor);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1918,7 +2280,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1955,7 +2316,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1992,7 +2352,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2029,7 +2388,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2067,7 +2425,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "NormalMap", value.NormalMap);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2106,10 +2463,9 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.ShadowColor);
             output.Write(value.LightViewProjection);
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
-            output.Write(value.SampleCount);
+            output.Write(value.FilterSize);
             output.Write(value.Seed);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2148,7 +2504,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.MaxBones);
             output.Write(value.WeightsPerVertex);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2190,7 +2545,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.SpecularColor);
             output.Write(value.SpecularPower);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2227,7 +2581,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2265,7 +2618,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.TextureTransform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2302,7 +2654,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2689,7 +3040,6 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             }
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2972,7 +3322,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3013,7 +3362,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3053,7 +3401,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3094,7 +3441,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3137,7 +3483,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3179,7 +3524,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3220,7 +3564,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3262,7 +3605,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3307,7 +3649,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3351,7 +3692,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3397,7 +3737,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3441,7 +3780,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3485,7 +3823,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3529,7 +3866,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3572,7 +3908,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3616,7 +3951,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3660,7 +3994,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3698,7 +4031,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.Visible);
             output.Write(value.DepthBias);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3743,7 +4075,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3787,7 +4118,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3831,7 +4161,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3875,7 +4204,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3919,7 +4247,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.InvertWindingOrder);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         

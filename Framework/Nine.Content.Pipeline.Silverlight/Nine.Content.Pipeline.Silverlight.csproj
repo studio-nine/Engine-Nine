@@ -138,7 +138,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Nine.Content.Pipeline.Silverlight.ShaderCompiler\SilverlightShaderCompiler.vcxproj">
       <Project>{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}</Project>
-      <Name>Nine.Content.Pipeline.Silverlight.ShaderCompiler</Name>
+      <Name>Nine.Content.Pipeline.Silverlight.ShaderCompiler %28Visual Studio 2010%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

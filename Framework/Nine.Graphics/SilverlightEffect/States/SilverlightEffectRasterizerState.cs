@@ -1,15 +1,20 @@
-﻿namespace Microsoft.Xna.Framework.Graphics
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+namespace Microsoft.Xna.Framework.Graphics
 {
     internal class SilverlightEffectRasterizerState : SilverlightEffectState
     {
         #region Properties
 
-        public CullMode? CullMode { get; set; }
-        public FillMode? FillMode { get; set; }
-        public bool? ScissorTestEnable { get; set; }
-        public bool? MultiSampleAntiAlias { get; set; }
-        public float? DepthBias { get; set; }
-        public float? SlopeScaleDepthBias { get; set; }
+        public CullMode? CullMode;
+        public FillMode? FillMode;
+        public bool? ScissorTestEnable;
+        public bool? MultiSampleAntiAlias;
+        public float? DepthBias;
+        public float? SlopeScaleDepthBias;
 
         #endregion
 

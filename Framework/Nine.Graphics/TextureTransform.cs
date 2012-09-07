@@ -39,7 +39,7 @@
         /// </summary>
         public static Matrix CreateFromSourceRectange(Texture2D texture, Rectangle? rectangle)
         {
-            if (rectangle == null)
+            if (rectangle == null || texture == null)
                 return Matrix.Identity;
 
             float scaleX = 1.0f * rectangle.Value.Width / texture.Width;
@@ -73,12 +73,20 @@
         /// </summary>
         public static float[] ToArray(Matrix matrix)
         {
-            return new float[]
-            {
-                matrix.M11, matrix.M12, matrix.M14,
-                matrix.M21, matrix.M22, matrix.M24,
-                matrix.M41, matrix.M42, matrix.M44,
-            };
+            FloatArray[0] = matrix.M11;
+            FloatArray[1] = matrix.M12;
+            FloatArray[2] = matrix.M14;
+
+            FloatArray[3] = matrix.M21;
+            FloatArray[4] = matrix.M22;
+            FloatArray[5] = matrix.M24;
+
+            FloatArray[6] = matrix.M41;
+            FloatArray[7] = matrix.M42;
+            FloatArray[8] = matrix.M44;
+
+            return FloatArray;
         }
+        static float[] FloatArray = new float[9];
     }
 }

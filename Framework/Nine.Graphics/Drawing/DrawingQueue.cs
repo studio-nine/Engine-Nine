@@ -1,6 +1,8 @@
 namespace Nine.Graphics.Drawing
 {
     using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
     using Nine.Graphics.Materials;
     using Nine.Graphics;
 
@@ -11,6 +13,9 @@ namespace Nine.Graphics.Drawing
     /// </summary>
     class DrawingQueue
     {
+        private MaterialSortComparer materialSortComparer = new MaterialSortComparer();
+        private ViewDistanceSortComparer viewDistanceSortComparer = new ViewDistanceSortComparer();
+
         public int Count;
         public DrawingQueueEntry[] Elements = new DrawingQueueEntry[32];
 
@@ -40,20 +45,43 @@ namespace Nine.Graphics.Drawing
             Count = 0;
         }
 
-        public void Sort()
+        public void SortByMaterial()
         {
-            Array.Sort(Elements, 0, Count);
+            Array.Sort(Elements, 0, Count, materialSortComparer);
+        }
+
+        public void SortByViewDistance(ref Vector3 cameraPosition)
+        {
+            for (var i = 0; i < Count; ++i)
+            {
+                var entry = Elements[i];
+                entry.ViewDistanceSq = entry.Drawable.GetDistanceToCamera(cameraPosition);
+            }
+
+            Array.Sort(Elements, 0, Count, viewDistanceSortComparer);
+        }
+
+        class MaterialSortComparer : IComparer<DrawingQueueEntry>
+        {
+            public int Compare(DrawingQueueEntry x, DrawingQueueEntry y)
+            {
+                return x.Material.SortOrder - y.Material.SortOrder;
+            }
+        }
+
+        class ViewDistanceSortComparer : IComparer<DrawingQueueEntry>
+        {
+            public int Compare(DrawingQueueEntry x, DrawingQueueEntry y)
+            {
+                return y.ViewDistanceSq.CompareTo(x.ViewDistanceSq);
+            }
         }
     }
 
-    class DrawingQueueEntry : IComparable<DrawingQueueEntry>
+    class DrawingQueueEntry
     {
         public IDrawableObject Drawable;
         public Material Material;
-
-        public int CompareTo(DrawingQueueEntry other)
-        {
-            return Material.SortOrder - other.Material.SortOrder;
-        }
+        public float ViewDistanceSq;
     }
 }

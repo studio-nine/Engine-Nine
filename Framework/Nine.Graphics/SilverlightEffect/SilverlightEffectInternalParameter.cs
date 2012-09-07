@@ -1,8 +1,21 @@
-﻿using System;
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+using System;
 using System.Diagnostics;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
+    enum EffectRegisterSet
+    {
+        Bool,
+        Int,
+        Float,
+        Sampler,
+    }
+
     /// <summary>
     /// Internal parameter class for SilverlightEffect
     /// </summary>
@@ -11,27 +24,29 @@ namespace Microsoft.Xna.Framework.Graphics
     {
         #region Instance Data
 
+        internal readonly GraphicsDevice device;
+
         bool isDirty = true;
-        readonly GraphicsDevice device;
         Vector4[] data;
+        int dataLength;
 
         #endregion
 
         #region Internal properties
 
-        internal int VertexShaderRegisterIndex { get; set; }
-        
-        internal int PixelShaderRegisterIndex { get; set; }
-        
-        internal int RegisterCount { get; set; }
+        internal EffectRegisterSet RegisterSet;
+        internal EffectParameterClass ParameterClass;
+        internal EffectParameterType ParameterType;
+        internal int VertexShaderRegisterIndex;
+        internal int PixelShaderRegisterIndex;
+        internal int RegisterCount;
+        internal int SamplerIndex = -1;
 
-        internal Vector4[] Data
+        internal void SetData(Vector4[] data, int length)
         {
-            set
-            {
-                isDirty = true;
-                data = value;
-            }
+            isDirty = true;
+            this.data = data;
+            this.dataLength = length;
         }
 
         #endregion
@@ -55,8 +70,8 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <summary>
         /// Get or set the name of the parameter
         /// </summary>
-        public string Name { get; internal set; }
-        
+        public string Name;
+                
         #endregion
 
         #region Internal methods
@@ -73,7 +88,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 return;
 
             // Compute correct register size
-            int size = Math.Min(RegisterCount, data.Length);
+            int size = Math.Min(RegisterCount, dataLength);
 
             // Transmit to device
             for (int index = 0; index < size; index++)

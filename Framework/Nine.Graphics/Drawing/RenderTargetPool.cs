@@ -4,7 +4,7 @@
     using System.ComponentModel;
     using System.Diagnostics;
     using Microsoft.Xna.Framework.Graphics;
-
+    
     /// <summary>
     /// Represents a pool of render targets.
     /// </summary>
@@ -12,8 +12,8 @@
     public static class RenderTargetPool
     {
         private static RenderTargetPoolKey sharedKey = new RenderTargetPoolKey();
-        private static Dictionary<RenderTargetPoolKey, FastList<RenderTargetPoolTag>> renderTargetPools
-                 = new Dictionary<RenderTargetPoolKey, FastList<RenderTargetPoolTag>>(new RenderTargetPoolKeyEqualityComparer());
+        private static Dictionary<RenderTargetPoolKey, FastList<PooledRenderTarget2D>> renderTargetPools
+                 = new Dictionary<RenderTargetPoolKey, FastList<PooledRenderTarget2D>>(new RenderTargetPoolKeyEqualityComparer());
         
         /// <summary>
         /// Creates a render target from the pool without locking it.
@@ -27,8 +27,8 @@
             key.SurfaceFormat = surfaceFormat;
             key.DepthFormat = depthFormat;
 
-            RenderTargetPoolTag tag;
-            FastList<RenderTargetPoolTag> tags;
+            PooledRenderTarget2D tag;
+            FastList<PooledRenderTarget2D> tags;
             if (!renderTargetPools.TryGetValue(key, out tags))
             {
                 key = new RenderTargetPoolKey();
@@ -38,27 +38,22 @@
                 key.SurfaceFormat = surfaceFormat;
                 key.DepthFormat = depthFormat;
 
-                tag = new RenderTargetPoolTag();
-                tag.RenderTarget = new RenderTarget2D(graphics, width, height, false, surfaceFormat, depthFormat, 0, RenderTargetUsage.DiscardContents);
-                tag.RenderTarget.Tag = tag;
-
-                tags = new FastList<RenderTargetPoolTag>();
+                tag = new PooledRenderTarget2D(graphics, width, height, false, surfaceFormat, depthFormat, 0, RenderTargetUsage.DiscardContents);
+                tags = new FastList<PooledRenderTarget2D>();
                 tags.Add(tag);
                 renderTargetPools.Add(key, tags);
-                return tag.RenderTarget;
+                return tag;
             }
 
             for (int i = 0; i < tags.Count; ++i)
             {
                 if ((tag = tags[i]).RefCount <= 0)
-                    return tag.RenderTarget;                
+                    return tag;
             }
-            
-            tag = new RenderTargetPoolTag();
-            tag.RenderTarget = new RenderTarget2D(graphics, width, height, false, surfaceFormat, depthFormat, 0, RenderTargetUsage.DiscardContents);
-            tag.RenderTarget.Tag = tag;
+
+            tag = new PooledRenderTarget2D(graphics, width, height, false, surfaceFormat, depthFormat, 0, RenderTargetUsage.DiscardContents);
             tags.Add(tag);
-            return tag.RenderTarget;
+            return tag;
         }
 
         /// <summary>
@@ -66,8 +61,8 @@
         /// </summary>
         public static void Lock(RenderTarget2D target)
         {
-            RenderTargetPoolTag tag = null;
-            if (target == null || (tag = target.Tag as RenderTargetPoolTag) == null)
+            var tag = target as PooledRenderTarget2D;
+            if (tag == null)
                 return;
 
             Debug.Assert(tag.RefCount >= 0);
@@ -80,8 +75,8 @@
         /// </summary>
         public static void Unlock(RenderTarget2D target)
         {
-            RenderTargetPoolTag tag = null;
-            if (target == null || (tag = target.Tag as RenderTargetPoolTag) == null)
+            var tag = target as PooledRenderTarget2D;
+            if (tag == null)
                 return;
 
             tag.RefCount--;
@@ -90,10 +85,14 @@
         }
     }
 
-    class RenderTargetPoolTag
+    class PooledRenderTarget2D : RenderTarget2D
     {
+        public PooledRenderTarget2D(GraphicsDevice graphicsDevice, int width, int height, bool mipMap, SurfaceFormat preferredFormat, DepthFormat preferredDepthFormat, int preferredMultiSampleCount, RenderTargetUsage usage)
+            : base(graphicsDevice, width, height, mipMap, preferredFormat, preferredDepthFormat, preferredMultiSampleCount, usage)
+        {
+        
+        }
         public int RefCount;
-        public RenderTarget2D RenderTarget;
     }
 
     class RenderTargetPoolKey

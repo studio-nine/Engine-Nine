@@ -50,6 +50,7 @@ using System.Windows.Markup;
 
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Animations")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.Cameras")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.Materials")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.Materials.MaterialParts")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.ParticleEffects")]

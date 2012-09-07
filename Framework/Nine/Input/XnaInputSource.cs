@@ -4,11 +4,6 @@ namespace Nine
     using System.Collections.Generic;
     using Microsoft.Xna.Framework.Input;
     using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-#if SILVERLIGHT
-    using Keys = System.Windows.Input.Key;
-#else
-    using Keys = Microsoft.Xna.Framework.Input.Keys;
-#endif
     
     class XnaInputSource : IInputSource, IUpdateable
     {

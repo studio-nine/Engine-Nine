@@ -191,7 +191,11 @@ namespace Nine.Graphics.Materials
 
                 Entry entry = new Entry();
                 if ((entry.Parameter = parameter) != null)
+                {
+#if !SILVERLIGHT
                     entry.DefaultValue = parameter.GetValue();
+#endif
+                }
                 entry.Value = value;
                 values.Add(entry);
 
@@ -381,7 +385,7 @@ namespace Nine.Graphics.Materials
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => { var viewport = context.graphics.Viewport; parameter.SetValue(new Vector2(0.5f / viewport.Width, 0.5f / viewport.Height)); } },
             
             // Eye Position
-            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.EyePosition) },
+            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.CameraPosition) },
 
             // Time
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.totalSeconds) },
@@ -390,7 +394,11 @@ namespace Nine.Graphics.Materials
             // Materials and textures
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
+#if SILVERLIGHT
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.texture); } },
+#else
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { if (parameter.ParameterType == EffectParameterType.Texture2D) parameter.SetValue(material.texture); } },
+#endif
         };
     }
     #endregion

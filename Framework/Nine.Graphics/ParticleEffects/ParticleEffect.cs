@@ -566,23 +566,44 @@
         /// </summary>
         private void Update()
         {
-            var dt = Math.Min(1.0f / 30, elapsedSeconds);
-
-            lock (particles)
+            if (!isDisposed)
             {
-                UpdateEmitter(dt);
-                UpdateParticles(dt);
-                RetireParticles();
-
-                lock (primitive)
+                var dt = Math.Min(1.0f / 30, elapsedSeconds);
+                lock (particles)
                 {
-                    UpdateParticlePrimitive();
+                    UpdateEmitter(dt);
+                    UpdateParticles(dt);
+                    RetireParticles();
+
+                    lock (primitive)
+                    {
+                        UpdateParticlePrimitive();
+                    }
                 }
             }
         }
         #endregion
 
         #region Draw
+        /// <summary>
+        /// Called every frame when this object is added to the main view frustum.
+        /// </summary>
+        public void OnAddedToView(DrawingContext context)
+        {
+            InsideViewFrustum = true;
+        }
+
+        /// <summary>
+        /// Gets the squared distance from the position of the object to the current camera.
+        /// </summary>
+        public float GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            return (AbsolutePosition - cameraPosition).Length();
+        }
+
+        /// <summary>
+        /// Draws this object with the specified material.
+        /// </summary>
         public void Draw(DrawingContext context, Material material)
         {
             // Particle effect does not support other rendering modes.
@@ -593,7 +614,7 @@
 
             lock (primitive)
             {
-                eyePosition = context.EyePosition;
+                eyePosition = context.CameraPosition;
                 viewInverse = context.matrices.viewInverse;
                 primitive.Draw(context, material);
 
@@ -608,11 +629,6 @@
                     }
                 }
             }
-        }
-
-        public void OnAddedToView(DrawingContext context)
-        {
-            InsideViewFrustum = true;
         }
         #endregion
 

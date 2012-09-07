@@ -102,11 +102,17 @@
     </Compile>
     <Compile Include="Animations\AvatarAnimation.cs" />
     <Compile Include="Animations\BoneAnimation.cs" />
-    <Compile Include="Animations\BoneAnimationControllers.cs" />
+    <Compile Include="Animations\BoneAnimationController.cs" />
+    <Compile Include="Animations\BoneAnimationClip.cs" />
+    <Compile Include="Animations\LookAtController.cs" />
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="PostEffects\BloomMaterial.cs" />
+    <Compile Include="TextSprite.cs" />
+    <Compile Include="Drawing\SpritePass.cs" />
     <Compile Include="FastList.cs" />
+    <Compile Include="Materials\SpriteMaterial.cs" />
     <Compile Include="Materials\ThickLineMaterial.cs" />
     <Compile Include="ModelAttachment.cs" />
     <Compile Include="Sprite.cs" />
@@ -176,7 +182,6 @@
     <Compile Include="Decal.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Surface.cs" />
-    <Compile Include="Services.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
     <Compile Include="Materials\CustomMaterial.cs" />
     <Compile Include="Materials\MaterialParts\DetailMaterialPart.cs" />
@@ -220,7 +225,6 @@
     <Compile Include="ParticleEffects\ParticleControllers.cs" />
     <Compile Include="ParticleEffects\Particle.cs" />
     <Compile Include="ParticleEffects\ParticleController.cs" />
-    <Compile Include="Cameras\QuaternionCamera.cs" />
     <Compile Include="VertexTypes\VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="Materials\MaterialParts\SpotLightEffectPart.cs" />
     <Compile Include="Materials\MaterialParts\PointLightEffectPart.cs" />
@@ -250,7 +254,7 @@
     <Compile Include="ParticleEffects\ParticleEmitter.cs" />
     <Compile Include="Cameras\FreeCamera.cs" />
     <Compile Include="Cameras\ModelViewerCamera.cs" />
-    <Compile Include="Cameras\TopDownEditorCamera.cs" />
+    <Compile Include="Cameras\BirdEyeCamera.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="Heightmap.cs" />
     <Compile Include="ModelExtensions.cs" />
@@ -280,28 +284,27 @@
     </None>
     <None Include="Shaders\RestoreDepthBuffer.fx" />
     <None Include="Shaders\VertexPassThrough2.fx" />
-    <None Include="Shaders\ShadowEffect.fx" />
-    <None Include="Shaders\DecalEffect.fx" />
-    <None Include="Shaders\ClearEffect.fx" />
+    <None Include="Shaders\Shadow.fx" />
+    <None Include="Shaders\Decal.fx" />
+    <None Include="Shaders\Clear.fx" />
     <None Include="Shaders\DeferredDirectionalLight.fx" />
-    <None Include="Shaders\DeferredEffect.fx" />
+    <None Include="Shaders\Deferred.fx" />
     <None Include="Shaders\DeferredLighting.fxh" />
     <None Include="Shaders\DeferredPointLight.fx" />
     <None Include="Shaders\DeferredSpotLight.fx" />
-    <None Include="Shaders\DepthAndNormalEffect.fx" />
-    <None Include="Shaders\DepthEffect.fx" />
-    <None Include="Shaders\SkyBoxEffect.fx" />
+    <None Include="Shaders\DepthAndNormal.fx" />
+    <None Include="Shaders\Depth.fx" />
+    <None Include="Shaders\SkyBox.fx" />
     <None Include="Nine.snk" />
-    <None Include="Shaders\SoftParticleEffect.fx" />
+    <None Include="Shaders\SoftParticle.fx" />
     <None Include="Shaders\Adaption.fx" />
-    <None Include="Shaders\AntiAliasEffect.fx" />
-    <None Include="Shaders\BlurEffect.fx" />
-    <None Include="Shaders\DepthOfFieldEffect.fx" />
-    <None Include="Shaders\LuminanceEffect.fx" />
-    <None Include="Shaders\RadialBlurEffect.fx" />
-    <None Include="Shaders\ScaleEffect.fx" />
-    <None Include="Shaders\ThresholdEffect.fx" />
-    <None Include="Shaders\ToneMappingEffect.fx" />
+    <None Include="Shaders\AntiAlias.fx" />
+    <None Include="Shaders\Blur.fx" />
+    <None Include="Shaders\DepthOfField.fx" />
+    <None Include="Shaders\Luminance.fx" />
+    <None Include="Shaders\Scale.fx" />
+    <None Include="Shaders\Threshold.fx" />
+    <None Include="Shaders\ToneMapping.fx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -314,6 +317,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ThickLine.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Sprite.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Bloom.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

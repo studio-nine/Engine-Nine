@@ -88,8 +88,10 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected EffectParameter GetParameter(string parameterName)
         {
+#if WINDOWS
             if (IsContentBuild)
                 return null;
+#endif
             return MaterialGroup.Effect.Parameters[string.Concat(parameterName, ParameterSuffix)];
         }
 
@@ -101,11 +103,29 @@ namespace Nine.Graphics.Materials
         /// </returns>
         protected void GetTextureParameter(string parameterName, out EffectParameter parameter, out int index)
         {
+            var parameters = MaterialGroup.Effect.Parameters;
+#if SILVERLIGHT
+            var param = parameters[string.Concat(parameterName, "Sampler", ParameterSuffix)];
+            if (param != null)
+            {
+                if (param.RegisterSet == EffectRegisterSet.Sampler &&
+                    param.SamplerIndex >= 0)
+                {
+                    parameter = param;
+                    index = param.SamplerIndex;
+                    return;
+                }
+            }
+
             parameter = null;
             index = -1;
+#else
+            parameter = null;
+            index = -1;
+#if WINDOWS
             if (IsContentBuild)
                 return;
-            var parameters = MaterialGroup.Effect.Parameters;
+#endif
             parameter = parameters[string.Concat(parameterName, ParameterSuffix)];
             if (parameter == null)
                 return;
@@ -125,8 +145,10 @@ namespace Nine.Graphics.Materials
 
             // If we cannot find the parameter, something must went wrong.
             throw new InvalidOperationException();
+#endif
         }
 
+#if !SILVERLIGHT
         private bool IsTexture(EffectParameter parameter)
         {
             return parameter.ParameterClass == EffectParameterClass.Object && (
@@ -136,6 +158,7 @@ namespace Nine.Graphics.Materials
                    parameter.ParameterType == EffectParameterType.Texture3D ||
                    parameter.ParameterType == EffectParameterType.TextureCube);
         }
+#endif
 
 #if !SILVERLIGHT
         /// <summary>
@@ -154,6 +177,7 @@ namespace Nine.Graphics.Materials
 #endif
 
         #region GetShaderCode
+#if WINDOWS
         static MaterialPart()
         {
             var pipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "Nine.Content.Pipeline");
@@ -163,6 +187,11 @@ namespace Nine.Graphics.Materials
                 IsContentBuild = true;
             }
         }
+
+        private static System.Resources.ResourceManager ShaderResources;
+        internal static bool IsContentBuild = false;
+#endif
+        internal static bool IsContentRead = false;
 
         /// <summary>
         /// Gets the shader coder from the content pipeline assembly.
@@ -177,11 +206,6 @@ namespace Nine.Graphics.Materials
             throw new NotSupportedException();
 #endif
         }
-#if WINDOWS
-        private static System.Resources.ResourceManager ShaderResources;
-        internal static bool IsContentBuild = false;
-        internal static bool IsContentRead = false;
-#endif
         #endregion
     }
 }

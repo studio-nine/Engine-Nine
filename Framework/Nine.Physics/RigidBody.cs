@@ -65,6 +65,11 @@ namespace Nine.Physics
         private ISpace space;
 
         /// <summary>
+        /// Gets or sets any user data.
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of Body.
         /// </summary>
         public RigidBody()

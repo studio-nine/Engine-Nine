@@ -2,8 +2,7 @@ namespace Nine
 {
     using System;
     using Microsoft.Xna.Framework.Input;
-
-
+    
     /// <summary>
     /// Defines the source that triggers the input.
     /// </summary>

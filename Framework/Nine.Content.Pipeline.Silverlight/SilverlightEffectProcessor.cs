@@ -1,9 +1,14 @@
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using System.Text;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using SilverlightShaderCompiler;
@@ -11,21 +16,20 @@ using SilverlightShaderCompiler;
 namespace Nine.Content.Pipeline.Silverlight
 {
     [ContentProcessor(DisplayName = "Effect - Silverlight")]
-    public class SilverlightEffectProcessor : ContentProcessor<EffectContent, EffectBinaryContent>
+    public class SilverlightEffectProcessor : ContentProcessor<EffectSourceCode, EffectBinary>
     {
         public string Defines { get; set; }
         public EffectProcessorDebugMode DebugMode { get; set; }
 
-        public override EffectBinaryContent Process(EffectContent input, ContentProcessorContext context)
+        public override EffectBinary Process(EffectSourceCode input, ContentProcessorContext context)
         {
             // Remove comments
-            //Regex commentRegex = new Regex("//.*$", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-            //string effectCode = commentRegex.Replace(input.EffectCode, "");
+            Regex commentRegex = new Regex("//.*$", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            string effectCode = commentRegex.Replace(input.EffectCode, "");
 
             // Remove carriage returns and line feeds
-            //commentRegex = new Regex(@"(\r\n)|\n", RegexOptions.IgnoreCase);
-            //effectCode = commentRegex.Replace(effectCode, "");
-            string effectCode = input.EffectCode;
+            commentRegex = new Regex(@"(\r\n)|\n", RegexOptions.IgnoreCase);
+            effectCode = commentRegex.Replace(effectCode, "");
 
             // Check effect validity
             // EffectProcessor should check almost all potential errors in the effect code
@@ -40,7 +44,7 @@ namespace Nine.Content.Pipeline.Silverlight
 
             // Now we have to find entry points for each pass and compile them
             Compiler helper = new Compiler();
-            EffectBinaryContent result = new EffectBinaryContent();
+            EffectBinary result = new EffectBinary();
 
             foreach (var technique in techniques)
             {
@@ -50,38 +54,42 @@ namespace Nine.Content.Pipeline.Silverlight
                 {
                     List<string> errors = new List<string>();
 
-                    // Compiling vertex shader
-                    CompilerResult vsResult = null;
-                    if (pass.VertexShaderEntryPoint != null)
-                        vsResult = helper.Process(effectCode, errors, "vs_2_0", pass.VertexShaderEntryPoint, 3, false, true);
-
-                    // This should not happen but...
-                    if (errors.Count > 0)
-                    {
-                        ExceptionHelper.RaiseException(String.Join("\n", errors));
-                    }
-
-                    // Compiling pixel shader
-                    CompilerResult psResult = null;
-                    if (pass.PixelShaderEntryPoint != null)
-                        psResult = helper.Process(effectCode, errors, "ps_2_0", pass.PixelShaderEntryPoint, 3, false, true);
-
-                    // This should not happen but...
-                    if (errors.Count > 0)
-                    {
-                        ExceptionHelper.RaiseException(String.Join("\n", errors));
-                    }
-
                     // Generating a pass binary
                     EffectPassBinary passBinary = new EffectPassBinary
                     {
                         Name = pass.Name,
                         RenderStates = pass.RenderStates,
-                        VertexShaderByteCode = vsResult != null ? vsResult.ShaderCode : null,
-                        VertexShaderParameters = vsResult != null ? Encoding.Unicode.GetBytes(vsResult.ConstantsDefinition) : null,
-                        PixelShaderByteCode = psResult != null ? psResult.ShaderCode : null,
-                        PixelShaderParameters = psResult != null ? Encoding.Unicode.GetBytes(psResult.ConstantsDefinition) : null,
                     };
+                 
+                    // Compiling vertex shader
+                    if (pass.VertexShaderEntryPoint != null)
+                    {
+                        CompilerResult vsResult = helper.Process(effectCode, errors, "vs_2_0", pass.VertexShaderEntryPoint);
+
+                        // This should not happen but...
+                        if (errors.Count > 0)
+                        {
+                            ExceptionHelper.RaiseException(String.Join("\n", errors));
+                        }
+
+                        passBinary.VertexShaderByteCode = vsResult.ShaderCode;
+                        passBinary.VertexShaderParameters = vsResult.ConstantsDefinition;
+                    }
+
+                    // Compiling pixel shader
+                    if (pass.PixelShaderEntryPoint != null)
+                    {
+                        CompilerResult psResult = helper.Process(effectCode, errors, "ps_2_0", pass.PixelShaderEntryPoint);
+
+                        // This should not happen but...
+                        if (errors.Count > 0)
+                        {
+                            ExceptionHelper.RaiseException(String.Join("\n", errors));
+                        }
+
+                        passBinary.PixelShaderByteCode = psResult.ShaderCode;
+                        passBinary.PixelShaderParameters = psResult.ConstantsDefinition;
+                    }
 
                     effectTechniqueBinary.PassBinaries.Add(passBinary);
                 }
@@ -139,7 +147,7 @@ namespace Nine.Content.Pipeline.Silverlight
 
                     if (!string.IsNullOrEmpty(word))
                     {
-                        if (word == "technique")
+                        if (string.Equals(word, "technique", StringComparison.OrdinalIgnoreCase))
                         {
                             techniqueKeywordFound = true;
                         }

@@ -48,13 +48,13 @@
     <LinkDelaySign>
     </LinkDelaySign>
     <EmbedManifest>false</EmbedManifest>
-    <OutDir>..\..\References\x86</OutDir>
+    <OutDir>..\..\References\x86\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <LinkKeyFile>Nine.snk</LinkKeyFile>
-    <OutDir>..\..\References\x86</OutDir>
+    <OutDir>..\..\References\x86\</OutDir>
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
     <LinkDelaySign />
     <IntDir>$(ProjectDir)obj\$(Configuration)\</IntDir>

@@ -7,6 +7,9 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+#if SILVERLIGHT
+    using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
+#endif
 
     /// <summary>
     /// Defines a material that is grouped by material fragments.
@@ -181,6 +184,8 @@ namespace Nine.Graphics.Materials
         {
 #if WINDOWS
             if (!MaterialPart.IsContentBuild && !MaterialPart.IsContentRead)
+#else
+            if (!MaterialPart.IsContentRead)
 #endif
                 throw new InvalidOperationException("The material state can only be modified at content build time.");
         }
@@ -188,7 +193,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Creates a deep copy of this material.
         /// </summary>
-        public override Material Clone()
+        public MaterialGroup Clone()
         {
             var count = materialParts.Count;
             var result = new MaterialGroup();
@@ -236,7 +241,11 @@ namespace Nine.Graphics.Materials
             
             base.InsertItem(index, item);
             item.MaterialGroup = materialGroup;
+#if WINDOWS
             if (!MaterialPart.IsContentBuild && materialGroup != null)
+#else
+            if (materialGroup != null)
+#endif
                 item.OnBind();
             if (materialGroup != null)
                 materialGroup.OnShaderChanged();
@@ -249,7 +258,11 @@ namespace Nine.Graphics.Materials
             
             base.SetItem(index, item);
             item.MaterialGroup = materialGroup;
+#if WINDOWS
             if (!MaterialPart.IsContentBuild && materialGroup != null)
+#else
+            if (materialGroup != null)
+#endif
                 item.OnBind();
             if (materialGroup != null)
                 materialGroup.OnShaderChanged();
@@ -291,6 +304,7 @@ namespace Nine.Graphics.Materials
             try
             {
                 MaterialPart.IsContentRead = true;
+
                 count = input.ReadInt32();
                 for (Index = 0; Index < count; Index++)
                     existingInstance.MaterialParts.Add(input.ReadObject<MaterialPart>());

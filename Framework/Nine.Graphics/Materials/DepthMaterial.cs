@@ -52,7 +52,7 @@ namespace Nine.Graphics.Materials
         partial void BeginApplyLocalParameters(DrawingContext context, DepthMaterial previousMaterial)
         {
             if (previousMaterial != null && shaderIndex != previousMaterial.shaderIndex)
-                effect.shaderIndex.SetValue(shaderIndex);
+                effect.CurrentTechnique = effect.Techniques[shaderIndex];
             if (referenceAlpha.HasValue)
                 effect.referenceAlpha.SetValue(referenceAlpha.Value);
             effect.worldViewProjection.SetValue(world * context.matrices.ViewProjection);

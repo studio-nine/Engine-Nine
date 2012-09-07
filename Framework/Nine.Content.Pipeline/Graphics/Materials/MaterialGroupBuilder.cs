@@ -467,7 +467,7 @@
         public static string LastEffectCode;
         private static int NextValidSemanticIndex = 0;
         
-        public static CompiledEffectContent Build(MaterialGroup materialGroup, MaterialUsage usage, ContentProcessorContext context)
+        public static object Build(MaterialGroup materialGroup, MaterialUsage usage, ContentProcessorContext context)
         {
             // Make sure we have the nesessary building blocks of a shader
             if (materialGroup.MaterialParts.Count <= 0)
@@ -525,16 +525,29 @@
             }
         }
 
-        internal static CompiledEffectContent BuildEffect(ContentProcessorContext context)
+        internal static object BuildEffect(ContentProcessorContext context)
         {
             if (!Directory.Exists(Path.Combine(context.IntermediateDirectory, WorkingPath)))
                 Directory.CreateDirectory(Path.Combine(context.IntermediateDirectory, WorkingPath));
 
+            object result = null;
             File.WriteAllText(Path.Combine(context.IntermediateDirectory, WorkingPath, "LastEffect.fx"), LastEffectCode);
 
-            var effectContent = new EffectContent { EffectCode = LastEffectCode };
-            var effectProcessor = new EffectProcessor();
-            var result = effectProcessor.Process(effectContent, context);
+
+            var targetPlatform = context.GetTargetPlatform();
+            if (targetPlatform == TargetPlatforms.Silverlight)
+            {
+                var effectContent = new Nine.Content.Pipeline.Silverlight.EffectSourceCode(LastEffectCode);
+                var effectProcessor = new Nine.Content.Pipeline.Silverlight.SilverlightEffectProcessor();
+                result = effectProcessor.Process(effectContent, context);
+            }
+            else
+            {
+                var effectContent = new EffectContent { EffectCode = LastEffectCode };
+                var effectProcessor = new EffectProcessor();
+                result = effectProcessor.Process(effectContent, context);
+            }
+
 
             var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(LastEffectCode));
             var hashString = new StringBuilder();
@@ -857,9 +870,9 @@
             builder.AppendLine();
             builder.AppendLine
             (
-                "technique Default" + Environment.NewLine +
+                "technique Default " + Environment.NewLine +
                 "{" + Environment.NewLine +
-                "   pass Default" + Environment.NewLine +
+                "   pass Default " + Environment.NewLine +
                 "   {" + Environment.NewLine +
                 "       VertexShader = compile vs_" + profile + " VS();" + Environment.NewLine +
                 "       PixelShader = compile ps_" + profile + " PS();" + Environment.NewLine +

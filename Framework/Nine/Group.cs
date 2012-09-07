@@ -67,6 +67,30 @@ namespace Nine
 
             CheckIntegrity(value);
 
+            if (!Nine.Content.ContentProperties.IsContentBuild)
+            {
+                var objectFactory = value as IObjectFactory;
+                if (objectFactory != null)
+                {
+                    // The value very likely to be added to the tail of the element
+                    for (var i = children.Elements.Count - 1; i >= 0; --i)
+                    {
+                        if (children.Elements[i] == value)
+                        {
+                            children.Elements.RemoveAt(i);
+                            break;
+                        }
+                    }
+
+                    var createdInstance = objectFactory.CreateInstance(serviceProvider);
+                    if (createdInstance != null)
+                    {
+                        children.Add(createdInstance);
+                        return;
+                    }
+                }
+            }
+
             var component = value as IComponent;
             if (component != null)
             {
@@ -132,6 +156,41 @@ namespace Nine
         /// Occurs when a child object is removed directly from this drawing group.
         /// </summary>
         public event Action<object> Removed;
+        #endregion
+
+        #region ServiceProvider
+        /// <summary>
+        /// Gets the service provider that is used to create this group.
+        /// </summary>
+        public IServiceProvider ServiceProvider
+        {
+            get 
+            {
+                if (serviceProvider == null)
+                {
+                    if (defaultServiceProvider == null)
+                    {
+                        throw new InvalidOperationException(
+                            "Cannot find the default service provider, you have to create a ContentLoader");
+                    }
+                    return defaultServiceProvider;
+                }
+                return serviceProvider; 
+            }
+        }
+        private IServiceProvider serviceProvider;
+        private static IServiceProvider defaultServiceProvider;
+
+        internal static void EnsureDefaultServiceProvider(ContentManager contentManager)
+        {
+            if (defaultServiceProvider == null)
+            {
+                defaultServiceProvider = contentManager.ServiceProvider;
+                var gameServiceContainer = defaultServiceProvider as GameServiceContainer;
+                if (gameServiceContainer != null && gameServiceContainer.GetService<ContentManager>() == null)
+                    gameServiceContainer.AddService(typeof(ContentManager), contentManager);
+            }
+        }
         #endregion
 
         #region ICollection
@@ -322,7 +381,7 @@ namespace Nine
 
         #region Constructor
         /// <summary>
-        /// Initializes a new instance of <c>Group</c>.
+        /// Initializes a new instance of the <see cref="Group"/> class.
         /// </summary>
         public Group()
         {
@@ -335,10 +394,12 @@ namespace Nine
         /// <summary>
         /// Initializes a new instance of the <see cref="Group"/> class.
         /// </summary>
-        public Group(IEnumerable children) : this()
+        public Group(IServiceProvider serviceProvider) : this()
         {
-            foreach (var child in children)
-                this.children.Add(child);
+            if (serviceProvider == null)
+                throw new ArgumentNullException("serviceProvider");
+
+            this.serviceProvider = serviceProvider;
         }
         #endregion
 

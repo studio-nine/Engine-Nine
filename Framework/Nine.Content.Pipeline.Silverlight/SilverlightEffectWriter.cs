@@ -1,3 +1,8 @@
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
 // extern alias Silverlight;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
@@ -5,21 +10,16 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 namespace Nine.Content.Pipeline.Silverlight
 {
     [ContentTypeWriter]
-    class SilverlightEffectWriter : ContentTypeWriter<EffectBinaryContent>
+    public class SilverlightEffectWriter : ContentTypeWriter<EffectBinary>
     {
-        protected override void Write(ContentWriter output, EffectBinaryContent value)
+        protected override void Write(ContentWriter output, EffectBinary value)
         {
-            output.WriteRawObject(value.GetEffectCode());
+            output.Write(value.GetEffectCode());
         }
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            // Key signing and version updates can break static strings like below because the SN changes.
-            return "Microsoft.Xna.Framework.Content.SilverlightEffectReader, Nine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-
-            // We could reference the SL assemblies and do this, but that would mean updating the templates with
-            // correct references as well, which is tricky.
-            // return typeof(Silverlight::Microsoft.Xna.Framework.Content.SilverlightEffectReader).AssemblyQualifiedName;
+            return "Microsoft.Xna.Framework.Content.SilverlightEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

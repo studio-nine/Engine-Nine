@@ -4,13 +4,10 @@ namespace Nine
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
+#if !SILVERLIGHT
     using Microsoft.Xna.Framework.Input.Touch;
-    using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-#if SILVERLIGHT
-    using Keys = System.Windows.Input.Key;
-#else
-    using Keys = Microsoft.Xna.Framework.Input.Keys;
 #endif
+    using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
     
     #region KeyboardEventArgs
     /// <summary>

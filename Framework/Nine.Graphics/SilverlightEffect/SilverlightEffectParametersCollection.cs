@@ -1,4 +1,9 @@
-﻿using System.Collections;
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,13 +12,13 @@ namespace Microsoft.Xna.Framework.Graphics
     /// <summary>
     /// Define the collection of parameters for SilverlightEffect class.
     /// </summary>
-    public sealed class SilverlightEffectParametersCollection : IEnumerable<SilverlightEffectParameter>
+    public sealed class EffectParametersCollection : IEnumerable<EffectParameter>
     {
-        private readonly List<SilverlightEffectParameter> parameters;
+        private readonly List<EffectParameter> parameters;
 
         /// <summary>Gets a specific SilverlightEffectParameter object by using an index value.</summary>
         /// <param name="index">Index of the SilverlightEffectParameter to get.</param>
-        public SilverlightEffectParameter this[int index]
+        public EffectParameter this[int index]
         {
             get
             {
@@ -27,7 +32,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         /// <summary>Gets a specific SilverlightEffectParameter by name.</summary>
         /// <param name="name">The name of the SilverlightEffectParameter to retrieve.</param>
-        public SilverlightEffectParameter this[string name]
+        public EffectParameter this[string name]
         {
             get
             {
@@ -44,9 +49,9 @@ namespace Microsoft.Xna.Framework.Graphics
             }
         }
 
-        internal SilverlightEffectParametersCollection(IEnumerable<SilverlightEffectParameter> sourceParameters)
+        internal EffectParametersCollection(IEnumerable<EffectParameter> sourceParameters)
         {
-            parameters = new List<SilverlightEffectParameter>(sourceParameters);
+            parameters = new List<EffectParameter>(sourceParameters);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -54,7 +59,7 @@ namespace Microsoft.Xna.Framework.Graphics
             return parameters.GetEnumerator();
         }
 
-        IEnumerator<SilverlightEffectParameter> IEnumerable<SilverlightEffectParameter>.GetEnumerator()
+        IEnumerator<EffectParameter> IEnumerable<EffectParameter>.GetEnumerator()
         {
             return parameters.GetEnumerator();
         }

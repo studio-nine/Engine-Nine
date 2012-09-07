@@ -105,11 +105,7 @@
             this.graphics = graphics;
             this.initialBufferCapacity = initialBufferCapacity;
             this.maxBufferSizePerPrimitive = maxBufferSizePerPrimitive;
-            this.rasterizerState = new RasterizerState()
-            {
-                CullMode = CullMode.None,
-                DepthBias = 0f,
-            };
+            this.rasterizerState = new RasterizerState() { CullMode = CullMode.None };
             this.material = new BasicMaterial(graphics) 
             {
                 LightingEnabled = false, 
@@ -505,7 +501,11 @@
             }
 
             var vertexBufferSize = vertexSegments[entry.Segment + 1] - vertexSegments[entry.Segment];
+#if SILVERLIGHT
+            if (vertexBuffer == null || vertexBuffer.VertexCount < vertexBufferSize)
+#else
             if (vertexBuffer == null || vertexBuffer.VertexCount < vertexBufferSize || vertexBuffer.IsContentLost)
+#endif
             {
                 if (vertexBuffer != null)
                     vertexBuffer.Dispose();
@@ -521,7 +521,11 @@
             if (entry.IndexCount > 0)
             {
                 var indexBufferSize = indexSegments[entry.Segment + 1] - indexSegments[entry.Segment];
+#if SILVERLIGHT
+                if (indexBuffer == null || indexBuffer.IndexCount < indexBufferSize)
+#else
                 if (indexBuffer == null || indexBuffer.IndexCount < indexBufferSize || indexBuffer.IsContentLost)
+#endif
                 {
                     if (indexBuffer != null)
                         indexBuffer.Dispose();
@@ -542,6 +546,11 @@
             }
 
             material.EndApply(context);
+        }
+
+        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            return 0;
         }
 
         public void Dispose()

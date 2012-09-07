@@ -108,7 +108,7 @@ namespace Nine.Graphics
         /// Gets a value indicating whether model animations should only be updated when the model
         /// is visible and inside the view frustum.
         /// </summary>
-        public bool AnimationCullingEnabled { get; private set; }
+        public bool AnimationCullingEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets whether to use the default model diffuse texture, normal map, specular map, etc.
@@ -163,12 +163,15 @@ namespace Nine.Graphics
         private BoundingBox boundingBox;
 
         /// <summary>
-        /// Gets the oriented bounding box.
+        /// Gets or sets the oriented bounding box. If animations are enabled,
+        /// you might want to override the computed oriented bounding box.
         /// </summary>
-        public BoundingBox OrientedBoundingBox
+        public BoundingBox? OrientedBoundingBox
         {
-            get { return orientedBoundingBox; }
+            get { return orientedBoundingBoxOverride; }
+            set { orientedBoundingBoxOverride = value; }
         }
+        private BoundingBox? orientedBoundingBoxOverride;
         private BoundingBox orientedBoundingBox;
 
         /// <summary>
@@ -223,7 +226,7 @@ namespace Nine.Graphics
                     if (value != null && value.BoneTransforms.Length != skeleton.BoneTransforms.Length)
                         throw new InvalidOperationException(Strings.SkeletonMismatch);
                     sharedSkeleton = value;
-                    boneTransformNeedUpdate = true;
+                    UpdateBoneTransforms();
                 }
             }
         }
@@ -261,6 +264,7 @@ namespace Nine.Graphics
             UseModelTextures = true;
             MaxAffectingLights = 4;
             MaxReceivedShadows = 1;
+            AnimationCullingEnabled = true;
             GraphicsDevice = graphicsDevice;
             modelMeshes = new List<ModelMesh>();
             children = new List<object>();
@@ -297,8 +301,11 @@ namespace Nine.Graphics
             geometryPositions = null;
             geometryIndices = null;
             animations = null;
-            orientedBoundingBox = new BoundingBox();
             boundingBox = new BoundingBox();
+            if (orientedBoundingBoxOverride.HasValue)
+                OrientedBoundingBox = orientedBoundingBoxOverride.Value;
+            else
+                orientedBoundingBox = new BoundingBox();
 
             if (source != null)
             {
@@ -306,7 +313,8 @@ namespace Nine.Graphics
                     throw new ArgumentException("The input model is must have at least 1 valid mesh part.");
 
                 // Initialize bounds
-                orientedBoundingBox = source.ComputeBoundingBox();
+                if (!orientedBoundingBoxOverride.HasValue)
+                    orientedBoundingBox = source.ComputeBoundingBox();
                 boundingBox = orientedBoundingBox.CreateAxisAligned(AbsoluteTransform);
 
                 // Initialize animations
@@ -343,41 +351,27 @@ namespace Nine.Graphics
                     for (int i = 0; i < attachments.Count; ++i)
                         if (attachments[i].Transformable != null)
                             children.Add(attachments[i].Transformable);
+                
+                UpdateBoneTransforms();
             }
         }
         #endregion
 
         #region BoneTransform
-        bool boneTransformNeedUpdate = true;
-        
+        /// <summary>
+        /// Updates the bone transform and skin transform of this model.
+        /// </summary>
         internal void UpdateBoneTransforms()
         {
-            if (source != null && boneTransformNeedUpdate)
+            if (BoneTransforms == null || BoneTransforms.Length < Skeleton.BoneTransforms.Length)
+                BoneTransforms = new Matrix[Skeleton.BoneTransforms.Length];
+            Skeleton.CopyAbsoluteBoneTransformsTo(BoneTransforms);
+
+            if (IsSkinned)
             {
-                if (BoneTransforms == null || BoneTransforms.Length < Skeleton.BoneTransforms.Length)
-                {
-                    BoneTransforms = new Matrix[Skeleton.BoneTransforms.Length];
-                    Skeleton.CopyAbsoluteBoneTransformsTo(BoneTransforms);
-                }
-                else if (boneTransformNeedUpdate)
-                {
-                    Skeleton.CopyAbsoluteBoneTransformsTo(BoneTransforms);
-                }
-
-                if (IsSkinned)
-                {
-                    if (SkinTransforms == null || SkinTransforms.Length < Skeleton.InverseAbsoluteBindPose.Count)
-                    {
-                        SkinTransforms = new Matrix[Skeleton.InverseAbsoluteBindPose.Count];
-                        Skeleton.GetSkinTransforms(SkinTransforms);
-                    }
-                    else if (boneTransformNeedUpdate)
-                    {
-                        Skeleton.GetSkinTransforms(SkinTransforms);
-                    }
-                }
-
-                boneTransformNeedUpdate = false;
+                if (SkinTransforms == null || SkinTransforms.Length < Skeleton.InverseAbsoluteBindPose.Count)
+                    SkinTransforms = new Matrix[Skeleton.InverseAbsoluteBindPose.Count];
+                Skeleton.GetSkinTransforms(SkinTransforms);
             }
         }
 
@@ -386,26 +380,55 @@ namespace Nine.Graphics
         #endregion
 
         #region Update
+        const uint ModelAbsoluteTransformDirty = 1 << 1;
+
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
         /// <param name="elapsedTime"></param>
         public void Update(TimeSpan elapsedTime)
         {
+            if (source == null)
+                return;
+
+            var absoluteTransformChanged = ((absoluteTransformDirtyFlags & ModelAbsoluteTransformDirty) != 0);
+            var boneTransformChanged = false;
+
             // Skip updating the animation when animation culling is enabled.
-            if (animations != null && !(AnimationCullingEnabled && !InsideViewFrustum))
+            if (animations != null && (!AnimationCullingEnabled || insideViewFrustum))
             {
                 // Turn off the animation when skeleton is shared
                 if ((IsSkinned && sharedSkeleton == null) || !IsSkinned)
                     animations.Update(elapsedTime);
-                boneTransformNeedUpdate = true;
+                UpdateBoneTransforms();
+                boneTransformChanged = true;
+            }
+            // Update bone transform when this model is using a shared skeleton.
+            else if (IsSkinned && sharedSkeleton != null)
+            {
+                UpdateBoneTransforms();
+                boneTransformChanged = true;
+            }
+
+            if (absoluteTransformChanged || boneTransformChanged)
+            {
+                Matrix absoluteTransform = AbsoluteTransform;
+                var count = modelMeshes.Count;
+                for (var i = 0; i < count; ++i)
+                {
+                    var mesh = modelMeshes[i];
+                    Matrix.Multiply(ref BoneTransforms[mesh.parentBoneIndex],
+                                    ref absoluteTransform, out mesh.worldTransform);
+                }
+                absoluteTransformDirtyFlags |= ~ModelAbsoluteTransformDirty;
             }
 
             if (attachments != null)
             {
-                if (boneTransformNeedUpdate)
+                if (absoluteTransformChanged || boneTransformChanged)
                     attachments.UpdateTransforms();
-                for (int i = 0; i < attachments.Count; ++i)
+                var count = attachments.Count;
+                for (var i = 0; i < count; ++i)
                 {
                     var updateable = attachments[i].Transformable as Nine.IUpdateable;
                     if (updateable != null)
@@ -451,8 +474,13 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the triangle vertices of the target geometry.
         /// </summary>        
-        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
+        public bool TryGetTriangles(out Vector3[] vertices, out ushort[] indices)
         {
+#if SILVERLIGHT
+            vertices = null;
+            indices = null;
+            return false;
+#else
             if (geometryPositions == null && source != null)
             {
                 geometryPositions = new Vector3[source.CopyPositionsTo(null, 0)];
@@ -461,8 +489,11 @@ namespace Nine.Graphics
                 geometryIndices = new ushort[source.CopyIndicesTo(null, 0)];
                 source.CopyIndicesTo(geometryIndices, 0);
             }
+
             vertices = this.geometryPositions;
             indices = this.geometryIndices;
+            return true;
+#endif
         }
         Vector3[] geometryPositions;
         ushort[] geometryIndices;
@@ -486,6 +517,9 @@ namespace Nine.Graphics
                 return;
             }
 
+            // Turn off animation culling when instancing is enabled
+            AnimationCullingEnabled = false;
+
             vertexBuffer = mesh.vertexBuffer;
             vertexOffset = mesh.vertexOffset;
             numVertices = mesh.numVertices;
@@ -501,6 +535,8 @@ namespace Nine.Graphics
                 primitiveCount = 0;
                 return;
             }
+
+            AnimationCullingEnabled = false;
 
             indexBuffer = mesh.indexBuffer;
             startIndex = mesh.startIndex;
@@ -521,7 +557,6 @@ namespace Nine.Graphics
             if (modelMeshes.Count <= 0)
                 return;
             var mesh = modelMeshes[subset];
-            UpdateBoneTransforms();
             mesh.ApplyTextures(material);
             mesh.ApplySkinTransform(material);
         }

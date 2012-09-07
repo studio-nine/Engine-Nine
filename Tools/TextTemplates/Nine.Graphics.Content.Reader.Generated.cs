@@ -11,6 +11,31 @@
 namespace Nine.Animations
 {
     /// <summary>
+    /// Content reader for <c>BoneAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BoneAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.BoneAnimation>
+    {
+        protected override Nine.Animations.BoneAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.BoneAnimation existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; ++i)
+                    existingInstance.Controllers.Add(input.ReadObject<Nine.Animations.IBoneAnimationController>());
+            }
+            existingInstance.BlendEnabled = input.ReadBoolean();
+            existingInstance.BlendDuration = input.ReadObject<System.TimeSpan>();
+            existingInstance.KeyController = input.ReadObject<Nine.Animations.ITimelineAnimation>();
+            existingInstance.IsSychronized = input.ReadBoolean();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>BoneAnimationClip</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -20,12 +45,42 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.BoneAnimationClip Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.BoneAnimationClip existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BoneAnimationClip();
             existingInstance.FramesPerSecond = input.ReadInt32();
             existingInstance.TotalFrames = input.ReadInt32();
             existingInstance.PreferredEnding = input.ReadObject<Nine.Animations.KeyframeEnding>();
             existingInstance.Transforms = input.ReadObject<Microsoft.Xna.Framework.Matrix[][]>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>BoneAnimationController</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BoneAnimationControllerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.BoneAnimationController>
+    {
+        protected override Nine.Animations.BoneAnimationController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.BoneAnimationController existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            existingInstance.InterpolationEnabled = input.ReadBoolean();
+            existingInstance.BeginFrame = input.ReadObject<System.Nullable<System.Int32>>();
+            existingInstance.EndFrame = input.ReadObject<System.Nullable<System.Int32>>();
+            existingInstance.FramesPerSecond = input.ReadSingle();
+            existingInstance.Ending = input.ReadObject<Nine.Animations.KeyframeEnding>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -39,9 +94,10 @@ namespace Nine.Animations
     {
         protected override Nine.Animations.SpriteAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SpriteAnimation existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SpriteAnimation();
-            existingInstance.TextureList = input.ReadObject<Nine.Graphics.TextureList>();
+            existingInstance.Source = input.ReadObject<Nine.Graphics.TextureList>();
             existingInstance.TargetProperty = input.ReadObject<System.String>();
             existingInstance.BeginFrame = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.EndFrame = input.ReadObject<System.Nullable<System.Int32>>();
@@ -56,7 +112,6 @@ namespace Nine.Animations
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -74,6 +129,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.AmbientLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.AmbientLight existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -87,7 +143,6 @@ namespace Nine.Graphics
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.AmbientLightColor = input.ReadVector3();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -102,6 +157,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.Decal Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Decal existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -127,7 +183,6 @@ namespace Nine.Graphics
             existingInstance.FadeDuration = input.ReadObject<System.TimeSpan>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -142,6 +197,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.DirectionalLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.DirectionalLight existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -152,6 +208,8 @@ namespace Nine.Graphics
 #endif
                 existingInstance = new DirectionalLight(graphicsDevice);
             }
+            existingInstance.ShadowStart = input.ReadSingle();
+            existingInstance.ShadowEnd = input.ReadSingle();
             existingInstance.Direction = input.ReadVector3();
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.DiffuseColor = input.ReadVector3();
@@ -161,7 +219,6 @@ namespace Nine.Graphics
             existingInstance.ShadowMap = input.ReadObject<Nine.Graphics.ShadowMap>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -176,6 +233,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.Fog Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Fog existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Fog();
             existingInstance.FogStart = input.ReadSingle();
@@ -183,7 +241,6 @@ namespace Nine.Graphics
             existingInstance.FogColor = input.ReadVector3();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -198,6 +255,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.FullScreenQuad Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.FullScreenQuad existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -210,8 +268,8 @@ namespace Nine.Graphics
             }
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -226,6 +284,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.Geometry Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Geometry existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Geometry();
             existingInstance.positions = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
@@ -233,7 +292,6 @@ namespace Nine.Graphics
             existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -248,6 +306,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.Heightmap Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Heightmap existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Heightmap();
             existingInstance.Size = input.ReadVector3();
@@ -272,6 +331,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.InstancedModel Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.InstancedModel existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -285,9 +345,9 @@ namespace Nine.Graphics
             existingInstance.instanceTransforms = input.ReadObject<Microsoft.Xna.Framework.Matrix[]>();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Template = input.ReadObject<Nine.Graphics.ISupportInstancing>();
+            existingInstance.BoundingBoxPadding = input.ReadVector3();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -302,6 +362,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.Model Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Model existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -321,6 +382,7 @@ namespace Nine.Graphics
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.Visible = input.ReadBoolean();
+            existingInstance.AnimationCullingEnabled = input.ReadBoolean();
             existingInstance.UseModelTextures = input.ReadBoolean();
             existingInstance.MultiPassLightingEnabled = input.ReadBoolean();
             existingInstance.MaxAffectingLights = input.ReadInt32();
@@ -328,6 +390,7 @@ namespace Nine.Graphics
             existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.MaxReceivedShadows = input.ReadInt32();
             existingInstance.MultiPassShadowEnabled = input.ReadBoolean();
+            existingInstance.OrientedBoundingBox = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.BoundingBox>>();
             existingInstance.SharedSkeleton = input.ReadObject<Nine.Graphics.Skeleton>();
             {
                 var count = input.ReadInt32();
@@ -336,7 +399,6 @@ namespace Nine.Graphics
             }
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -351,6 +413,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.ModelAttachment Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelAttachment existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ModelAttachment();
             existingInstance.Transformable = input.ReadObject<Nine.Transformable>();
@@ -371,6 +434,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.ModelCollision Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelCollision existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ModelCollision();
             existingInstance.CollisionTree = input.ReadObject<Nine.Octree<System.Boolean>>();
@@ -387,6 +451,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.ModelMesh Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelMesh existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ModelMesh();
             existingInstance.Visible = input.ReadBoolean();
@@ -394,7 +459,6 @@ namespace Nine.Graphics
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.UseModelTextures = input.ReadObject<System.Nullable<System.Boolean>>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -409,6 +473,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.ModelMeshPartTag Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelMeshPartTag existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ModelMeshPartTag();
             existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
@@ -426,6 +491,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.ModelSkeletonData Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelSkeletonData existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ModelSkeletonData();
             existingInstance.InverseAbsoluteBindPose = input.ReadObject<System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix>>();
@@ -443,6 +509,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.ModelTag Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelTag existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ModelTag();
             existingInstance.Skeleton = input.ReadObject<Nine.Graphics.ModelSkeletonData>();
@@ -461,6 +528,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.PointLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PointLight existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -481,7 +549,6 @@ namespace Nine.Graphics
             existingInstance.ShadowMap = input.ReadObject<Nine.Graphics.ShadowMap>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -496,6 +563,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.ShadowMap Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ShadowMap existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -513,7 +581,6 @@ namespace Nine.Graphics
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -528,6 +595,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.SkyBox Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.SkyBox existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -542,7 +610,6 @@ namespace Nine.Graphics
             existingInstance.Color = input.ReadVector3();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.TextureCube>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -557,6 +624,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.SpotLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.SpotLight existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -580,7 +648,48 @@ namespace Nine.Graphics
             existingInstance.ShadowMap = input.ReadObject<Nine.Graphics.ShadowMap>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Sprite</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SpriteReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Sprite>
+    {
+        protected override Nine.Graphics.Sprite Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Sprite existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new Sprite(graphicsDevice);
+            }
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.Color = input.ReadColor();
+            existingInstance.IsAdditive = input.ReadBoolean();
+            existingInstance.IsTransparent = input.ReadBoolean();
+            existingInstance.FlipX = input.ReadBoolean();
+            existingInstance.FlipY = input.ReadBoolean();
+            existingInstance.Position = input.ReadVector2();
+            existingInstance.Scale = input.ReadVector2();
+            existingInstance.Rotation = input.ReadSingle();
+            existingInstance.Anchor = input.ReadVector2();
+            existingInstance.ZOrder = input.ReadInt32();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.SourceRectangle = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -595,6 +704,7 @@ namespace Nine.Graphics
     {
         protected override Nine.Graphics.Surface Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Surface existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -619,7 +729,44 @@ namespace Nine.Graphics
             existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>TextSprite</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class TextSpriteReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.TextSprite>
+    {
+        protected override Nine.Graphics.TextSprite Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.TextSprite existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new TextSprite(graphicsDevice);
+            }
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Text = input.ReadObject<System.String>();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.Color = input.ReadColor();
+            existingInstance.IsAdditive = input.ReadBoolean();
+            existingInstance.Position = input.ReadVector2();
+            existingInstance.Scale = input.ReadVector2();
+            existingInstance.Rotation = input.ReadSingle();
+            existingInstance.Anchor = input.ReadVector2();
+            existingInstance.ZOrder = input.ReadInt32();
+            existingInstance.Font = input.ReadObject<Microsoft.Xna.Framework.Graphics.SpriteFont>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -627,6 +774,49 @@ namespace Nine.Graphics
 }
 namespace Nine.Graphics.Cameras
 {
+    /// <summary>
+    /// Content reader for <c>BirdEyeCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BirdEyeCameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Cameras.BirdEyeCamera>
+    {
+        protected override Nine.Graphics.Cameras.BirdEyeCamera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Cameras.BirdEyeCamera existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new BirdEyeCamera(graphicsDevice);
+            }
+            existingInstance.Yaw = input.ReadSingle();
+            existingInstance.Pitch = input.ReadSingle();
+            existingInstance.Radius = input.ReadSingle();
+            existingInstance.MinRadius = input.ReadSingle();
+            existingInstance.MaxRadius = input.ReadSingle();
+            existingInstance.WheelSpeed = input.ReadSingle();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.RotateButton = input.ReadObject<Nine.MouseButtons>();
+            existingInstance.TranslateButton = input.ReadObject<Nine.MouseButtons>();
+            existingInstance.LookAt = input.ReadVector3();
+            existingInstance.NearPlane = input.ReadSingle();
+            existingInstance.FarPlane = input.ReadSingle();
+            existingInstance.FieldOfView = input.ReadSingle();
+            existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
+            existingInstance.ViewportScale = input.ReadObject<Nine.BoundingRectangle>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
     /// <summary>
     /// Content reader for <c>Camera</c>.
     /// </summary>
@@ -637,6 +827,7 @@ namespace Nine.Graphics.Cameras
     {
         protected override Nine.Graphics.Cameras.Camera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Cameras.Camera existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -652,9 +843,132 @@ namespace Nine.Graphics.Cameras
             existingInstance.FieldOfView = input.ReadSingle();
             existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
             existingInstance.ViewportScale = input.ReadObject<Nine.BoundingRectangle>();
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>FreeCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class FreeCameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Cameras.FreeCamera>
+    {
+        protected override Nine.Graphics.Cameras.FreeCamera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Cameras.FreeCamera existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new FreeCamera(graphicsDevice);
+            }
+            existingInstance.Angle = input.ReadVector3();
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.TurnSpeed = input.ReadSingle();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.PrecisionModeSpeed = input.ReadSingle();
+            existingInstance.ForwardKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.BackwardKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.LeftKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.RightKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.UpKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.DownKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.PrecisionModeKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.NearPlane = input.ReadSingle();
+            existingInstance.FarPlane = input.ReadSingle();
+            existingInstance.FieldOfView = input.ReadSingle();
+            existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
+            existingInstance.ViewportScale = input.ReadObject<Nine.BoundingRectangle>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ModelViewerCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ModelViewerCameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Cameras.ModelViewerCamera>
+    {
+        protected override Nine.Graphics.Cameras.ModelViewerCamera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Cameras.ModelViewerCamera existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ModelViewerCamera(graphicsDevice);
+            }
+            existingInstance.Radius = input.ReadSingle();
+            existingInstance.MinRadius = input.ReadSingle();
+            existingInstance.MaxRadius = input.ReadSingle();
+            existingInstance.WheelSpeed = input.ReadSingle();
+            existingInstance.Center = input.ReadVector3();
+            existingInstance.MouseWheelEnabled = input.ReadBoolean();
+            existingInstance.RotateButton = input.ReadObject<Nine.MouseButtons>();
+            existingInstance.NearPlane = input.ReadSingle();
+            existingInstance.FarPlane = input.ReadSingle();
+            existingInstance.FieldOfView = input.ReadSingle();
+            existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
+            existingInstance.ViewportScale = input.ReadObject<Nine.BoundingRectangle>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ScreenCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ScreenCameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Cameras.ScreenCamera>
+    {
+        protected override Nine.Graphics.Cameras.ScreenCamera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Cameras.ScreenCamera existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ScreenCamera(graphicsDevice);
+            }
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.CoordinateType = input.ReadObject<Nine.Graphics.Cameras.ScreenCameraCoordinate>();
+            existingInstance.Zoom = input.ReadSingle();
+            existingInstance.MinZoom = input.ReadSingle();
+            existingInstance.MaxZoom = input.ReadSingle();
+            existingInstance.X = input.ReadSingle();
+            existingInstance.Y = input.ReadSingle();
+            existingInstance.Z = input.ReadSingle();
+            existingInstance.NearClip = input.ReadSingle();
+            existingInstance.FarClip = input.ReadSingle();
+            existingInstance.WheelSpeed = input.ReadSingle();
+            existingInstance.Position = input.ReadVector2();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -672,6 +986,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.AlphaTestMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.AlphaTestMaterial existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -694,7 +1009,6 @@ namespace Nine.Graphics.Materials
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -709,6 +1023,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.BasicMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.BasicMaterial existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -734,7 +1049,6 @@ namespace Nine.Graphics.Materials
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -749,6 +1063,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.CustomMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.CustomMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new CustomMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
@@ -760,7 +1075,6 @@ namespace Nine.Graphics.Materials
                         input.ReadObject<System.Object>());
             }
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -776,6 +1090,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.DebugMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.DebugMaterial existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -795,7 +1110,6 @@ namespace Nine.Graphics.Materials
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -812,6 +1126,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.DepthMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.DepthMaterial existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -832,7 +1147,6 @@ namespace Nine.Graphics.Materials
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -848,6 +1162,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.DualTextureMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.DualTextureMaterial existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -870,7 +1185,6 @@ namespace Nine.Graphics.Materials
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -885,6 +1199,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.EnvironmentMapMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.EnvironmentMapMaterial existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -909,7 +1224,6 @@ namespace Nine.Graphics.Materials
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -924,6 +1238,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.MaterialLevelOfDetail Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialLevelOfDetail existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new MaterialLevelOfDetail();
             {
@@ -947,6 +1262,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.MaterialPaintGroup Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialPaintGroup existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new MaterialPaintGroup();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
@@ -956,7 +1272,6 @@ namespace Nine.Graphics.Materials
                     existingInstance.MaterialParts.Add(input.ReadObject<Nine.Graphics.Materials.MaterialPart>());
             }
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -971,6 +1286,7 @@ namespace Nine.Graphics.Materials
     {
         protected override Nine.Graphics.Materials.SkinnedMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.SkinnedMaterial existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -995,7 +1311,6 @@ namespace Nine.Graphics.Materials
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1013,13 +1328,13 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.AlphaTestMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.AlphaTestMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new AlphaTestMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.AlphaFunction = input.ReadObject<Microsoft.Xna.Framework.Graphics.CompareFunction>();
             existingInstance.ReferenceAlpha = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1034,11 +1349,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.BeginLightMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.BeginLightMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BeginLightMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1053,11 +1368,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BeginPaintGroupMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1072,12 +1387,12 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.ColorMatrixMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.ColorMatrixMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ColorMatrixMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.ColorMatrix = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1093,11 +1408,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.DeferredLightsMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DeferredLightsMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DeferredLightsMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1113,11 +1428,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.DepthAndNormalMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DepthAndNormalMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DepthAndNormalMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1132,11 +1447,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.DepthMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DepthMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DepthMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1151,6 +1466,7 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.DetailMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DetailMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DetailMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
@@ -1159,7 +1475,6 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.Distance = input.ReadSingle();
             existingInstance.DetailTextureScale = input.ReadVector2();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1174,6 +1489,7 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.DiffuseMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DiffuseMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DiffuseMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
@@ -1185,7 +1501,6 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.OverlayColor = input.ReadVector3();
             existingInstance.TextureAlphaUsage = input.ReadObject<Nine.Graphics.Materials.MaterialParts.TextureAlphaUsage>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1200,11 +1515,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.DirectionalLightMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DirectionalLightMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DirectionalLightMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1219,12 +1534,12 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.DualTextureMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DualTextureMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DualTextureMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Texture2 = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1239,6 +1554,7 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.EmissiveMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.EmissiveMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new EmissiveMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
@@ -1247,7 +1563,6 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.EmissiveMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.EmissiveColor = input.ReadVector3();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1262,11 +1577,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.EndLightMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.EndLightMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new EndLightMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1281,11 +1596,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new EndPaintGroupMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1300,11 +1615,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.FogMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.FogMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new FogMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1319,11 +1634,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.InstancedMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.InstancedMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new InstancedMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1338,12 +1653,12 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.NormalMapMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.NormalMapMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new NormalMapMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.NormalMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1358,16 +1673,16 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.ShadowMapMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.ShadowMapMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ShadowMapMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.ShadowColor = input.ReadVector3();
             existingInstance.LightViewProjection = input.ReadMatrix();
             existingInstance.ShadowMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.SampleCount = input.ReadInt32();
+            existingInstance.FilterSize = input.ReadInt32();
             existingInstance.Seed = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1382,13 +1697,13 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.SkinnedMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.SkinnedMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SkinnedMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.MaxBones = input.ReadInt32();
             existingInstance.WeightsPerVertex = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1403,6 +1718,7 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.SpecularMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.SpecularMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SpecularMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
@@ -1412,7 +1728,6 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.SpecularPower = input.ReadSingle();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1427,11 +1742,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new TangentTransformMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1446,12 +1761,12 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.TextureTransformMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.TextureTransformMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new TextureTransformMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.TextureTransform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1466,11 +1781,11 @@ namespace Nine.Graphics.Materials.MaterialParts
     {
         protected override Nine.Graphics.Materials.MaterialParts.VertexTransformMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.VertexTransformMaterialPart existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new VertexTransformMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1488,6 +1803,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.AbsorbController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.AbsorbController existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new AbsorbController();
             existingInstance.Position = input.ReadVector3();
@@ -1506,6 +1822,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.BoneEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.BoneEmitter existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BoneEmitter();
             existingInstance.Enabled = input.ReadBoolean();
@@ -1533,6 +1850,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.BoxEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.BoxEmitter existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BoxEmitter();
             existingInstance.Transform = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
@@ -1563,6 +1881,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.ColorController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ColorController existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ColorController();
             existingInstance.EndColor = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
@@ -1580,6 +1899,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.CylinderEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.CylinderEmitter existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new CylinderEmitter();
             existingInstance.Shell = input.ReadBoolean();
@@ -1613,6 +1933,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.FadeController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.FadeController existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new FadeController();
             existingInstance.Enabled = input.ReadBoolean();
@@ -1629,6 +1950,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.ForceController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ForceController existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ForceController();
             existingInstance.Force = input.ReadVector3();
@@ -1646,6 +1968,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.LineEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.LineEmitter existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new LineEmitter();
             existingInstance.Spread = input.ReadSingle();
@@ -1675,6 +1998,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.ParticleEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ParticleEffect existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -1703,7 +2027,6 @@ namespace Nine.Graphics.ParticleEffects
             }
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1718,6 +2041,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.PointEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.PointEmitter existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new PointEmitter();
             existingInstance.Spread = input.ReadSingle();
@@ -1746,6 +2070,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.RotationController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.RotationController existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new RotationController();
             existingInstance.EndRotation = input.ReadObject<Nine.Range<System.Single>>();
@@ -1763,6 +2088,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.SizeController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SizeController existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SizeController();
             existingInstance.EndSize = input.ReadObject<Nine.Range<System.Single>>();
@@ -1780,6 +2106,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.SpeedController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SpeedController existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SpeedController();
             existingInstance.EndSpeed = input.ReadObject<Nine.Range<System.Single>>();
@@ -1797,6 +2124,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.SphereEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SphereEmitter existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SphereEmitter();
             existingInstance.Shell = input.ReadBoolean();
@@ -1828,6 +2156,7 @@ namespace Nine.Graphics.ParticleEffects
     {
         protected override Nine.Graphics.ParticleEffects.TangentForceController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.TangentForceController existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new TangentForceController();
             existingInstance.Force = input.ReadSingle();
@@ -1851,6 +2180,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.AdaptationEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.AdaptationEffect existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new AdaptationEffect();
             existingInstance.Speed = input.ReadSingle();
@@ -1861,7 +2191,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1878,6 +2207,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.AntiAliasEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.AntiAliasEffect existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -1894,7 +2224,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1911,6 +2240,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.BloomEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.BloomEffect existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -1926,7 +2256,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1943,6 +2272,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.BlurEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.BlurEffect existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -1959,7 +2289,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -1976,6 +2305,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.DepthOfFieldEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.DepthOfFieldEffect existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -1994,7 +2324,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2011,6 +2340,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.HighDynamicRangeEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.HighDynamicRangeEffect existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2028,7 +2358,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2044,6 +2373,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.LuminanceChain Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.LuminanceChain existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2060,7 +2390,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2076,6 +2405,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.PostEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.PostEffect existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new PostEffect();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
@@ -2085,7 +2415,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2101,6 +2430,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.PostEffectChain Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.PostEffectChain existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new PostEffectChain();
             {
@@ -2113,7 +2443,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2128,6 +2457,7 @@ namespace Nine.Graphics.PostEffects
     {
         protected override Nine.Graphics.PostEffects.PostEffectGroup Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.PostEffectGroup existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new PostEffectGroup();
             {
@@ -2139,7 +2469,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2157,6 +2486,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.Box Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Box existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2175,7 +2505,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2190,6 +2519,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.Centrum Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Centrum existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2209,7 +2539,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2224,6 +2553,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.CentrumInvert Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.CentrumInvert existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2243,7 +2573,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2258,6 +2587,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.Cross Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Cross existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2277,7 +2607,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2292,6 +2621,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.CubeInvert Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.CubeInvert existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2310,7 +2640,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2325,6 +2654,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.Cylinder Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Cylinder existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2344,7 +2674,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2359,6 +2688,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.Dome Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Dome existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2378,7 +2708,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2393,6 +2722,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.DynamicPrimitive Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.DynamicPrimitive existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2406,7 +2736,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.DepthBias = input.ReadSingle();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2421,6 +2750,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.Plane Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Plane existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2441,7 +2771,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2456,6 +2785,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.Sphere Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Sphere existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2475,7 +2805,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2490,6 +2819,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.SphereInvert Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.SphereInvert existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2509,7 +2839,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2524,6 +2853,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.Teapot Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Teapot existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2543,7 +2873,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
@@ -2558,6 +2887,7 @@ namespace Nine.Graphics.Primitives
     {
         protected override Nine.Graphics.Primitives.Torus Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Torus existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
             {
 #if SILVERLIGHT
@@ -2577,7 +2907,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }

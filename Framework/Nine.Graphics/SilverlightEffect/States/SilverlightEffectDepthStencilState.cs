@@ -1,26 +1,31 @@
-﻿namespace Microsoft.Xna.Framework.Graphics
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+namespace Microsoft.Xna.Framework.Graphics
 {
     internal class SilverlightEffectDepthStencilState : SilverlightEffectState
     {
         #region Properties
 
         // DepthStencilState
-        public bool? DepthBufferEnable { get; set; }
-        public bool? DepthBufferWriteEnable { get; set; }
-        public CompareFunction? DepthBufferFunction { get; set; }
-        public bool? StencilEnable { get; set; }
-        public CompareFunction? StencilFunction { get; set; }
-        public StencilOperation? StencilPass { get; set; }
-        public StencilOperation? StencilFail { get; set; }
-        public StencilOperation? StencilDepthBufferFail { get; set; }
-        public bool? TwoSidedStencilMode { get; set; }
-        public CompareFunction? CounterClockwiseStencilFunction { get; set; }
-        public StencilOperation? CounterClockwiseStencilPass { get; set; }
-        public StencilOperation? CounterClockwiseStencilFail { get; set; }
-        public StencilOperation? CounterClockwiseStencilDepthBufferFail { get; set; }
-        public int? StencilMask { get; set; }
-        public int? StencilWriteMask { get; set; }
-        public int? ReferenceStencil { get; set; }
+        public bool? DepthBufferEnable;
+        public bool? DepthBufferWriteEnable;
+        public CompareFunction? DepthBufferFunction;
+        public bool? StencilEnable;
+        public CompareFunction? StencilFunction;
+        public StencilOperation? StencilPass;
+        public StencilOperation? StencilFail;
+        public StencilOperation? StencilDepthBufferFail;
+        public bool? TwoSidedStencilMode;
+        public CompareFunction? CounterClockwiseStencilFunction;
+        public StencilOperation? CounterClockwiseStencilPass;
+        public StencilOperation? CounterClockwiseStencilFail;
+        public StencilOperation? CounterClockwiseStencilDepthBufferFail;
+        public int? StencilMask;
+        public int? StencilWriteMask;
+        public int? ReferenceStencil;
 
         #endregion
 

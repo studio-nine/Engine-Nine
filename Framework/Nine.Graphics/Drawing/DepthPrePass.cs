@@ -34,12 +34,18 @@ namespace Nine.Graphics.Drawing
             if (depthMaterial == null)
                 depthMaterial = new DepthMaterial(graphics);
 
+#if SILVERLIGHT
+            var surfaceFormat = SurfaceFormat.Color;
+            if (depthBuffer == null || depthBuffer.IsDisposed)
+#else
+            var surfaceFormat = SurfaceFormat.Single;
             if (depthBuffer == null || depthBuffer.IsDisposed || depthBuffer.IsContentLost)
+#endif
             {
                 if (depthBuffer != null)
                     depthBuffer.Dispose();
                 depthBuffer = new RenderTarget2D(graphics, graphics.Viewport.Width, graphics.Viewport.Height, 
-                    false, SurfaceFormat.Single, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
+                    false, surfaceFormat, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
             }
 
             if (drawingPass == null)

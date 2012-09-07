@@ -13,7 +13,6 @@
         {
             output.Write((byte)value.AddressU);
             output.Write((byte)value.AddressV);
-            output.Write((byte)value.AddressW);
             output.Write((byte)value.Filter);
             output.Write((byte)value.MaxAnisotropy);
             output.Write((byte)value.MaxMipLevel);

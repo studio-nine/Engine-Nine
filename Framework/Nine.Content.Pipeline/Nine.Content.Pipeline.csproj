@@ -121,6 +121,7 @@
     <Compile Include="Content\PipelineContentManager.cs" />
     <Compile Include="Content\PipelineImporterContext.cs" />
     <Compile Include="Content\PipelineProcessorContext.cs" />
+    <Compile Include="TargetPlatform.cs" />
     <Compile Include="Design\TransformConverter.cs" />
     <Compile Include="Graphics\SamplerStateWriter.cs" />
     <Compile Include="Graphics\Materials\MaterialPaintGroupBuilder.cs" />
@@ -189,6 +190,14 @@
     <Compile Include="Xaml\XamlSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Content.Pipeline.Silverlight.ShaderCompiler\SilverlightShaderCompiler.vcxproj">
+      <Project>{f6a5dd71-68ad-4a7e-9fa2-6586dbe59c91}</Project>
+      <Name>Nine.Content.Pipeline.Silverlight.ShaderCompiler %28Visual Studio 2010%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Content.Pipeline.Silverlight\Nine.Content.Pipeline.Silverlight.csproj">
+      <Project>{ac6f35a9-124e-447e-99dd-21f68a0c226b}</Project>
+      <Name>Nine.Content.Pipeline.Silverlight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
       <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
       <Name>Nine.Graphics</Name>
@@ -271,9 +280,7 @@
     <None Include="Graphics\Materials\Shaders\SpecularMap.fragment" />
     <None Include="Graphics\Materials\Shaders\SpotLight.fragment" />
     <None Include="Graphics\Materials\Shaders\PointLight.fragment" />
-    <None Include="Graphics\Materials\Shaders\ScreenEffect.fragment" />
     <None Include="Graphics\Materials\Shaders\NormalMap.fragment" />
-    <None Include="Graphics\Materials\Shaders\RadicalBlur.fragment" />
     <None Include="Graphics\Materials\Shaders\ShadowMap.fragment" />
     <None Include="Graphics\Materials\Shaders\EnvironmentMap.fragment" />
     <None Include="Graphics\Materials\Shaders\DirectionalLight.fragment" />

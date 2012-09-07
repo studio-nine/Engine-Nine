@@ -1,11 +1,13 @@
 namespace Nine.Graphics
 {
-    using System.Collections.ObjectModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Defines an interface for objects that can be added to or removed 
@@ -29,11 +31,6 @@ namespace Nine.Graphics
     /// </summary>
     public interface ICamera
     {
-        /// <summary>
-        /// Gets the optional viewport of this camera.
-        /// </summary>
-        Viewport? Viewport { get; }
-
         /// <summary>
         /// Gets the camera view matrix
         /// </summary>
@@ -63,7 +60,12 @@ namespace Nine.Graphics
         Material Material { get; }
 
         /// <summary>
-        /// Called every frame when this object is added to the current view frustum.
+        /// Gets the distance from the position of the object to the current camera.
+        /// </summary>
+        float GetDistanceToCamera(Vector3 cameraPosition);
+
+        /// <summary>
+        /// Called every frame when this object is added to the main view frustum.
         /// </summary>
         void OnAddedToView(DrawingContext context);
 
@@ -166,5 +168,36 @@ namespace Nine.Graphics
         /// Draws the debug overlay of this object.
         /// </summary>
         void Draw(DrawingContext context, DynamicPrimitive primitive);
+    }
+
+    /// <summary>
+    /// Defines an 2D drawable object
+    /// </summary>
+    interface ISprite
+    {
+        /// <summary>
+        /// Gets whether this sprite is using additive blending.
+        /// </summary>
+        bool IsAdditive { get; }
+
+        /// <summary>
+        /// Gets whether this sprite is transparent.
+        /// </summary>
+        bool IsTransparent { get; }
+
+        /// <summary>
+        /// Gets the z order of this sprite.
+        /// </summary>
+        int ZOrder { get; }
+
+        /// <summary>
+        /// Draws this sprite using sprite batch.
+        /// </summary>
+        void Draw(DrawingContext context, SpriteBatch spriteBatch);
+
+        /// <summary>
+        /// Draws this sprite using the specified material.
+        /// </summary>
+        void Draw(DrawingContext context, Material material);
     }
 }

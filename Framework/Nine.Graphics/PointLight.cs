@@ -128,7 +128,7 @@ namespace Nine.Graphics
             deferredMaterial.effect.HalfPixel.SetValue(context.HalfPixel);
             deferredMaterial.effect.ViewProjection.SetValue(context.matrices.ViewProjection);
             deferredMaterial.effect.ViewProjectionInverse.SetValue(context.matrices.ViewProjectionInverse);
-            deferredMaterial.effect.EyePosition.SetValue(context.EyePosition);
+            deferredMaterial.effect.EyePosition.SetValue(context.CameraPosition);
             deferredMaterial.effect.Position.SetValue(Position);
             deferredMaterial.effect.DiffuseColor.SetValue(diffuseColor);
             deferredMaterial.effect.SpecularColor.SetValue(specularColor);

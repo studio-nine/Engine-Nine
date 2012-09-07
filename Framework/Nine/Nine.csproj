@@ -83,13 +83,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
+    <Compile Include="Animations\AnimationReference.cs" />
     <Compile Include="Animations\TweenAnimations.cs" />
     <Compile Include="Components\ZipContentmanager.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="Content\ContentReflector.cs" />
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="Content\ContentProperties.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
+    <Compile Include="Instance.cs" />
     <Compile Include="SpatialQueryExtensions.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Object.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="SceneQuery.cs" />
     <Compile Include="PropertyExpression.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
-    <Compile Include="ContentManagerExtensions.cs" />
+    <Compile Include="ContentLoader.cs" />
     <Compile Include="Design\RangeConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />

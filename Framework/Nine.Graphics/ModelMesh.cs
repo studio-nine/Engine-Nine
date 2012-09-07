@@ -41,7 +41,7 @@ namespace Nine.Graphics
         {
             get { return worldTransform; }
         }
-        private Matrix worldTransform = Matrix.Identity;
+        internal Matrix worldTransform = Matrix.Identity;
 
         /// <summary>
         /// Visibility can be controlled by both ModelPart and Model.
@@ -121,6 +121,8 @@ namespace Nine.Graphics
         internal int numVertices;
         internal int primitiveCount;
         internal int startIndex;
+
+        private float distanceToCamera;
         #endregion
 
         #region ILightable
@@ -190,37 +192,37 @@ namespace Nine.Graphics
 
         #region Draw
         /// <summary>
-        /// Perform any updates before this object is drawed.
+        /// Perform any updates when this object has entered the main view frustum
         /// </summary>
         public void OnAddedToView(DrawingContext context)
         {
             model.insideViewFrustum = true;
-            model.UpdateBoneTransforms();
-
-            // Manually do some optimization here.
-            if (model.isAbsoluteTransformDirty)
-            {
-                Matrix absoluteTransform = model.AbsoluteTransform;
-                Matrix.Multiply(ref model.BoneTransforms[parentBoneIndex], ref absoluteTransform, out worldTransform);
-            }
-            else
-            {
-                Matrix.Multiply(ref model.BoneTransforms[parentBoneIndex], ref model.absoluteTransform, out worldTransform);
-            }
-
             if ((materialForRendering = material) == null)
             {
-                Vector3 position = new Vector3();
+                var position = new Vector3();
                 position.X = worldTransform.M41;
                 position.Y = worldTransform.M42;
                 position.Z = worldTransform.M43;
 
-                float distanceToEye;
-                Vector3.Distance(ref context.matrices.eyePosition, ref position, out distanceToEye);
+                Vector3.Distance(ref context.matrices.cameraPosition, ref position, out distanceToCamera);
 
-                materialForRendering = materialLevels.UpdateLevelOfDetail(distanceToEye) ??
-                    model.material ?? model.MaterialLevels.UpdateLevelOfDetail(distanceToEye);
+                materialForRendering = materialLevels.UpdateLevelOfDetail(distanceToCamera) ??
+                    model.material ?? model.MaterialLevels.UpdateLevelOfDetail(distanceToCamera);
             }
+        }
+
+        /// <summary>
+        /// Gets the distance from the position of the object to the current camera.
+        /// </summary>
+        public float GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            // This method will always be called after OnAddedToView, so just use the result
+            // calculated above.
+            //
+            // TODO: we are just using the orign of the model, it isn't always the right distance
+            //       to sort transparency. Maybe the center of the bounding box or the nearest point
+            //       to the camera should be used.
+            return distanceToCamera;
         }
 
         /// <summary>
@@ -230,7 +232,7 @@ namespace Nine.Graphics
         {
             var graphics = context.graphics;
             var applyTexture = material != this.material && (UseModelTextures ?? model.UseModelTextures);
-
+            
             if (applyTexture)
                 ApplyTextures(material);
             ApplySkinTransform(material);

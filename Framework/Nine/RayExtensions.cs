@@ -29,7 +29,7 @@ namespace Nine
             // Test each triangle
             Vector3[] positions;
             ushort[] indices;
-            geometry.GetTriangles(out positions, out indices);
+            geometry.TryGetTriangles(out positions, out indices);
             for (int i = 0; i < indices.Length; i += 3)
             {
                 Intersects(ray, ref positions[indices[i]],

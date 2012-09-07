@@ -1,18 +1,23 @@
-﻿namespace Microsoft.Xna.Framework.Graphics
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+namespace Microsoft.Xna.Framework.Graphics
 {
     internal class SilverlightEffectBlendState : SilverlightEffectState
     {
         #region Properties
 
-        public Blend? ColorSourceBlend { get; set; }
-        public Blend? ColorDestinationBlend { get; set; }
-        public BlendFunction? ColorBlendFunction { get; set; }
-        public Blend? AlphaSourceBlend { get; set; }
-        public Blend? AlphaDestinationBlend { get; set; }
-        public BlendFunction? AlphaBlendFunction { get; set; }
-        public ColorWriteChannels? ColorWriteChannels { get; set; }
-        public Color? BlendFactor { get; set; }
-        public int? MultiSampleMask { get; set; }
+        public Blend? ColorSourceBlend;
+        public Blend? ColorDestinationBlend;
+        public BlendFunction? ColorBlendFunction;
+        public Blend? AlphaSourceBlend;
+        public Blend? AlphaDestinationBlend;
+        public BlendFunction? AlphaBlendFunction;
+        public ColorWriteChannels? ColorWriteChannels;
+        public Color? BlendFactor;
+        public int? MultiSampleMask;
 
         #endregion
 

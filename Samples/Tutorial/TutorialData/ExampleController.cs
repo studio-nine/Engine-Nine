@@ -1,20 +1,10 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Nine;
-#endregion
-
 namespace TutorialData
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
+    using Nine;
+
     /// <summary>
     /// The follow class defines a basic component that updates the position of the parent object
     /// based on keyboard input.

@@ -27,10 +27,15 @@ void VertexShader(float4 positionWorld, out float3 positionShadow)
 void PixelShader(float3 positionShadow, out float3 shadow:COLOR0)
 {
     float intensity = 0;
+    float comparand = saturate(positionShadow.z) - DepthBias;
+    
     [unroll]
     for (int i=0; i<{$SAMPLECOUNT}; i++)
     {
-		intensity += saturate(positionShadow.z) > DepthBias + tex2D(ShadowMapSampler, positionShadow.xy + FilterTaps[i] * ShadowMapTexelSize).x ? 1.0f / {$SAMPLECOUNT} : 0;
+        float2 uv = positionShadow.xy + FilterTaps[i] * ShadowMapTexelSize;
+        float2 f = frac(uv / ShadowMapTexelSize);
+        intensity += comparand > tex2D(ShadowMapSampler, uv).x ? 1.0f / {$SAMPLECOUNT} : 0;
     }
+
     shadow = lerp(1, ShadowColor, intensity);
 }

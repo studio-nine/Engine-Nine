@@ -229,6 +229,14 @@ namespace Nine.Graphics
 
         #region Methods
         /// <summary>
+        /// Gets the squared distance from the position of the object to the current camera.
+        /// </summary>
+        public float GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            return (AbsoluteTransform.Translation - cameraPosition).Length();
+        }
+
+        /// <summary>
         /// Draws this object with the specified material.
         /// </summary>
         public void Draw(DrawingContext context, Material material)
@@ -238,7 +246,6 @@ namespace Nine.Graphics
 
         /// <summary>
         /// Draws the object using the graphics context.
-
         /// </summary>
         /// <param name="context"></param>
         public void Draw(DrawingContext context)

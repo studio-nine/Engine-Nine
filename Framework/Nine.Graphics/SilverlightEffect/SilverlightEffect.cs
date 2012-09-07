@@ -1,17 +1,22 @@
-﻿using System.Collections.Generic;
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+using System.Collections.Generic;
 using System.IO;
-using System;
+using System.Windows.Graphics;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
     /// <summary>
     /// Provides support for .fx files.
     /// </summary>
-    public class SilverlightEffect : Effect
+    public class SilverlightEffect : Microsoft.Xna.Framework.Graphics.Effect
     {
         #region Instance Data
 
-        readonly SilverlightEffectParametersCollection parameters;
+        readonly EffectParametersCollection parameters;
 
         #endregion
 
@@ -51,20 +56,15 @@ namespace Microsoft.Xna.Framework.Graphics
         #endregion
 
         #region Creation
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="SilverlightEffect"/> class.
+        /// Creates a new SilverlightEffect with default parameter settings.
         /// </summary>
-        protected internal SilverlightEffect(GraphicsDevice graphics, byte[] effectCode)
-            : base(Initialize(graphics, effectCode))
+        internal SilverlightEffect(EffectTechnique[] techniques) : base(techniques)
         {
-            if (graphics == null)
-                throw new ArgumentNullException("graphics");
+            Dictionary<string, EffectParameter> tempParameters = new Dictionary<string, EffectParameter>();
 
-            GraphicsDevice = graphics;
-
-            Dictionary<string, SilverlightEffectParameter> tempParameters = new Dictionary<string, SilverlightEffectParameter>();
-
-            foreach (var technique in Techniques)
+            foreach (var technique in techniques)
             {
                 foreach (SilverlightEffectPass pass in technique.Passes)
                 {
@@ -74,88 +74,99 @@ namespace Microsoft.Xna.Framework.Graphics
                     {
                         if (!tempParameters.ContainsKey(parameter.Name))
                         {
-                            tempParameters.Add(parameter.Name, new SilverlightEffectParameter(parameter.Name));
+                            tempParameters.Add(parameter.Name, new EffectParameter(parameter));
                         }
                     }
                 }
             }
 
-            parameters = new SilverlightEffectParametersCollection(tempParameters.Values);
+            parameters = new EffectParametersCollection(tempParameters.Values);
         }
 
-        private static EffectTechnique[] Initialize(GraphicsDevice graphics, byte[] effectCode)
+        public SilverlightEffect(byte[] effectCode) : this(new BinaryReader(new MemoryStream(effectCode)))
         {
-            using (var stream = new MemoryStream(effectCode))
+
+        }
+
+        internal SilverlightEffect(BinaryReader input) : this(CreateTechniques(input))
+        {
+
+        }
+
+        private static EffectTechnique[] CreateTechniques(BinaryReader input)
+        {
+            int techniquesCount = input.ReadInt32();
+            EffectTechnique[] techniques = new EffectTechnique[techniquesCount];
+
+            for (int techniqueIndex = 0; techniqueIndex < techniquesCount; techniqueIndex++)
             {
-                var input = new BinaryReader(stream);
-                int techniquesCount = input.ReadInt32();
-                EffectTechnique[] techniques = new EffectTechnique[techniquesCount];
+                int passesCount = input.ReadInt32();
+                EffectPass[] passes = new EffectPass[passesCount];
 
-                for (int techniqueIndex = 0; techniqueIndex < techniquesCount; techniqueIndex++)
+                for (int passIndex = 0; passIndex < passesCount; passIndex++)
                 {
-                    int passesCount = input.ReadInt32();
-                    EffectPass[] passes = new EffectPass[passesCount];
+                    string passName = input.ReadString();
 
-                    for (int passIndex = 0; passIndex < passesCount; passIndex++)
+                    MemoryStream vertexShaderCodeStream = null;
+                    MemoryStream vertexShaderParametersStream = null;
+
+                    MemoryStream pixelShaderCodeStream = null;
+                    MemoryStream pixelShaderParametersStream = null;
+
+                    // Vertex shader
+                    int vertexShaderByteCodeLength = input.ReadInt32();
+                    if (vertexShaderByteCodeLength > 0)
                     {
-                        string passName = input.ReadString();
+                        byte[] vertexShaderByteCode = input.ReadBytes(vertexShaderByteCodeLength);
+                        int vertexShaderParametersLength = input.ReadInt32();
+                        byte[] vertexShaderParameters = input.ReadBytes(vertexShaderParametersLength);
 
-                        MemoryStream vertexShaderCodeStream = null;
-                        MemoryStream pixelShaderCodeStream = null;
-                        MemoryStream vertexShaderParametersStream = null;
-                        MemoryStream pixelShaderParametersStream = null;
-
-                        // Vertex shader
-                        int vertexShaderByteCodeLength = input.ReadInt32();
-                        if (vertexShaderByteCodeLength > 0)
-                        {
-                            byte[] vertexShaderByteCode = input.ReadBytes(vertexShaderByteCodeLength);
-                            int vertexShaderParametersLength = input.ReadInt32();
-                            byte[] vertexShaderParameters = input.ReadBytes(vertexShaderParametersLength);
-                            
-                            vertexShaderCodeStream = new MemoryStream(vertexShaderByteCode);
-                            vertexShaderParametersStream = new MemoryStream(vertexShaderParameters);
-                        }
-
-                        // Pixel shader
-                        int pixelShaderByteCodeLength = input.ReadInt32();
-                        if (pixelShaderByteCodeLength > 0)
-                        {
-                            byte[] pixelShaderByteCode = input.ReadBytes(pixelShaderByteCodeLength);
-                            int pixelShaderParametersLength = input.ReadInt32();
-                            byte[] pixelShaderParameters = input.ReadBytes(pixelShaderParametersLength);
-
-                            pixelShaderCodeStream = new MemoryStream(pixelShaderByteCode);
-                            pixelShaderParametersStream = new MemoryStream(pixelShaderParameters);
-                        }
-
-                        // Instanciate pass
-                        SilverlightEffectPass currentPass = new SilverlightEffectPass(passName, graphics, vertexShaderCodeStream, pixelShaderCodeStream, vertexShaderParametersStream, pixelShaderParametersStream);
-                        passes[passIndex] = currentPass;
-
-                        if (vertexShaderCodeStream != null)
-                            vertexShaderCodeStream.Dispose();
-                        if (pixelShaderCodeStream != null)
-                            pixelShaderCodeStream.Dispose();
-                        if (vertexShaderParametersStream != null)
-                            vertexShaderParametersStream.Dispose();
-                        if (pixelShaderParametersStream != null)
-                            pixelShaderParametersStream.Dispose();
-
-                        // Render states
-                        int renderStatesCount = input.ReadInt32();
-
-                        for (int renderStateIndex = 0; renderStateIndex < renderStatesCount; renderStateIndex++)
-                        {
-                            currentPass.AppendState(input.ReadString(), input.ReadString());
-                        }
+                        vertexShaderCodeStream = new MemoryStream(vertexShaderByteCode);
+                        vertexShaderParametersStream = new MemoryStream(vertexShaderParameters);
                     }
 
-                    // Instanciate technique
-                    techniques[techniqueIndex] = new EffectTechnique(passes);
+                    // Pixel shader
+                    int pixelShaderByteCodeLength = input.ReadInt32();
+                    if (pixelShaderByteCodeLength > 0)
+                    {
+                        byte[] pixelShaderByteCode = input.ReadBytes(pixelShaderByteCodeLength);
+                        int pixelShaderParametersLength = input.ReadInt32();
+                        byte[] pixelShaderParameters = input.ReadBytes(pixelShaderParametersLength);
+
+                        pixelShaderCodeStream = new MemoryStream(pixelShaderByteCode);
+                        pixelShaderParametersStream = new MemoryStream(pixelShaderParameters);
+                    }
+
+
+                    // Instanciate pass
+                    SilverlightEffectPass currentPass = new SilverlightEffectPass(passName, GraphicsDeviceManager.Current.GraphicsDevice, vertexShaderCodeStream, pixelShaderCodeStream, vertexShaderParametersStream, pixelShaderParametersStream);
+                    passes[passIndex] = currentPass;
+
+                    if (vertexShaderCodeStream != null)
+                    {
+                        vertexShaderCodeStream.Dispose();
+                        vertexShaderParametersStream.Dispose();
+                    }
+
+                    if (pixelShaderCodeStream != null)
+                    {
+                        pixelShaderCodeStream.Dispose();
+                        pixelShaderParametersStream.Dispose();
+                    }
+
+                    // Render states
+                    int renderStatesCount = input.ReadInt32();
+
+                    for (int renderStateIndex = 0; renderStateIndex < renderStatesCount; renderStateIndex++)
+                    {
+                        currentPass.AppendState(input.ReadString(), input.ReadString());
+                    }
                 }
-                return techniques;
+
+                // Instanciate technique
+                techniques[techniqueIndex] = new EffectTechnique(passes);
             }
+            return techniques;
         }
 
         #endregion
@@ -164,27 +175,13 @@ namespace Microsoft.Xna.Framework.Graphics
 
         internal void Apply(bool force)
         {
-            OnApply();
-
-            foreach (SilverlightEffectParameter parameter in parameters)
+            var count = parameters.Count;
+            for (var i = 0; i < count; ++i)
             {
+                var parameter = parameters[i];
                 if (parameter.IsDirty || force)
-                {
-                    // The SilverlightEffectParameters must transmit data to internal parameters if they are dirty
-                    foreach (var technique in Techniques)
-                    {
-                        foreach (SilverlightEffectPass pass in technique.Passes)
-                        {
-                            parameter.Apply(pass.Parameters);
-                        }
-                    }
-                }
+                    parameter.Apply();
             }
-        }
-
-        protected virtual void OnApply()
-        {
-
         }
 
         #endregion
@@ -194,25 +191,11 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <summary>
         /// Get the parameters list.
         /// </summary>
-        public SilverlightEffectParametersCollection Parameters
+        public EffectParametersCollection Parameters
         {
             get { return parameters; }
         }
 
-        /// <summary>
-        /// Gets the graphics device.
-        /// </summary>
-        public GraphicsDevice GraphicsDevice { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the name of this effect.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        public object Tag { get; set; }
         #endregion
     }
 }

@@ -65,9 +65,6 @@
                    a.ColorDestinationBlend == b.ColorDestinationBlend &&
                    a.ColorSourceBlend == b.ColorSourceBlend &&
                    a.ColorWriteChannels == b.ColorWriteChannels &&
-                   a.ColorWriteChannels1 == b.ColorWriteChannels1 &&
-                   a.ColorWriteChannels2 == b.ColorWriteChannels2 &&
-                   a.ColorWriteChannels3 == b.ColorWriteChannels3 &&
                    a.MultiSampleMask == b.MultiSampleMask;
         }
     }

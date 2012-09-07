@@ -28,19 +28,22 @@ namespace Test
 
         public TestGame()
         {
+#if !SILVERLIGHT
             var graphics = new GraphicsDeviceManager(this);
 
-            graphics.PreferMultiSampling = true;
+            //graphics.PreferMultiSampling = true;
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 800;
             graphics.EnablePerfHudProfiling();
 
+            Window.AllowUserResizing = true;
+#endif
+
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
-            Window.AllowUserResizing = true;
         }
 
         /// <summary>
@@ -56,7 +59,7 @@ namespace Test
             testGames = (from type in Assembly.GetExecutingAssembly().GetTypes().OrderBy(type => type.Name)
                          where type.IsClass && typeof(ITestGame).IsAssignableFrom(type)
                          select (ITestGame)Activator.CreateInstance(type)).ToArray();
-            //testGames = new ITestGame[] { new ShadowMapTest() };
+            testGames = new ITestGame[] { new ShadowMapTest() };
             testScenes = new Scene[testGames.Length];
 
             // Shows the next scene
@@ -65,22 +68,21 @@ namespace Test
             // Create an event based input handler.
             // Note that you have to explictly keep a strong reference to the Input intance.
             input = new Input();
-            input.MouseDown += new EventHandler<MouseEventArgs>(Input_MouseDown);
-            input.ButtonDown += new EventHandler<GamePadEventArgs>(Input_ButtonDown);
+            input.MouseDown += (sender, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                    LoadNextScene();
+            };
+
+#if XBOX
+            input.ButtonDown += (sender, e) =>
+            {
+                if (e.Button == Buttons.A)
+                    LoadNextScene();
+            };
+#endif
 
             base.LoadContent();
-        }
-
-        private void Input_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-                LoadNextScene();
-        }
-
-        private void Input_ButtonDown(object sender, GamePadEventArgs e)
-        {
-            if (e.Button == Buttons.A)
-                LoadNextScene();
         }
 
         /// <summary>
@@ -94,14 +96,19 @@ namespace Test
 
             // Gets the drawing context to adjust drawing settings.
             var drawingContext = scene.GetDrawingContext(GraphicsDevice);
-            drawingContext.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40));
-            drawingContext.Settings.BackgroundColor = Color.Gray;
-            drawingContext.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
+            drawingContext.Settings.BackgroundColor = new Color(0.5f, 0.5f, 0.5f);
+            drawingContext.Settings.Font = Content.Load<SpriteFont>("Consolas");
             drawingContext.Settings.TextureFilter = TextureFilter.Anisotropic;
 
             Window.Title = testGames[nextTest].GetType().Name;
 
             nextTest = (nextTest + 1) % testGames.Length;
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            scene.Update(gameTime.ElapsedGameTime);
+            base.Update(gameTime);
         }
 
         /// <summary>
@@ -115,6 +122,7 @@ namespace Test
             base.Draw(gameTime);
         }
 
+#if WINDOWS || XBOX
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -125,5 +133,6 @@ namespace Test
                 game.Run();
             }
         }
+#endif
     }
 }

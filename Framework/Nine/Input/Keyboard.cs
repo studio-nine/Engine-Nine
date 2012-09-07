@@ -48,13 +48,13 @@ namespace Microsoft.Xna.Framework.Input
 
         static void _rootControl_KeyUp(object sender, KeyEventArgs e)
         {
-            keyboardState.RemovePressedKey(e.Key);
+            keyboardState.RemovePressedKey((Keys)(int)e.Key);
             CheckModifiers();
         }
 
         static void _rootControl_KeyDown(object sender, KeyEventArgs e)
         {
-            keyboardState.AddPressedKey(e.Key);
+            keyboardState.AddPressedKey((Keys)(int)e.Key);
             CheckModifiers();
         }
 
@@ -81,29 +81,29 @@ namespace Microsoft.Xna.Framework.Input
             // Modifiers
             if ((System.Windows.Input.Keyboard.Modifiers & ModifierKeys.Control) > 0)
             {
-                keyboardState.AddPressedKey(Key.Ctrl);
+                keyboardState.AddPressedKey((Keys)(int)Key.Ctrl);
             }
             else
             {
-                keyboardState.RemovePressedKey(Key.Ctrl);
+                keyboardState.RemovePressedKey((Keys)(int)Key.Ctrl);
             }
 
             if ((System.Windows.Input.Keyboard.Modifiers & ModifierKeys.Alt) > 0)
             {
-                keyboardState.AddPressedKey(Key.Alt);
+                keyboardState.AddPressedKey((Keys)(int)Key.Alt);
             }
             else
             {
-                keyboardState.RemovePressedKey(Key.Alt);
+                keyboardState.RemovePressedKey((Keys)(int)Key.Alt);
             }
 
             if ((System.Windows.Input.Keyboard.Modifiers & ModifierKeys.Shift) > 0)
             {
-                keyboardState.AddPressedKey(Key.Shift);
+                keyboardState.AddPressedKey((Keys)(int)Key.Shift);
             }
             else
             {
-                keyboardState.RemovePressedKey(Key.Shift);
+                keyboardState.RemovePressedKey((Keys)(int)Key.Shift);
             }
         }
 

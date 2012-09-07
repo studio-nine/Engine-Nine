@@ -9,7 +9,6 @@ namespace Nine.Graphics.Drawing
     using Keys = System.Windows.Input.Key;
 #endif
 
-    [Serializable]
     public class Settings
     {
         /// <summary>
@@ -45,7 +44,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets or sets the default font.
         /// </summary>
-        public SpriteFont DefaultFont { get; set; }
+        public SpriteFont Font { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether default debug control is enabled.
@@ -127,7 +126,6 @@ namespace Nine.Graphics.Drawing
                         samplerState = new SamplerState();
                         samplerState.AddressU = TextureAddressMode.Wrap;
                         samplerState.AddressV = TextureAddressMode.Wrap;
-                        samplerState.AddressW = TextureAddressMode.Wrap;
                         samplerState.Filter = textureFilter;
                         samplerState.MaxAnisotropy = maxAnisotropy;
                         samplerStateNeedsUpdate = false;

@@ -1,4 +1,9 @@
-﻿namespace Microsoft.Xna.Framework.Graphics
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+namespace Microsoft.Xna.Framework.Graphics
 {
     internal class SilverlightEffectSamplerState : SilverlightEffectState
     {
@@ -6,12 +11,12 @@
 
         #region Properties
 
-        public TextureFilter? Filter { get; set; }
-        public TextureAddressMode? AddressU { get; set; }
-        public TextureAddressMode? AddressV { get; set; }
-        public int? MaxAnisotropy { get; set; }
-        public int? MaxMipLevel { get; set; }
-        public float? MipMapLevelOfDetailBias { get; set; }
+        public TextureFilter? Filter;
+        public TextureAddressMode? AddressU;
+        public TextureAddressMode? AddressV;
+        public int? MaxAnisotropy;
+        public int? MaxMipLevel;
+        public float? MipMapLevelOfDetailBias;
 
         #endregion
 

@@ -5,6 +5,7 @@ namespace Nine.Graphics
     using System.ComponentModel;
     using System.Xaml;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     
@@ -14,6 +15,26 @@ namespace Nine.Graphics
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class SceneExtensions
     {
+        /// <summary>
+        /// Gets the graphics device associated with the target group.
+        /// </summary>
+        public static GraphicsDevice GetGraphicsDevice(this Group group)
+        {
+#if SILVERLIGHT
+            return System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+            return group.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
+#endif
+        }
+
+        /// <summary>
+        /// Gets the content manager associated with the target group.
+        /// </summary>
+        public static ContentManager GetContentManager(this Group group)
+        {
+            return group.ServiceProvider.GetService<ContentManager>();
+        }
+
         /// <summary>
         /// Gets the drawing context of the specified scene.
         /// </summary>
@@ -44,6 +65,9 @@ namespace Nine.Graphics
                 SetDrawingContext(scene, context = new DrawingContext(graphics, scene));
             else if (context.graphics != graphics)
                 throw new ArgumentException("graphics");
+
+            if (context.camera == null)
+                scene.Add(new Nine.Graphics.Cameras.FreeCamera(graphics, new Vector3(0, 10, 40)));
 
             return context;
         }
@@ -94,7 +118,7 @@ namespace Nine.Graphics
             {
                 var sceneObject = value as ISceneObject;
                 if (sceneObject != null)
-                    sceneObject.OnAdded(context);
+                    sceneObject.OnAdded(context);                
             };
             scene.RemovedFromScene += (value) =>
             {

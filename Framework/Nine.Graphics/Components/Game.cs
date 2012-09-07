@@ -22,11 +22,12 @@ namespace Microsoft.Xna.Framework
     /// <summary>
     /// Provides basic graphics device initialization, game logic, and rendering code.
     /// </summary>
-    public class Game : UserControl
+    public class Game : ContentControl
     {
+        internal DrawingSurface Surface;
+
         private bool surfaceLoaded = false;
-        private bool suppressDraw = false;
-        private DrawingSurface Surface;
+        private bool suppressDraw = false;        
         private GameTime gameTime = new GameTime();
 
         public GraphicsDevice GraphicsDevice { get; private set; }
@@ -43,18 +44,14 @@ namespace Microsoft.Xna.Framework
         
         public Game()
         {
-            Width = 800;
-            Height = 600;
-
-            Mouse.RootControl = this;
-            Keyboard.RootControl = this;
-
-            Window = new GameWindow(this);
+            IsTabStop = true;
             Components = new GameComponentCollection();
             Content = new ContentManager(null);
             base.Content = (Surface = new DrawingSurface());
 
-            Loaded += new RoutedEventHandler(Game_Loaded);
+            Window = new GameWindow(this);
+
+            Loaded += new RoutedEventHandler(Game_Loaded);            
             Surface.Draw += new EventHandler<DrawEventArgs>(Surface_Draw);
         }
 
@@ -69,13 +66,18 @@ namespace Microsoft.Xna.Framework
 
         void Game_Loaded(object sender, RoutedEventArgs e)
         {
+            Mouse.RootControl = this;
+            Keyboard.RootControl = this;
+            Focus();
+
             surfaceLoaded = true;
 
             try
             {
-                GraphicsDevice = GraphicsDeviceManager.Current.GraphicsDevice;
+                GraphicsDevice = GraphicsDeviceManager.Current.GraphicsDevice;                
                 if (GraphicsDevice == null)
-                    throw new InvalidOperationException("Failed creating graphics device.");
+                    throw new InvalidOperationException(string.Format(
+                        "Failed creating graphics device: {0}", GraphicsDeviceManager.Current.RenderModeReason));
 
                 // Check if GPU is on
                 if (GraphicsDeviceManager.Current.RenderMode != RenderMode.Hardware)

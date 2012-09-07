@@ -4,19 +4,22 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial class ToneMappingMaterial
+    [NotContentSerializable]
+    partial class ToneMappingMaterial
     {
-        public float Exposure { get; set; }
+        public float Exposure;
+        public float BloomIntensity;
 
         partial void OnCreated()
         {
             Exposure = 0.5f;
+            BloomIntensity = 1;
         }
 
         partial void BeginApplyLocalParameters(DrawingContext context, ToneMappingMaterial previousMaterial)
         {
             effect.Exposure.SetValue(Exposure);
+            effect.BloomIntensity.SetValue(BloomIntensity);
 
             GraphicsDevice.Textures[0] = texture;            
             GraphicsDevice.SamplerStates[0] =

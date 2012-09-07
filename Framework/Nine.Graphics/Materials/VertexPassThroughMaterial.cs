@@ -8,7 +8,7 @@ namespace Nine.Graphics.Materials
         partial void ApplyGlobalParameters(Drawing.DrawingContext context)
         {
             var pixelSize = new Vector2();
-            var viewport = GraphicsDevice.Viewport;
+            var viewport = context.graphics.Viewport;
             pixelSize.X = -1f / viewport.Width;
             pixelSize.Y = 1f / viewport.Height;
 
@@ -24,7 +24,7 @@ namespace Nine.Graphics.Materials
         partial void ApplyGlobalParameters(Drawing.DrawingContext context)
         {
             var pixelSize = new Vector2();
-            var viewport = GraphicsDevice.Viewport;
+            var viewport = context.graphics.Viewport;
             pixelSize.X = -1f / viewport.Width;
             pixelSize.Y = 1f / viewport.Height;
 

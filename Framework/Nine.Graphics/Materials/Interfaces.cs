@@ -4,8 +4,6 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-#if !WINDOWS_PHONE
-
     /// <summary>
     /// Defines an interface for effects that supports shadow mapping.
     /// </summary>
@@ -21,8 +19,6 @@ namespace Nine.Graphics.Materials
         /// </summary>
         Texture2D ShadowMap { get; set; }
     }
-
-#endif
 
     /// <summary>
     /// Gets or sets skinning parameters for the current effect.

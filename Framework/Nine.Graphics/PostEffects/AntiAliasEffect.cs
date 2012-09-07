@@ -10,7 +10,6 @@
     /// <summary>
     /// Represents a antialias post processing effect using Fast Approximate AntiAliasing (FXAA).
     /// </summary>
-    [ContentSerializable]
     public class AntiAliasEffect : PostEffect
     {
         public AntiAliasEffect(GraphicsDevice graphics)

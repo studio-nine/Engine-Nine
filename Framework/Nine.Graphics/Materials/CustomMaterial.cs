@@ -7,7 +7,9 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
-    using Nine.Graphics.Design;
+#if SILVERLIGHT
+    using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
+#endif
 
     #region CustomMaterial
     /// <summary>
@@ -53,7 +55,9 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets or sets the sampler state for this custom material.
         /// </summary>
-        [TypeConverter(typeof(SamplerStateConverter))]
+#if WINDOWS
+        [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
+#endif
         public SamplerState SamplerState { get; set; }
 
         /// <summary>
@@ -122,11 +126,11 @@ namespace Nine.Graphics.Materials
         protected override object Read(ContentReader input, object existingInstance)
         {
 #if SILVERLIGHT
-            var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+            var effect = new Effect(input.ReadBytes(input.ReadInt32()));
 #else
             var graphicsDevice = input.ContentManager.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
-#endif
             var effect = new Effect(graphicsDevice, input.ReadBytes(input.ReadInt32()));
+#endif
             var parameters = input.ReadObject<Dictionary<string, object>>();
             if (parameters != null)
                 foreach (var pair in parameters)
@@ -143,10 +147,10 @@ namespace Nine.Graphics.Materials
         {
             if (existingInstance == null)
                 existingInstance = new CustomMaterial();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             existingInstance.IsTransparent = input.ReadBoolean();
-            existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Source = input.ReadObject<Effect>();
+            existingInstance.texture = input.ReadObject<Texture2D>();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.SamplerState = input.ReadObject<SamplerState>();

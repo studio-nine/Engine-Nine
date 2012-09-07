@@ -74,6 +74,13 @@ namespace Nine.Graphics
         private BoundingBox orientedBoundingBox = new BoundingBox();
 
         /// <summary>
+        /// Gets or sets a value that is appended to the computed bounding box to
+        /// compensate scale & rotation loss, since the auto computed bounding box 
+        /// does not care about the scale & rotation of instance transforms.
+        /// </summary>
+        public Vector3 BoundingBoxPadding { get; set; }
+
+        /// <summary>
         /// Called when transform changed.
         /// </summary>
         protected override void OnTransformChanged()
@@ -201,6 +208,8 @@ namespace Nine.Graphics
             }
 
             Matrix transform = AbsoluteTransform;
+            orientedBoundingBox.Min -= BoundingBoxPadding;
+            orientedBoundingBox.Max += BoundingBoxPadding;
             orientedBoundingBox.CreateAxisAligned(ref transform, out boundingBox);
 
             if (BoundingBoxChanged != null)
@@ -231,7 +240,11 @@ namespace Nine.Graphics
                 instanceTransformsNeedsUpdate = true;
             }
 
+#if SILVERLIGHT
+            if (instanceTransformsNeedsUpdate)
+#else
             if (instanceTransformsNeedsUpdate || instanceBuffer.IsContentLost)
+#endif
             {
                 instanceBuffer.SetData(instanceTransforms, 0, instanceTransforms.Length, SetDataOptions.Discard);
                 instanceTransformsNeedsUpdate = false;
@@ -303,6 +316,9 @@ namespace Nine.Graphics
         /// </summary>
         public void Draw(DrawingContext context, Material material)
         {
+#if SILVERLIGHT
+            throw new NotSupportedException();
+#else
             if (model.template == null)
                 return;
 
@@ -342,6 +358,13 @@ namespace Nine.Graphics
             material.BeginApply(context);
             model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, model.instanceTransforms.Length);
             material.EndApply(context);
+#endif
+        }
+
+        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            // There is really no way to calculate a correct distance for instanced models at the moment...
+            return 0;
         }
 
         void IDrawableObject.OnAddedToView(DrawingContext context) 

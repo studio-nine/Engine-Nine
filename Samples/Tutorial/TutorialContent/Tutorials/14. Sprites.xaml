@@ -1,0 +1,14 @@
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScreenCamera />
+
+    <FullScreenQuad Texture="{ContentReference ../Textures/box}" />
+    <Sprite Texture="{ContentReference ../Textures/checker}" Position="10,0" />
+    <TextSprite Name="Wait" Text="Press any key to continue..." Font="{ContentReference ../Consolas}" />
+
+    <Scene.Animations>
+        <ColorAnimation TargetProperty="Wait.Color" Duration="00:00:00.5" From="255,255,255,255" To="0,0,0,255"
+                        Curve="{x:Static Curves.Sin}" Repeat="99999999" AutoReverse="True" />
+    </Scene.Animations>
+  
+</Scene>

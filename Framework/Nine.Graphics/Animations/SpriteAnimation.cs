@@ -21,20 +21,19 @@
         /// <summary>
         /// Gets or sets the texture list used by this <see cref="SpriteAnimation"/>.
         /// </summary>
-        [ContentSerializer]
-        public TextureList TextureList
+        public TextureList Source
         {
-            get { return textureList; }
-            set { textureList = value; if (textureList != null) TotalFrames = textureList.Count; }
+            get { return source; }
+            set { source = value; if (source != null) TotalFrames = source.Count; }
         }
-        private TextureList textureList;
+        private TextureList source;
 
         /// <summary>
         /// Gets the texture for this <see cref="SpriteAnimation"/>.
         /// </summary>
         public Texture2D Texture
         {
-            get { return textureList != null ? textureList[CurrentFrame].Texture : null; } 
+            get { return source != null ? source[CurrentFrame].Texture : null; } 
         }
 
         /// <summary>
@@ -42,7 +41,7 @@
         /// </summary>
         public Rectangle SourceRectangle
         {
-            get { return textureList != null ? textureList[CurrentFrame].SourceRectangle : new Rectangle(); } 
+            get { return source != null ? source[CurrentFrame].SourceRectangle : new Rectangle(); } 
         }
 
         /// <summary>
@@ -70,7 +69,7 @@
         /// </summary>
         internal SpriteAnimation()
         {
-            TextureList = new TextureList();
+            Source = new TextureList();
         }
 
         /// <summary>
@@ -85,7 +84,7 @@
                 list.Add(texture, texture.Bounds);
             }
 
-            TextureList = list;
+            Source = list;
         }
 
         /// <summary>
@@ -96,7 +95,7 @@
             if (textureList == null)
                 throw new ArgumentNullException();
 
-            TextureList = textureList;
+            Source = textureList;
         }
 
         /// <summary>
@@ -107,7 +106,7 @@
             if (textureList == null)
                 throw new ArgumentNullException();
 
-            TextureList = textureList;
+            Source = textureList;
 
             BeginFrame = beginFrame;
             EndFrame = BeginFrame + frameCount;
@@ -128,7 +127,6 @@
                     expression = new PropertyExpression<TextureListItem>(Target, TargetProperty);
                     expressionChanged = false;
                 }
-
                 expression.Value = new TextureListItem(Texture, SourceRectangle);
             }
         }

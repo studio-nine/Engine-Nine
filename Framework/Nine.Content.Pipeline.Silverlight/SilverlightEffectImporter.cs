@@ -1,14 +1,18 @@
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
 using System;
 using System.IO;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 
 namespace Nine.Content.Pipeline.Silverlight
 {
     [ContentImporter(".fx", ".slfx", DisplayName = "Effect - Silverlight", DefaultProcessor = "SilverlightEffectProcessor")]
-    public class SilverlightEffectImporter : ContentImporter<EffectContent>
+    public class SilverlightEffectImporter : ContentImporter<EffectSourceCode>
     {
-        public override EffectContent Import(string filename, ContentImporterContext context)
+        public override EffectSourceCode Import(string filename, ContentImporterContext context)
         {
             ExceptionHelper.Filename = filename;
 
@@ -16,7 +20,7 @@ namespace Nine.Content.Pipeline.Silverlight
             {
                 string sourceCode = File.ReadAllText(filename);
 
-                return new EffectContent() { EffectCode = sourceCode, Identity = new ContentIdentity() { SourceFilename = filename } };
+                return new EffectSourceCode(sourceCode);
             }
             catch (Exception ex)
             {

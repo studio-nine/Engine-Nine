@@ -163,10 +163,6 @@
     <Compile Include="BEPUphysics\Constraints\Collision\ConvexContactManifoldConstraint.cs" />
     <Compile Include="BEPUphysics\Constraints\Collision\NonConvexContactManifoldConstraint.cs" />
     <Compile Include="BEPUphysics\Constraints\Collision\SlidingFrictionTwoAxis.cs" />
-    <None Include="BEPUphysics\Constraints\Collision\Testing\ContactPenetrationConstraintDETester.cs" />
-    <None Include="BEPUphysics\Constraints\Collision\Testing\DirectEnumerationSolver.cs" />
-    <None Include="BEPUphysics\Constraints\Collision\Testing\SlidingFrictionOneAxisConstraint.cs" />
-    <None Include="BEPUphysics\Constraints\Collision\Testing\SlidingFrictionTwoAxisObsolete.cs" />
     <Compile Include="BEPUphysics\Constraints\Collision\TwistFrictionConstraint.cs" />
     <Compile Include="BEPUphysics\Constraints\EntitySolverUpdateable.cs" />
     <Compile Include="BEPUphysics\Constraints\IJacobians.cs" />
@@ -470,8 +466,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BepuPhysics\License.txt" />
-    <Content Include="BepuPhysics\Properties\AppManifest.xml" />
-    <Content Include="BepuPhysics\Properties\WMAppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
