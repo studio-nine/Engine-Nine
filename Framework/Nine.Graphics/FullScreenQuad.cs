@@ -28,7 +28,14 @@
         /// <summary>
         /// Gets or sets the material of the object.
         /// </summary>
-        public Material Material { get; set; }
+        public Material Material
+        {
+            // The default material will enable lighting, so we need to
+            // explicitly create a material without lighting.
+            get { return material ?? (material = new BasicMaterial(GraphicsDevice) { LightingEnabled = false }); }
+            set { material = value; }
+        }
+        private Material material;
 
         /// <summary>
         /// Gets or sets the texture to display in this quad.
@@ -56,7 +63,7 @@
                 throw new ArgumentNullException("graphics");
 
             Visible = true;
-            GraphicsDevice = graphics;
+            GraphicsDevice = graphics;            
             vertexPassThrough2 = new VertexPassThrough2Material(graphics);
 
             Sprite.GetSpriteBuffers(graphics, out vertexBuffer, out indexBuffer);

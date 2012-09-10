@@ -111,30 +111,40 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <summary>
         /// Affect a single value to the parameter
         /// </summary>
-        public void SetValue(float single)
+        public void SetValue(float value)
         {
             EnsureDataSize(1);
-            data[0].X = single;
+            data[0].X = value;
             isDirty = true;
         }
 
         public void SetValue(float[] value)
         {
-            throw new NotImplementedException();
+            EnsureDataSize(value.Length / 4 + Math.Max(value.Length % 4, 1));
+            var upper = value.Length - 1;
+            for (var i = 0; i <= upper; i += 4)
+            {
+                var d = i / 4;
+                data[d].X = value[i];
+                data[d].Y = value[Math.Min(i + 1, upper)];
+                data[d].Z = value[Math.Min(i + 2, upper)];
+                data[d].W = value[Math.Min(i + 3, upper)];
+            }
+            isDirty = true;
         }
 
         /// <summary>
         /// Affect a Vector2 value to the parameter
         /// </summary>
-        public void SetValue(Vector2 vector2)
+        public void SetValue(Vector2 value)
         {
             EnsureDataSize(1);
-            data[0].X = vector2.X;
-            data[0].Y = vector2.Y;
+            data[0].X = value.X;
+            data[0].Y = value.Y;
             isDirty = true;
         }
 
-        public void SetValue(Vector2[] vector2)
+        public void SetValue(Vector2[] value)
         {
             throw new NotImplementedException();
         }
@@ -142,76 +152,74 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <summary>
         /// Affect a Vector3 value to the parameter
         /// </summary>
-        public void SetValue(Vector3 vector3)
+        public void SetValue(Vector3 value)
         {
             EnsureDataSize(1);
-            data[0].X = vector3.X;
-            data[0].Y = vector3.Y;
-            data[0].Z = vector3.Z;
+            data[0].X = value.X;
+            data[0].Y = value.Y;
+            data[0].Z = value.Z;
             isDirty = true;
-        }
-
-        public void SetValue(Vector3[] vector2)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Affect a Vector4 value to the parameter
         /// </summary>
-        public void SetValue(Vector4 vector4)
+        public void SetValue(Vector4 value)
         {
             EnsureDataSize(1);
-            data[0].X = vector4.X;
-            data[0].Y = vector4.Y;
-            data[0].Z = vector4.Z;
-            data[0].W = vector4.W;
+            data[0].X = value.X;
+            data[0].Y = value.Y;
+            data[0].Z = value.Z;
+            data[0].W = value.W;
             isDirty = true;
         }
 
-        public void SetValue(Vector4[] vector2)
+        public void SetValue(Vector4[] value)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Affect a Matrix value to the parameter
-        /// </summary>
-        public void SetValue(Matrix matrix)
-        {
-            EnsureDataSize(4);
-            data[0] = new Vector4(matrix.M11, matrix.M21, matrix.M31, matrix.M41);
-            data[1] = new Vector4(matrix.M12, matrix.M22, matrix.M32, matrix.M42);
-            data[2] = new Vector4(matrix.M13, matrix.M23, matrix.M33, matrix.M43);
-            data[3] = new Vector4(matrix.M14, matrix.M24, matrix.M34, matrix.M44);
+            EnsureDataSize(value.Length);
+            Array.Copy(value, data, value.Length);
             isDirty = true;
         }
 
         /// <summary>
         /// Affect a Matrix value to the parameter
         /// </summary>
-        public void SetValueTranspose(Matrix matrix)
+        public void SetValue(Matrix value)
         {
             EnsureDataSize(4);
-            data[0] = new Vector4(matrix.M11, matrix.M12, matrix.M13, matrix.M14);
-            data[1] = new Vector4(matrix.M21, matrix.M22, matrix.M23, matrix.M24);
-            data[2] = new Vector4(matrix.M31, matrix.M32, matrix.M33, matrix.M34);
-            data[3] = new Vector4(matrix.M41, matrix.M42, matrix.M43, matrix.M44);
+            data[0].X = value.M11; data[0].Y = value.M21; data[0].Z = value.M31; data[0].W = value.M41;
+            data[1].X = value.M12; data[1].Y = value.M22; data[1].Z = value.M32; data[1].W = value.M42;
+            data[2].X = value.M13; data[2].Y = value.M23; data[2].Z = value.M33; data[2].W = value.M43;
+            data[3].X = value.M14; data[3].Y = value.M24; data[3].Z = value.M34; data[3].W = value.M44;
+            isDirty = true;
+        }
+
+        /// <summary>
+        /// Affect a Matrix value to the parameter
+        /// </summary>
+        public void SetValueTranspose(Matrix value)
+        {
+            EnsureDataSize(4);
+            data[0].X = value.M11; data[0].Y = value.M12; data[0].Z = value.M13; data[0].W = value.M14;
+            data[1].X = value.M21; data[1].Y = value.M22; data[1].Z = value.M23; data[1].W = value.M24;
+            data[2].X = value.M31; data[2].Y = value.M32; data[2].Z = value.M33; data[2].W = value.M34;
+            data[3].X = value.M41; data[3].Y = value.M42; data[3].Z = value.M43; data[3].W = value.M44;
             isDirty = true;
         }
 
         /// <summary>
         /// Affect an array of Matrix value to the parameter
         /// </summary>
-        public void SetValue(Matrix[] matrices)
+        public void SetValue(Matrix[] value)
         {
-            EnsureDataSize(4 * matrices.Length);
-            for (int i = 0; i < matrices.Length; i++)
+            EnsureDataSize(4 * value.Length);
+            for (var i = 0; i < value.Length; ++i)
             {
-                data[4 * i] = new Vector4(matrices[i].M11, matrices[i].M12, matrices[i].M13, matrices[i].M14);
-                data[1 + 4 * i] = new Vector4(matrices[i].M21, matrices[i].M22, matrices[i].M23, matrices[i].M24);
-                data[2 + 4 * i] = new Vector4(matrices[i].M31, matrices[i].M32, matrices[i].M33, matrices[i].M34);
-                data[3 + 4 * i] = new Vector4(matrices[i].M41, matrices[i].M42, matrices[i].M43, matrices[i].M44);
+                var m = i * 4;
+                data[0 + m].X = value[i].M11; data[0 + m].Y = value[i].M21; data[0 + m].Z = value[i].M31; data[0 + m].W = value[i].M41;
+                data[1 + m].X = value[i].M12; data[1 + m].Y = value[i].M22; data[1 + m].Z = value[i].M32; data[1 + m].W = value[i].M42;
+                data[2 + m].X = value[i].M13; data[2 + m].Y = value[i].M23; data[2 + m].Z = value[i].M33; data[2 + m].W = value[i].M43;
+                data[3 + m].X = value[i].M14; data[3 + m].Y = value[i].M24; data[3 + m].Z = value[i].M34; data[3 + m].W = value[i].M44;
             }
             isDirty = true;
         }

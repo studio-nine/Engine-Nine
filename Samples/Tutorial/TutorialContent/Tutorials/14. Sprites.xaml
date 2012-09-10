@@ -1,14 +1,21 @@
 ﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <ScreenCamera />
 
+    <ScreenCamera CoordinateType="ThreeDimension" />
     <FullScreenQuad Texture="{ContentReference ../Textures/box}" />
-    <Sprite Texture="{ContentReference ../Textures/checker}" Position="10,0" />
-    <TextSprite Name="Wait" Text="Press any key to continue..." Font="{ContentReference ../Consolas}" />
+    
+    <Sprite Texture="{ContentReference ../Textures/checker}" />
+    
+    <Sprite Position="100,100" Size="50,50" Scale="1,2" ZOrder="1" FlipX="True" Rotation="{Degrees 10}" Texture="{ContentReference ../Textures/checker}" />
+    
+    <Sprite Position="100,100" Size="200,200" ZOrder="-1" FlipY="True">
+        <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
+    </Sprite>
+    
+    <TextSprite Name="Wait" Text="Press any key to continue..." Font="{ContentReference ../Consolas}" ZOrder="1" />
 
     <Scene.Animations>
         <ColorAnimation TargetProperty="Wait.Color" Duration="00:00:00.5" From="255,255,255,255" To="0,0,0,255"
                         Curve="{x:Static Curves.Sin}" Repeat="99999999" AutoReverse="True" />
     </Scene.Animations>
-  
 </Scene>

@@ -986,8 +986,10 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.IsTransparent);
             output.Write(value.FlipX);
             output.Write(value.FlipY);
+            output.Write(value.SnapToCamera);
             output.Write(value.Position);
             output.Write(value.Scale);
+            output.WriteObject(value.Size);
             output.Write(value.Rotation);
             output.Write(value.Anchor);
             output.Write(value.ZOrder);
@@ -3398,6 +3400,7 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         {
             output.Write(value.Threshold);
             output.Write(value.BlurAmount);
+            output.Write(value.BloomIntensity);
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
@@ -3521,6 +3524,7 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.BlurAmount);
             output.Write(value.AdaptationSpeed);
             output.Write(value.Exposure);
+            output.Write(value.BloomIntensity);
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
@@ -3545,46 +3549,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.PostEffects.HighDynamicRangeEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
-    /// Content writer for <c>LuminanceChain</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class LuminanceChainWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.PostEffects.LuminanceChain>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.LuminanceChain value)
-        {
-            output.Write(value.AdaptationSpeed);
-            WriteObject(output, value, "TextureUsage", value.TextureUsage);
-            WriteObject(output, value, "BlendState", value.BlendState);
-            output.Write(value.Enabled);
-            output.Write(value.Order);
-            WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.PostEffects.LuminanceChainReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.PostEffects.LuminanceChain, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>

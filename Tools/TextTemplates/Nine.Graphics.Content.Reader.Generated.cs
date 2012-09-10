@@ -681,8 +681,10 @@ namespace Nine.Graphics
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.FlipX = input.ReadBoolean();
             existingInstance.FlipY = input.ReadBoolean();
+            existingInstance.SnapToCamera = input.ReadBoolean();
             existingInstance.Position = input.ReadVector2();
             existingInstance.Scale = input.ReadVector2();
+            existingInstance.Size = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
             existingInstance.Rotation = input.ReadSingle();
             existingInstance.Anchor = input.ReadVector2();
             existingInstance.ZOrder = input.ReadInt32();
@@ -2253,6 +2255,7 @@ namespace Nine.Graphics.PostEffects
             }
             existingInstance.Threshold = input.ReadSingle();
             existingInstance.BlurAmount = input.ReadSingle();
+            existingInstance.BloomIntensity = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
@@ -2355,6 +2358,7 @@ namespace Nine.Graphics.PostEffects
             existingInstance.BlurAmount = input.ReadSingle();
             existingInstance.AdaptationSpeed = input.ReadSingle();
             existingInstance.Exposure = input.ReadSingle();
+            existingInstance.BloomIntensity = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
@@ -2363,37 +2367,6 @@ namespace Nine.Graphics.PostEffects
         }
     }
 #endif
-    /// <summary>
-    /// Content reader for <c>LuminanceChain</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class LuminanceChainReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PostEffects.LuminanceChain>
-    {
-        protected override Nine.Graphics.PostEffects.LuminanceChain Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.LuminanceChain existingInstance)
-        {
-            Group.EnsureDefaultServiceProvider(input.ContentManager);
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new LuminanceChain(graphicsDevice);
-            }
-            existingInstance.AdaptationSpeed = input.ReadSingle();
-            existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
-            existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
 #if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>PostEffect</c>.

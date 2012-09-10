@@ -1,4 +1,4 @@
-float2 PixelSize;
+float4 PixelSizeAndViewport;
 float3x3 TextureTransform;
 float4 ScaleAndRotation;
 float4 ScreenPositionAndAnchorPoint;
@@ -19,7 +19,8 @@ void VS(inout float2 uv:TEXCOORD0, inout float4 position:POSITION0)
     position.xy = mul(position.xy, rotation);
     position.xy += ScreenPositionAndAnchorPoint.zw;
     position.xy += ScreenPositionAndAnchorPoint.xy;
-    position.xy += PixelSize;
+    position.xy *= PixelSizeAndViewport.zw;
+    position.xy += PixelSizeAndViewport.xy;    
     position = position;
 }
 

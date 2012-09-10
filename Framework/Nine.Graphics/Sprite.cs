@@ -2,15 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Animations;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
-
+    
     /// <summary>
-    /// Defines a 2D textured sprite.
+    /// Defines a 2D textured sprite in screen space where +X points
+    /// to the right and +Y points to the bottom.
     /// </summary>
+    [ContentProperty("Material")]
     public class Sprite : Transformable, IDrawableObject, ISceneObject, ISprite
     {
         /// <summary>
@@ -86,7 +89,23 @@
         private bool flipY;
 
         /// <summary>
-        /// Gets or sets the position of this sprite.
+        /// Gets or sets a value indicating whether this sprite 
+        /// will be snapped to the current camera.
+        /// </summary>
+        /// <remarks>
+        /// If a sprite is snapped to the camera, the position of the
+        /// sprite will be transformed with the camera. Otherwise, the
+        /// position of the sprite will be calculated in screen space.
+        /// </remarks>
+        public bool SnapToCamera
+        {
+            get { return snapToCamera; }
+            set { snapToCamera = value; }
+        }
+        private bool snapToCamera;
+
+        /// <summary>
+        /// Gets or sets the position of this sprite in screen space.
         /// </summary>
         public Vector2 Position 
         {
@@ -96,12 +115,27 @@
         private Vector2 position;
         
         /// <summary>
-        /// Gets or sets the scale of this sprite.
+        /// Gets or sets the scale of this sprite in screen space.
         /// </summary>
-        public Vector2 Scale { get; set; }
+        public Vector2 Scale
+        {
+            get { return scale; }
+            set { scale = value; }
+        }
+        private Vector2 scale = new Vector2(1, 1);
+                
+        /// <summary>
+        /// Gets or sets the optional target size of this sprite in screen space.
+        /// </summary>
+        public Vector2? Size
+        {
+            get { return size; }
+            set { size = value; }
+        }
+        private Vector2? size;
 
         /// <summary>
-        /// Gets or sets the rotation of this sprite.
+        /// Gets or sets the rotation of this sprite in screen space.
         /// </summary>
         public float Rotation { get; set; }
 
@@ -162,7 +196,6 @@
 
             Visible = true;
             IsTransparent = true;
-            Scale = Vector2.One;
             GraphicsDevice = graphics;
             spriteMaterial = new SpriteMaterial(graphics);
         }
@@ -208,8 +241,11 @@
             if (vertexBuffer == null)
                 GetSpriteBuffers(GraphicsDevice, out vertexBuffer, out indexBuffer);
 
+            Vector2 scale;
             Vector2 screenPosition;
             Vector2 anchorPoint;
+
+            GetScale(out scale);
             GetScreenPositionAndAnchorPoint(context, out screenPosition, out anchorPoint);
 
             if (texture != null)
@@ -220,10 +256,10 @@
                 new Vector4(screenPosition.X, screenPosition.Y, anchor.X, anchor.Y));
 
             if (Rotation == 0)
-                spriteMaterial.effect.ScaleAndRotation.SetValue(new Vector4(Scale.X, Scale.Y, 1, 0));
+                spriteMaterial.effect.ScaleAndRotation.SetValue(new Vector4(scale.X, scale.Y, 1, 0));
             else
                 spriteMaterial.effect.ScaleAndRotation.SetValue(
-                    new Vector4(Scale.X, Scale.Y, (float)Math.Cos(Rotation), (float)Math.Sin(Rotation)));
+                    new Vector4(scale.X, scale.Y, (float)Math.Cos(Rotation), (float)Math.Sin(Rotation)));
 
             spriteMaterial.effect.TextureTransform.SetValue(
                 TextureTransform.ToArray(
@@ -248,15 +284,45 @@
                 var spriteEffects = SpriteEffects.None;
                 if (flipX)
                     spriteEffects |= SpriteEffects.FlipHorizontally;
-                if (flipX)
+                if (flipY)
                     spriteEffects |= SpriteEffects.FlipVertically;
 
+                Vector2 scale;
                 Vector2 screenPosition;
                 Vector2 anchorPoint;
+
+                GetScale(out scale);
                 GetScreenPositionAndAnchorPoint(context, out screenPosition, out anchorPoint);
 
                 spriteBatch.Draw(texture, screenPosition, sourceRectangle, color * alpha,
-                                 Rotation, anchorPoint, Scale, spriteEffects, zOrder);
+                                 Rotation, anchorPoint, scale, spriteEffects, zOrder);
+            }
+        }
+
+        private void GetScale(out Vector2 scale)
+        {
+            if (size == null)
+            {
+                scale.X = this.scale.X;
+                scale.Y = this.scale.Y;
+            }
+            else if (sourceRectangle == null)
+            {
+                if (texture != null)
+                {
+                    scale.X = this.scale.X * size.Value.X / texture.Width;
+                    scale.Y = this.scale.Y * size.Value.Y / texture.Height;
+                }
+                else
+                {
+                    scale.X = this.scale.X * size.Value.X;
+                    scale.Y = this.scale.Y * size.Value.Y;
+                }
+            }
+            else
+            {
+                scale.X = this.scale.X * size.Value.X / sourceRectangle.Value.Width;
+                scale.Y = this.scale.Y * size.Value.Y / sourceRectangle.Value.Height;
             }
         }
 
@@ -273,17 +339,20 @@
             screenPosition.X = projectedPosition.X;
             screenPosition.Y = projectedPosition.Y;
 
-            anchorPoint = new Vector2();
             if (sourceRectangle != null)
             {
                 var r = sourceRectangle.Value;
                 anchorPoint.X = r.X + r.Width * anchor.X;
                 anchorPoint.Y = r.Y + r.Height * anchor.Y;
             }
-            else
+            else if (texture != null)
             {
                 anchorPoint.X = texture.Width * anchor.X;
                 anchorPoint.Y = texture.Height * anchor.Y;
+            }
+            else
+            {
+                anchorPoint = anchor;
             }
         }
 

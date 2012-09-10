@@ -14,6 +14,7 @@ namespace Nine.Graphics.Drawing
     sealed class SpritePass : Pass, IDisposable
     {
         private bool isDrawing;
+        private BasicEffect basicEffect;
         private SpriteBatch spriteBatch;
         private BlendState currentBlendState;
         private FastList<Entry> positiveSprites = new FastList<Entry>();
@@ -38,7 +39,10 @@ namespace Nine.Graphics.Drawing
             if (positiveSprites.Count + negativeSprites.Count + zeroOrderSprites.Count > 0)
             {
                 if (spriteBatch == null)
+                {
                     spriteBatch = new SpriteBatch(context.graphics);
+                    basicEffect = new BasicEffect(context.graphics);
+                }
             }
 
             isDrawing = false;
@@ -54,6 +58,9 @@ namespace Nine.Graphics.Drawing
             positiveSprites.Clear();
             negativeSprites.Clear();
             zeroOrderSprites.Clear();
+
+            // Restore rasterizer state to default since we use CullNone for sprites.
+            context.graphics.RasterizerState = RasterizerState.CullCounterClockwise;
         }
 
         private void DrawSprites(DrawingContext context, FastList<Entry> sprites)
@@ -80,7 +87,7 @@ namespace Nine.Graphics.Drawing
                     {
                         if (isDrawing)
                             spriteBatch.End();
-                        spriteBatch.Begin(SpriteSortMode.Deferred, currentBlendState = blendState);
+                        spriteBatch.Begin(SpriteSortMode.Deferred, currentBlendState = blendState, null, null, RasterizerState.CullNone, basicEffect);
                         isDrawing = true;
                     }
                     sprite.Draw(context, spriteBatch);

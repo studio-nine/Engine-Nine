@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Text;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -149,9 +150,9 @@
                     var yy = v * Math.Sin(u);
 
                     taps.Append("{");
-                    taps.Append(xx);
+                    taps.Append(xx.ToString(CultureInfo.InvariantCulture));
                     taps.Append(",");
-                    taps.Append(yy);
+                    taps.Append(yy.ToString(CultureInfo.InvariantCulture));
                     taps.AppendLine("},");
                 }
             }

@@ -151,7 +151,7 @@ namespace Nine
     /// <summary>
     /// Contains helper method for Matrix.
     /// </summary>
-    internal static class MatrixHelper
+    public static class MatrixHelper
     {
         public static Matrix CreateRotation(Vector3 fromDirection, Vector3 toDirection)
         {
@@ -220,6 +220,41 @@ namespace Nine
         internal static float GetNearClip(this Matrix projection)
         {
             return Math.Abs(projection.M43 / projection.M33);
+        }
+
+        /// <summary>
+        /// Converts quaternion to Euler angle using:
+        /// http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
+        /// </summary>
+        public static void ToEulerAngle(ref Quaternion q1, out Vector3 eulerAngle)
+        {
+            double sqW = q1.W * q1.W;
+            double sqX = q1.X * q1.X;
+            double sqY = q1.Y * q1.Y;
+            double sqZ = q1.Z * q1.Z;
+            
+            // if normalized is one, otherWise is correction factor
+            double unit = sqX + sqY + sqZ + sqW; 
+            double test = q1.X * q1.Y + q1.Z * q1.W;
+            if (test > 0.499 * unit)
+            { 
+                // singularitY at north pole
+                eulerAngle.Z = 2 * (float)Math.Atan2(q1.X, q1.W);
+                eulerAngle.Y = MathHelper.PiOver2;
+                eulerAngle.X = 0;
+                return;
+            }
+            if (test < -0.499 * unit)
+            { 
+                // singularitY at south pole
+                eulerAngle.Z = -2 * (float)Math.Atan2(q1.X, q1.W);
+                eulerAngle.Y = -MathHelper.PiOver2;
+                eulerAngle.X = 0;
+                return;
+            }
+            eulerAngle.Z = (float)Math.Atan2(2 * q1.Y * q1.W - 2 * q1.X * q1.Z, sqX - sqY - sqZ + sqW);
+            eulerAngle.Y = (float)Math.Asin(2 * test / unit);
+            eulerAngle.X = (float)Math.Atan2(2 * q1.X * q1.W - 2 * q1.Y * q1.Z, -sqX + sqY - sqZ + sqW);
         }
     }
 }

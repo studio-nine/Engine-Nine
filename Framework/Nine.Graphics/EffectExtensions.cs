@@ -203,8 +203,6 @@ namespace Nine.Graphics
                 parameter.SetValue((Vector2[])value);
             else if (value is Vector3)
                 parameter.SetValue((Vector3)value);
-            else if (value is Vector3[])
-                parameter.SetValue((Vector3[])value);
             else if (value is Vector4)
                 parameter.SetValue((Vector4)value);
             else if (value is Vector4[])

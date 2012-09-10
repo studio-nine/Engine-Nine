@@ -15,7 +15,7 @@ namespace Nine.Graphics.Drawing
         /// Gets or sets a value indicating whether the background will be cleared to the background color
         /// specified in settings. The default value is false.
         /// </summary>
-        public bool ClearBackground { get; set; }
+        internal bool ClearBackground;
 
         /// <summary>
         /// Gets or sets a value indicating whether the drawable list will be sorted based on material before 
