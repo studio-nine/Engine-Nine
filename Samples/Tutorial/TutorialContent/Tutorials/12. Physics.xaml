@@ -18,8 +18,8 @@
         <RigidBody>
             <BoxCollider Size="1,4,8" />
         </RigidBody>
-        <my:ExamplePhysicsMoveController Speed="1" />
-        <my:ExamplePhysicsTeleportController TeleportToPosition="10,20,0" Key="E" />
+      
+        <my:ExamplePhysicsController Speed="1" ResetPosition="10,20,0" ResetKey="E" />
     </Group>
 
     <!--

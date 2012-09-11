@@ -62,16 +62,28 @@ namespace Nine
                     if (group == null)
                         throw new InvalidOperationException("This object can only be attached to a Group");
                     parent = group;
+                    OnAdded(parent);
                 }
                 else
                 {
                     if (parent == null)
                         throw new InvalidOperationException("This object does not belongs to the specified container");
+                    OnRemoved(parent);
                     parent = null;
                 }
             }
         }
         private Group parent;
+
+        /// <summary>
+        /// Called when this component is added to a parent group.
+        /// </summary>
+        protected virtual void OnAdded(Group parent) { }
+
+        /// <summary>
+        /// Called when this component is removed from a parent group.
+        /// </summary>
+        protected virtual void OnRemoved(Group parent) { }
         #endregion
     }
 

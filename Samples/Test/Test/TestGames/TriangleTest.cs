@@ -24,7 +24,7 @@ namespace Test
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = -Vector3.One });
             scene.Add(new Nine.Graphics.Model(tank) { Transform = Matrix.CreateTranslation(8, 0, 1) });
             scene.Add(new Sphere(graphics) { Transform = Matrix.CreateTranslation(1, 1, 1) });
-            scene.Add(new Surface(graphics, 1, 256, 256, 8) { Visible = false });
+            scene.Add(new Surface(graphics, content.Load<Heightmap>("Textures/RF1")) { Visible = false, Position = new Vector3(-10, -1, -10) });
             scene.Add(new TrianglePicker());
 
             return scene;

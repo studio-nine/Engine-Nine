@@ -677,11 +677,8 @@ namespace Nine.Graphics
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.Color = input.ReadColor();
-            existingInstance.IsAdditive = input.ReadBoolean();
-            existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.FlipX = input.ReadBoolean();
             existingInstance.FlipY = input.ReadBoolean();
-            existingInstance.SnapToCamera = input.ReadBoolean();
             existingInstance.Position = input.ReadVector2();
             existingInstance.Scale = input.ReadVector2();
             existingInstance.Size = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
@@ -760,7 +757,6 @@ namespace Nine.Graphics
             existingInstance.Text = input.ReadObject<System.String>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.Color = input.ReadColor();
-            existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.Position = input.ReadVector2();
             existingInstance.Scale = input.ReadVector2();
             existingInstance.Rotation = input.ReadSingle();

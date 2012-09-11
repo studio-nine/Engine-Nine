@@ -982,11 +982,8 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "Material", value.Material);
             output.Write(value.Alpha);
             output.Write(value.Color);
-            output.Write(value.IsAdditive);
-            output.Write(value.IsTransparent);
             output.Write(value.FlipX);
             output.Write(value.FlipY);
-            output.Write(value.SnapToCamera);
             output.Write(value.Position);
             output.Write(value.Scale);
             output.WriteObject(value.Size);
@@ -1083,7 +1080,6 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "Text", value.Text);
             output.Write(value.Alpha);
             output.Write(value.Color);
-            output.Write(value.IsAdditive);
             output.Write(value.Position);
             output.Write(value.Scale);
             output.Write(value.Rotation);

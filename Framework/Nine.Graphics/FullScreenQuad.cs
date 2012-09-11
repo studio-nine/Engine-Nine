@@ -66,8 +66,41 @@
             GraphicsDevice = graphics;            
             vertexPassThrough2 = new VertexPassThrough2Material(graphics);
 
-            Sprite.GetSpriteBuffers(graphics, out vertexBuffer, out indexBuffer);
+            GetBuffers(graphics, out vertexBuffer, out indexBuffer);
         }
+
+        /// <summary>
+        /// Gets the vertex and index buffer for drawing sprites.
+        /// </summary>
+        private static void GetBuffers(GraphicsDevice graphics, out VertexBuffer vertexBuffer, out IndexBuffer indexBuffer)
+        {
+            KeyValuePair<VertexBuffer, IndexBuffer> sharedBuffer;
+
+            if (SharedBuffers == null)
+                SharedBuffers = new Dictionary<GraphicsDevice, KeyValuePair<VertexBuffer, IndexBuffer>>();
+
+            if (!SharedBuffers.TryGetValue(graphics, out sharedBuffer))
+            {
+                sharedBuffer = new KeyValuePair<VertexBuffer, IndexBuffer>(
+                    new VertexBuffer(graphics, typeof(VertexPositionTexture), 4, BufferUsage.WriteOnly)
+                  , new IndexBuffer(graphics, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly));
+
+                sharedBuffer.Key.SetData(new[] 
+                {
+                    new VertexPositionTexture() { Position = new Vector3(-1, 1, 0), TextureCoordinate = new Vector2(0, 0) },
+                    new VertexPositionTexture() { Position = new Vector3(1, 1, 0), TextureCoordinate = new Vector2(1, 0) },
+                    new VertexPositionTexture() { Position = new Vector3(1, -1, 0), TextureCoordinate = new Vector2(1, 1) },
+                    new VertexPositionTexture() { Position = new Vector3(-1, -1, 0), TextureCoordinate = new Vector2(0, 1) },
+                });
+
+                sharedBuffer.Value.SetData<ushort>(new ushort[] { 0, 1, 2, 0, 2, 3 });
+                SharedBuffers.Add(graphics, sharedBuffer);
+            }
+
+            vertexBuffer = sharedBuffer.Key;
+            indexBuffer = sharedBuffer.Value;
+        }
+        private static Dictionary<GraphicsDevice, KeyValuePair<VertexBuffer, IndexBuffer>> SharedBuffers;
 
         public void Draw(DrawingContext context, Material material)
         {

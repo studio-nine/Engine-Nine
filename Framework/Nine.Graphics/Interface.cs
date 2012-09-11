@@ -76,6 +76,51 @@ namespace Nine.Graphics
     }
 
     /// <summary>
+    /// Defines an 2D drawable object
+    /// </summary>
+    public interface ISprite
+    {
+        /// <summary>
+        /// Gets whether this object is visible.
+        /// </summary>
+        bool Visible { get; }
+
+        /// <summary>
+        /// Gets the material of the object.
+        /// A value of null indicates the object does not have any user specific
+        /// material settings, and should be drawn using the default method.
+        /// </summary>
+        Material Material { get; }
+
+        /// <summary>
+        /// Gets the z order of this sprite.
+        /// </summary>
+        int ZOrder { get; }
+
+        /// <summary>
+        /// Gets the blend state of this sprite.
+        /// A return value of null indicates that this sprite will use BlendState.AlphaBlend.
+        /// </summary>
+        BlendState BlendState { get; }
+
+        /// <summary>
+        /// Gets the sampler state of this sprite.
+        /// A return value of null indicates that this sprite will use SamplerState.LinearClamp.
+        /// </summary>
+        SamplerState SamplerState { get; }
+
+        /// <summary>
+        /// Draws this sprite using sprite batch.
+        /// </summary>
+        void Draw(DrawingContext context, SpriteBatch spriteBatch);
+
+        /// <summary>
+        /// Draws this sprite using the specified material.
+        /// </summary>
+        void Draw(DrawingContext context, Material material);
+    }
+
+    /// <summary>
     /// Defines an interface for objects that receives lights and shadows.
     /// </summary>
     public interface ILightable
@@ -168,36 +213,5 @@ namespace Nine.Graphics
         /// Draws the debug overlay of this object.
         /// </summary>
         void Draw(DrawingContext context, DynamicPrimitive primitive);
-    }
-
-    /// <summary>
-    /// Defines an 2D drawable object
-    /// </summary>
-    interface ISprite
-    {
-        /// <summary>
-        /// Gets whether this sprite is using additive blending.
-        /// </summary>
-        bool IsAdditive { get; }
-
-        /// <summary>
-        /// Gets whether this sprite is transparent.
-        /// </summary>
-        bool IsTransparent { get; }
-
-        /// <summary>
-        /// Gets the z order of this sprite.
-        /// </summary>
-        int ZOrder { get; }
-
-        /// <summary>
-        /// Draws this sprite using sprite batch.
-        /// </summary>
-        void Draw(DrawingContext context, SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// Draws this sprite using the specified material.
-        /// </summary>
-        void Draw(DrawingContext context, Material material);
     }
 }

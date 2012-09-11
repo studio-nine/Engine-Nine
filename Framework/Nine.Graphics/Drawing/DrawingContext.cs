@@ -101,24 +101,6 @@ namespace Nine.Graphics.Drawing
         private bool boundingBoxNeedsUpdate = true;
 
         /// <summary>
-        /// Gets the main pass that is used to render the scene.
-        /// </summary>
-        public PassGroup MainPass 
-        {
-            get { return mainPass; }
-        }
-        internal PassGroup mainPass;
-
-        /// <summary>
-        /// Gets the root pass of this drawing context composition chain.
-        /// </summary>
-        public PassGroup RootPass
-        {
-            get { return rootPass; }
-        }
-        internal PassGroup rootPass;
-
-        /// <summary>
         /// Gets the number of elapsed frames since the beginning of the draw context.
         /// </summary>
         public int CurrentFrame
@@ -135,6 +117,24 @@ namespace Nine.Graphics.Drawing
             get { return textures; }
         }
         internal TextureCollection textures;
+
+        /// <summary>
+        /// Gets the main pass that is used to render the scene.
+        /// </summary>
+        public PassGroup MainPass
+        {
+            get { return mainPass; }
+        }
+        internal PassGroup mainPass;
+
+        /// <summary>
+        /// Gets the root pass of this drawing context composition chain.
+        /// </summary>
+        public PassGroup RootPass
+        {
+            get { return rootPass; }
+        }
+        internal PassGroup rootPass;
         #endregion
 
         #region Matrices
@@ -299,6 +299,7 @@ namespace Nine.Graphics.Drawing
             this.textures = new TextureCollection();
             this.mainPass = new PassGroup() { name = "MainPass" };
             this.mainPass.Passes.Add(new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
+            this.mainPass.Passes.Add(new SpritePass());
             this.rootPass = new PassGroup() { name = "RootPass" };
             this.rootPass.Passes.Add(mainPass);
         }
@@ -403,7 +404,7 @@ namespace Nine.Graphics.Drawing
             this.Projection = projection;
             this.isDrawing = true;
             this.VertexOffset = 0;
-            this.VertexBuffer = null;
+            this.VertexBuffer = null;            
             this.PreviousMaterial = null;
             this.elapsedTime = elapsedTime;
             this.totalTime += elapsedTime;
@@ -411,6 +412,7 @@ namespace Nine.Graphics.Drawing
             this.totalSeconds = (float)totalTime.TotalSeconds;
             this.boundingBoxNeedsUpdate = true;
 
+            graphics.SetVertexBuffer(null);
             UpdateDefaultSamplerStates();
 
             try

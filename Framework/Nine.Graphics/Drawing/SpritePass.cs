@@ -17,6 +17,9 @@ namespace Nine.Graphics.Drawing
         private BasicEffect basicEffect;
         private SpriteBatch spriteBatch;
         private BlendState currentBlendState;
+        private SamplerState currentSamplerState;
+        private ISpatialQuery<ISprite> spriteQuery;
+        private Action<ISprite> findSpriteAction;
         private FastList<Entry> positiveSprites = new FastList<Entry>();
         private FastList<Entry> negativeSprites = new FastList<Entry>();
         private FastList<Entry> zeroOrderSprites = new FastList<Entry>();
@@ -29,24 +32,38 @@ namespace Nine.Graphics.Drawing
 
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            FindSprites(drawables);
+            FindSprites(context);
+
+            var totalSprites = positiveSprites.Count + negativeSprites.Count + zeroOrderSprites.Count;
+            if (totalSprites <= 0)
+                return;
+
+            if (spriteBatch == null)
+            {
+                spriteBatch = new SpriteBatch(context.graphics);
+                basicEffect = new BasicEffect(context.graphics) { VertexColorEnabled = true, TextureEnabled = true, LightingEnabled = false };
+            }
 
             if (positiveSprites.Count > 1)
                 Array.Sort(positiveSprites.Elements, 0, positiveSprites.Count, sortComparer);
             if (negativeSprites.Count > 1)
                 Array.Sort(negativeSprites.Elements, 0, negativeSprites.Count, sortComparer);
-
-            if (positiveSprites.Count + negativeSprites.Count + zeroOrderSprites.Count > 0)
-            {
-                if (spriteBatch == null)
-                {
-                    spriteBatch = new SpriteBatch(context.graphics);
-                    basicEffect = new BasicEffect(context.graphics);
-                }
-            }
-
+            
             isDrawing = false;
             currentBlendState = null;
+            context.PreviousMaterial = null;
+            context.graphics.RasterizerState = RasterizerState.CullNone;
+
+            // Compensate for half pixel offset
+            var viewport = context.graphics.Viewport;
+            var invX = 1f / viewport.Width;
+            var invY = -1f / viewport.Height;
+
+            context.matrices.projection.M41 -= invX;
+            context.matrices.projection.M42 -= invY;
+
+            basicEffect.View = context.matrices.view;
+            basicEffect.Projection = context.matrices.projection;
 
             DrawSprites(context, negativeSprites);
             DrawSprites(context, zeroOrderSprites);
@@ -54,6 +71,9 @@ namespace Nine.Graphics.Drawing
 
             if (isDrawing)
                 spriteBatch.End();
+
+            context.matrices.projection.M41 += invX;
+            context.matrices.projection.M42 += invY;
 
             positiveSprites.Clear();
             negativeSprites.Clear();
@@ -68,7 +88,7 @@ namespace Nine.Graphics.Drawing
             for (var i = 0; i < sprites.Count; ++i)
             {
                 var sprite = sprites[i].Sprite;
-                var material = sprites[i].Material;
+                var material = sprite.Material;
                 if (material != null)
                 {
                     if (isDrawing)
@@ -76,18 +96,21 @@ namespace Nine.Graphics.Drawing
                         isDrawing = false;
                         spriteBatch.End();
                     }
-                    context.graphics.BlendState = GetBlendState(sprite);
                     currentBlendState = null;
+                    currentSamplerState = null;
+                    context.graphics.BlendState = sprite.BlendState ?? BlendState.AlphaBlend;
+                    context.graphics.SamplerStates[0] = sprite.SamplerState ?? SamplerState.LinearClamp;
                     sprite.Draw(context, material);
                 }
                 else
                 {
-                    var blendState = GetBlendState(sprite);
-                    if (blendState != currentBlendState)
+                    var blendState = sprite.BlendState ?? BlendState.AlphaBlend;
+                    var samplerState = sprite.SamplerState ?? SamplerState.LinearClamp;
+                    if (blendState != currentBlendState || samplerState != currentSamplerState)
                     {
                         if (isDrawing)
                             spriteBatch.End();
-                        spriteBatch.Begin(SpriteSortMode.Deferred, currentBlendState = blendState, null, null, RasterizerState.CullNone, basicEffect);
+                        spriteBatch.Begin(SpriteSortMode.Deferred, currentBlendState = blendState, currentSamplerState = samplerState, null, RasterizerState.CullNone, basicEffect);
                         isDrawing = true;
                     }
                     sprite.Draw(context, spriteBatch);
@@ -95,39 +118,30 @@ namespace Nine.Graphics.Drawing
             }
         }
 
-        private void FindSprites(IList<IDrawableObject> drawables)
+        private void FindSprites(DrawingContext context)
         {
-            var count = drawables.Count;
-            for (var i = 0; i < count; ++i)
+            if (spriteQuery == null)
             {
-                var drawable = drawables[i];
-                var sprite = drawable as ISprite;
-                if (sprite != null)
-                {
-                    var zOrder = sprite.ZOrder;
-                    if (zOrder > 0)
-                        positiveSprites.Add(new Entry { Sprite = sprite, Material = drawable.Material, ZOrder = zOrder });
-                    else if (zOrder < 0)
-                        negativeSprites.Add(new Entry { Sprite = sprite, Material = drawable.Material, ZOrder = zOrder });
-                    else
-                        zeroOrderSprites.Add(new Entry { Sprite = sprite, Material = drawable.Material });
-                }
+                spriteQuery = context.CreateSpatialQuery<ISprite>(sprite => sprite.Visible);
+                findSpriteAction = new Action<ISprite>(AddSprite);
             }
+            spriteQuery.FindAll(context.ViewFrustum, findSpriteAction);
         }
 
-        private BlendState GetBlendState(ISprite sprite)
+        private void AddSprite(ISprite sprite)
         {
-            if (sprite.IsAdditive)
-                return BlendState.Additive;
-            if (sprite.IsTransparent)
-                return BlendState.AlphaBlend;
-            return BlendState.Opaque;
+            var zOrder = sprite.ZOrder;
+            if (zOrder > 0)
+                positiveSprites.Add(new Entry { Sprite = sprite, ZOrder = zOrder });
+            else if (zOrder < 0)
+                negativeSprites.Add(new Entry { Sprite = sprite, ZOrder = zOrder });
+            else
+                zeroOrderSprites.Add(new Entry { Sprite = sprite });
         }
 
         struct Entry
         {
             public ISprite Sprite;
-            public Material Material;
             public int ZOrder;
         }
 

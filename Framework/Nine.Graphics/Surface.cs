@@ -231,11 +231,20 @@
         
         #region ISpatialQueryable
         /// <summary>
-        /// Gets the local bottom left position of the surface.
+        /// Gets or sets the local bottom left position of the surface.
         /// </summary>
+        [ContentSerializerIgnore]
         public Vector3 Position
         {
             get { return Transform.Translation; }
+            set
+            {
+                var transform = Transform;
+                transform.M41 = value.X;
+                transform.M42 = value.Y;
+                transform.M43 = value.Z;
+                Transform = transform;
+            }
         }
 
         /// <summary>
@@ -587,7 +596,6 @@
         /// <param name="eyePosition">The eye position.</param>
         /// <remarks>
         /// If you are draw the surface using scene, level of details are automatically updated.
-
         /// </remarks>
         public void UpdateLevelOfDetail(Vector3 eyePosition)
         {

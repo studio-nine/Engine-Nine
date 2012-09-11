@@ -15,6 +15,7 @@ namespace Nine.Physics
     [ContentProperty("Collider")]
     public class RigidBody : Component, ISpaceObject, Nine.IUpdateable
     {
+        #region Properties
         /// <summary>
         /// Gets the collider used by this body.
         /// </summary>
@@ -44,6 +45,78 @@ namespace Nine.Physics
         private Collider collider;
 
         /// <summary>
+        /// Gets the world transform of this rigid body.
+        /// </summary>
+        public Matrix Transform
+        {
+            get { return collider.entity.WorldTransform; }
+            set { collider.entity.WorldTransform = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the position of this rigid body.
+        /// </summary>
+        public Vector3 Position
+        {
+            get { return collider.entity.position; }
+            set { collider.entity.Position = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the orientation of this rigid body.
+        /// </summary>
+        public Quaternion Orientation
+        {
+            get { return collider.entity.orientation; }
+            set { collider.entity.Orientation = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the mass of this rigid body.
+        /// </summary>
+        public float Mass
+        {
+            get { return collider.entity.mass; }
+            set { collider.entity.Mass = value; }
+        }
+        
+        /// <summary>
+        /// Gets or sets the linear velocity of this rigid body.
+        /// </summary>
+        public Vector3 Velocity
+        {
+            get { return collider.entity.linearVelocity; }
+            set { collider.entity.LinearVelocity = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the angular velocity of this rigid body.
+        /// </summary>
+        public Vector3 AngularVelocity
+        {
+            get { return collider.entity.angularVelocity; }
+            set { collider.entity.AngularVelocity = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the linear damping of this rigid body.
+        /// </summary>
+        public float Damping
+        {
+            get { return collider.entity.LinearDamping; }
+            set { collider.entity.LinearDamping = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the angular Damping of this rigid body.
+        /// </summary>
+        public float AngularDamping
+        {
+            get { return collider.entity.AngularDamping; }
+            set { collider.entity.AngularDamping = value; }
+        }
+
+        /// <summary>
         /// Gets the underlying Bepu physics entity.
         /// </summary>
         /// <remarks>
@@ -64,11 +137,10 @@ namespace Nine.Physics
         }
         private ISpace space;
 
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        public object Tag { get; set; }
+        object ISpaceObject.Tag { get; set; }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Initializes a new instance of Body.
         /// </summary>
@@ -77,43 +149,49 @@ namespace Nine.Physics
             
         }
 
+        ///<summary>
+        /// Applies an impulse to the rigid body.
+        ///</summary>
+        public void ApplyImpulse(Vector3 impulse)
+        {
+            collider.entity.ApplyLinearImpulse(ref impulse);
+        }
+
+        ///<summary>
+        /// Applies an impulse to the rigid body.
+        ///</summary>
+        public void ApplyImpulse(Vector3 position, Vector3 impulse)
+        {
+            collider.entity.ApplyImpulse(ref position, ref impulse);
+        }
+
+        ///<summary>
+        /// Applies an impulse to the rigid body.
+        ///</summary>
+        public void ApplyAngularImpulse(Vector3 impulse)
+        {
+            collider.entity.ApplyAngularImpulse(ref impulse);
+        }
+
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
         public void Update(TimeSpan elapsedTime)
         {
-            var entity = Entity;
-            if (entity != null)
-                Parent.Transform = entity.WorldTransform;
+            Parent.Transform = collider.entity.WorldTransform;
         }
 
         void ISpaceObject.OnAdditionToSpace(ISpace newSpace)
         {
-            var entity = Entity;
-            if (entity != null)
-            {
-                entity.WorldTransform = Parent.Transform;
-                entity.BecomeDynamic(collider.Mass);
-                newSpace.Add(Entity);
-            }
+            collider.entity.WorldTransform = Parent.Transform;
+            collider.entity.BecomeDynamic(collider.Mass);
+            newSpace.Add(collider.entity);
         }
 
         void ISpaceObject.OnRemovalFromSpace(ISpace oldSpace)
         {
-            var entity = Entity;
-            if (entity != null)
-                oldSpace.Remove(Entity);
+            oldSpace.Remove(collider.entity);
         }
-
-        /// <summary>
-        /// Teleport the body. Resets all the bodys Velocitys.
-        /// </summary>
-        /// <param name="position">Teleport To</param>
-        public void TeleportTo(Vector3 position)
-        {
-            Entity.Position = position;
-            Entity.LinearVelocity = Vector3.Zero;
-            Entity.AngularVelocity = Vector3.Zero;
-        }
+        #endregion
     }
 }

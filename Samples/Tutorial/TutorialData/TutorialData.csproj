@@ -61,9 +61,8 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExamplePhysicsMoveController.cs" />
+    <Compile Include="ExamplePhysicsController.cs" />
     <Compile Include="ExampleController.cs" />
-    <Compile Include="ExamplePhysicsTeleportController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

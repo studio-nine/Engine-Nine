@@ -1,19 +1,20 @@
 ﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-
     <ScreenCamera CoordinateType="ThreeDimension" />
     <FullScreenQuad Texture="{ContentReference ../Textures/box}" />
-    
-    <Sprite Texture="{ContentReference ../Textures/checker}" />
-    
-    <Sprite Position="100,100" Size="50,50" Scale="1,2" ZOrder="1" FlipX="True" Rotation="{Degrees 10}" Texture="{ContentReference ../Textures/checker}" />
-    
-    <Sprite Position="100,100" Size="200,200" ZOrder="-1" FlipY="True">
-        <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
-    </Sprite>
-    
-    <TextSprite Name="Wait" Text="Press any key to continue..." Font="{ContentReference ../Consolas}" ZOrder="1" />
 
+    <Group Transform2D.Position="0,0" Transform2D.Scale="1,1" Transform2D.Rotation="0">
+        <Sprite Texture="{ContentReference ../Textures/checker}" />
+    
+        <Sprite Position="100,100" Size="50,50" Scale="1,2" ZOrder="1" FlipX="True" Rotation="{Degrees 10}" Texture="{ContentReference ../Textures/checker}" />
+    
+        <Sprite Position="100,100" Size="200,200" ZOrder="-1" FlipY="True">
+            <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
+        </Sprite>
+    
+        <TextSprite Name="Wait" Text="Press any key to continue..." Font="{ContentReference ../Consolas}" ZOrder="1" />
+    </Group>
+  
     <Scene.Animations>
         <ColorAnimation TargetProperty="Wait.Color" Duration="00:00:00.5" From="255,255,255,255" To="0,0,0,255"
                         Curve="{x:Static Curves.Sin}" Repeat="99999999" AutoReverse="True" />

@@ -59,6 +59,16 @@ namespace Nine.Physics.Colliders
         private RigidBody body;
 
         /// <summary>
+        /// Gets or sets the collision group of this collider
+        /// </summary>
+        public string CollisionGroup
+        {
+            get { return collisionGroup; }
+            set { collisionGroup = value; }
+        }
+        private string collisionGroup;
+
+        /// <summary>
         /// Gets the Bepu physics collidable associated with this collider.
         /// </summary>
         /// <remarks>
@@ -69,7 +79,11 @@ namespace Nine.Physics.Colliders
         /// <summary>
         /// Gets the Bepu physics entity associated with this collider.
         /// </summary>
-        public Entity Entity { get; private set; }
+        public Entity Entity
+        {
+            get { return entity; }
+        }
+        internal Entity entity;
 
         private IMaterialOwner materialOwner;
         private ISpaceObject spaceObject;
@@ -98,10 +112,10 @@ namespace Nine.Physics.Colliders
             if (entity == null || entity.IsDynamic)
                 throw new ArgumentException("entity");
 
-            this.Entity = entity;
+            this.entity = entity;
             this.materialOwner = entity;
             this.spaceObject = entity;
-            this.Collidable = Entity.CollisionInformation;
+            this.Collidable = entity.CollisionInformation;
             this.Mass = 1;
             this.Friction = new Range<float>(0.6f, 0.8f);
             this.Restitution = 0.2f;
@@ -137,8 +151,7 @@ namespace Nine.Physics.Colliders
         /// </summary>
         protected override void OnTransformChanged()
         {
-            if (Entity != null)
-                Entity.WorldTransform = Transform;
+            entity.WorldTransform = Transform;
             base.OnTransformChanged();
         }
 

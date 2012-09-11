@@ -81,6 +81,7 @@
     <Compile Include="PassThroughSceneManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestGame.cs" />
+    <Compile Include="TestGames\SpriteTest.cs" />
     <Compile Include="TestGames\TransparencyTest.cs" />
     <Compile Include="TestGames\DynamicPrimitiveTest.cs" />
     <Compile Include="TestGames\TriangleTest.cs" />

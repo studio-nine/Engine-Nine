@@ -52,14 +52,15 @@ namespace Test
         /// </summary>
         protected override void LoadContent()
         {
-            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
 
             // Find all test games
             testGames = (from type in Assembly.GetExecutingAssembly().GetTypes().OrderBy(type => type.Name)
                          where type.IsClass && typeof(ITestGame).IsAssignableFrom(type)
                          select (ITestGame)Activator.CreateInstance(type)).ToArray();
-            testGames = new ITestGame[] { new ShadowMapTest() };
+            //testGames = new ITestGame[] { new ShadowMapTest() };
+            testGames = new ITestGame[] { new SpriteTest() };
             testScenes = new Scene[testGames.Length];
 
             // Shows the next scene
@@ -97,7 +98,6 @@ namespace Test
             // Gets the drawing context to adjust drawing settings.
             var drawingContext = scene.GetDrawingContext(GraphicsDevice);
             drawingContext.Settings.BackgroundColor = new Color(0.5f, 0.5f, 0.5f);
-            drawingContext.Settings.Font = Content.Load<SpriteFont>("Consolas");
             drawingContext.Settings.TextureFilter = TextureFilter.Anisotropic;
 
             Window.Title = testGames[nextTest].GetType().Name;

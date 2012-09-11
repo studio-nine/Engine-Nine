@@ -42,11 +42,6 @@ namespace Nine.Graphics.Drawing
         public int ShadowMapResolution { get; set; }
         
         /// <summary>
-        /// Gets or sets the default font.
-        /// </summary>
-        public SpriteFont Font { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether default debug control is enabled.
         /// </summary>
         public bool DefaultDebugControlEnabled { get; set; }

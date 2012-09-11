@@ -151,7 +151,7 @@ namespace Nine
     /// <summary>
     /// Contains helper method for Matrix.
     /// </summary>
-    public static class MatrixHelper
+    internal static class MatrixHelper
     {
         public static Matrix CreateRotation(Vector3 fromDirection, Vector3 toDirection)
         {
@@ -255,6 +255,22 @@ namespace Nine
             eulerAngle.Z = (float)Math.Atan2(2 * q1.Y * q1.W - 2 * q1.X * q1.Z, sqX - sqY - sqZ + sqW);
             eulerAngle.Y = (float)Math.Asin(2 * test / unit);
             eulerAngle.X = (float)Math.Atan2(2 * q1.X * q1.W - 2 * q1.Y * q1.Z, -sqX + sqY - sqZ + sqW);
+        }
+
+        /// <summary>
+        /// Decompose a 2D transform matrix.
+        /// http://math.stackexchange.com/questions/13150/extracting-rotation-scale-values-from-2d-transformation-matrix
+        /// </summary>
+        public static bool Decompose(ref Matrix transform, out Vector2 scale, out float rotation, out Vector2 translation)
+        {
+            translation.X = transform.M41;
+            translation.Y = transform.M42;
+
+            scale.X = (float)(Math.Sign(transform.M11) * Math.Sqrt(transform.M11 * transform.M11 + transform.M12 * transform.M12));
+            scale.Y = (float)(Math.Sign(transform.M22) * Math.Sqrt(transform.M21 * transform.M21 + transform.M22 * transform.M22));
+
+            rotation = (float)Math.Atan2(transform.M12, transform.M22);
+            return true;
         }
     }
 }

@@ -11,7 +11,7 @@
     /// <summary>
     /// Defines a 2D text sprite.
     /// </summary>
-    public class TextSprite : Transformable, IDrawableObject, ISceneObject, ISprite
+    public class TextSprite : Transformable, ISprite
     {
         /// <summary>
         /// Gets the underlying graphics device.
@@ -49,39 +49,9 @@
         private Color color = Color.White;
 
         /// <summary>
-        /// Gets or sets whether this sprite is additive.
+        /// Gets or sets the blend state of this sprite. The default value is BlendState.AlphaBlend.
         /// </summary>
-        public bool IsAdditive { get; set; }
-
-        /// <summary>
-        /// Gets or sets the position of this sprite.
-        /// </summary>
-        public Vector2 Position 
-        {
-            get { return position; }
-            set { position = value; }
-        }
-        private Vector2 position;
-        
-        /// <summary>
-        /// Gets or sets the scale of this sprite.
-        /// </summary>
-        public Vector2 Scale { get; set; }
-
-        /// <summary>
-        /// Gets or sets the rotation of this sprite.
-        /// </summary>
-        public float Rotation { get; set; }
-
-        /// <summary>
-        /// Gets or sets the percentage based anchor point of this sprite.
-        /// </summary>
-        public Vector2 Anchor 
-        {
-            get { return anchor; }
-            set { anchor = value; }
-        }
-        private Vector2 anchor = new Vector2(0.5f, 0.5f);
+        public BlendState BlendState { get; set; }
 
         /// <summary>
         /// Gets or sets the z order of this sprite.
@@ -104,6 +74,89 @@
         private SpriteFont font;
 
         /// <summary>
+        /// Gets or sets a value indicating whether this sprite
+        /// will be flipped on the x axis.
+        /// </summary>
+        public bool FlipX
+        {
+            get { return flipX; }
+            set { flipX = value; }
+        }
+        private bool flipX;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this sprite
+        /// will be flipped on the x axis.
+        /// </summary>
+        public bool FlipY
+        {
+            get { return flipY; }
+            set { flipY = value; }
+        }
+        private bool flipY;
+
+        /// <summary>
+        /// Gets or sets the position of this sprite in screen space.
+        /// </summary>
+        public Vector2 Position
+        {
+            get { return position; }
+            set
+            {
+                position = value;
+                transform.M41 = value.X;
+                transform.M42 = value.Y;
+                transformChanging = true;
+                NotifyTransformChanged();
+                transformChanging = false;
+            }
+        }
+        private Vector2 position;
+
+        /// <summary>
+        /// Gets or sets the scale of this sprite in screen space.
+        /// </summary>
+        public Vector2 Scale
+        {
+            get { return scale; }
+            set { scale = value; UpdateScaleAndRotation(); }
+        }
+        private Vector2 scale = Vector2.One;
+
+        /// <summary>
+        /// Gets or sets the rotation of this sprite in screen space.
+        /// </summary>
+        public float Rotation
+        {
+            get { return rotation; }
+            set { rotation = value; UpdateScaleAndRotation(); }
+        }
+        private float rotation;
+
+        /// <summary>
+        /// Gets or sets the optional target size of this sprite in screen space independent of the scale factor.
+        /// </summary>
+        public Vector2? Size
+        {
+            get { return size; }
+            set { size = value; UpdateScaleAndRotation(); anchorPointNeedsUpdate = true; }
+        }
+        private Vector2? size;
+
+        /// <summary>
+        /// Gets or sets the percentage based anchor point of this sprite.
+        /// </summary>
+        public Vector2 Anchor
+        {
+            get { return anchor; }
+            set { anchor = value; UpdateScaleAndRotation(); anchorPointNeedsUpdate = true; }
+        }
+        private Vector2 anchor = new Vector2(0.5f, 0.5f);
+        private Vector2 anchorPoint;
+        private bool anchorPointNeedsUpdate = true;
+        private bool transformChanging;
+
+        /// <summary>
         /// Initializes a new instance of TextSprite.
         /// </summary>
         public TextSprite(GraphicsDevice graphics)
@@ -121,55 +174,76 @@
         /// </summary>
         public void Draw(DrawingContext context, SpriteBatch spriteBatch)
         {
-            var font = this.font ?? context.settings.Font;
-            if (spriteBatch != null && font != null)
+            if (font != null && !string.IsNullOrEmpty(Text))
             {
-                Vector2 screenPosition;
-                Vector2 anchorPoint;
-                GetScreenPositionAndAnchorPoint(context, font, out screenPosition, out anchorPoint);
+                var spriteEffects = SpriteEffects.None;
+                if (flipX)
+                    spriteEffects |= SpriteEffects.FlipHorizontally;
+                if (flipY)
+                    spriteEffects |= SpriteEffects.FlipVertically;
 
-                spriteBatch.DrawString(font, Text, screenPosition, color * alpha,
-                                       Rotation, anchorPoint, Scale, SpriteEffects.None, zOrder);
+                float worldRotation;
+                Vector2 worldScale;
+                Vector2 worldPosition;
+                Matrix worldTransform = AbsoluteTransform;
+                MatrixHelper.Decompose(ref worldTransform, out worldScale, out worldRotation, out worldPosition);
+
+                UpdateAnchorPoint();
+
+                spriteBatch.DrawString(font, Text, worldPosition, color * alpha, worldRotation, anchorPoint, worldScale, spriteEffects, 0);
             }
         }
 
-        private void GetScreenPositionAndAnchorPoint(
-            DrawingContext context, SpriteFont font, out Vector2 screenPosition, out Vector2 anchorPoint)
+        /// <summary>
+        /// Called when local or absolute transform changed.
+        /// </summary>
+        protected override void OnTransformChanged()
         {
-            var projectedPosition = new Vector3();
-            projectedPosition.X = position.X;
-            projectedPosition.Y = position.Y;
-
-            projectedPosition = context.graphics.Viewport.Project(
-                projectedPosition, context.matrices.projection, context.matrices.view, AbsoluteTransform);
-            
-            screenPosition.X = projectedPosition.X;
-            screenPosition.Y = projectedPosition.Y;
-
-            var size = font.MeasureString(Text);
-            anchorPoint = new Vector2();
-            anchorPoint.X = size.X * anchor.X;
-            anchorPoint.Y = size.Y * anchor.Y;
+            if (!transformChanging)
+                MatrixHelper.Decompose(ref transform, out scale, out rotation, out position);
         }
 
-        void ISceneObject.OnAdded(DrawingContext context)
+        private void UpdateScaleAndRotation()
         {
-            var passes = context.mainPass.Passes;
-            for (var i = passes.Count - 1; i >= 0; --i)
+            var scale = this.scale;
+            if (size != null)
             {
-                if (passes[i] is SpritePass)
-                    return;
+                scale.X *= size.Value.X;
+                scale.Y *= size.Value.Y;
             }
-            passes.Add(new SpritePass());
+
+            if (rotation == 0)
+            {
+                transform.M11 = scale.X; transform.M12 = 0;
+                transform.M21 = 0; transform.M22 = scale.Y;
+            }
+            else
+            {
+                var cos = (float)Math.Cos(rotation);
+                var sin = (float)Math.Sin(rotation);
+
+                transform.M11 = cos * scale.X; transform.M12 = sin * scale.X;
+                transform.M21 = -sin * scale.Y; transform.M22 = cos * scale.Y;
+            }
+
+            transformChanging = true;
+            NotifyTransformChanged();
+            transformChanging = false;
         }
 
-        Material IDrawableObject.Material { get { return null; } }
-        bool ISprite.IsTransparent { get { return true; } }
+        private void UpdateAnchorPoint()
+        {
+            if (anchorPointNeedsUpdate && font != null && !string.IsNullOrEmpty(Text))
+            {
+                var textSize = font.MeasureString(Text);
+                anchorPoint.X = textSize.X * anchor.X;
+                anchorPoint.Y = textSize.Y * anchor.Y;
+                anchorPointNeedsUpdate = false;
+            }
+        }
 
-        void IDrawableObject.OnAddedToView(DrawingContext context) { }
+        SamplerState ISprite.SamplerState { get { return null; } }
+        Material ISprite.Material { get { return null; } }
         void ISprite.Draw(DrawingContext context, Material material) { }
-        void IDrawableObject.Draw(DrawingContext context, Material material) { }
-        void ISceneObject.OnRemoved(DrawingContext context) { }
-        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition) { return 0; }
     }
 }

@@ -97,7 +97,6 @@ namespace Nine
 
         const uint AbsoluteTransformDirty = 1;
 
-        // To be used by DrawingGroup only.
         internal void NotifyTransformChanged()
         {
             absoluteTransformDirtyFlags = 0xFFFFFFFF;

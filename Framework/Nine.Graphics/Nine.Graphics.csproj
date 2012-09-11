@@ -112,7 +112,6 @@
     <Compile Include="TextSprite.cs" />
     <Compile Include="Drawing\SpritePass.cs" />
     <Compile Include="FastList.cs" />
-    <Compile Include="Materials\SpriteMaterial.cs" />
     <Compile Include="Materials\ThickLineMaterial.cs" />
     <Compile Include="ModelAttachment.cs" />
     <Compile Include="Sprite.cs" />
@@ -317,9 +316,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ThickLine.fx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\Sprite.fx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Bloom.fx" />

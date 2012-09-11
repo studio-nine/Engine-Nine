@@ -24,7 +24,6 @@ namespace Nine.Physics
             if (existingInstance == null)
                 existingInstance = new RigidBody();
             existingInstance.Collider = input.ReadObject<Nine.Physics.Colliders.Collider>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;

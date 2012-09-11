@@ -1,6 +1,5 @@
 namespace Nine.Content.Pipeline.Xaml
 {
-    /*
     using System;
     using System.ComponentModel;
     using System.Text;
@@ -128,8 +127,7 @@ namespace Nine.Content.Pipeline.Xaml
         
         public bool Equals(Transform2D other)
         {
-            return Scale == other.Scale && Rotation == other.Rotation &&
-                   RotationOrder == other.RotationOrder && Position == other.Position;
+            return Scale == other.Scale && Rotation == other.Rotation && Position == other.Position;
         }
 
         public override bool Equals(object obj)
@@ -181,9 +179,9 @@ namespace Nine.Content.Pipeline.Xaml
             Matrix transform;
             Vector2 scale;
             Vector2 translation;
-            Quaternion rotation;
+            float rotation;
 
-            return (TryGetTransform(target, out transform) && transform.Decompose(out scale, out rotation, out translation)) ? scale : Vector2.One;
+            return (TryGetTransform(target, out transform) && MatrixHelper.Decompose(ref transform, out scale, out rotation, out translation)) ? scale : Vector2.One;
         }
 
         /// <summary>
@@ -194,9 +192,9 @@ namespace Nine.Content.Pipeline.Xaml
             Matrix transform;
             Vector2 scale;
             Vector2 translation;
-            Quaternion rotation;
+            float rotation;
 
-            if (TryGetTransform(target, out transform) && transform.Decompose(out scale, out rotation, out translation))
+            if (TryGetTransform(target, out transform) && MatrixHelper.Decompose(ref transform, out scale, out rotation, out translation))
             {
                 scale = value;
                 TrySetTransform(target, scale, rotation, translation);
@@ -211,9 +209,9 @@ namespace Nine.Content.Pipeline.Xaml
             Matrix transform;
             Vector2 scale;
             Vector2 translation;
-            Quaternion rotation;
+            float rotation;
 
-            return (TryGetTransform(target, out transform) && transform.Decompose(out scale, out rotation, out translation)) ? translation : Vector2.One;
+            return (TryGetTransform(target, out transform) && MatrixHelper.Decompose(ref transform, out scale, out rotation, out translation)) ? translation : Vector2.One;
         }
 
         /// <summary>
@@ -222,55 +220,92 @@ namespace Nine.Content.Pipeline.Xaml
         public static void SetPosition(object target, Vector2 value)
         {
             Matrix transform;
-            Vector3 scale;
-            Vector3 translation;
-            Quaternion rotation;
+            Vector2 scale;
+            Vector2 translation;
+            float rotation;
 
-            if (TryGetTransform(target, out transform) && transform.Decompose(out scale, out rotation, out translation))
+            if (TryGetTransform(target, out transform) && MatrixHelper.Decompose(ref transform, out scale, out rotation, out translation))
             {
                 translation.X = value.X;
                 translation.Y = value.Y;
-                translation.Z = 0;
-                TrySetTransform(target, scale, rotation.Z, translation);
+                TrySetTransform(target, scale, rotation, translation);
+            }
+        }
+
+        /// <summary>
+        /// Gets the rotation of the target object
+        /// </summary>
+        public static float GetRotation(object target)
+        {
+            Matrix transform;
+            Vector2 scale;
+            Vector2 translation;
+            float rotation;
+
+            return (TryGetTransform(target, out transform) && MatrixHelper.Decompose(ref transform, out scale, out rotation, out translation)) ? rotation : 0;
+        }
+
+        /// <summary>
+        /// Sets the rotation of the target object.
+        /// </summary>
+        public static void SetRotation(object target, float value)
+        {
+            Matrix transform;
+            Vector2 scale;
+            Vector2 translation;
+            float rotation;
+
+            if (TryGetTransform(target, out transform) && MatrixHelper.Decompose(ref transform, out scale, out rotation, out translation))
+            {
+                TrySetTransform(target, scale, value, translation);
             }
         }
 
         private static bool TryGetTransform(object target, out Matrix transform)
         {
-            try
+            transform = Matrix.Identity;
+            var transformProperty = target.GetType().GetProperty("Transform");
+            if (transformProperty == null || !transformProperty.CanRead)
+                return false;
+            if (transformProperty.PropertyType == typeof(Matrix))
             {
-                dynamic d = target;
-                transform = d.Transform;
+                transform = (Matrix)transformProperty.GetValue(target, null);
                 return true;
             }
-            catch
+            if (transformProperty.PropertyType == typeof(Matrix?))
             {
-                transform = Matrix.Identity;
-                return false;
+                var nullable = ((Matrix?)transformProperty.GetValue(target, null));
+                if (nullable.HasValue)
+                    transform = nullable.Value;
+                return true;
             }
+            return false;
         }
 
-        private static bool TrySetTransform(object target, Vector3 scale, float rotation, Vector3 translation)
+        private static bool TrySetTransform(object target, Vector2 scale, float rotation, Vector2 translation)
         {
             return TrySetTransform(target, Matrix.CreateScale(scale.X, scale.Y, 1) * 
-                                           Matrix.CreateRotationZ(-rotation) * 
+                                           Matrix.CreateRotationZ(rotation) * 
                                            Matrix.CreateTranslation(translation.X, translation.Y, 0));
         }
 
         private static bool TrySetTransform(object target, Matrix transform)
         {
-            try
+            var transformProperty = target.GetType().GetProperty("Transform");
+            if (transformProperty == null || !transformProperty.CanWrite)
+                return false;
+            if (transformProperty.PropertyType == typeof(Matrix))
             {
-                dynamic d = target;
-                d.Transform = transform;
+                transformProperty.SetValue(target, transform, null);
                 return true;
             }
-            catch
+            if (transformProperty.PropertyType == typeof(Matrix?))
             {
-                return false;
+                transformProperty.SetValue(target, (Matrix?)transform, null);
+                return true;
             }
+            return false;
         }
         #endregion
     }
-     */
 }
