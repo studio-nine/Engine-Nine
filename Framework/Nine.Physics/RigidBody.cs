@@ -124,7 +124,7 @@ namespace Nine.Physics
         /// </remarks>
         public Entity Entity
         {
-            get { return collider != null ? collider.Entity : null; }
+            get { return collider.Entity; }
         }
 
         /// <summary>

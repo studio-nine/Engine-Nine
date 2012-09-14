@@ -34,8 +34,9 @@
         <RigidBody>
             <BoxCollider Size="1,1,1" />
         </RigidBody>
+      
         <!-- When you press 'Q' ingame this^ RigedBody will be teleported to "0, 20, 0" -->
-        <my:ExamplePhysicsTeleportController TeleportToPosition="0,20,0" Key="Q" />
+        <my:ExamplePhysicsController ResetPosition="0,20,0" ResetKey="Q" />
     </Group>
 
 </Scene>

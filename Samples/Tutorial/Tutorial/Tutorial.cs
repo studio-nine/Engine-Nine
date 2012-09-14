@@ -102,7 +102,6 @@ namespace Tutorial
 
             // Gets the drawing context to adjust drawing settings.
             var drawingContext = scene.GetDrawingContext(GraphicsDevice);
-            drawingContext.Settings.Font = Content.Load<SpriteFont>("Consolas");
             drawingContext.Settings.TextureFilter = TextureFilter.Anisotropic;
             
             Window.Title = tutorials[nextTutorial];

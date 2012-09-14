@@ -88,6 +88,7 @@
     <Compile Include="ContentPipelineTest.cs" />
     <Compile Include="GraphicsTest.cs" />
     <Compile Include="Graphics\Materials\MaterialGroupTest.cs" />
+    <Compile Include="Graphics\ObjectModel\ModelTest.cs" />
     <Compile Include="Graphics\ObjectModel\SurfaceTest.cs" />
     <Compile Include="Navigation\GraphTest.cs" />
     <Compile Include="Navigation\Steering\WallAvoidanceTest.cs" />

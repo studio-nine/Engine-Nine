@@ -151,7 +151,8 @@ namespace Nine.Physics.Colliders
         /// </summary>
         protected override void OnTransformChanged()
         {
-            entity.WorldTransform = Transform;
+            if (entity != null)
+                entity.WorldTransform = Transform;
             base.OnTransformChanged();
         }
 

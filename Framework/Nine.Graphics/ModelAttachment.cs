@@ -46,7 +46,7 @@ namespace Nine.Graphics
         private Transformable transformable;
 
         /// <summary>
-        /// Gets or sets the bone name of the target is a model.
+        /// Gets or sets the bone name of the target model.
         /// </summary>
         public string Bone
         {
@@ -139,8 +139,8 @@ namespace Nine.Graphics
                     }
                     else
                     {
-                        model.NotifyRemoved(transformable);
-                        model.children.Remove(transformable);
+                        this.model.NotifyRemoved(transformable);
+                        this.model.children.Remove(transformable);
                     }
                 }
 
@@ -155,13 +155,12 @@ namespace Nine.Graphics
                 if (model == transformable)
                     throw new InvalidOperationException("Cannot attach a model to itself");
 
-                if (transformable != null)
-                {
-                    if (transformable.Parent != null)
-                        throw new InvalidOperationException("Cannot attached an object that is already added to the scene.");
-                    ((Nine.IComponent)transformable).Parent = model;
-                }
+                if (transformable != null && transformable.Parent != null)
+                    throw new InvalidOperationException("Cannot attached an object that is already added to the scene.");
             }
+
+            if (transformable != null)
+                ((Nine.IComponent)transformable).Parent = model;
         }
     }
 
@@ -176,6 +175,26 @@ namespace Nine.Graphics
         internal ModelAttachmentCollection(Model parent)
         {
             model = parent;
+        }
+
+        public ModelAttachment Add(Transformable transformable)
+        {
+            var result = new ModelAttachment(transformable);
+            Add(result);
+            return result;
+        }
+
+        public bool Remove(Transformable transformable)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if (this[i].Transformable == transformable)
+                {
+                    RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
         }
 
         internal void UpdateTransforms()

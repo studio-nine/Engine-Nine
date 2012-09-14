@@ -389,7 +389,10 @@ namespace Nine.Graphics.Drawing
         public void Draw(TimeSpan elapsedTime)
         {
             var activeCamera = camera;
-            Draw(elapsedTime, activeCamera.View, activeCamera.Projection);
+            Matrix view, projection;
+            Viewport? viewport;
+            activeCamera.TryGetViewFrustum(out view, out projection, out viewport);
+            Draw(elapsedTime, view, projection);
         }
 
         /// <summary>
@@ -412,114 +415,75 @@ namespace Nine.Graphics.Drawing
             this.totalSeconds = (float)totalTime.TotalSeconds;
             this.boundingBoxNeedsUpdate = true;
 
+            if (rootPass == null)
+                return;
+
             graphics.SetVertexBuffer(null);
             UpdateDefaultSamplerStates();
 
-            try
+            drawablesInViewFrustum.Clear();
+            BoundingFrustum viewFrustum = ViewFrustum;
+            drawables.FindAll(viewFrustum, drawablesInViewFrustum);
+
+            // Notify each drawable when the frame begins
+            for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
+                drawablesInViewFrustum[currentDrawable].OnAddedToView(this);
+
+            UpdatePassGraph();
+            UpdateActivePasses();
+
+            RenderTarget2D lastRenderTarget = null;
+            RenderTarget2D intermediate = null;
+            bool overrideViewFrustumLastPass = false;
+
+            for (int i = 0; i < activePasses.Count; ++i)
             {
-                if (rootPass == null)
-                    return;
+                var pass = activePasses[i];
+                var targetPass = targetPasses[i];
+                var overrideViewFrustum = false;
 
-                drawablesInViewFrustum.Clear();
-                BoundingFrustum viewFrustum = ViewFrustum;
-                drawables.FindAll(viewFrustum, drawablesInViewFrustum);
-
-                // Notify each drawable when the frame begins
-                for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
-                    drawablesInViewFrustum[currentDrawable].OnAddedToView(this);
-
-                UpdatePasses();
-
-                activePasses.Clear();
-                rootPass.GetActivePasses(activePasses);
-
-                targetPasses.Resize(activePasses.Count);
-                preferedFormats.Resize(activePasses.Count);
-
-                // Determines which pass should be rendered to a texture.
-                IPostEffect lastPostEffect = null;
-                for (int i = activePasses.Count - 1; i >= 0; i--)
+                // Query the drawables in the current view frustum only when the view frustum changed
+                // or the pass overrides the frustum.
+                Matrix passView, passProjection;
+                if (pass.TryGetViewFrustum(out passView, out passProjection))
                 {
-                    var postEffect = activePasses[i] as IPostEffect;
-                    if (lastPostEffect != null && (postEffect != null || i == 0))
-                    {
-                        targetPasses[i] = lastPostEffect;
-                        preferedFormats[i] = lastPostEffect.InputFormat;
-                    }
-                    else
-                    {
-                        targetPasses[i] = null;
-                        preferedFormats[i] = null;
-                    }
-
-                    if (postEffect != null)
-                        lastPostEffect = postEffect;
+                    View = passView;
+                    Projection = passProjection;
+                    overrideViewFrustum = true;
                 }
 
-                RenderTarget2D lastRenderTarget = null;
-                RenderTarget2D intermediate = null;
-                bool overrideViewFrustumLastPass = false;
-
-                for (int i = 0; i < activePasses.Count; ++i)
+                if (overrideViewFrustum || overrideViewFrustumLastPass)
                 {
-                    var pass = activePasses[i];
-                    var targetPass = targetPasses[i];
-                    var overrideViewFrustum = false;
-
-                    // Query the drawables in the current view frustum only when the view frustum changed
-                    // or the pass overrides the frustum.
-                    Matrix passView, passProjection;
-                    if (pass.TryGetViewFrustum(out passView, out passProjection))
-                    {
-                        View = passView;
-                        Projection = passProjection;
-                        overrideViewFrustum = true;
-                    }
-
-                    if (overrideViewFrustum || overrideViewFrustumLastPass)
-                    {
-                        drawablesInViewFrustum.Clear();
-                        BoundingFrustum frustum = matrices.ViewFrustum;
-                        drawables.FindAll(frustum, drawablesInViewFrustum);
-                        overrideViewFrustumLastPass = overrideViewFrustum;
-                    }
-
-                    try
-                    {
-                        if ((targetPass != null || i == activePasses.Count - 1) && intermediate != null)
-                        {
-                            intermediate.End();
-                            lastRenderTarget = intermediate;
-                        }
-
-                        if (targetPass != null)
-                        {
-                            intermediate = pass.PrepareRenderTarget(this, intermediate, preferedFormats[i]);
-                            intermediate.Begin();
-                            RenderTargetPool.Lock(intermediate);
-                        }
-
-                        var postEffect = pass as IPostEffect;
-                        if (postEffect != null)
-                            postEffect.InputTexture = lastRenderTarget;
-                        
-                        pass.Draw(this, drawablesInViewFrustum);
-                    }
-                    finally
-                    {
-                        RenderTargetPool.Unlock(lastRenderTarget);
-                    }
+                    drawablesInViewFrustum.Clear();
+                    BoundingFrustum frustum = matrices.ViewFrustum;
+                    drawables.FindAll(frustum, drawablesInViewFrustum);
+                    overrideViewFrustumLastPass = overrideViewFrustum;
                 }
-            }
-            finally
-            {
-                currentFrame++;
-                isDrawing = false;
 
-                // Notify each drawable when the frame begins
-                for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
-                    drawablesInViewFrustum[currentDrawable].OnAddedToView(this);
+                if ((targetPass != null || i == activePasses.Count - 1) && intermediate != null)
+                {
+                    intermediate.End();
+                    lastRenderTarget = intermediate;
+                }
+
+                if (targetPass != null)
+                {
+                    intermediate = pass.PrepareRenderTarget(this, intermediate, preferedFormats[i]);
+                    intermediate.Begin();
+                    RenderTargetPool.Lock(intermediate);
+                }
+
+                var postEffect = pass as IPostEffect;
+                if (postEffect != null)
+                    postEffect.InputTexture = lastRenderTarget;
+
+                pass.Draw(this, drawablesInViewFrustum);
+
+                RenderTargetPool.Unlock(lastRenderTarget);
             }
+
+            currentFrame++;
+            isDrawing = false;
         }
 
         /// <summary>
@@ -537,50 +501,45 @@ namespace Nine.Graphics.Drawing
         }
 
         /// <summary>
-        /// Make sure all the dependent passes for each material is valid.
+        /// Builds a dependency pass group from materials.
         /// </summary>
-        private void UpdatePasses()
+        private void UpdatePassGraph()
         {
-            try
+            for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
             {
-                for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
-                {
-                    var material = drawablesInViewFrustum[currentDrawable].Material;
-                    if (material != null)
-                        material.GetDependentPasses(dependentPassTypes);
-                }
-
-                var passes = rootPass.Passes;
-                var count = rootPass.Passes.Count;
-                for (int i = 0; i < count; ++i)
-                {
-                    var pass = passes[i];
-                    if (pass.Enabled)
-                        pass.GetDependentPasses(dependentPassTypes);
-                }
-
-                foreach (var pass in dependentPassMapping.Values)
-                {
-                    pass.Enabled = false;
-                }
-
-                foreach (var passType in dependentPassTypes)
-                {
-                    Pass pass;
-                    if (dependentPassMapping.TryGetValue(passType, out pass))
-                    {
-                        pass.Enabled = true;
-                        continue;
-                    }
-                    dependentPassMapping.Add(passType, pass = CreatePass(passType));
-                    rootPass.Passes.Add(pass);
-                    mainPass.AddDependency(pass);
-                }
+                var material = drawablesInViewFrustum[currentDrawable].Material;
+                if (material != null)
+                    material.GetDependentPasses(dependentPassTypes);
             }
-            finally
+
+            var passes = rootPass.Passes;
+            var count = rootPass.Passes.Count;
+            for (int i = 0; i < count; ++i)
             {
-                dependentPassTypes.Clear();
+                var pass = passes[i];
+                if (pass.Enabled)
+                    pass.GetDependentPasses(dependentPassTypes);
             }
+
+            foreach (var pass in dependentPassMapping.Values)
+            {
+                pass.Enabled = false;
+            }
+
+            foreach (var passType in dependentPassTypes)
+            {
+                Pass pass;
+                if (dependentPassMapping.TryGetValue(passType, out pass))
+                {
+                    pass.Enabled = true;
+                    continue;
+                }
+                dependentPassMapping.Add(passType, pass = CreatePass(passType));
+                rootPass.Passes.Add(pass);
+                mainPass.AddDependency(pass);
+            }
+
+            dependentPassTypes.Clear();
         }
 
         /// <summary>
@@ -592,6 +551,38 @@ namespace Nine.Graphics.Drawing
             if (defaultConstructor != null)
                 return (Pass)defaultConstructor.Invoke(null);
             return (Pass)Activator.CreateInstance(passType, new object[] { graphics });
+        }
+
+        /// <summary>
+        /// Builds an array of active passes from the current pass graph.
+        /// </summary>
+        private void UpdateActivePasses()
+        {
+            activePasses.Clear();
+            rootPass.GetActivePasses(activePasses);
+
+            targetPasses.Resize(activePasses.Count);
+            preferedFormats.Resize(activePasses.Count);
+
+            // Determines which pass should be rendered to a texture.
+            IPostEffect lastPostEffect = null;
+            for (int i = activePasses.Count - 1; i >= 0; i--)
+            {
+                var postEffect = activePasses[i] as IPostEffect;
+                if (lastPostEffect != null && (postEffect != null || i == 0))
+                {
+                    targetPasses[i] = lastPostEffect;
+                    preferedFormats[i] = lastPostEffect.InputFormat;
+                }
+                else
+                {
+                    targetPasses[i] = null;
+                    preferedFormats[i] = null;
+                }
+
+                if (postEffect != null)
+                    lastPostEffect = postEffect;
+            }
         }
 
         /// <summary>

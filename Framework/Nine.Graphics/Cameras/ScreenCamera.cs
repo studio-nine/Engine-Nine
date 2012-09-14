@@ -191,5 +191,13 @@
             if (context.camera == this)
                 context.camera = null;
         }
+
+        bool ICamera.TryGetViewFrustum(out Matrix view, out Matrix projection, out Viewport? viewport)
+        {
+            view = this.View;
+            projection = this.Projection;
+            viewport = null;
+            return true;
+        }
     }
 }

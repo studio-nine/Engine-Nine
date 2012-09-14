@@ -60,7 +60,6 @@ namespace Test
                          where type.IsClass && typeof(ITestGame).IsAssignableFrom(type)
                          select (ITestGame)Activator.CreateInstance(type)).ToArray();
             //testGames = new ITestGame[] { new ShadowMapTest() };
-            testGames = new ITestGame[] { new SpriteTest() };
             testScenes = new Scene[testGames.Length];
 
             // Shows the next scene

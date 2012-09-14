@@ -15,7 +15,7 @@ namespace Nine
     [EditorBrowsable(EditorBrowsableState.Never)]
     class NotificationCollection<T> : IList<T>, IList, INotifyCollectionChanged<T>
     {
-        internal List<T> Elements = null;
+        internal List<T> Elements = new List<T>();
 
         private List<T> copy = null;
         private bool isDirty = true;
@@ -62,11 +62,9 @@ namespace Nine
                 else
                     copy.Clear();
 
-                if (Elements != null)
-                {
-                    foreach (T e in Elements)
-                        copy.Add(e);
-                }
+                int count = Elements.Count;
+                for (int i = 0; i < count; ++i)
+                    copy.Add(Elements[i]);
 
                 isDirty = false;
             }
@@ -91,9 +89,6 @@ namespace Nine
         /// </summary>
         public void Add(T value)
         {
-            if (Elements == null)
-                Elements = new List<T>();
-
             isDirty = true;
             Elements.Add(value);
 
@@ -114,9 +109,6 @@ namespace Nine
         /// </summary>
         public bool Remove(T value)
         {
-            if (Elements == null)
-                return false;
-
             isDirty = true;
             int index = Elements.IndexOf(value);
             if (index < 0)
@@ -134,18 +126,10 @@ namespace Nine
         /// </summary>
         public void Clear()
         {
-            if (Elements != null)
-            {
-                isDirty = true;
-                List<T> temp = Elements;
-                Elements = null;
-
-                if (Elements != null)
-                    for (int i = 0; i < Elements.Count; ++i)
-                        OnRemoved(Elements[i]);
-
-                temp.Clear();
-            }
+            isDirty = true;
+            for (int i = 0; i < Elements.Count; ++i)
+                OnRemoved(Elements[i]);
+            Elements.Clear();
         }
 
         /// <summary>
@@ -161,7 +145,7 @@ namespace Nine
         /// </summary>
         public int Count
         {
-            get { return Elements != null ? Elements.Count : 0; }
+            get { return Elements.Count; }
         }
 
         /// <summary>
@@ -169,7 +153,7 @@ namespace Nine
         /// </summary>
         public bool Contains(T item)
         {
-            return Elements != null ? Elements.Contains(item) : false;
+            return Elements.Contains(item);
         }
 
         /// <summary>
@@ -177,8 +161,7 @@ namespace Nine
         /// </summary>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (Elements != null)
-                Elements.CopyTo(array, arrayIndex);
+            Elements.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -186,7 +169,7 @@ namespace Nine
         /// </summary>
         public int IndexOf(T item)
         {
-            return Elements != null ?  Elements.IndexOf(item) : -1;
+            return Elements.IndexOf(item);
         }
 
         /// <summary>
@@ -194,9 +177,6 @@ namespace Nine
         /// </summary>
         public void Insert(int index, T item)
         {
-            if (Elements == null)
-                Elements = new List<T>();
-
             isDirty = true;
             Elements.Insert(index, item);
 
@@ -208,14 +188,11 @@ namespace Nine
         /// </summary>
         public void RemoveAt(int index)
         {
-            if (Elements != null)
-            {
-                isDirty = true;
-                T e = Elements[index];
-                Elements.RemoveAt(index);
+            isDirty = true;
+            T e = Elements[index];
+            Elements.RemoveAt(index);
 
-                OnRemoved(e);
-            }
+            OnRemoved(e);
         }
 
         /// <summary>
@@ -223,9 +200,6 @@ namespace Nine
         /// </summary>
         public int RemoveAll(Predicate<T> match)
         {
-            if (Elements == null)
-                return 0;
-
             isDirty = true;
 
             int count = 0;
@@ -253,16 +227,9 @@ namespace Nine
         /// </summary>
         public T this[int index]
         {
-            get 
-            {
-                return Elements != null ? Elements[index] : default(T); 
-            }
-            
+            get { return Elements[index]; }            
             set
             {
-                if (Elements == null)
-                    Elements = new List<T>();
-
                 T oldValue = Elements[index];
                 OnRemoved(oldValue);
                 Elements[index] = value;

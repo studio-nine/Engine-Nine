@@ -27,7 +27,7 @@ namespace Test
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = new Vector3(-1, -1, -1), CastShadow = true });
             //scene.Add(new FullScreenQuad(graphics) { Material = new DebugMaterial(graphics) { SamplerState = SamplerState.PointClamp, TextureUsage = TextureUsage.ShadowMap } });
             //scene.Add(new Sprite(graphics) { Size = Vector2.One * 128, Material = new DebugMaterial(graphics) { SamplerState = SamplerState.PointClamp, TextureUsage = TextureUsage.ShadowMap } });
-            scene.Add(new Sprite(graphics) { Size = Vector2.One * 128, Material = new BasicMaterial(graphics) { SamplerState = SamplerState.PointClamp, Texture = content.Load<Texture2D>("Textures/bitmap1") } });
+            //scene.Add(new Sprite(graphics) { Size = Vector2.One * 128, Material = new BasicMaterial(graphics) { SamplerState = SamplerState.PointClamp, Texture = content.Load<Texture2D>("Textures/Bits") } });
             
             var size = 20;
             var step = 10;
