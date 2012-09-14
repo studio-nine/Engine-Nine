@@ -75,15 +75,9 @@
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Reader.Generated.cs">
       <Link>Nine.Graphics.Content.Reader.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Graphics.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Materials.Generated.cs">
       <Link>Nine.Graphics.Materials.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Graphics.Materials.tt</DependentUpon>
     </Compile>
     <Compile Include="AmbientLight.cs" />
     <Compile Include="Animations\BoneAnimation.cs" />
@@ -260,16 +254,6 @@
     <Compile Include="VertexTypes\VertexPositionNormalTangentBinormalTexture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Reader.tt">
-      <Link>Nine.Graphics.Content.Reader.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Graphics.Content.Reader.Generated.cs</LastGenOutput>
-    </None>
-    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Materials.tt">
-      <Link>Nine.Graphics.Materials.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
-    </None>
     <None Include="Nine.snk" />
     <None Include="Shaders\DeferredLighting.fxh" />
     <None Include="Shaders\Fxaa3_11.fxh" />

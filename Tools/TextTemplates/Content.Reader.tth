@@ -26,13 +26,7 @@ namespace <#= namespaceGroup.Key #>
         var className = GetClassName(type);
         var classFullName = GetClassFullName(type);
         var members = FindContentSerializableMembers(type).ToArray();
-        var notSupportedByWindowsPhone = (className.EndsWith("Effect") && !className.EndsWith("ParticleEffect")) || className.EndsWith("EffectPart") ||
-                                        (className.EndsWith("Material") && !className.StartsWith("BasicMaterial")
-                                                                        && !className.StartsWith("DualTextureMaterial")
-                                                                        && !className.StartsWith("SkinnedMaterial")
-                                                                        && !className.StartsWith("EnvironmentMapMaterial")
-                                                                        && !className.StartsWith("AlphaTestMaterial")) ||
-                                         className.StartsWith("Deferred");
+        var notSupportedByWindowsPhone = false;
         if (notSupportedByWindowsPhone)
         {
 #>

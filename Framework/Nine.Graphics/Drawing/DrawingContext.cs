@@ -9,7 +9,6 @@ namespace Nine.Graphics.Drawing
     using Nine.Graphics;
     using Nine.Graphics.Cameras;
     using Nine.Graphics.Materials;
-    using Nine.Graphics.PostEffects;
     using Nine.Graphics.Primitives;
     using DirectionalLight = Nine.Graphics.DirectionalLight;
 

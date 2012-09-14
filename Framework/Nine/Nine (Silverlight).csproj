@@ -75,9 +75,6 @@
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Reader.Generated.cs">
       <Link>Nine.Content.Reader.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
@@ -161,11 +158,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Tools\TextTemplates\Nine.Content.Reader.tt">
-      <Link>Nine.Content.Reader.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Content.Reader.Generated.cs</LastGenOutput>
-    </None>
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>

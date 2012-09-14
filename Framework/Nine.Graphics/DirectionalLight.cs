@@ -11,7 +11,7 @@ namespace Nine.Graphics
     /// <summary>
     /// Defines a directional light source.
     /// </summary>
-    public partial class DirectionalLight : Light, IDeferredLight
+    public partial class DirectionalLight : Light
     {
         /// <summary>
         /// Gets or sets a value indicating the start distance of the region that can be
@@ -69,6 +69,20 @@ namespace Nine.Graphics
             SpecularColor = Vector3.Zero;
         }
 
+        protected override void OnAdded(DrawingContext context)
+        {
+            context.directionalLights.Add(this);
+        }
+
+        protected override void OnRemoved(DrawingContext context)
+        {
+            context.directionalLights.Remove(this);
+        }
+    }
+
+#if !WINDOWS_PHONE
+    partial class DirectionalLight : IDeferredLight
+    {
         /// <summary>
         /// Computes the shadow frustum of this light based on the current
         /// view frustum and objects in the current scene;
@@ -226,17 +240,6 @@ namespace Nine.Graphics
             shadowFrustum.Matrix = shadowFrustumMatrix;
         }
 
-        protected override void OnAdded(DrawingContext context)
-        {
-            context.directionalLights.Add(this);
-        }
-
-        protected override void OnRemoved(DrawingContext context)
-        {
-            context.directionalLights.Remove(this);
-        }
-
-        #region IDeferredLight
         /// <summary>
         /// Gets the light geometry for deferred lighting.
         /// </summary>
@@ -260,6 +263,6 @@ namespace Nine.Graphics
         }
         private DeferredDirectionalLightMaterial deferredMaterial;
         private FullScreenQuad deferredGeometry;
-        #endregion
     }
+#endif
 }

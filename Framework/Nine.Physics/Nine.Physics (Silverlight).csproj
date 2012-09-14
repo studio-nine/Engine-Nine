@@ -82,9 +82,6 @@
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Reader.Generated.cs">
       <Link>Nine.Physics.Content.Reader.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Physics.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="BEPUphysics\BroadPhaseEntries\BroadPhaseEntry.cs" />
     <Compile Include="BEPUphysics\BroadPhaseEntries\Collidable.cs" />
@@ -462,11 +459,6 @@
     <Compile Include="SceneExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Reader.tt">
-      <Link>Nine.Physics.Content.Reader.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Physics.Content.Reader.Generated.cs</LastGenOutput>
-    </None>
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>

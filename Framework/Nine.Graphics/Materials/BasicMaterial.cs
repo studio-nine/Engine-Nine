@@ -161,6 +161,7 @@ namespace Nine.Graphics.Materials
 
         protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
         {
+#if !WINDOWS_PHONE
             if (usage == MaterialUsage.Depth)
             {
                 var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice);
@@ -174,6 +175,7 @@ namespace Nine.Graphics.Materials
                 result.specularPower = specularPower;
                 return result;
             }
+#endif
             return null;
         }
         #endregion

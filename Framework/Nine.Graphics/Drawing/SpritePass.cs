@@ -52,6 +52,7 @@ namespace Nine.Graphics.Drawing
             isDrawing = false;
             currentBlendState = null;
             context.PreviousMaterial = null;
+            context.graphics.DepthStencilState = DepthStencilState.None;
             context.graphics.RasterizerState = RasterizerState.CullNone;
 
             // Compensate for half pixel offset
@@ -81,6 +82,7 @@ namespace Nine.Graphics.Drawing
 
             // Restore rasterizer state to default since we use CullNone for sprites.
             context.graphics.RasterizerState = RasterizerState.CullCounterClockwise;
+            context.graphics.DepthStencilState = DepthStencilState.Default;
         }
 
         private void DrawSprites(DrawingContext context, FastList<Entry> sprites)

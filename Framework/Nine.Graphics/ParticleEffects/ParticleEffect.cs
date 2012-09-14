@@ -114,6 +114,7 @@
         }
         private bool isAdditive = true;
 
+#if !WINDOWS_PHONE
         /// <summary>
         /// Gets or sets a value indicating whether particles should softly blends with other opaque scene objects.
         /// </summary>
@@ -146,6 +147,7 @@
             }
         }
         private float softParticleFade = Constants.SoftParticleFade;
+#endif
 
         /// <summary>
         /// Gets or sets a value indicating whether this particle effect will be updated asynchronously.
@@ -274,7 +276,6 @@
             this.Enabled = true;
             this.Visible = true;
             this.Stretch = 1;
-            this.SoftParticleEnabled = false;
             this.GraphicsDevice = graphics;
             this.Emitter = new PointEmitter();
 

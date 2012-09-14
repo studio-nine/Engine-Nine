@@ -149,7 +149,7 @@
         public Vector2 Anchor
         {
             get { return anchor; }
-            set { anchor = value; UpdateScaleAndRotation(); anchorPointNeedsUpdate = true; }
+            set { anchor = value; anchorPointNeedsUpdate = true; }
         }
         private Vector2 anchor = new Vector2(0.5f, 0.5f);
         private Vector2 anchorPoint;
@@ -186,6 +186,8 @@
                 Vector2 worldScale;
                 Vector2 worldPosition;
                 Matrix worldTransform = AbsoluteTransform;
+
+                ApplyScaleFactor(ref worldTransform);
                 MatrixHelper.Decompose(ref worldTransform, out worldScale, out worldRotation, out worldPosition);
 
                 UpdateAnchorPoint();
@@ -205,13 +207,6 @@
 
         private void UpdateScaleAndRotation()
         {
-            var scale = this.scale;
-            if (size != null)
-            {
-                scale.X *= size.Value.X;
-                scale.Y *= size.Value.Y;
-            }
-
             if (rotation == 0)
             {
                 transform.M11 = scale.X; transform.M12 = 0;
@@ -229,6 +224,17 @@
             transformChanging = true;
             NotifyTransformChanged();
             transformChanging = false;
+        }
+
+        private void ApplyScaleFactor(ref Matrix worldTransform)
+        {
+            if (size != null)
+            {
+                var scale = size.Value;
+
+                worldTransform.M11 *= scale.X; worldTransform.M12 *= scale.X; worldTransform.M13 *= scale.X;
+                worldTransform.M21 *= scale.Y; worldTransform.M22 *= scale.Y; worldTransform.M23 *= scale.Y;
+            }
         }
 
         private void UpdateAnchorPoint()

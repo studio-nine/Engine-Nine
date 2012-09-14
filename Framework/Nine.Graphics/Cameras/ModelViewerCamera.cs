@@ -34,7 +34,7 @@
         public ModelViewerCamera(GraphicsDevice graphics, float radius, float minRadius, float maxRadius) : base(graphics)
         {
 #if WINDOWS_PHONE
-            RotationButton = MouseButtons.Left;
+            RotateButton = MouseButtons.Left;
 #else
             RotateButton = MouseButtons.Right;
 #endif

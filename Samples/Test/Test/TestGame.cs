@@ -31,11 +31,10 @@ namespace Test
 #if !SILVERLIGHT
             var graphics = new GraphicsDeviceManager(this);
 
-            //graphics.PreferMultiSampling = true;
+            graphics.PreferMultiSampling = true;
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 800;
-            graphics.EnablePerfHudProfiling();
 
             Window.AllowUserResizing = true;
 #endif

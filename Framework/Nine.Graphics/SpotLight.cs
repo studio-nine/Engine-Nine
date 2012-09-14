@@ -10,7 +10,7 @@ namespace Nine.Graphics
     using Nine.Graphics.Materials;
 
     [ContentSerializable]
-    public partial class SpotLight : Light, ISpatialQueryable, IDeferredLight
+    public partial class SpotLight : Light, ISpatialQueryable
     {
         const float NearPlane = 0.01f;
         
@@ -251,8 +251,12 @@ namespace Nine.Graphics
             primitive.AddFrustum(BoundingFrustum, null, Constants.LightFrustumColor, Constants.MiddleLineWidth);
             base.Draw(context, primitive);
         }
+    }
+    
 
-        #region IDeferredLight
+#if !WINDOWS_PHONE
+    partial class SpotLight : IDeferredLight
+    {
         /// <summary>
         /// Gets the light geometry for deferred lighting.
         /// </summary>
@@ -286,6 +290,6 @@ namespace Nine.Graphics
         }
         private DeferredSpotLightMaterial deferredMaterial;
         private CentrumInvert deferredGeometry;
-        #endregion
     }
+#endif
 }

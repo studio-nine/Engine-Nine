@@ -228,6 +228,8 @@ namespace Nine
         /// </summary>
         public static void ToEulerAngle(ref Quaternion q1, out Vector3 eulerAngle)
         {
+            eulerAngle = new Vector3();
+
             double sqW = q1.W * q1.W;
             double sqX = q1.X * q1.X;
             double sqY = q1.Y * q1.Y;
@@ -263,9 +265,11 @@ namespace Nine
         /// </summary>
         public static bool Decompose(ref Matrix transform, out Vector2 scale, out float rotation, out Vector2 translation)
         {
+            translation = new Vector2();
             translation.X = transform.M41;
             translation.Y = transform.M42;
 
+            scale = new Vector2();
             scale.X = (float)(Math.Sign(transform.M11) * Math.Sqrt(transform.M11 * transform.M11 + transform.M12 * transform.M12));
             scale.Y = (float)(Math.Sign(transform.M22) * Math.Sqrt(transform.M21 * transform.M21 + transform.M22 * transform.M22));
 

@@ -346,7 +346,8 @@ namespace Nine.Graphics
 
                 // Populate child nodes
                 children.Clear();
-                children.AddRange(modelMeshes);
+                for (int i = 0; i < modelMeshes.Count; i++)
+                    children.Add(modelMeshes[i]);
                 if (attachments != null)
                     for (int i = 0; i < attachments.Count; ++i)
                         if (attachments[i].Transformable != null)

@@ -48,11 +48,13 @@
         private VertexBuffer vertexBuffer;
         private IndexBuffer indexBuffer;
 
+#if !WINDOWS_PHONE
         /// <summary>
         /// Always use this pass through material as the vertex shader when drawing full screen quads.
         /// </summary>
         private VertexPassThrough2Material vertexPassThrough2;
         private VertexPassThrough3Material vertexPassThrough3;
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FullScreenQuad"/> class.
@@ -63,9 +65,11 @@
                 throw new ArgumentNullException("graphics");
 
             Visible = true;
-            GraphicsDevice = graphics;            
-            vertexPassThrough2 = new VertexPassThrough2Material(graphics);
+            GraphicsDevice = graphics;
 
+#if !WINDOWS_PHONE
+            vertexPassThrough2 = new VertexPassThrough2Material(graphics);
+#endif
             GetBuffers(graphics, out vertexBuffer, out indexBuffer);
         }
 
@@ -113,6 +117,8 @@
 
 #if SILVERLIGHT
             vertexPassThrough2.BeginApply(context);
+            GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+#elif WINDOWS_PHONE
             GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
 #else
             // Apply a vertex pass through material in case the specified material does

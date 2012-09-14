@@ -10,7 +10,7 @@ namespace Nine.Graphics
     using Nine.Graphics.Primitives;
 
     [ContentSerializable]
-    public partial class PointLight : Light, ISpatialQueryable, IDeferredLight
+    public partial class PointLight : Light, ISpatialQueryable
     {
         public Vector3 Position
         {
@@ -110,8 +110,11 @@ namespace Nine.Graphics
             primitive.AddSphere(BoundingSphere, 8, null, Constants.LightFrustumColor, Constants.MiddleLineWidth);
             base.Draw(context, primitive);
         }
-
-        #region IDeferredLight
+    }
+    
+#if !WINDOWS_PHONE
+    partial class PointLight : IDeferredLight
+    {
         /// <summary>
         /// Gets the light geometry for deferred lighting.
         /// </summary>
@@ -139,6 +142,6 @@ namespace Nine.Graphics
         }
         private DeferredPointLightMaterial deferredMaterial;
         private SphereInvert deferredGeometry;
-        #endregion
     }
+#endif
 }

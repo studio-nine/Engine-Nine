@@ -162,7 +162,7 @@
         public Vector2 Anchor 
         {
             get { return anchor; }
-            set { anchor = value; UpdateScaleAndRotation(); anchorPointNeedsUpdate = true; }
+            set { anchor = value; anchorPointNeedsUpdate = true; }
         }
         private Vector2 anchor = new Vector2(0.5f, 0.5f);
         private Vector2 anchorPoint;
@@ -319,15 +319,19 @@
 
             if (vertexBuffer == null)
                 GetBuffers(context.graphics, out vertexBuffer, out indexBuffer);
-            if (basicEffect == null)
-                basicEffect = GetBasicEffect(context.graphics);
                         
             context.SetVertexBuffer(null, 0);
             vertexBuffer.SetData(SharedVertices);
 
-            // Apply a basic effect in case the specified material does not have a vertex shader
+            Matrix worldTransform = AbsoluteTransform;
+            ApplyScaleFactor(ref worldTransform);
+
 #if !WINDOWS_PHONE
-            basicEffect.World = AbsoluteTransform;
+            // Apply a basic effect in case the specified material does not have a vertex shader
+            if (basicEffect == null)
+                basicEffect = GetBasicEffect(context.graphics);
+
+            basicEffect.World = worldTransform;
             basicEffect.View = context.matrices.view;
             basicEffect.Projection = context.matrices.projection;
             basicEffect.CurrentTechnique.Passes[0].Apply();
@@ -337,7 +341,7 @@
             if (replaceTexture = (material.texture == null))
                 material.texture = texture;
 
-            material.world = AbsoluteTransform;
+            material.world = worldTransform;
             material.BeginApply(context);
             
             context.SetVertexBuffer(vertexBuffer, 0);
@@ -367,6 +371,9 @@
                 Vector2 worldScale;
                 Vector2 worldPosition;
                 Matrix worldTransform = AbsoluteTransform;
+                ApplyScaleFactor(ref worldTransform);
+
+                // TODO: The decomposition process will cause precision problems...
                 MatrixHelper.Decompose(ref worldTransform, out worldScale, out worldRotation, out worldPosition);
 
                 UpdateAnchorPoint();
@@ -386,9 +393,6 @@
 
         private void UpdateScaleAndRotation()
         {
-            var scale = this.scale;
-            ApplyScaleFactor(ref scale);
-
             if (rotation == 0)
             {
                 transform.M11 = scale.X; transform.M12 = 0;
@@ -408,28 +412,33 @@
             transformChanging = false;
         }
 
-        private void ApplyScaleFactor(ref Vector2 scale)
+        private void ApplyScaleFactor(ref Matrix worldTransform)
         {
             if (size != null)
             {
+                var scale = new Vector2();
+
                 if (sourceRectangle == null)
                 {
                     if (texture != null)
                     {
-                        scale.X *= size.Value.X / texture.Width;
-                        scale.Y *= size.Value.Y / texture.Height;
+                        scale.X = size.Value.X / texture.Width;
+                        scale.Y = size.Value.Y / texture.Height;
                     }
                     else
                     {
-                        scale.X *= size.Value.X;
-                        scale.Y *= size.Value.Y;
+                        scale.X = 1;
+                        scale.Y = 1;
                     }
                 }
                 else
                 {
-                    scale.X *= size.Value.X / sourceRectangle.Value.Width;
-                    scale.Y *= size.Value.Y / sourceRectangle.Value.Height;
+                    scale.X = size.Value.X / sourceRectangle.Value.Width;
+                    scale.Y = size.Value.Y / sourceRectangle.Value.Height;
                 }
+
+                worldTransform.M11 *= scale.X; worldTransform.M12 *= scale.X; worldTransform.M13 *= scale.X;
+                worldTransform.M21 *= scale.Y; worldTransform.M22 *= scale.Y; worldTransform.M23 *= scale.Y;
             }
         }
 
@@ -447,6 +456,11 @@
                 {
                     anchorPoint.X = texture.Width * anchor.X;
                     anchorPoint.Y = texture.Height * anchor.Y;
+                }
+                else if (size != null)
+                {
+                    anchorPoint.X = size.Value.X * anchor.X;
+                    anchorPoint.Y = size.Value.Y * anchor.Y;
                 }
                 else
                 {

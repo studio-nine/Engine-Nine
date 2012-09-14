@@ -56,6 +56,7 @@ namespace Nine.Graphics
         #endregion
 
         #region Shadow
+#if !WINDOWS_PHONE
         /// <summary>
         /// Gets or sets whether the light should cast a shadow.
         /// </summary>
@@ -115,7 +116,8 @@ namespace Nine.Graphics
         {
             get { return shadowFrustum; } 
         }
-        internal BoundingFrustum shadowFrustum;
+        internal BoundingFrustum shadowFrustum = new BoundingFrustum(new Matrix());
+#endif
         #endregion
 
         #region Methods
@@ -127,7 +129,6 @@ namespace Nine.Graphics
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
             GraphicsDevice = graphics;
-            shadowFrustum = new BoundingFrustum(new Matrix());
         }
 
         /// <summary>
@@ -145,6 +146,7 @@ namespace Nine.Graphics
         /// </summary>
         void ISceneObject.OnAdded(DrawingContext context)
         {
+#if !WINDOWS_PHONE
             if (this.context != null)
                 throw new InvalidOperationException();
             if (castShadow)
@@ -154,6 +156,7 @@ namespace Nine.Graphics
                 context.mainPass.Passes.Insert(0, shadowMap);
             }
             this.context = context;
+#endif
             OnAdded(context);
         }
 
@@ -162,6 +165,7 @@ namespace Nine.Graphics
         /// </summary>
         void ISceneObject.OnRemoved(DrawingContext context)
         {
+#if !WINDOWS_PHONE
             if (this.context == null || context != this.context)
                 throw new InvalidOperationException();
             if (shadowMap != null)
@@ -171,6 +175,7 @@ namespace Nine.Graphics
                 shadowMap = null;
             }
             this.context = null;
+#endif
             OnRemoved(context);
         }
 
@@ -183,6 +188,7 @@ namespace Nine.Graphics
                 result.Add(drawablesInViewFrustum[i]);
         }
 
+#if !WINDOWS_PHONE
         /// <summary>
         /// Computes the shadow frustum of this light based on the current
         /// view frustum and objects in the current view frustum;
@@ -191,6 +197,7 @@ namespace Nine.Graphics
         {
 
         }
+#endif
 
         bool IDebugDrawable.Visible
         {
@@ -202,7 +209,9 @@ namespace Nine.Graphics
         /// </summary>
         public virtual void Draw(DrawingContext context, DynamicPrimitive primitive)
         {
+#if !WINDOWS_PHONE
             primitive.AddFrustum(ShadowFrustum, null, Constants.ShadowFrustumColor, Constants.TinyLineWidth);
+#endif
         }
         #endregion
     }

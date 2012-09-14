@@ -22,6 +22,14 @@ namespace Nine.Content.Pipeline.Physics
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.RigidBody value)
         {
             WriteObject(output, value, "Collider", value.Collider);
+            output.Write(value.Transform);
+            output.Write(value.Position);
+            output.Write(value.Orientation);
+            output.Write(value.Mass);
+            output.Write(value.Velocity);
+            output.Write(value.AngularVelocity);
+            output.Write(value.Damping);
+            output.Write(value.AngularDamping);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
@@ -65,6 +73,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
+            WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -107,6 +116,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
+            WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -152,6 +162,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
+            WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -194,6 +205,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
+            WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -236,6 +248,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
+            WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -278,6 +291,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
+            WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -319,6 +333,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
+            WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -360,6 +375,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
+            WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);

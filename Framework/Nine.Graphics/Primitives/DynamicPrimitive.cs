@@ -55,7 +55,9 @@
 
         private GraphicsDevice graphics;
         private Material material;
+#if !WINDOWS_PHONE
         private ThickLineMaterial thickLineMaterial;
+#endif
         private RasterizerState rasterizerState;
         
         private DynamicVertexBuffer vertexBuffer;
@@ -491,6 +493,7 @@
             material.world = entry.World.HasValue ? entry.World.Value : Matrix.Identity;
             material.BeginApply(context);
 
+#if !WINDOWS_PHONE
             if (entry.LineWidth > 0)
             {
                 if (thickLineMaterial == null)
@@ -499,6 +502,7 @@
                 thickLineMaterial.world = material.world;
                 thickLineMaterial.BeginApply(context);
             }
+#endif
 
             var vertexBufferSize = vertexSegments[entry.Segment + 1] - vertexSegments[entry.Segment];
 #if SILVERLIGHT

@@ -24,6 +24,14 @@ namespace Nine.Physics
             if (existingInstance == null)
                 existingInstance = new RigidBody();
             existingInstance.Collider = input.ReadObject<Nine.Physics.Colliders.Collider>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.Orientation = input.ReadQuaternion();
+            existingInstance.Mass = input.ReadSingle();
+            existingInstance.Velocity = input.ReadVector3();
+            existingInstance.AngularVelocity = input.ReadVector3();
+            existingInstance.Damping = input.ReadSingle();
+            existingInstance.AngularDamping = input.ReadSingle();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -50,6 +58,7 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
+            existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -75,6 +84,7 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
+            existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -103,6 +113,7 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
+            existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -128,6 +139,7 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
+            existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -153,6 +165,7 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
+            existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -178,6 +191,7 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
+            existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -202,6 +216,7 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
+            existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -226,6 +241,7 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
+            existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();

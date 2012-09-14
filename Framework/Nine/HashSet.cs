@@ -1,24 +1,14 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Linq;
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Just a simple wrap around dictionary for Windows Phone & Xbox
     /// </summary>
-    public class HashSet<T>
+    class HashSet<T> : ICollection<T>
     {
         Dictionary<T, int> dictionary = new Dictionary<T, int>();
 
@@ -61,5 +51,35 @@ namespace Nine
         }
 
         static T[] ToBeRemoved;
+
+        bool ICollection<T>.Contains(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ICollection<T>.IsReadOnly
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        bool ICollection<T>.Remove(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

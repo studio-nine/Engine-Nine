@@ -66,9 +66,6 @@
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Reader.Generated.cs">
       <Link>Nine.Physics.Content.Reader.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Physics.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="BEPUphysics\BroadPhaseSystems\BroadPhase.cs" />
     <Compile Include="BEPUphysics\BroadPhaseEntries\BroadPhaseEntry.cs" />
@@ -433,11 +430,6 @@
     <Compile Include="BEPUphysics\Vehicle\WheelShape.cs" />
     <Compile Include="BEPUphysics\Vehicle\WheelSlidingFriction.cs" />
     <Compile Include="BEPUphysics\Vehicle\WheelSuspension.cs" />
-    <None Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Reader.tt">
-      <Link>Nine.Physics.Content.Reader.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Physics.Content.Reader.Generated.cs</LastGenOutput>
-    </None>
     <Compile Include="Colliders\Collider.cs" />
     <Compile Include="RigidBody.cs" />
     <Compile Include="Colliders\BoxCollider.cs" />

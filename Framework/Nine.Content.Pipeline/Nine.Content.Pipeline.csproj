@@ -97,21 +97,12 @@
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Writer.Generated.cs">
       <Link>Nine.Content.Writer.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Writer.Generated.cs">
       <Link>Nine.Graphics.Content.Writer.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Writer.Generated.cs">
       <Link>Nine.Physics.Content.Writer.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Physics.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\TweenAnimationWriter.cs" />
     <Compile Include="ContentReference.cs" />
@@ -249,21 +240,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Tools\TextTemplates\Nine.Content.Writer.tt">
-      <Link>Nine.Content.Writer.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Content.Writer1.Generated.cs</LastGenOutput>
-    </None>
-    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Writer.tt">
-      <Link>Nine.Graphics.Content.Writer.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Graphics.Content.Writer1.Generated.cs</LastGenOutput>
-    </None>
-    <None Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Writer.tt">
-      <Link>Nine.Physics.Content.Writer.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Physics.Content.Writer.Generated.cs</LastGenOutput>
-    </None>
     <None Include="Graphics\Materials\Shaders\BeginPaintGroup.fragment" />
     <None Include="Graphics\Materials\Shaders\AlphaTest.fragment" />
     <None Include="Graphics\Materials\Shaders\Depth.fragment" />

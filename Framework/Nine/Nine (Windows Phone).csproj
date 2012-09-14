@@ -68,19 +68,16 @@
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Reader.Generated.cs">
       <Link>Nine.Content.Reader.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\AnimationGroup.cs" />
+    <Compile Include="Animations\AnimationReference.cs" />
     <Compile Include="Animations\AnimationSequence.cs" />
     <Compile Include="Animations\TweenAnimations.cs" />
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="AttachedPropertyStore.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
-    <Compile Include="Components\ZipContentmanager.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="ContentManagerExtensions.cs" />
+    <Compile Include="ContentLoader.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
     <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
     <Compile Include="Content\ContentProperties.cs" />
@@ -94,6 +91,7 @@
     <Compile Include="Input\InputComponent.cs" />
     <Compile Include="Input\InputEventArgs.cs" />
     <Compile Include="Input\XnaInputSource.cs" />
+    <Compile Include="Instance.cs" />
     <Compile Include="Object.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
@@ -123,11 +121,6 @@
     <Compile Include="UniformGrid.cs" />
     <Compile Include="NotificationCollection.cs" />
     <Compile Include="Xaml.cs" />
-    <None Include="..\..\Tools\TextTemplates\Nine.Content.Reader.tt">
-      <Link>Nine.Content.Reader.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Content.Reader.Generated.cs</LastGenOutput>
-    </None>
     <Compile Include="LineSegment.cs" />
     <Compile Include="SpatialQuery.cs" />
     <Compile Include="Strings.Designer.cs">

@@ -106,6 +106,7 @@ namespace Nine.Graphics.Materials
 
         protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
         {
+#if !WINDOWS_PHONE
             if (usage == MaterialUsage.Depth)
             {
                 var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice);
@@ -117,6 +118,7 @@ namespace Nine.Graphics.Materials
             {
                 return (existingInstance as DepthAndNormalMaterial) ?? new DepthAndNormalMaterial(GraphicsDevice);
             }
+#endif
             return null;
         }
         #endregion
