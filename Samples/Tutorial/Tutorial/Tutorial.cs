@@ -42,6 +42,7 @@ namespace Tutorial
 
             TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
 
+            Content = new ContentLoader(Services);
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;

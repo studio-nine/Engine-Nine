@@ -23,7 +23,7 @@ namespace Nine
             }
 
 #if WINDOWS_PHONE
-            throw new NotSupportedException("ContentManager.Create only works for ContentFactory");
+            throw new NotSupportedException("ContentManager.Create only works for ContentLoader");
 #else
             // Hack into ReadAsset using reflection.
 

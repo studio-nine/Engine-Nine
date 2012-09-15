@@ -1,8 +1,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine (Windows Phone)", "Nine\Nine (Windows Phone).csproj", "{4DA3D136-3470-46E9-BF93-B19E2ADB6EEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Graphics (Windows Phone)", "Nine.Graphics\Nine.Graphics (Windows Phone).csproj", "{953D3039-556F-44B2-AD65-D76FA20E8746}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Physics (Windows Phone)", "Nine.Physics\Nine.Physics (Windows Phone).csproj", "{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,18 @@ Global
 		{953D3039-556F-44B2-AD65-D76FA20E8746}.Release|Win32.ActiveCfg = Release|Windows Phone
 		{953D3039-556F-44B2-AD65-D76FA20E8746}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
 		{953D3039-556F-44B2-AD65-D76FA20E8746}.Release|Windows Phone.Build.0 = Release|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Debug|Any CPU.ActiveCfg = Debug|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Debug|Mixed Platforms.ActiveCfg = Debug|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Debug|Mixed Platforms.Build.0 = Debug|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Debug|Win32.ActiveCfg = Debug|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Debug|Windows Phone.Build.0 = Debug|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Release|Any CPU.ActiveCfg = Release|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Release|Mixed Platforms.Build.0 = Release|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Release|Win32.ActiveCfg = Release|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+		{B305AD6A-ECCD-4EC2-A8A3-53C2F5A08F74}.Release|Windows Phone.Build.0 = Release|Windows Phone
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,9 +11,12 @@
 <#@ include file="Content.tth" #>
 <#
     var assembly = Assembly.LoadFrom(Host.ResolvePath(assemblyFile));  
+    var phoneAssemblyFile = assemblyFile.Replace("x86", "Windows Phone");
+    var phoneAssembly = System.IO.File.Exists(phoneAssemblyFile) ? Assembly.LoadFrom(Host.ResolvePath(phoneAssemblyFile)) : null;
 #>
 #if !TEXT_TEMPLATE
 <#
+    var phoneTypes = phoneAssembly != null ? FindContentSerializableTypes(phoneAssembly) : Enumerable.Empty<Type>();
     foreach (var namespaceGroup in FindContentSerializableTypes(assembly).GroupBy(t => GetContentPipelineNamespace(t))
                                                                          .OrderBy(g => g.Key))
     {
@@ -26,6 +29,8 @@ namespace <#= namespaceGroup.Key #>
         var className = GetClassName(type);
         var classFullName = GetClassFullName(type);
         var members = FindContentSerializableMembers(type).ToArray();
+        var phoneType = phoneTypes.Where(t => t.Name == type.Name).FirstOrDefault();
+        var phoneMembers = phoneType != null ? FindContentSerializableMembers(phoneType).ToArray() : Enumerable.Empty<MemberInfo>();
 #>
     /// <summary>
     /// Content writer for <c><#= type.Name #></c>.
@@ -44,7 +49,14 @@ namespace <#= namespaceGroup.Key #>
         var memberType = GetMemberType(member);
         var memberTypeName = GetMemberTypeName(member);
         var primitiveTypeName = GetPrimitiveTypeName(GetMemberType(member));
-        var isSharedResource = IsMemberSharedResource(member);
+        var isSharedResource = IsMemberSharedResource(member);  
+        var supportedByPhone = phoneMembers.Any(m => m.Name == member.Name);
+        if (!supportedByPhone)
+        {
+#>
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+<#
+        }
 
         if (primitiveTypeName != null)
         {
@@ -109,11 +121,29 @@ namespace <#= namespaceGroup.Key #>
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+<#
+            if (phoneType == null)
+            {
+#>
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
+<#
+            }
+#>
             return "<#= GetContentReaderAssemblyQualifiedName(type) #>";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+<#
+            if (phoneType == null)
+            {
+#>
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
+<#
+            }
+#>
             return "<#= GetContentRuntimeTypeAssemblyQualifiedName(type) #>";
         }
     }

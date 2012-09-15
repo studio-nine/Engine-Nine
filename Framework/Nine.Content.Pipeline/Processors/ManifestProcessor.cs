@@ -12,12 +12,35 @@
     [ContentProcessor(DisplayName = "Manifest Processor - XNA Framework")]
     public class ManifestProcessor : ContentProcessor<string, string[]>
     {
+        private struct ContentProject
+        {
+            public string Project;
+            public string BaseDirectory;
+        }
+
         public override string[] Process(string input, ContentProcessorContext context)
         {
-            string contentProject;
-            string baseDirectory;
-            FindContentProject(input, out contentProject, out baseDirectory);
+            var files = new List<string>();
 
+            foreach (var project in FindContentProjects(input))
+            {
+                files.AddRange(FindContentFiles(project.Project, project.BaseDirectory, context));
+            }
+
+            files = files.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            files.Sort(StringComparer.OrdinalIgnoreCase);
+
+            // lastly we want to override the manifest file with this list. this allows us to 
+            // easily see what files were included in the build for debugging.
+            // But we don't want to modify the file to trigger another build.
+            if (!File.ReadAllLines(input).SequenceEqual(files, StringComparer.OrdinalIgnoreCase))
+                File.WriteAllLines(input, files);
+
+            return files.ToArray();
+        }
+
+        private static string[] FindContentFiles(string contentProject, string baseDirectory, ContentProcessorContext context)
+        {
             context.Logger.LogImportantMessage(string.Format("Processing manifest {0} at {1}", contentProject, baseDirectory));
 
             // we add a dependency on the content project itself to ensure our manifest is
@@ -87,47 +110,48 @@
 
             // we can now just add all of those files to our list
             files.AddRange(copiedAssetFiles);
-            files.Sort(StringComparer.OrdinalIgnoreCase);
-
-            // lastly we want to override the manifest file with this list. this allows us to 
-            // easily see what files were included in the build for debugging.
-            // But we don't want to modify the file to trigger another build.
-            if (!File.ReadAllLines(input).SequenceEqual(files, StringComparer.OrdinalIgnoreCase))
-                File.WriteAllLines(input, files);
 
             // just return the list which will be automatically serialized for us without
             // needing a ContentTypeWriter like we would have needed pre- XNA GS 3.1
             return files.ToArray();
         }
 
-        private static void FindContentProject(string input, out string contentProject, out string baseDirectory)
+        private static List<ContentProject> FindContentProjects(string input)
         {
-            baseDirectory = "";
-            string contentDirectory = input.Replace('/', '\\');
+            var result = new List<ContentProject>();
+            
+            var baseDirectory = "";
+            var contentDirectory = input.Replace('/', '\\');
             contentDirectory = contentDirectory.Substring(0, contentDirectory.LastIndexOf('\\'));
 
             while (true)
             {
                 var lastFolderSeperator = contentDirectory.LastIndexOf('\\');
                 if (lastFolderSeperator < 0)
-                    throw new InvalidOperationException("Could not locate content project.");
+                    break;
 
                 baseDirectory = Path.Combine(contentDirectory.Substring(lastFolderSeperator, contentDirectory.Length - lastFolderSeperator), baseDirectory);
 
                 contentDirectory = contentDirectory.Substring(0, lastFolderSeperator);
-                string[] contentProjects = Directory.GetFiles(contentDirectory, "*.contentproj");
+                
+                string[] contentProjects = Directory.GetFiles(contentDirectory + "\\", "*.contentproj");
 
                 if (contentProjects.Length == 0)
                     continue;
-                if (contentProjects.Length != 1)
-                    throw new InvalidOperationException("Multiple content project found.");
 
-                contentProject = contentProjects[0];
-                break;
+                foreach (var project in contentProjects)
+                {
+                    result.Add(new ContentProject
+                    {
+                        Project = project,
+                        BaseDirectory = baseDirectory.Replace("\\", "") + "\\",
+                    });
+                }
             }
 
-            baseDirectory = baseDirectory.Replace("\\", "");
-            baseDirectory += "\\";
+            if (result.Count <= 0)
+                throw new InvalidOperationException("Could not locate content project.");
+            return result;
         }
     }
 }

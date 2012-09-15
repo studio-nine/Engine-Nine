@@ -55,9 +55,6 @@
 
         private GraphicsDevice graphics;
         private Material material;
-#if !WINDOWS_PHONE
-        private ThickLineMaterial thickLineMaterial;
-#endif
         private RasterizerState rasterizerState;
         
         private DynamicVertexBuffer vertexBuffer;
@@ -65,8 +62,14 @@
         private VertexPositionColorNormalTexture[] vertexData;
         private ushort[] indexData;
 
+#if !WINDOWS_PHONE
+        private int lastLineVertex;
+        private int currentLineVertex;
+        private ThickLineMaterial thickLineMaterial;
         private VertexPositionColorTexture[] lineVertices;
         private FastList<int> lineIndices = new FastList<int>();
+#endif
+
         private FastList<PrimitiveGroupEntry> batches = new FastList<PrimitiveGroupEntry>();
         private FastList<int> vertexSegments = new FastList<int>();
         private FastList<int> indexSegments = new FastList<int>();
@@ -80,9 +83,6 @@
         private int baseSegmentVertex;
         private int baseSegmentIndex;
         private int beginSegment;
-
-        private int currentLineVertex;
-        private int lastLineVertex;
 
         private int initialBufferCapacity;
         private int maxBufferSizePerPrimitive;
@@ -140,6 +140,9 @@
         /// <summary>
         /// Begins a new primitive.
         /// </summary>
+#if WINDOWS_PHONE
+        /// <param name="lineWidth">This value will always be 1 on Windows Phone.</param>
+#endif
         public void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture, Matrix? world, float lineWidth)
         {
             if (hasPrimitiveBegin)
@@ -160,9 +163,11 @@
 
             beginSegment = currentSegment;
 
+#if !WINDOWS_PHONE
             lineIndices.Clear();
             currentLineVertex = 0;
             lastLineVertex = -1;
+#endif
         }
 
         /// <summary>
@@ -209,6 +214,7 @@
         /// </summary>
         public void AddVertex(ref VertexPositionColorTexture vertex)
         {
+#if !WINDOWS_PHONE
             if (currentPrimitive.PrimitiveType == PrimitiveType.LineList ||
                 currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
             {
@@ -219,7 +225,7 @@
                 lineVertices[currentLineVertex++] = vertex;
                 return;
             }
-
+#endif
             Vector3 zero = new Vector3();
             AddVertexInternal(ref vertex, ref zero);
         }
@@ -251,13 +257,14 @@
         /// </summary>
         public void AddIndex(int index)
         {
+#if !WINDOWS_PHONE
             if (currentPrimitive.PrimitiveType == PrimitiveType.LineList ||
                 currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
             {
                 lineIndices.Add(index);
                 return;
             }
-
+#endif
             AddIndexInternal(index);
         }
 
@@ -307,6 +314,7 @@
         /// </summary>
         public void EndPrimitive()
         {
+#if !WINDOWS_PHONE
             if (currentPrimitive.PrimitiveType == PrimitiveType.LineList ||
                 currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
             {
@@ -326,7 +334,7 @@
                 }
                 currentPrimitive.PrimitiveType = PrimitiveType.TriangleList;
             }
-
+#endif
             hasPrimitiveBegin = false;
             currentPrimitive.Segment = currentSegment;
             currentPrimitive.VertexCount = currentVertex - currentPrimitive.StartVertex;
@@ -347,6 +355,7 @@
             batches.Add(currentPrimitive);
         }
 
+#if !WINDOWS_PHONE
         /// <summary>
         /// Copy the line vertices to the real vertex data buffer.
         /// </summary>
@@ -419,6 +428,7 @@
             AddVertexInternal(ref v2, ref normal2);
             lastLineVertex = storeIndex ? last : -1;
         }
+#endif
 
         /// <summary>
         /// Determines if two batches can be merged into a single batch.

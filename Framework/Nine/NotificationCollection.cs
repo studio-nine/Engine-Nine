@@ -13,7 +13,7 @@ namespace Nine
     [DebuggerDisplay("Count = {Count}")]
     [DebuggerTypeProxy("System.Collections.Generic.Mscorlib_CollectionDebugView`1, mscorlib")]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    class NotificationCollection<T> : IList<T>, IList, INotifyCollectionChanged<T>
+    class NotificationCollection<T> : IList<T>, IList, INotifyCollectionChanged<T> where T : class
     {
         internal List<T> Elements = new List<T>();
 
@@ -89,6 +89,9 @@ namespace Nine
         /// </summary>
         public void Add(T value)
         {
+            if (value == null)
+                return;
+
             isDirty = true;
             Elements.Add(value);
 
@@ -354,7 +357,7 @@ namespace Nine
         }
     }
 
-    class NotificationCollectionReader<T> : ContentTypeReader<NotificationCollection<T>>
+    class NotificationCollectionReader<T> : ContentTypeReader<NotificationCollection<T>> where T : class
     {
         ContentTypeReader elementReader;
 

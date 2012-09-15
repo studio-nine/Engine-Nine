@@ -295,7 +295,9 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.DiffuseColor);
             output.Write(value.Enabled);
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.CastShadow);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
@@ -491,12 +493,19 @@ namespace Nine.Content.Pipeline.Graphics
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.InstancedModel value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "instanceTransforms", value.instanceTransforms);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Visible);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Template", value.Template);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.BoundingBoxPadding);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -512,11 +521,15 @@ namespace Nine.Content.Pipeline.Graphics
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.InstancedModelReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.InstancedModel, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -808,16 +821,27 @@ namespace Nine.Content.Pipeline.Graphics
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PointLight value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.SpecularColor);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.DiffuseColor);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Range);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Attenuation);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.CastShadow);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -833,11 +857,15 @@ namespace Nine.Content.Pipeline.Graphics
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PointLightReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PointLight, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -852,13 +880,21 @@ namespace Nine.Content.Pipeline.Graphics
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.ShadowMap value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Size);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "SurfaceFormat", value.SurfaceFormat);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.BlurEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.BlurAmount);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -874,11 +910,15 @@ namespace Nine.Content.Pipeline.Graphics
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.ShadowMapReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.ShadowMap, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -893,10 +933,15 @@ namespace Nine.Content.Pipeline.Graphics
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.SkyBox value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Visible);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Color);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Texture", value.Texture);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -912,11 +957,15 @@ namespace Nine.Content.Pipeline.Graphics
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.SkyBoxReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.SkyBox, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -931,19 +980,33 @@ namespace Nine.Content.Pipeline.Graphics
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.SpotLight value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.SpecularColor);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.DiffuseColor);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Range);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Attenuation);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.InnerAngle);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.OuterAngle);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Falloff);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.CastShadow);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -959,11 +1022,15 @@ namespace Nine.Content.Pipeline.Graphics
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.SpotLightReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.SpotLight, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -1473,7 +1540,9 @@ namespace Nine.Content.Pipeline.Graphics.Materials
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.CustomMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             {
                 output.Write(value.Parameters.Count);
                 foreach (var pair in value.Parameters)
@@ -1482,7 +1551,9 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                     output.WriteObject(pair.Value);
                 }
             }
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1498,11 +1569,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.CustomMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.CustomMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -1560,16 +1635,27 @@ namespace Nine.Content.Pipeline.Graphics.Materials
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.DepthMaterial value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.SkinningEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.TextureEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.ReferenceAlpha);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Texture", value.Texture);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Alpha);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.IsTransparent);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.IsAdditive);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.TwoSided);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "NextMaterial", value.NextMaterial);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1585,11 +1671,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.DepthMaterialReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.DepthMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -1739,13 +1829,17 @@ namespace Nine.Content.Pipeline.Graphics.Materials
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialPaintGroup value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             {
                 output.Write(value.MaterialParts.Count);
                 for (var i = 0; i < value.MaterialParts.Count; ++i)
                     output.WriteObject(value.MaterialParts[i]);
             }
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1761,11 +1855,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialPaintGroupReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialPaintGroup, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -1831,10 +1929,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.AlphaTestMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AlphaFunction", value.AlphaFunction);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.ReferenceAlpha);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1850,11 +1953,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.AlphaTestMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.AlphaTestMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -1869,8 +1976,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.BeginLightMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1886,11 +1996,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.BeginLightMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.BeginLightMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -1905,8 +2019,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1922,11 +2039,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -1941,9 +2062,13 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.ColorMatrixMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.ColorMatrix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1959,11 +2084,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.ColorMatrixMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.ColorMatrixMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -1978,8 +2107,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DeferredLightsMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1995,11 +2127,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.DeferredLightsMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.DeferredLightsMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2014,8 +2150,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DepthAndNormalMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2031,11 +2170,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.DepthAndNormalMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.DepthAndNormalMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2050,8 +2193,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DepthMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2067,11 +2213,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.DepthMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.DepthMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2086,12 +2236,19 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DetailMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "DetailTexture", value.DetailTexture);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Attenuation);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Distance);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.DetailTextureScale);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2107,11 +2264,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.DetailMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.DetailMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2126,15 +2287,25 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DiffuseMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.VertexColorEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.DiffuseColorEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.TextureEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Texture", value.Texture);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.DiffuseColor);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.OverlayColor);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "TextureAlphaUsage", value.TextureAlphaUsage);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2150,11 +2321,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.DiffuseMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.DiffuseMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2169,8 +2344,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DirectionalLightMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2186,11 +2364,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.DirectionalLightMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.DirectionalLightMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2205,9 +2387,13 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DualTextureMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Texture2", value.Texture2);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2223,11 +2409,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.DualTextureMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.DualTextureMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2242,12 +2432,19 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.EmissiveMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.EmissiveMapEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.EmissiveColorEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "EmissiveMap", value.EmissiveMap);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.EmissiveColor);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2263,11 +2460,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.EmissiveMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.EmissiveMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2282,8 +2483,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.EndLightMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2299,11 +2503,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.EndLightMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.EndLightMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2318,8 +2526,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2335,11 +2546,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2354,8 +2569,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.FogMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2371,11 +2589,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.FogMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.FogMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2390,8 +2612,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.InstancedMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2407,11 +2632,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.InstancedMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.InstancedMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2426,9 +2655,13 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.NormalMapMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "NormalMap", value.NormalMap);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2444,11 +2677,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.NormalMapMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.NormalMapMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2463,13 +2700,21 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.ShadowMapMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.ShadowColor);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.LightViewProjection);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.FilterSize);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Seed);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2485,11 +2730,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.ShadowMapMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.ShadowMapMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2504,10 +2753,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.SkinnedMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.MaxBones);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.WeightsPerVertex);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2523,11 +2777,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.SkinnedMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.SkinnedMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2542,13 +2800,21 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.SpecularMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.SpecularMapEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.SpecularColorEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "SpecularMap", value.SpecularMap);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.SpecularColor);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.SpecularPower);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2564,11 +2830,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.SpecularMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.SpecularMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2583,8 +2853,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2600,11 +2873,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2619,9 +2896,13 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.TextureTransformMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.TextureTransform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2637,11 +2918,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.TextureTransformMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.TextureTransformMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -2656,8 +2941,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.VertexTransformMaterialPart value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2673,11 +2961,15 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.Materials.MaterialParts.VertexTransformMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.Materials.MaterialParts.VertexTransformMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -3033,7 +3325,9 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             WriteObject(output, value, "Texture", value.Texture);
             output.WriteObject(value.SourceRectangle);
             output.Write(value.IsAdditive);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.SoftParticleEnabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.SoftParticleFade);
             output.Write(value.IsAsync);
             WriteObject(output, value, "Emitter", value.Emitter);
@@ -3318,14 +3612,23 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.AdaptationEffect value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Speed);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Material", value.Material);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.WriteObject(value.SurfaceFormat);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.WriteObject(value.RenderTargetSize);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.RenderTargetScale);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3341,11 +3644,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PostEffects.AdaptationEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PostEffects.AdaptationEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -3360,12 +3667,19 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.AntiAliasEffect value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.WriteObject(value.SurfaceFormat);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.WriteObject(value.RenderTargetSize);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.RenderTargetScale);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3381,11 +3695,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PostEffects.AntiAliasEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PostEffects.AntiAliasEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -3400,12 +3718,19 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.BloomEffect value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Threshold);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.BlurAmount);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.BloomIntensity);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3421,11 +3746,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PostEffects.BloomEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PostEffects.BloomEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -3440,12 +3769,19 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.BlurEffect value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.BlurAmount);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "TextureUsage", value.TextureUsage);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "BlendState", value.BlendState);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3461,11 +3797,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PostEffects.BlurEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PostEffects.BlurEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -3480,14 +3820,23 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.DepthOfFieldEffect value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.FocalPlane);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.FocalLength);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.FocalDistance);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.BlurAmount);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Quality);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3503,11 +3852,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PostEffects.DepthOfFieldEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PostEffects.DepthOfFieldEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -3522,14 +3875,23 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.HighDynamicRangeEffect value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Threshold);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.BlurAmount);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.AdaptationSpeed);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Exposure);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.BloomIntensity);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3545,11 +3907,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PostEffects.HighDynamicRangeEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PostEffects.HighDynamicRangeEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -3564,13 +3930,21 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.PostEffect value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Material", value.Material);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.WriteObject(value.SurfaceFormat);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.WriteObject(value.RenderTargetSize);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.RenderTargetScale);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3586,11 +3960,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PostEffects.PostEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PostEffects.PostEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -3605,16 +3983,23 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.PostEffectChain value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             {
                 output.Write(value.Effects.Count);
                 for (var i = 0; i < value.Effects.Count; ++i)
                     output.WriteObject(value.Effects[i]);
             }
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "TextureUsage", value.TextureUsage);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "BlendState", value.BlendState);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3630,11 +4015,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PostEffects.PostEffectChainReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PostEffects.PostEffectChain, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -3649,15 +4038,21 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.PostEffectGroup value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             {
                 output.Write(value.Passes.Count);
                 for (var i = 0; i < value.Passes.Count; ++i)
                     output.WriteObject(value.Passes[i]);
             }
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Material", value.Material);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Order);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -3673,11 +4068,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Graphics.PostEffects.PostEffectGroupReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Graphics.PostEffects.PostEffectGroup, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }

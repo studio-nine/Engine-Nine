@@ -89,7 +89,7 @@ namespace Nine.Physics
             space.ThreadManager.AddThread(delegate { Thread.CurrentThread.SetProcessorAffinity(new[] { 1 }); }, null);
             space.ThreadManager.AddThread(delegate { Thread.CurrentThread.SetProcessorAffinity(new[] { 3 }); }, null);
             space.ThreadManager.AddThread(delegate { Thread.CurrentThread.SetProcessorAffinity(new[] { 5 }); }, null);
-#else
+#elif !WINDOWS_PHONE
             if (Environment.ProcessorCount > 1)
             {
                 for (int i = 0; i < Environment.ProcessorCount; ++i)

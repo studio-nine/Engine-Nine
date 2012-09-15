@@ -19,17 +19,19 @@ namespace System.Xaml
 
         public static bool operator !=(AttachableMemberIdentifier left, AttachableMemberIdentifier right)
         {
-            return left.declaringType != right.declaringType || left.memberName != right.memberName;
+            return !(left == right);
         }
 
         public static bool operator ==(AttachableMemberIdentifier left, AttachableMemberIdentifier right)
         {
-            return left.declaringType == right.declaringType && left.memberName == right.memberName;
+            if (object.ReferenceEquals(left, null))
+                return object.ReferenceEquals(right, null);
+            return !object.ReferenceEquals(right, null) && left.declaringType == right.declaringType && left.memberName == right.memberName;
         }
 
         public bool Equals(AttachableMemberIdentifier other)
         {
-            return other.declaringType == declaringType && other.memberName == memberName;
+            return other != null && other.declaringType == declaringType && other.memberName == memberName;
         }
 
         public override bool Equals(object obj)

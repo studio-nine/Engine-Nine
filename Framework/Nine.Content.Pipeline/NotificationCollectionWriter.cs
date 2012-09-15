@@ -4,7 +4,7 @@
     using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
     [ContentTypeWriter()]
-    class NotificationCollectionWriter<T> : ContentTypeWriter<NotificationCollection<T>>
+    class NotificationCollectionWriter<T> : ContentTypeWriter<NotificationCollection<T>> where T : class
     {
         ContentTypeWriter elementWriter;
 

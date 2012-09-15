@@ -33,11 +33,18 @@ namespace Nine.Animations
     [ContentSerializable]
     public class TweenAnimation<T> : TimelineAnimation, ISupportTarget where T : struct
     {
+        enum PropertyState 
+        {
+            Outdated,
+            Created,
+            Error,
+        }
+
         private T from;
         private T to;
         private object target;
         private string targetProperty;
-        private bool expressionChanged;
+        private PropertyState propertyState = PropertyState.Outdated;
         private PropertyExpression<T> expression;
         private Interpolate<T> lerp;
         private Operator<T> add;
@@ -99,7 +106,7 @@ namespace Nine.Animations
         public object Target
         {
             get { return target; }
-            set { if (target != value) { target = value; expressionChanged = true; } }
+            set { if (target != value) { target = value; propertyState = PropertyState.Outdated; } }
         }
 
         /// <summary>
@@ -110,7 +117,7 @@ namespace Nine.Animations
         public string TargetProperty
         {
             get { return targetProperty; }
-            set { if (targetProperty != value) { targetProperty = value; expressionChanged = true; } }
+            set { if (targetProperty != value) { targetProperty = value; propertyState = PropertyState.Outdated; } }
         }
 
         /// <summary>
@@ -146,10 +153,18 @@ namespace Nine.Animations
         {
             if (Target != null && !string.IsNullOrEmpty(TargetProperty))
             {
-                if (expression == null || expressionChanged)
+                if (propertyState == PropertyState.Outdated)
                 {
-                    expression = new PropertyExpression<T>(Target, TargetProperty);
-                    expressionChanged = false;
+                    try
+                    {
+                        expression = new PropertyExpression<T>(Target, TargetProperty);
+                        propertyState = PropertyState.Created;
+                    }
+                    catch
+                    {
+                        expression = null;
+                        propertyState = PropertyState.Error;
+                    }
                 }
             }
 

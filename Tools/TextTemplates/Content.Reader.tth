@@ -25,7 +25,7 @@ namespace <#= namespaceGroup.Key #>
     {
         var className = GetClassName(type);
         var classFullName = GetClassFullName(type);
-        var members = FindContentSerializableMembers(type).ToArray();
+        var members = FindContentSerializableMembers(type).ToArray();     
         var notSupportedByWindowsPhone = false;
         if (notSupportedByWindowsPhone)
         {

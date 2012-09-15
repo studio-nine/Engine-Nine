@@ -11,6 +11,9 @@
     {
         protected override void Write(ContentWriter output, CustomMaterial value)
         {
+            if (output.TargetPlatform == TargetPlatform.WindowsPhone)
+                return;
+
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
             output.Write(value.IsTransparent);
             WriteObject(output, value, "Source", value.Source);
@@ -37,11 +40,15 @@
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
+            if (targetPlatform == TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
             return typeof(CustomMaterialReader).AssemblyQualifiedName;
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)
         {
+            if (targetPlatform == TargetPlatform.WindowsPhone)
+                return typeof(object).AssemblyQualifiedName;
             return typeof(CustomMaterial).AssemblyQualifiedName;
         }
     }

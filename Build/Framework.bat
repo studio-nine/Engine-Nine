@@ -7,6 +7,8 @@ set flags=/nologo /p:Configuration=Release /p:Optimize=true /p:DebugSymbols=fals
 
 pushd ..
 
+call %msbuild% %flags% Framework\Nine.Windows.sln
+
 pushd Tools\TextTemplates
 
 for /f "delims=" %%i in ('dir /b /a-d "*.Reader.tt"') do (

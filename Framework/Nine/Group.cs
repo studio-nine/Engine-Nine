@@ -62,9 +62,6 @@ namespace Nine
 
         void Child_Added(object value)
         {
-            if (value == null)
-                throw new ArgumentNullException("item");
-
             CheckIntegrity(value);
 
             if (!Nine.Content.ContentProperties.IsContentBuild)

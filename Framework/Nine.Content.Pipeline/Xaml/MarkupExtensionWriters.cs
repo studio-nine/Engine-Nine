@@ -29,6 +29,13 @@
             output.Write(value.MemberName);
         }
 
+        public override string GetRuntimeType(TargetPlatform targetPlatform)
+        {
+            if (targetPlatform == TargetPlatform.Windows)
+                return typeof(AttachableMemberIdentifier).AssemblyQualifiedName;
+            return "System.Xaml.AttachableMemberIdentifier, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(AttachableMemberIdentifierReader).AssemblyQualifiedName;
