@@ -100,15 +100,6 @@
 
         #region Transform
         /// <summary>
-        /// Gets the bounds of this sprite in world space.
-        /// </summary>
-        public BoundingRectangle BoundingBox
-        {
-            get { return boundingBox; }
-        }
-        private BoundingRectangle boundingBox;
-
-        /// <summary>
         /// Gets or sets the position of this sprite in local space.
         /// </summary>
         public Vector2 Position 

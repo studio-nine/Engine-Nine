@@ -1,6 +1,7 @@
 namespace Nine
 {
     using System;
+    using System.ComponentModel;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
@@ -151,16 +152,17 @@ namespace Nine
     /// <summary>
     /// Contains helper method for Matrix.
     /// </summary>
-    internal static class MatrixHelper
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static class MatrixHelper
     {
-        public static Matrix CreateRotation(Vector3 fromDirection, Vector3 toDirection)
+        internal static Matrix CreateRotation(Vector3 fromDirection, Vector3 toDirection)
         {
             Matrix result = new Matrix();
             CreateRotation(ref fromDirection, ref toDirection, out result);
             return result;
         }
-        
-        public static void CreateRotation(ref Vector3 fromDirection, ref Vector3 toDirection, out Matrix matrix)
+
+        internal static void CreateRotation(ref Vector3 fromDirection, ref Vector3 toDirection, out Matrix matrix)
         {
             Vector3 axis = new Vector3();
             Vector3.Cross(ref fromDirection, ref toDirection, out axis);
@@ -177,14 +179,14 @@ namespace Nine
             Matrix.CreateFromAxisAngle(ref axis, (float)Math.Acos(angle), out matrix);
         }
 
-        public static Matrix CreateRotation(Vector3 rotation, RotationOrder rotationOrder)
+        internal static Matrix CreateRotation(Vector3 rotation, RotationOrder rotationOrder)
         {
             Matrix result;
             CreateRotation(ref rotation, rotationOrder, out result);
             return result;
         }
 
-        public static void CreateRotation(ref Vector3 rotation, RotationOrder rotationOrder, out Matrix result)
+        internal static void CreateRotation(ref Vector3 rotation, RotationOrder rotationOrder, out Matrix result)
         {
             if (rotationOrder == RotationOrder.Zxy)
                 Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z, out result);
@@ -199,7 +201,7 @@ namespace Nine
             }
         }
 
-        public static Matrix CreateWorld(Vector3 position, Vector3 direction)
+        internal static Matrix CreateWorld(Vector3 position, Vector3 direction)
         {
             direction.Normalize();
             if (Math.Abs(direction.X * direction.Z) < 0.0001f)
@@ -226,7 +228,7 @@ namespace Nine
         /// Converts quaternion to Euler angle using:
         /// http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
         /// </summary>
-        public static void ToEulerAngle(ref Quaternion q1, out Vector3 eulerAngle)
+        public static void ToEulerAngle(this Quaternion q1, out Vector3 eulerAngle)
         {
             eulerAngle = new Vector3();
 
@@ -259,21 +261,26 @@ namespace Nine
             eulerAngle.X = (float)Math.Atan2(2 * q1.X * q1.W - 2 * q1.Y * q1.Z, -sqX + sqY - sqZ + sqW);
         }
 
+        public static bool Decompose(this Matrix transform, out Vector2 scale, out float rotation, out Vector2 position)
+        {
+            return Decompose(transform, out scale, out rotation, out position);
+        }
+
         /// <summary>
         /// Decompose a 2D transform matrix.
         /// http://math.stackexchange.com/questions/13150/extracting-rotation-scale-values-from-2d-transformation-matrix
         /// </summary>
-        public static bool Decompose(ref Matrix transform, out Vector2 scale, out float rotation, out Vector2 translation)
+        public static bool Decompose(ref Matrix transform, out Vector2 scale, out float rotation, out Vector2 position)
         {
-            translation = new Vector2();
-            translation.X = transform.M41;
-            translation.Y = transform.M42;
+            position = new Vector2();
+            position.X = transform.M41;
+            position.Y = transform.M42;
 
             scale = new Vector2();
-            scale.X = (float)(Math.Sign(transform.M11) * Math.Sqrt(transform.M11 * transform.M11 + transform.M12 * transform.M12));
-            scale.Y = (float)(Math.Sign(transform.M22) * Math.Sqrt(transform.M21 * transform.M21 + transform.M22 * transform.M22));
+            scale.X = (float)(Math.Sqrt(transform.M11 * transform.M11 + transform.M12 * transform.M12));
+            scale.Y = (float)(Math.Sqrt(transform.M21 * transform.M21 + transform.M22 * transform.M22));
 
-            rotation = (float)Math.Atan2(transform.M12, transform.M22);
+            rotation = (float)Math.Atan2(transform.M12, transform.M11);
             return true;
         }
     }

@@ -7,7 +7,7 @@
         
         <Sprite Texture="{ContentReference ../Textures/checker}" />
 
-        <Sprite Name="Rectangle2" Position="200,0" Scale="1,2" ZOrder="1" FlipX="True" Texture="{ContentReference ../Textures/checker}" />
+        <Sprite Name="Rectangle2" Position="200,0" Size="100,100" Scale="1,2" ZOrder="1" FlipX="True" Texture="{ContentReference ../Textures/checker}" />
 
         <Sprite Name="Rectangle1" Position="-200,0" Size="100,200" Scale="1,1" ZOrder="-1" FlipY="True">
             <BasicMaterial Texture="{ContentReference ../Textures/checker}" />

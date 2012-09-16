@@ -14,6 +14,24 @@
     public static class GraphicsExtensions
     {
         #region DrawSprite
+        public static void Draw(this SpriteBatch spriteBatch, Texture2D texture, ref Matrix transform, Rectangle? sourceRectangle, Color color, SpriteEffects effects, float layerDepth)
+        {
+            Vector2 position, scale;
+            float rotation;
+            MatrixHelper.Decompose(ref transform, out scale, out rotation, out position);
+
+            spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, Vector2.Zero, scale, effects, layerDepth);
+        }
+
+        public static void Draw(this SpriteBatch spriteBatch, SpriteFont font, string text, ref Matrix transform, Color color, SpriteEffects effects, float layerDepth)
+        {
+            Vector2 position, scale;
+            float rotation;
+            MatrixHelper.Decompose(ref transform, out scale, out rotation, out position);
+
+            spriteBatch.DrawString(font, text, position, color, rotation, Vector2.Zero, scale, effects, layerDepth);
+        }
+
         internal static void DrawFullscreenQuad(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, Color color, Effect effect)
         {
             SpriteBatch spriteBatch = PrepareSprite(graphics, effect);
