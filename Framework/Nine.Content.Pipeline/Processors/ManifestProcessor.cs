@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
+    using System.Text.RegularExpressions;
     using Microsoft.Xna.Framework.Content.Pipeline;
 
     // processor takes in a filename and returns a list of files in the content project being built or
@@ -12,11 +13,16 @@
     [ContentProcessor(DisplayName = "Manifest Processor - XNA Framework")]
     public class ManifestProcessor : ContentProcessor<string, string[]>
     {
-        private struct ContentProject
+        private struct ContentProjectInfo
         {
             public string Project;
             public string BaseDirectory;
         }
+
+        /// <summary>
+        /// Gets or sets the regular expression that is used to match the name of the content project.
+        /// </summary>
+        public string ContentProject { get; set; }
 
         public override string[] Process(string input, ContentProcessorContext context)
         {
@@ -116,9 +122,10 @@
             return files.ToArray();
         }
 
-        private static List<ContentProject> FindContentProjects(string input)
+        private List<ContentProjectInfo> FindContentProjects(string input)
         {
-            var result = new List<ContentProject>();
+            var result = new List<ContentProjectInfo>();
+            var match = string.IsNullOrEmpty(ContentProject) ? null : new Regex(ContentProject);
             
             var baseDirectory = "";
             var contentDirectory = input.Replace('/', '\\');
@@ -141,11 +148,14 @@
 
                 foreach (var project in contentProjects)
                 {
-                    result.Add(new ContentProject
+                    if (match == null || match.IsMatch(project))
                     {
-                        Project = project,
-                        BaseDirectory = baseDirectory.Replace("\\", "") + "\\",
-                    });
+                        result.Add(new ContentProjectInfo
+                        {
+                            Project = project,
+                            BaseDirectory = baseDirectory.Replace("\\", "") + "\\",
+                        });
+                    }
                 }
             }
 

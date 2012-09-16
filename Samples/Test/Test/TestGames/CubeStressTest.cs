@@ -23,7 +23,11 @@ namespace Test
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Vector3.UnitY, Direction = -Vector3.UnitY });
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Vector3.UnitZ, Direction = -Vector3.UnitZ });
 
+#if WINDOWS_PHONE
+            var size = 4;
+#else
             var size = 20;
+#endif
             var step = 2;
             for (var y = 0; y < size; y++)
                 for (var x = 0; x < size; x++)

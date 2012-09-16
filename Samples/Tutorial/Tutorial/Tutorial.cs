@@ -74,24 +74,29 @@ namespace Tutorial
             LoadNextScene();
             
             // Create an event based input handler.
-            // Note that you have to explictly keep a strong reference to the Input intance.
+            // Note that you have to explictly keep a strong reference to the Input instance.
             input = new Input();
-            input.MouseDown += new EventHandler<MouseEventArgs>(Input_MouseDown);
-            input.ButtonDown += new EventHandler<GamePadEventArgs>(Input_ButtonDown);
-
+#if XBOX
+            input.ButtonDown += (sender, e) =>
+            {
+                if (e.Button == Buttons.A)
+                    LoadNextScene();
+            };
+#elif WINDOWS_PHONE
+            input.EnabledGestures = Microsoft.Xna.Framework.Input.Touch.GestureType.DoubleTap;
+            input.GestureSampled += (sender, e) =>
+            {
+                if (e.GestureType == Microsoft.Xna.Framework.Input.Touch.GestureType.DoubleTap)
+                    LoadNextScene();
+            };
+#else
+            input.MouseDown += (sender, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                    LoadNextScene();
+            };       
+#endif
             base.LoadContent();
-        }
-
-        private void Input_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-                LoadNextScene();
-        }
-
-        private void Input_ButtonDown(object sender, GamePadEventArgs e)
-        {
-            if (e.Button == Buttons.A)
-                LoadNextScene();
         }
 
         /// <summary>

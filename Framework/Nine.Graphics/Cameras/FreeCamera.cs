@@ -37,6 +37,7 @@
         public Keys PrecisionModeKey { get; set; }
 
         private Vector2 mouseDown;
+        private bool mouseDownHasValue;
 
         public FreeCamera(GraphicsDevice graphics) : this(graphics, Vector3.Zero, 10.0f, 16f) { }
         public FreeCamera(GraphicsDevice graphics, Vector3 position) : this(graphics, position, 10.0f, 16f) { }
@@ -80,14 +81,25 @@
                 float centerX = mouseDown.X;
                 float centerY = mouseDown.Y;
 
+#if WINDOWS_PHONE
+                if (mouse.LeftButton == ButtonState.Pressed)
+#else
                 if (mouse.RightButton == ButtonState.Pressed)
+#endif
                 {
-                    angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * delta) / AspectRatio; // pitch
-                    angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * delta); // yaw
+                    if (mouseDownHasValue)
+                    {
+                        angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * delta) / AspectRatio; // pitch
+                        angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * delta); // yaw
+                    }
+                    mouseDown.X = mouse.X;
+                    mouseDown.Y = mouse.Y;
+                    mouseDownHasValue = true;
                 }
-
-                mouseDown.X = mouse.X;
-                mouseDown.Y = mouse.Y;
+                else
+                {
+                    mouseDownHasValue = false;
+                }
 
                 if (keyboard.IsKeyDown(PrecisionModeKey))
                     speed = PrecisionModeSpeed;

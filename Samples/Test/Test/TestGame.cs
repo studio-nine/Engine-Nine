@@ -51,7 +51,7 @@ namespace Test
         /// </summary>
         protected override void LoadContent()
         {
-            //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
 
             // Find all test games
@@ -65,20 +65,27 @@ namespace Test
             LoadNextScene();
 
             // Create an event based input handler.
-            // Note that you have to explictly keep a strong reference to the Input intance.
+            // Note that you have to explictly keep a strong reference to the Input instance.
             input = new Input();
-            input.MouseDown += (sender, e) =>
-            {
-                if (e.Button == MouseButtons.Left)
-                    LoadNextScene();
-            };
-
 #if XBOX
             input.ButtonDown += (sender, e) =>
             {
                 if (e.Button == Buttons.A)
                     LoadNextScene();
             };
+#elif WINDOWS_PHONE
+            input.EnabledGestures = Microsoft.Xna.Framework.Input.Touch.GestureType.DoubleTap;
+            input.GestureSampled += (sender, e) =>
+            {
+                if (e.GestureType == Microsoft.Xna.Framework.Input.Touch.GestureType.DoubleTap)
+                    LoadNextScene();
+            };
+#else
+            input.MouseDown += (sender, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                    LoadNextScene();
+            };       
 #endif
 
             base.LoadContent();

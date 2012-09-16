@@ -127,10 +127,17 @@
     <Reference Include="Microsoft.Xna.Framework.Game" />
     <Reference Include="Microsoft.Xna.Framework.GamerServices" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
-    <Reference Include="Nine" />
-    <Reference Include="Nine.Graphics" />
-    <Reference Include="Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
+    <Reference Include="Nine">
+      <HintPath>..\..\..\References\Windows Phone\Nine.dll</HintPath>
+    </Reference>
+    <Reference Include="Nine.Graphics">
+      <HintPath>..\..\..\References\Windows Phone\Nine.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL">
+      <HintPath>..\..\..\References\Windows Phone\Nine.Physics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />

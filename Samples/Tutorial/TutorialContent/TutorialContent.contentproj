@@ -235,6 +235,7 @@
       <Name>Tutorials</Name>
       <Importer>ManifestImporter</Importer>
       <Processor>ManifestProcessor</Processor>
+      <ProcessorParameters_ContentProject>TutorialContent.contentproj</ProcessorParameters_ContentProject>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -280,12 +281,6 @@
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TutorialData\TutorialData.csproj">
-      <Project>{EE06D957-65AF-441C-AB8F-4FD2404DC527}</Project>
-      <Name>TutorialData</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tutorials\03. Materials.xaml">
@@ -377,7 +372,12 @@
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TutorialData\TutorialData.csproj">
+      <Project>{EE06D957-65AF-441C-AB8F-4FD2404DC527}</Project>
+      <Name>TutorialData</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Templates\Player.xaml">
       <Generator>MSBuild:Compile</Generator>

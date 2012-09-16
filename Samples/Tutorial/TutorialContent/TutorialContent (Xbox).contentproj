@@ -235,7 +235,7 @@
       <Name>Tutorials</Name>
       <Importer>ManifestImporter</Importer>
       <Processor>ManifestProcessor</Processor>
-      <ProcessorParameters_ContentProject>.%2a%28Windows Phone%29.%2a</ProcessorParameters_ContentProject>
+      <ProcessorParameters_ContentProject>TutorialContent.contentproj</ProcessorParameters_ContentProject>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -373,9 +373,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TutorialData\TutorialData %28Windows Phone%29.csproj">
-      <Project>{D50936DC-1B06-4308-BB52-2F5A7575123E}</Project>
-      <Name>TutorialData %28Windows Phone%29</Name>
+    <ProjectReference Include="..\TutorialData\TutorialData %28Xbox%29.csproj">
+      <Project>{8BC9A504-AEE3-42F4-B8DB-851AF1031EB6}</Project>
+      <Name>TutorialData %28Xbox%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -157,7 +157,11 @@
             get { return isAsync == 1; }
             set { Interlocked.Exchange(ref isAsync, value ? 1 : 0); }
         }
+#if WINDOWS_PHONE
+        private int isAsync = 0;
+#else
         private int isAsync = 1;
+#endif
 
         /// <summary>
         /// Gets a value indicating whether this instance is disposed.
@@ -622,7 +626,7 @@
                 if (isAsync == 1)
                 {
                     // Once this particle effect is drawed, we start the update
-                    // asychroniously to maximize parallelism.
+                    // asynchronously to maximize parallelism.
                     while (numFramesBehind > 0)
                     {
                         UpdateAsync(this);

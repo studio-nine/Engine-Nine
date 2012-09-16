@@ -2,6 +2,7 @@
 {
     using System;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
@@ -72,9 +73,9 @@
 #if XBOX
             GamePadState state = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
             if (state.Buttons.LeftShoulder == ButtonState.Pressed)
-                Radius -= (MaxRadius - MinRadius) * 0.005f * Sensitivity;
+                Radius -= (MaxRadius - MinRadius) * 0.005f * WheelSpeed;
             if (state.Buttons.RightShoulder == ButtonState.Pressed)
-                Radius += (MaxRadius - MinRadius) * 0.005f * Sensitivity;
+                Radius += (MaxRadius - MinRadius) * 0.005f * WheelSpeed;
 
             if (Radius < MinRadius)
                 Radius = MinRadius;
@@ -82,8 +83,8 @@
                 Radius = MaxRadius;
 
             BeginRotation(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            EndRotation(GraphicsDevice.Viewport.Width / 2 + state.ThumbSticks.Right.X * 5 * Sensitivity,
-                        GraphicsDevice.Viewport.Height / 2 - state.ThumbSticks.Right.Y * 5 * Sensitivity);
+            EndRotation(GraphicsDevice.Viewport.Width / 2 + state.ThumbSticks.Right.X * 5 * WheelSpeed,
+                        GraphicsDevice.Viewport.Height / 2 - state.ThumbSticks.Right.Y * 5 * WheelSpeed);
 #endif
         }
 

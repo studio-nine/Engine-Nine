@@ -55,28 +55,6 @@
             <FadeController />
         </ParticleEffect>
         
-        <!-- 
-        <ParticleEffect Name="Fireball">
-            <ParticleEffect.Emitter>
-                <PointEmitter Emission="50" Duration="0.5 ~ 1" Speed="0.2 ~ 0.4" Size="0.5 ~ 1" />
-            </ParticleEffect.Emitter>
-
-            <SizeController EndSize="1 ~ 2" />
-            <FadeController />
-        </ParticleEffect>
-        
-        Particle system can also be animated using tween animation
-        <Group.Animations>
-            <LayeredAnimation x:Key="Default">
-                <Vector3Animation TargetProperty="['Fireball'].Position" Duration="00:00:03"
-                                         Curve="Sin" AutoReverse="True" Repeat="999999" From="-20, 15, 0" To="-10, 15, 0"/>
-                 -->
-                <!-- Animated textures can also be applied to the particle system using the following method
-                <SpriteAnimation TargetProperty="['Fireball'].ParticleEffect.TextureList" 
-                                        TextureList="..\Textures\fireball002" Repeat="999999"/>
-            </LayeredAnimation>            
-        </Group.Animations>
- -->
     </Group>
 
     <ParticleEffect Transform.Position="10, 0, 10" Texture="{ContentReference ../Textures/smoke}" SoftParticleEnabled="True">
@@ -94,6 +72,6 @@
         <SizeController EndSize ="4 ~ 5" />
         <SpeedController EndSpeed ="0" />
         <FadeController />
-
     </ParticleEffect>
+    
 </Scene>

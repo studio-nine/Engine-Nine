@@ -140,7 +140,11 @@
             if (!Enabled)
                 return;
 
+#if WINDOWS_PHONE
+            if (e.IsButtonDown(MouseButtons.Left))
+#else
             if (e.IsButtonDown(MouseButtons.Right))
+#endif
             {
                 X = startPosition.X - (e.X - startMouse.X) / Zoom;
                 if (CoordinateType == ScreenCameraCoordinate.TwoDimension)

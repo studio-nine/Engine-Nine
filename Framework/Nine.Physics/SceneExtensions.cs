@@ -86,9 +86,9 @@ namespace Nine.Physics
             // Currently, BEPUphysics will allocate an equal amount of work to each thread on the xbox360.
             // If two threads are put on one core, it will bottleneck the engine and run significantly slower than using 3 hardware threads.
 
-            space.ThreadManager.AddThread(delegate { Thread.CurrentThread.SetProcessorAffinity(new[] { 1 }); }, null);
-            space.ThreadManager.AddThread(delegate { Thread.CurrentThread.SetProcessorAffinity(new[] { 3 }); }, null);
-            space.ThreadManager.AddThread(delegate { Thread.CurrentThread.SetProcessorAffinity(new[] { 5 }); }, null);
+            space.ThreadManager.AddThread(delegate { System.Threading.Thread.CurrentThread.SetProcessorAffinity(new[] { 1 }); }, null);
+            space.ThreadManager.AddThread(delegate { System.Threading.Thread.CurrentThread.SetProcessorAffinity(new[] { 3 }); }, null);
+            space.ThreadManager.AddThread(delegate { System.Threading.Thread.CurrentThread.SetProcessorAffinity(new[] { 5 }); }, null);
 #elif !WINDOWS_PHONE
             if (Environment.ProcessorCount > 1)
             {

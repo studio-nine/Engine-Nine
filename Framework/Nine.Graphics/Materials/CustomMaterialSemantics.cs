@@ -105,12 +105,12 @@ namespace Nine.Graphics.Materials
             try
             {
                 // TODO: Try catch is slow, move this to the content pipeline?
-                semantic = (EffectSemantics)Enum.Parse(typeof(EffectSemantics), sematics, true);
+                semantic = (CustomEffectSemantics)Enum.Parse(typeof(CustomEffectSemantics), sematics, true);
                 return true;
             }
-            catch (Exception)
+            catch
             {
-                semantic = EffectSemantics.Ambient;
+                semantic = CustomEffectSemantics.World;
                 return false;
             }
 #elif SILVERLIGHT

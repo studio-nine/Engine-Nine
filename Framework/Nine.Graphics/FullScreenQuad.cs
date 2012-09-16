@@ -108,6 +108,12 @@
 
         public void Draw(DrawingContext context, Material material)
         {
+#if WINDOWS_PHONE
+            var view = context.matrices.view;
+            var projection = context.matrices.projection;
+
+            context.matrices.view = context.matrices.projection = material.world = Matrix.Identity;
+#endif
             if (Texture != null)
                 material.texture = Texture;
             material.BeginApply(context);
@@ -118,8 +124,12 @@
 #if SILVERLIGHT
             vertexPassThrough2.BeginApply(context);
             GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+
 #elif WINDOWS_PHONE
             GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+
+            context.matrices.view = view;
+            context.matrices.projection = projection;
 #else
             // Apply a vertex pass through material in case the specified material does
             // not have a vertex shader.

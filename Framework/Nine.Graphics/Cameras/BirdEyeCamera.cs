@@ -2,6 +2,7 @@
 {
     using System;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
@@ -33,10 +34,12 @@
         public BirdEyeCamera(GraphicsDevice graphics) : this(graphics, 50, MathHelper.PiOver2 * 0.6f) { }
         public BirdEyeCamera(GraphicsDevice graphics, float radius, float pitch) : base(graphics)
         {
-#if !WINDOWS_PHONE
+#if WINDOWS_PHONE
+            TranslateButton = MouseButtons.Left;
+#else
             RotateButton = MouseButtons.Middle;
-#endif
             TranslateButton = MouseButtons.Right;
+#endif
 
             WheelSpeed = 1.0f;
             Speed = 0.04f;
@@ -76,20 +79,20 @@
 #if XBOX
             GamePadState state = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
             if (state.Buttons.LeftShoulder == ButtonState.Pressed)
-                Radius -= (MaxRadius - MinRadius) * 0.005f * Sensitivity;
+                Radius -= (MaxRadius - MinRadius) * 0.005f * Speed;
             if (state.Buttons.RightShoulder == ButtonState.Pressed)
-                Radius += (MaxRadius - MinRadius) * 0.005f * Sensitivity;
+                Radius += (MaxRadius - MinRadius) * 0.005f * Speed;
 
             if (Radius < MinRadius)
                 Radius = MinRadius;
             else if (Radius > MaxRadius)
                 Radius = MaxRadius;
 
-            float dx = -state.ThumbSticks.Right.X * Sensitivity;
-            float dz = state.ThumbSticks.Right.Y * Sensitivity;
+            float dx = -state.ThumbSticks.Right.X * Speed;
+            float dz = state.ThumbSticks.Right.Y * Speed;
             
-            target.X -= ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * 0.1f;
-            target.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * 0.1f;
+            lookAt.X -= ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * 0.1f;
+            lookAt.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * 0.1f;
 #endif
         }
 

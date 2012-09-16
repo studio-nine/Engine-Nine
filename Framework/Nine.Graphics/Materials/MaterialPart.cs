@@ -166,9 +166,10 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected EffectParameter GetParameterBySemantic(string semantic)
         {
+#if WINDOWS
             if (IsContentBuild)
                 return null;
-
+#endif
             foreach (EffectParameter parameter in MaterialGroup.Effect.Parameters)
                 if (parameter.Semantic == semantic && parameter.Name.EndsWith(ParameterSuffix))
                     return parameter;
