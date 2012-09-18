@@ -4,15 +4,17 @@
     using System.Collections.Generic;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Animations;
     using Nine.Graphics.Drawing;
-    using Nine.Graphics.Materials;
+    using Nine.Graphics.Materials;    
     
     /// <summary>
     /// Defines a 2D textured sprite.
     /// </summary>
     [ContentProperty("Material")]
-    public class Sprite : Transformable, ISprite
+    public class Sprite : Transformable, ISprite, Nine.IUpdateable
     {
         #region Properties
         /// <summary>
@@ -96,6 +98,16 @@
             set { zOrder = value; }
         }
         private int zOrder;
+
+        /// <summary>
+        /// Gets the animations of this sprite.
+        /// </summary>
+        public AnimationPlayer Animations
+        {
+            get { return animations; }
+            set { animations = value; }
+        }
+        private AnimationPlayer animations = new AnimationPlayer();
         #endregion
 
         #region Transform
@@ -200,6 +212,15 @@
 
             Visible = true;
             GraphicsDevice = graphics;
+        }
+
+        /// <summary>
+        /// Updates the animations of this sprite.
+        /// </summary>
+        public void Update(TimeSpan elapsedTime)
+        {
+            if (animations != null)
+                animations.Update(elapsedTime);
         }
 
         /// <summary>
@@ -363,8 +384,6 @@
                 Vector2 worldPosition;
                 Matrix worldTransform = AbsoluteTransform;
                 ApplyScaleFactor(ref worldTransform);
-
-                // TODO: The decomposition process will cause precision problems...
                 MatrixHelper.Decompose(ref worldTransform, out worldScale, out worldRotation, out worldPosition);
 
                 UpdateAnchorPoint();

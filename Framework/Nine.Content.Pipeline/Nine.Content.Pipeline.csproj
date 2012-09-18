@@ -162,12 +162,10 @@
     <Compile Include="Xaml\TextureTransform.cs" />
     <Compile Include="Xaml\Transform.cs" />
     <Compile Include="TreeWriter.cs" />
-    <Compile Include="Graphics\TextureListContent.cs" />
-    <Compile Include="Importers\SequentialTextureListImporter.cs" />
+    <Compile Include="Graphics\TextureAtlasContent.cs" />
     <Compile Include="Processors\ModelAnimationProcessor.cs" />
     <Compile Include="Processors\ModelSkeletonProcessor.cs" />
-    <Compile Include="Processors\SequentialTextureListProcessor.cs" />
-    <Compile Include="Processors\GridTextureListProcessor.cs" />
+    <Compile Include="Processors\TextureAtlasProcessor.cs" />
     <Compile Include="Importers\RawTextureImporter.cs" />
     <Compile Include="Processors\GrayScaleTextureProcessor.cs" />
     <Compile Include="Processors\SplatterTextureProcessor.cs" />

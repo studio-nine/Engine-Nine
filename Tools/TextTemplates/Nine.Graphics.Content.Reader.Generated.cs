@@ -97,7 +97,6 @@ namespace Nine.Animations
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SpriteAnimation();
-            existingInstance.Source = input.ReadObject<Nine.Graphics.TextureList>();
             existingInstance.TargetProperty = input.ReadObject<System.String>();
             existingInstance.BeginFrame = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.EndFrame = input.ReadObject<System.Nullable<System.Int32>>();
@@ -682,6 +681,7 @@ namespace Nine.Graphics
             existingInstance.FlipX = input.ReadBoolean();
             existingInstance.FlipY = input.ReadBoolean();
             existingInstance.ZOrder = input.ReadInt32();
+            existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
             existingInstance.Position = input.ReadVector2();
             existingInstance.Scale = input.ReadVector2();
             existingInstance.Rotation = input.ReadSingle();

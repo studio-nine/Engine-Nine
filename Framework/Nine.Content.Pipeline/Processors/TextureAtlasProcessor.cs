@@ -14,11 +14,17 @@
     /// <summary>
     /// Processes image sequential
     /// </summary>
-    [ContentProcessor(DisplayName = "Sequential Texture List - Engine Nine")]
-    public class SequentialTextureListProcessor : ContentProcessor<string[], TextureListContent>
+    [ContentProcessor(DisplayName = "Texture Atlas - Engine Nine")]
+    public class TextureAtlasProcessor : ContentProcessor<Texture2DContent, TextureAtlasContent>
     {
+        [DefaultValue(1)]
+        public int RowCount { get; set; }
+
+        [DefaultValue(1)]
+        public int ColumnCount { get; set; }
+
         [DefaultValue(true)]
-        [Description("Wether the images will be packed into a single large texture.")]
+        [Description("Whether the images will be packed into a single large texture.")]
         public bool Pack { get; set; }
 
         [DefaultValue(typeof(Color), "255, 0, 255, 255")]
@@ -39,9 +45,11 @@
         [DefaultValue(TextureProcessorOutputFormat.Color)]
         public TextureProcessorOutputFormat TextureFormat { get; set; }
 
-        public SequentialTextureListProcessor()
+        public TextureAtlasProcessor()
         {
             Pack = true;
+            RowCount = 1;
+            ColumnCount = 1;
 
             ColorKey = new Color(255, 0, 255, 255);
             ColorKeyEnabled = true;
@@ -51,7 +59,7 @@
             TextureFormat = TextureProcessorOutputFormat.Color;
         }
 
-        public override TextureListContent Process(string[] input, ContentProcessorContext context)
+        public override TextureAtlasContent Process(Texture2DContent input, ContentProcessorContext context)
         {
             TextureProcessor processor = new TextureProcessor();
 
@@ -63,11 +71,19 @@
             processor.TextureFormat = TextureFormat;
 
 
-            TextureListContent result = new TextureListContent();        
+            TextureAtlasContent result = new TextureAtlasContent();        
             List<BitmapContent> sourceSprites = new List<BitmapContent>();
 
+            string[] inputFiles = Import(input.Identity.SourceFilename);
+
+            if (inputFiles.Length <= 0)
+                throw new InvalidOperationException();
+
+            if (inputFiles.Length == 1)
+                return ProcessSingleTexture(input, context, processor);
+
             // Loop over each input sprite filename.
-            foreach (string inputFilename in input)
+            foreach (string inputFilename in inputFiles)
             {
                 // Store the name of this sprite.
                 string spriteName = Path.GetFileNameWithoutExtension(inputFilename);
@@ -81,8 +97,7 @@
                 Texture2DContent texture =
                     context.BuildAndLoadAsset<Texture2DContent,
                                               Texture2DContent>(textureReference, null);
-
-
+                
                 if (Pack)
                 {
                     result.SpriteTextures.Add(0);
@@ -112,6 +127,72 @@
                 content = (Texture2DContent)processor.Process(content, context);
 
                 result.Textures.Add(content);
+            }
+
+            return result;
+        }
+
+        private string[] Import(string filename)
+        {
+            int i = 0;
+            int num = 0;
+            int digits = 0;
+
+            string name = Path.GetFileNameWithoutExtension(filename);
+
+            for (i = name.Length - 1; i >= 0; i--)
+            {
+                if (!(name[i] <= '9' && name[i] >= '0'))
+                    break;
+
+                digits++;
+            }
+
+            if (digits <= 0)
+                return new string[] { filename };
+
+            string baseName = name.Substring(0, i + 1);
+            num = int.Parse(name.Substring(i + 1));
+            num++;
+
+            string ext = Path.GetExtension(filename);
+            string dir = filename.Substring(0, filename.LastIndexOf(Path.DirectorySeparatorChar));
+            string file = Path.Combine(dir, baseName + string.Format("{0:d" + digits + "}", (num++)) + ext);
+
+            List<string> result = new List<string>();
+
+            result.Add(filename);
+
+            while (File.Exists(file))
+            {
+                result.Add(file);
+
+                file = Path.Combine(dir, baseName + string.Format("{0:d" + digits + "}", (num++)) + ext);
+            }
+
+            return result.ToArray();
+        }
+
+        private TextureAtlasContent ProcessSingleTexture(Texture2DContent input, ContentProcessorContext context, TextureProcessor processor)
+        {
+            Texture2DContent texture = (Texture2DContent)processor.Process(input, context);
+
+            TextureAtlasContent result = new TextureAtlasContent();
+
+            result.Textures.Add(texture);
+
+            int width = input.Mipmaps[0].Width;
+            int height = input.Mipmaps[0].Height;
+
+            for (int y = 0; y < RowCount; ++y)
+            {
+                for (int x = 0; x < ColumnCount; ++x)
+                {
+                    result.SpriteTextures.Add(0);
+                    result.SpriteRectangles.Add(new Rectangle(
+                        x * width / ColumnCount, y * height / RowCount,
+                        width / ColumnCount, height / RowCount));
+                }
             }
 
             return result;

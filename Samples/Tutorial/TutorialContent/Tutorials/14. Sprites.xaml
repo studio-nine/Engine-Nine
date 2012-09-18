@@ -13,6 +13,12 @@
             <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
         </Sprite>
 
+        <Sprite Name="Fireball" Position="0,200">
+            <Sprite.Animations>
+                <SpriteAnimation Source="{ContentReference ../Textures/fireball}" />
+            </Sprite.Animations>
+        </Sprite>
+
         <TextSprite Anchor="1,1" Name="Wait" Text="Press any key to continue..." Font="{ContentReference ../Consolas}" ZOrder="1" />
 
         <Group.Animations>

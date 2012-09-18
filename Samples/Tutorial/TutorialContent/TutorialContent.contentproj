@@ -171,9 +171,9 @@
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\fireball\fireball002.DDS">
       <Link>Textures\fireball002.DDS</Link>
-      <Name>fireball002</Name>
-      <Importer>SequentialTextureListImporter</Importer>
-      <Processor>SequentialTextureListProcessor</Processor>
+      <Name>fireball</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureAtlasProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

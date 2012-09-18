@@ -11,7 +11,7 @@
     /// This is saved into XNB format by the SpriteSheetWriter helper class, then
     /// at runtime, the SpriteSheetReader loads the data into a SpriteSheet object.
     /// </summary>
-    public class TextureListContent
+    public class TextureAtlasContent
     {
         // Single texture contains many separate sprite images.
         public List<Texture2DContent> Textures { get; set; }
@@ -26,7 +26,7 @@
         public Dictionary<string, int> SpriteNames { get; set; }
 
 
-        public TextureListContent()
+        public TextureAtlasContent()
         {
             Textures = new List<Texture2DContent>();
             SpriteRectangles = new List<Rectangle>();
@@ -40,12 +40,12 @@
     /// Content pipeline support class for saving sprite sheet data into XNB format.
     /// </summary>
     [ContentTypeWriter]
-    internal class TextureListWriter : ContentTypeWriter<TextureListContent>
+    class PackedTextureWriter : ContentTypeWriter<TextureAtlasContent>
     {
         /// <summary>
         /// Saves sprite sheet data into an XNB file.
         /// </summary>
-        protected override void Write(ContentWriter output, TextureListContent value)
+        protected override void Write(ContentWriter output, TextureAtlasContent value)
         {
             output.WriteObject(value.Textures.ToArray());
             output.WriteObject(value.SpriteRectangles.ToArray());
@@ -60,7 +60,7 @@
         /// </summary>
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return typeof(Nine.Graphics.TextureListReader).AssemblyQualifiedName;
+            return typeof(Nine.Graphics.TextureAtlasReader).AssemblyQualifiedName;
         }
 
 
@@ -70,7 +70,7 @@
         /// </summary>
         public override string GetRuntimeType(TargetPlatform targetPlatform)
         {
-            return typeof(Nine.Graphics.TextureList).AssemblyQualifiedName;
+            return typeof(Nine.Graphics.TextureAtlas).AssemblyQualifiedName;
         }
     }
 }

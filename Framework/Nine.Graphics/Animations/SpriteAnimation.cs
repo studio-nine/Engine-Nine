@@ -16,17 +16,17 @@
         private object target;
         private string targetProperty;
         private bool expressionChanged;
-        private PropertyExpression<TextureListItem> expression;
+        private PropertyExpression<TextureAtlasFrame> expression;
 
         /// <summary>
         /// Gets or sets the texture list used by this <see cref="SpriteAnimation"/>.
         /// </summary>
-        public TextureList Source
+        public TextureAtlas Source
         {
             get { return source; }
             set { source = value; if (source != null) TotalFrames = source.Count; }
         }
-        private TextureList source;
+        private TextureAtlas source;
 
         /// <summary>
         /// Gets the texture for this <see cref="SpriteAnimation"/>.
@@ -56,7 +56,7 @@
 
         /// <summary>
         /// Gets or sets the target property that this sprite animation should affect.
-        /// The property must be of type <see cref="TextureListItem"/>.
+        /// The property must be of type <see cref="TextureAtlasFrame"/>.
         /// </summary>
         public string TargetProperty
         {
@@ -67,46 +67,28 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteAnimation"/> class.
         /// </summary>
-        internal SpriteAnimation()
-        {
-            Source = new TextureList();
-        }
+        public SpriteAnimation() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteAnimation"/> class.
         /// </summary>
-        public SpriteAnimation(IEnumerable<Texture2D> textures)
+        public SpriteAnimation(TextureAtlas textureAtlas)
         {
-            var list = new TextureList();
-
-            foreach (Texture2D texture in textures)
-            {
-                list.Add(texture, texture.Bounds);
-            }
-
-            Source = list;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpriteAnimation"/> class.
-        /// </summary>
-        public SpriteAnimation(TextureList textureList)
-        {
-            if (textureList == null)
+            if (textureAtlas == null)
                 throw new ArgumentNullException();
 
-            Source = textureList;
+            Source = textureAtlas;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteAnimation"/> class.
         /// </summary>
-        public SpriteAnimation(TextureList textureList, int beginFrame, int frameCount)
+        public SpriteAnimation(TextureAtlas textureAtlas, int beginFrame, int frameCount)
         {
-            if (textureList == null)
+            if (textureAtlas == null)
                 throw new ArgumentNullException();
 
-            Source = textureList;
+            Source = textureAtlas;
 
             BeginFrame = beginFrame;
             EndFrame = BeginFrame + frameCount;
@@ -124,10 +106,10 @@
             {
                 if (expression == null || expressionChanged)
                 {
-                    expression = new PropertyExpression<TextureListItem>(Target, TargetProperty);
+                    expression = new PropertyExpression<TextureAtlasFrame>(Target, TargetProperty);
                     expressionChanged = false;
                 }
-                expression.Value = new TextureListItem(Texture, SourceRectangle);
+                expression.Value = new TextureAtlasFrame(Texture, SourceRectangle);
             }
         }
     }

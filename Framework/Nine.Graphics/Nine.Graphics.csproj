@@ -242,7 +242,7 @@
     <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
     <Compile Include="TextureTransform.cs" />
-    <Compile Include="TextureList.cs" />
+    <Compile Include="TextureAtlas.cs" />
     <Compile Include="EffectExtensions.cs" />
     <Compile Include="ParticleEffects\ParticleEmitter.cs" />
     <Compile Include="Cameras\FreeCamera.cs" />
