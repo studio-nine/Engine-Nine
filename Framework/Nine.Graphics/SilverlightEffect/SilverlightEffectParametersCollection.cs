@@ -36,7 +36,10 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             get
             {
-                return parameters.FirstOrDefault(current => current.Name == name);
+                EffectParameter result = FindName(name);
+                if (result == null)
+                    result = FindName(string.Concat(name, "Sampler"));
+                return result;
             }
         }
 
@@ -52,6 +55,16 @@ namespace Microsoft.Xna.Framework.Graphics
         internal EffectParametersCollection(IEnumerable<EffectParameter> sourceParameters)
         {
             parameters = new List<EffectParameter>(sourceParameters);
+        }
+
+        private EffectParameter FindName(string name)
+        {
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                if (parameters[i].Name == name)
+                    return parameters[i];
+            }
+            return null;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

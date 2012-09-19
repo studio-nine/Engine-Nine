@@ -20,7 +20,7 @@ namespace Nine
         /// Gets or sets a predicate that filters the result of the inner query.
         /// Objects passed the predicated will be included in the query.
         /// </summary>
-        public Predicate<TInput> Filter { get; set; }
+        public Predicate<TInput> Condition { get; set; }
 
         /// <summary>
         /// Gets or sets a predicate that converts the result of the inner query.
@@ -34,7 +34,7 @@ namespace Nine
             if (queries == null)
                 throw new ArgumentNullException("query");
             
-            this.Filter = d => d is TOutput;
+            this.Condition = d => d is TOutput;
             this.Converter = d => (TOutput)(object)d;
             this.InnerQueries = new List<ISpatialQuery<TInput>>(queries);
             this.adapter = new CollectionAdapter() { Parent = this };
@@ -42,7 +42,7 @@ namespace Nine
 
         private bool Convert(TInput input, out TOutput output)
         {
-            if (Filter != null && !Filter(input))
+            if (Condition != null && !Condition(input))
             {
                 output = default(TOutput);
                 return false;

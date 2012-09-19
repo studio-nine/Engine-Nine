@@ -35,6 +35,7 @@
     <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9" />
     <Reference Include="Nine.Content.Pipeline, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
+    <Reference Include="Nine.Content.Pipeline.Silverlight, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
     <Reference Include="Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9" />
     <Reference Include="Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
     <Reference Include="System" />
@@ -48,12 +49,6 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
-    <Compile Include="..\..\Content\Shaders\cage.fx">
-      <Link>Effects\cage.fx</Link>
-      <Name>cage</Name>
-      <Importer>EffectImporter</Importer>
-      <Processor>CustomEffectProcessor</Processor>
-    </Compile>
     <Compile Include="..\..\Content\Models\Cube\cube.fbx">
       <Link>Models\cube.fbx</Link>
       <Name>cube</Name>
@@ -66,6 +61,12 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
+    </Compile>
+    <Compile Include="..\..\Content\Shaders\cage.fx">
+      <Link>Effects\cage.fx</Link>
+      <Name>cage</Name>
+      <Importer>SilverlightEffectImporter</Importer>
+      <Processor>SilverlightEffectProcessor</Processor>
     </Compile>
     <None Include="Tutorials\06. Terrain.xaml">
       <SubType>Designer</SubType>
@@ -171,9 +172,9 @@
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\fireball\fireball002.DDS">
       <Link>Textures\fireball002.DDS</Link>
-      <Name>fireball002</Name>
-      <Importer>SequentialTextureListImporter</Importer>
-      <Processor>SequentialTextureListProcessor</Processor>
+      <Name>fireball</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureAtlasProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -222,30 +223,30 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\01. Hello World.xaml">
+    <Compile Include="Tutorials\01. Hello World.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>01. Hello World</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tutorials\Tutorials.manifest">
       <Name>Tutorials</Name>
       <Importer>ManifestImporter</Importer>
       <Processor>ManifestProcessor</Processor>
-      <ProcessorParameters_ContentProject>.%2a%28Windows Phone%29.%2a</ProcessorParameters_ContentProject>
+      <ProcessorParameters_ContentProject>.%2a%28Silverlight%29.%2a</ProcessorParameters_ContentProject>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\02. Models.xaml">
+    <Compile Include="Tutorials\02. Models.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>02. Models</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorials\09. Particle System.xaml">
@@ -274,31 +275,32 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\10. Post Processing.xaml">
+    <Compile Include="Tutorials\10. Post Processing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>10. Post Processing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\03. Materials.xaml">
+    <Compile Include="Tutorials\03. Materials.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>03. Materials</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+      <ProcessorParameters_TargetPlatform>Silverlight</ProcessorParameters_TargetPlatform>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\04. Primitives.xaml">
+    <Compile Include="Tutorials\04. Primitives.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>04. Primitives</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorials\11. Instancing.xaml">
@@ -319,13 +321,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\05. Animations.xaml">
+    <Compile Include="Tutorials\05. Animations.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>05. Animations</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorials\07. Lights.xaml">
@@ -346,13 +348,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\12. Physics.xaml">
+    <None Include="Tutorials\12. Physics.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>12. Physics</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorials\08. Shadows.xaml">
@@ -364,19 +366,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\14. Sprites.xaml">
+    <Compile Include="Tutorials\14. Sprites.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>14. Sprites</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TutorialData\TutorialData %28Windows Phone%29.csproj">
-      <Project>{D50936DC-1B06-4308-BB52-2F5A7575123E}</Project>
-      <Name>TutorialData %28Windows Phone%29</Name>
-    </ProjectReference>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Templates\Player.xaml">
@@ -386,6 +382,12 @@
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TutorialData\TutorialData %28Silverlight%29.csproj">
+      <Project>{AC89B7FA-DF44-4855-BF87-F1FDD07DC2BE}</Project>
+      <Name>TutorialData %28Silverlight%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

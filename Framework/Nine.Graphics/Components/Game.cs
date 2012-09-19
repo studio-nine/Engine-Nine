@@ -1,24 +1,14 @@
-﻿#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Graphics;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
-#endregion
-
-namespace Microsoft.Xna.Framework
+﻿namespace Microsoft.Xna.Framework
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Graphics;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Input;
+
     /// <summary>
     /// Provides basic graphics device initialization, game logic, and rendering code.
     /// </summary>
@@ -33,7 +23,8 @@ namespace Microsoft.Xna.Framework
         public GraphicsDevice GraphicsDevice { get; private set; }
         public GameWindow Window { get; private set; }        
         public GameComponentCollection Components { get; private set; }
-        public new ContentManager Content { get; private set; }
+        public new ContentManager Content { get; set; }
+        public GameServiceContainer Services { get; private set; }
         
         public TimeSpan InactiveSleepTime { get; set; }
         public bool IsActive { get { return true; } }
@@ -45,8 +36,9 @@ namespace Microsoft.Xna.Framework
         public Game()
         {
             IsTabStop = true;
+            Services = new GameServiceContainer();
             Components = new GameComponentCollection();
-            Content = new ContentManager(null);
+            Content = new ContentManager(Services);
             base.Content = (Surface = new DrawingSurface());
 
             Window = new GameWindow(this);

@@ -18,7 +18,7 @@ namespace TutorialData
     /// using Xaml, and then compiled with the Xna content compiler into the binary .xnb format, and
     /// finally be read through the content manager.
     /// </summary>
-    public class ExampleController : Component, IUpdateable
+    public class ExampleController : Component, Nine.IUpdateable
     {
         public float Speed { get; set; }
 

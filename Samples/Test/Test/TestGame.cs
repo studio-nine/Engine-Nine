@@ -112,6 +112,10 @@ namespace Test
 
         protected override void Update(GameTime gameTime)
         {
+#if XBOX
+            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
+                Exit();
+#endif
             scene.Update(gameTime.ElapsedGameTime);
             base.Update(gameTime);
         }
@@ -138,6 +142,20 @@ namespace Test
                 game.Run();
             }
         }
+
 #endif
     }
+
+#if SILVERLIGHT
+    public class App : System.Windows.Application
+    {
+        public App()
+        {
+            Startup += (sender, e) =>
+            {
+                RootVisual = new TestGame();
+            };
+        }
+    }
+#endif
 }

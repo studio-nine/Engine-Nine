@@ -144,6 +144,7 @@
                 throw new ArgumentNullException("graphics");
 
             Visible = true;
+            CastShadow = true;
             needsRebuild = true;
             GraphicsDevice = graphics;
         }

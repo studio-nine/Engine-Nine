@@ -104,7 +104,6 @@ namespace Nine.Graphics.Materials
 #if XBOX
             try
             {
-                // TODO: Try catch is slow, move this to the content pipeline?
                 semantic = (CustomEffectSemantics)Enum.Parse(typeof(CustomEffectSemantics), sematics, true);
                 return true;
             }
@@ -114,7 +113,9 @@ namespace Nine.Graphics.Materials
                 return false;
             }
 #elif SILVERLIGHT
-            throw new NotSupportedException();
+            // TODO: Support semantics for silverlight effects.
+            semantic = CustomEffectSemantics.World;
+            return false;
 #else
             return Enum.TryParse<CustomEffectSemantics>(sematics, true, out semantic);
 #endif
@@ -193,6 +194,7 @@ namespace Nine.Graphics.Materials
                 if ((entry.Parameter = parameter) != null)
                 {
 #if !SILVERLIGHT
+                    // TODO:
                     entry.DefaultValue = parameter.GetValue();
 #endif
                 }

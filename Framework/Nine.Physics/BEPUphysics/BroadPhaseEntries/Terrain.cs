@@ -46,6 +46,7 @@ namespace BEPUphysics.Collidables
             set
             {
                 worldTransform = value;
+                UpdateBoundingBox();
             }
         }
 

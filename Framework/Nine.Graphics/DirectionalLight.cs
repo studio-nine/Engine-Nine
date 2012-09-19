@@ -98,8 +98,7 @@ namespace Nine.Graphics
             var sceneBounds = context.BoundingBox;
             var viewFrustum = context.matrices.ViewFrustum;
             
-            // Trim view frustum based on shadow start and shadow end.            
-
+            // TODO: Trim view frustum based on shadow start and shadow end.
             sceneBounds.Intersects(viewFrustum, out intersections, out length);
 
             // Include the corners of the view frustum and scene bounds since
@@ -186,6 +185,9 @@ namespace Nine.Graphics
                 if (casterBound != null)
                     shadowCasterBounds.Add(casterBound);
             }
+
+            if (shadowCasterBounds.Count <= 0)
+                return;
 
             near = float.MaxValue;
             far = float.MinValue;

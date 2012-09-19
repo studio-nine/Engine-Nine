@@ -102,11 +102,17 @@
         {
             base.OnSeek(startFrame, endFrame, percentage);
 
-            if (Target != null && !string.IsNullOrEmpty(TargetProperty))
+            var sprite = target as Sprite;
+            if (sprite != null)
+            {
+                sprite.Texture = Texture;
+                sprite.SourceRectangle = SourceRectangle;
+            }
+            else if (target != null && !string.IsNullOrEmpty(targetProperty))
             {
                 if (expression == null || expressionChanged)
                 {
-                    expression = new PropertyExpression<TextureAtlasFrame>(Target, TargetProperty);
+                    expression = new PropertyExpression<TextureAtlasFrame>(target, targetProperty);
                     expressionChanged = false;
                 }
                 expression.Value = new TextureAtlasFrame(Texture, SourceRectangle);

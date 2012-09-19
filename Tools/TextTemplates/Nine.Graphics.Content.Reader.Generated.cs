@@ -97,6 +97,7 @@ namespace Nine.Animations
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SpriteAnimation();
+            existingInstance.Source = input.ReadObject<Nine.Graphics.TextureAtlas>();
             existingInstance.TargetProperty = input.ReadObject<System.String>();
             existingInstance.BeginFrame = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.EndFrame = input.ReadObject<System.Nullable<System.Int32>>();

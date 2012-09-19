@@ -87,7 +87,6 @@ namespace Nine.Graphics.Drawing
 
             try
             {
-                // Begin Draw
                 for (int i = 0; i < count; ++i)
                 {
                     var drawable = drawables[i];

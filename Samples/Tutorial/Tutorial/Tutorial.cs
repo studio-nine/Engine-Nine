@@ -11,43 +11,30 @@ namespace Tutorial
     using Nine.Graphics.Cameras;
     using Nine.Physics;
 
-    public class Tutorial : Microsoft.Xna.Framework.Game
+    public class TutorialGame : Microsoft.Xna.Framework.Game
     {
-#if WINDOWS_PHONE
-        private const int TargetFrameRate = 30;
-        private const int BackBufferWidth = 800;
-        private const int BackBufferHeight = 480;
-#elif XBOX
-        private const int TargetFrameRate = 60;
-        private const int BackBufferWidth = 1280;
-        private const int BackBufferHeight = 720;
-#else
-        private const int TargetFrameRate = 60;
-        private const int BackBufferWidth = 1280;
-        private const int BackBufferHeight = 720;
-#endif
-
         private Scene scene;
         private string[] tutorials;
         private int nextTutorial;
         private Input input;
         
-        public Tutorial()
+        public TutorialGame()
         {
+#if !SILVERLIGHT
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
+            graphics.PreferMultiSampling = true;
             graphics.SynchronizeWithVerticalRetrace = false;
-            graphics.PreferredBackBufferWidth = BackBufferWidth;
-            graphics.PreferredBackBufferHeight = BackBufferHeight;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 800;
 
-            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
-
+            Window.AllowUserResizing = true;
+#endif
             Content = new ContentLoader(Services);
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-            IsFixedTimeStep = false;            
-            Window.AllowUserResizing = true;
+            IsFixedTimeStep = false;
         }
 
         /// <summary>
@@ -120,9 +107,10 @@ namespace Tutorial
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
+#if XBOX
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
                 Exit();
-
+#endif
             scene.UpdatePhysicsAsync(gameTime.ElapsedGameTime);
             scene.Update(gameTime.ElapsedGameTime);
 
@@ -134,10 +122,6 @@ namespace Tutorial
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            var quad = scene["Debug"] as FullScreenQuad;
-            if (quad != null)
-                quad.Visible = Keyboard.GetState().IsKeyDown(Keys.D);
-
             scene.Draw(GraphicsDevice, gameTime.ElapsedGameTime);
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
                 scene.DrawDebugOverlay(GraphicsDevice, gameTime.ElapsedGameTime);
@@ -151,11 +135,24 @@ namespace Tutorial
         /// </summary>
         static void Main(string[] args)
         {
-            using (Tutorial game = new Tutorial())
+            using (TutorialGame game = new TutorialGame())
             {
                 game.Run();
             }
         }
 #endif
     }
+
+#if SILVERLIGHT
+    public class App : System.Windows.Application
+    {
+        public App()
+        {
+            Startup += (sender, e) =>
+            {
+                RootVisual = new TutorialGame();
+            };
+        }
+    }
+#endif
 }

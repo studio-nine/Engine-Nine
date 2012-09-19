@@ -61,8 +61,7 @@
                 TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffectCollection", "System.Collections.Generic.List<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ScreenEffects.ScreenEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ScreenEffects.ScreenEffectContent>");
                 TypeMapping.Add("Nine.Graphics.Heightmap", "Nine.Content.Pipeline.ContentReference<Nine.Graphics.Heightmap>");
-                TypeMapping.Add("Nine.Graphics.TextureList", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.TextureListContent>");
-                TypeMapping.Add("Nine.Graphics.Effects.LinkedEffectPart", "Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent");
+                TypeMapping.Add("Nine.Graphics.TextureAtlas", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.TextureAtlasContent>");                
                 TypeMapping.Add("Nine.Graphics.Scene", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ObjectModel.SceneContent>");
                 TypeMapping.Add("Nine.Graphics.Transformable", "System.Object");
                 TypeMapping.Add("Nine.Animations.TweenAnimation`1[[Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553]]", "Nine.Content.Pipeline.Animations.TweenAnimationContent<Microsoft.Xna.Framework.Vector3>");                

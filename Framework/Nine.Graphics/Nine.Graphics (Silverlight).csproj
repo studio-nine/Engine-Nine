@@ -245,7 +245,7 @@
     <Compile Include="SurfacePatch.cs" />
     <Compile Include="SurfacePatchCollection.cs" />
     <Compile Include="TextSprite.cs" />
-    <Compile Include="TextureList.cs" />
+    <Compile Include="TextureAtlas.cs" />
     <Compile Include="TextureTransform.cs" />
     <Compile Include="TextureUsage.cs" />
     <Compile Include="VertexTypes\VertexPositionColorNormalTexture.cs" />
@@ -287,7 +287,6 @@
     <Content Include="Shaders\Shadow.fx" />
     <Content Include="Shaders\SkyBox.fx" />
     <Content Include="Shaders\SoftParticle.fx" />
-    <Content Include="Shaders\Sprite.fx" />
     <Content Include="Shaders\ThickLine.fx" />
     <Content Include="Shaders\Threshold.fx" />
     <Content Include="Shaders\ToneMapping.fx" />

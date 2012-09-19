@@ -399,10 +399,10 @@ namespace Nine.Navigation
         {
             if (myFriends != null)
             {
-                friends = new SpatialQuery<Navigator, Steerable>(myFriends) { Filter = null, Converter = NavigatorToSteerer };
+                friends = new SpatialQuery<Navigator, Steerable>(myFriends) { Condition = null, Converter = NavigatorToSteerer };
 
                 if (myOpponents != null)
-                    friendsAndOpponents = new SpatialQuery<Navigator, Steerable>(myFriends, myOpponents) { Filter = null, Converter = NavigatorToSteerer };
+                    friendsAndOpponents = new SpatialQuery<Navigator, Steerable>(myFriends, myOpponents) { Condition = null, Converter = NavigatorToSteerer };
                 else
                     friendsAndOpponents = friends;
             }
@@ -411,7 +411,7 @@ namespace Nine.Navigation
                 friends = null;
 
                 if (myOpponents != null)
-                    friendsAndOpponents = new SpatialQuery<Navigator, Steerable>(myOpponents) { Filter = null, Converter = NavigatorToSteerer };
+                    friendsAndOpponents = new SpatialQuery<Navigator, Steerable>(myOpponents) { Condition = null, Converter = NavigatorToSteerer };
                 else
                     friendsAndOpponents = null;
             }

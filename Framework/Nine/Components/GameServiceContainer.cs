@@ -1,19 +1,10 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// DrawableGameComponent.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace Microsoft.Xna.Framework
+﻿namespace Microsoft.Xna.Framework
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     public class GameServiceContainer : IServiceProvider
     {
         Dictionary<Type, object> services = new Dictionary<Type, object>();

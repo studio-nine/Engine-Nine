@@ -189,6 +189,8 @@ namespace Nine.Content.Pipeline.Animations
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.SpriteAnimation value)
         {
             if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+            WriteObject(output, value, "Source", value.Source);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "TargetProperty", value.TargetProperty);
             if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.WriteObject(value.BeginFrame);

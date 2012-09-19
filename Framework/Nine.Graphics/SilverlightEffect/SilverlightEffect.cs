@@ -96,6 +96,12 @@ namespace Microsoft.Xna.Framework.Graphics
         private static EffectTechnique[] CreateTechniques(BinaryReader input)
         {
             int techniquesCount = input.ReadInt32();
+            if (techniquesCount < 0 || techniquesCount > 128)
+            {
+                throw new System.InvalidOperationException(
+                    "Invalid silverlight effect. Have you forgot to process the effect using SilverlightEffectProcessor?");
+            }
+
             EffectTechnique[] techniques = new EffectTechnique[techniquesCount];
 
             for (int techniqueIndex = 0; techniqueIndex < techniquesCount; techniqueIndex++)

@@ -299,7 +299,15 @@ namespace Nine.Graphics.Materials
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.AttachedProperties = input.ReadObject<Dictionary<System.Xaml.AttachableMemberIdentifier, object>>();
 
-            existingInstance.Effect = input.ReadExternalReference<Effect>();            
+            existingInstance.Effect = input.ReadExternalReference<Effect>();           
+#if SILVERLIGHT
+            if (existingInstance.Effect == null)
+            {
+                throw new InvalidOperationException(
+                    "Cannot find effect for the material group. " + 
+                    "Have you forgot to set the target platform property of the DefaultContentProcessor to Silverlight?");
+            }
+#endif
 
             try
             {

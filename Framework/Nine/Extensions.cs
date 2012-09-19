@@ -7,10 +7,10 @@ namespace Nine
     using Microsoft.Xna.Framework;
 
     /// <summary>
-    /// Contains extension methods for IServiceProvider.
+    /// Contains commonly used utility extension methods.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class ServiceProviderExtensions
+    public static class UtilityExtensions
     {
         public static T GetService<T>(this IServiceProvider provider)
         {
@@ -23,14 +23,7 @@ namespace Nine
             var result = provider.GetService(typeof(T));
             return result is K ? (K)result : default(K);
         }
-    }
 
-    /// <summary>
-    /// Contains commonly used utility extension methods.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class UtilityExtensions
-    {
         public static Vector2 ToVector2(this Point point)
         {
             return new Vector2(point.X, point.Y);

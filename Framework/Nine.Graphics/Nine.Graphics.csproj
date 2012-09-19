@@ -93,6 +93,9 @@
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Materials.Generated.cs">
       <Link>Nine.Graphics.Materials.Generated.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nine.Graphics.Materials.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\AvatarAnimation.cs" />
     <Compile Include="Animations\BoneAnimation.cs" />
@@ -265,6 +268,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Materials.tt">
+      <Link>Nine.Graphics.Materials.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
+    </None>
     <None Include="Shaders\RestoreDepthBuffer.fx" />
     <None Include="Shaders\VertexPassThrough2.fx" />
     <None Include="Shaders\Shadow.fx" />

@@ -31,7 +31,7 @@ namespace Nine
     /// <summary>
     /// Helper class to interpolate common types.
     /// </summary>
-    internal static class LerpHelper
+    static class LerpHelper
     {
         public static byte Lerp(byte x, byte y, float amount)
         {

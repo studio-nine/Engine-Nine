@@ -45,14 +45,14 @@ namespace Nine.Physics.Colliders
         {
             if (heightmap != null)
             {
-                var matrix = Matrix.Identity;
-                matrix.M11 = matrix.M33 = heightmap.Step;
-                matrix *= Transform;
+                Matrix matrix;
+                Matrix.CreateScale(heightmap.Step, 1, heightmap.Step, out matrix);
+                Matrix.Multiply(ref matrix, ref transform, out matrix);
                 terrain.WorldTransform = new AffineTransform() { Matrix = matrix };
             }
             else
             {
-                terrain.WorldTransform = new AffineTransform() { Matrix = Transform };
+                terrain.WorldTransform = new AffineTransform() { Matrix = transform };
             }
             base.OnTransformChanged();
         }

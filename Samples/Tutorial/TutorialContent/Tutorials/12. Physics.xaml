@@ -3,16 +3,21 @@
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
     <Fog Name="MyFog" FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
-    <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
-   
-    <Surface Heightmap="{ContentReference ../Textures/RF1}" Transform.Position="-50,-10,-50"
-             TextureTransform.Scale="0.3, 0.3" Material="{BasicMaterial Texture={ContentReference ../Textures/TerrainTex}}" />
-   
+    <DirectionalLight CastShadow="True" DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
+
+    <Surface Heightmap="{ContentReference ../Textures/RF1}" Transform.Position="-50,-10,-50" TextureTransform.Scale="0.3, 0.3">
+        <MaterialGroup>
+            <DiffuseMaterialPart Texture="{ContentReference ../Textures/TerrainTex}" />
+            <ShadowMapMaterialPart />
+            <DirectionalLightMaterialPart />
+        </MaterialGroup>
+    </Surface>
+
     <!-- Create a terrain collider to make the above terrain respond to collision events -->
     <TerrainCollider Heightmap="{ContentReference ../Textures/RF1}" Transform.Position="-50,-10,-50"/>
-    
+
     <Group Transform.Position="10,20,0">
-        <Box Transform.Scale="1,4,8" Material="{BasicMaterial Texture={ContentReference ../Textures/box}}" />
+        <Box Transform.Scale="1,4,8" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
         
         <!-- Attach a rigid body to a group so the group will be simulated using physics engine -->
         <RigidBody>
@@ -29,10 +34,10 @@
     </Group>
     -->
 
-    <Group Transform.Position="0,20,0">
-        <Box Transform.Scale="1,1,1" Material="{BasicMaterial Texture={ContentReference ../Textures/nine}}" />
+    <Group Transform.Position="-20,20,0">
+        <Box Transform.Scale="4,4,4" Material="{BasicMaterial Texture={ContentReference ../Textures/nine}, LightingEnabled = true}" />
         <RigidBody>
-            <BoxCollider Size="1,1,1" />
+            <BoxCollider Size="4,4,4" />
         </RigidBody>
       
         <!-- When you press 'Q' ingame this^ RigedBody will be teleported to "0, 20, 0" -->

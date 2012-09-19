@@ -105,7 +105,16 @@
         public AnimationPlayer Animations
         {
             get { return animations; }
-            set { animations = value; }
+            set
+            {
+                animations.Animations.Clear();
+                if (value != null && value.Animations != null)
+                {
+                    UtilityExtensions.ForEachRecursive<ISupportTarget>(value.Animations.Values, supportTarget => supportTarget.Target = this);
+                    animations.Animations.AddRange(value.Animations);
+                }
+                animations.Play();
+            }
         }
         private AnimationPlayer animations = new AnimationPlayer();
         #endregion
@@ -348,10 +357,13 @@
             basicEffect.Projection = context.matrices.projection;
             basicEffect.CurrentTechnique.Passes[0].Apply();
 #endif
-
-            bool replaceTexture;
-            if (replaceTexture = (material.texture == null))
+            // Override material texture with the sprite texture
+            Texture2D originalTexture = null;
+            if (texture != null)
+            {
+                originalTexture = material.texture;
                 material.texture = texture;
+            }
 
             material.world = worldTransform;
             material.BeginApply(context);
@@ -362,8 +374,8 @@
             
             material.EndApply(context);
 
-            if (replaceTexture)
-                material.texture = null;
+            if (originalTexture != null)
+                material.texture = originalTexture;
         }
 
         /// <summary>
@@ -459,8 +471,8 @@
                 if (sourceRectangle != null)
                 {
                     var r = sourceRectangle.Value;
-                    anchorPoint.X = r.X + r.Width * anchor.X;
-                    anchorPoint.Y = r.Y + r.Height * anchor.Y;
+                    anchorPoint.X = r.Width * anchor.X;
+                    anchorPoint.Y = r.Height * anchor.Y;
                 }
                 else if (texture != null)
                 {

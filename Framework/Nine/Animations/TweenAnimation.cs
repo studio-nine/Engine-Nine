@@ -65,7 +65,6 @@ namespace Nine.Animations
         /// <summary>
         /// Gets or sets where the tween ends relative to start position.
         /// Specify null to control the end position using <c>To</c>.
-
         /// </summary>
         public T? By { get; set; }
 
@@ -151,13 +150,13 @@ namespace Nine.Animations
         /// </summary>
         protected override void OnStarted()
         {
-            if (Target != null && !string.IsNullOrEmpty(TargetProperty))
+            if (target != null && !string.IsNullOrEmpty(targetProperty))
             {
                 if (propertyState == PropertyState.Outdated)
                 {
                     try
                     {
-                        expression = new PropertyExpression<T>(Target, TargetProperty);
+                        expression = new PropertyExpression<T>(target, targetProperty);
                         propertyState = PropertyState.Created;
                     }
                     catch
@@ -236,7 +235,6 @@ namespace Nine.Animations
         {
             // This is a generic limitaion,
             // we have to assign the lerp using reflection.
-
             FieldInfo field = typeof(TweenAnimation<T>).GetField("lerp", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (typeof(T) == typeof(float))
@@ -281,7 +279,6 @@ namespace Nine.Animations
         {
             // This is a generic limitaion,
             // we have to assign the lerp using reflection.
-
             FieldInfo field = typeof(TweenAnimation<T>).GetField("add", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (typeof(T) == typeof(float))

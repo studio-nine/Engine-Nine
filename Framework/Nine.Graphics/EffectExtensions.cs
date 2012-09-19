@@ -187,6 +187,9 @@ namespace Nine.Graphics
         #region SetValue
         public static void SetValue(EffectParameter parameter, object value)
         {
+            if (value == null)
+                return;
+
             if (value is Texture)
                 parameter.SetValue((Texture)value);
             else if (value is float)

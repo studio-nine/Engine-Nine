@@ -15,7 +15,7 @@
 
         <Sprite Name="Fireball" Position="0,200">
             <Sprite.Animations>
-                <SpriteAnimation Source="{ContentReference ../Textures/fireball}" />
+                <SpriteAnimation FramesPerSecond="12" Source="{ContentReference ../Textures/fireball}" />
             </Sprite.Animations>
         </Sprite>
 

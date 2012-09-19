@@ -14,7 +14,7 @@
     <AssemblyName>Silverlight3DWeb</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
-    <SilverlightApplicationList>{D3F2F276-CA8A-4372-999D-B6736D1A763B}|..\Test\Test\Test %28Silverlight%29.csproj|ClientBin|False</SilverlightApplicationList>
+    <SilverlightApplicationList>{D3F2F276-CA8A-4372-999D-B6736D1A763B}|..\Test\Test\Test %28Silverlight%29.csproj|ClientBin|False,{15DBAC4C-119F-4719-948B-4B382522B123}|..\Tutorial\Tutorial\Tutorial %28Silverlight%29.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientBin\Test.xap" />
+    <Content Include="ClientBin\Tutorial.xap" />
     <Content Include="Silverlight.js" />
     <Content Include="TestPage.html" />
     <Content Include="TutorialPage.html" />

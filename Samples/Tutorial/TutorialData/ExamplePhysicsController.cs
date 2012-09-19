@@ -6,7 +6,7 @@ namespace TutorialData
     using Nine;
     using Nine.Physics;
 
-    public class ExamplePhysicsController : Component, IUpdateable
+    public class ExamplePhysicsController : Component, Nine.IUpdateable
     {
         public float Speed { get; set; }
         public Vector3 ResetPosition { get; set; }

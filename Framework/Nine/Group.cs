@@ -289,18 +289,12 @@ namespace Nine
                 animations.Animations.Clear();
                 if (value != null && value.Animations != null)
                 {
-                    UpdateTweenAnimationTargets(value.Animations.Values);
+                    UtilityExtensions.ForEachRecursive<ISupportTarget>(value.Animations.Values, supportTarget => supportTarget.Target = this);
                     animations.Animations.AddRange(value.Animations);
                 }
                 animations.Play();
             }
         }
-        
-        private void UpdateTweenAnimationTargets(IEnumerable value)
-        {
-            UtilityExtensions.ForEachRecursive<ISupportTarget>(value, supportTarget => supportTarget.Target = this);
-        }
-
         private AnimationPlayer animations = new AnimationPlayer();
         #endregion
 

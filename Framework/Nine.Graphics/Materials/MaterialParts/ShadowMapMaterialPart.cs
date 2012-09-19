@@ -75,19 +75,22 @@
         /// </summary>
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            if (shadowMapParameter != null)
-            {
-                var light = context.DirectionalLight;
-                var texture = light.ShadowMap.Texture;
-                if (texture != null)
-                {
-                    shadowMapParameter.SetValue(texture);
-                    shadowMapSizeParameter.SetValue(new Vector2(1.0f / texture.Width, 1.0f / texture.Height));
-                    lightViewProjectionParameter.SetValue(light.ShadowFrustum.Matrix);
-                    shadowColorParameter.SetValue(ShadowColor);
-                    context.graphics.SamplerStates[shadowMapSamplerIndex] = SamplerState.PointClamp;
-                }
-            }
+            if (shadowMapParameter == null)
+                return;
+            
+            var light = context.DirectionalLight;
+            if (light.ShadowMap == null)
+                return;
+            
+            var texture = light.ShadowMap.Texture;
+            if (texture == null)
+                return;
+            
+            shadowMapParameter.SetValue(texture);
+            shadowMapSizeParameter.SetValue(new Vector2(1.0f / texture.Width, 1.0f / texture.Height));
+            lightViewProjectionParameter.SetValue(light.ShadowFrustum.Matrix);
+            shadowColorParameter.SetValue(ShadowColor);
+            context.graphics.SamplerStates[shadowMapSamplerIndex] = SamplerState.PointClamp;
         }
 
         protected internal override void EndApplyLocalParameters(DrawingContext context)
