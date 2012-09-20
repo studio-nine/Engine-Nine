@@ -53,10 +53,6 @@
         </Model.Material>
     </Model>
 
-    <!-- Use debug material and full screen quad to view intermediate buffers -->
-    <FullScreenQuad Name="Debug" Material="{DebugMaterial TextureUsage=NormalBuffer, SamplerState=PointClamp}" />
-
-
     <!-- Animations can also be applied to lights. -->
     <Group>
         <PointLight Name="Light1" DiffuseColor="0, 1, 0" Transform.Position="-20, 2, 20" />

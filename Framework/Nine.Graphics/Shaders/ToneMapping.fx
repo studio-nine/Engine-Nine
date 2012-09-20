@@ -22,12 +22,8 @@ float4 PS(float2 TexCoord : TEXCOORD0) : COLOR0
     float4 color = tex2D( BasicSampler, TexCoord );
     float4 bloom = tex2D( BloomSampler, TexCoord );
     float4 final = color + bloom * BloomIntensity;    
-    float avgLum = tex2D(LuminanceSampler, float2(0.5f, 0.5f)).x;
-    
+    float avgLum = tex2D(LuminanceSampler, float2(0.5f, 0.5f)).x;    
     final.rgb = Tonemap(Exposure * final) / Tonemap(avgLum);
-    // Xna doesn't support gamma corrected rendering, so we won't do
-    // gamma correction using post processing.
-    //final.rgb = pow(final.rgb,1/2.2);
     return float4(final.rgb, 1);
 }
 

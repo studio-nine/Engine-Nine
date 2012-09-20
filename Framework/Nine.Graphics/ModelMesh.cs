@@ -231,7 +231,7 @@ namespace Nine.Graphics
         public void Draw(DrawingContext context, Material material)
         {
             var graphics = context.graphics;
-            var applyTexture = material != this.material && (UseModelTextures ?? model.UseModelTextures);
+            var applyTexture = UseModelTextures.HasValue ? UseModelTextures.Value : model.UseModelTextures;
             
             if (applyTexture)
                 ApplyTextures(material);

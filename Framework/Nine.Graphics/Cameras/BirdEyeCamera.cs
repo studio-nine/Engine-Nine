@@ -42,7 +42,7 @@
 #endif
 
             WheelSpeed = 1.0f;
-            Speed = 0.04f;
+            Speed = 1.0f;
 
             Yaw = MathHelper.PiOver2;
             Radius = radius;
@@ -88,8 +88,8 @@
             else if (Radius > MaxRadius)
                 Radius = MaxRadius;
 
-            float dx = -state.ThumbSticks.Right.X * Speed;
-            float dz = state.ThumbSticks.Right.Y * Speed;
+            float dx = -state.ThumbSticks.Right.X * Speed * 0.04f;
+            float dz = state.ThumbSticks.Right.Y * Speed * 0.04f;
             
             lookAt.X -= ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * 0.1f;
             lookAt.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * 0.1f;
@@ -135,8 +135,8 @@
                 startPoint.X = e.X;
                 startPoint.Y = e.Y;
 
-                lookAt.X += ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * Speed;
-                lookAt.Z += ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * Speed;
+                lookAt.X += ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * Speed * 0.04f;
+                lookAt.Z += ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * Speed * 0.04f;
             }
             else if (e.IsButtonDown(RotateButton))
             {
