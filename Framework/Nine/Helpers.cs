@@ -223,27 +223,34 @@ namespace Nine
         {
             return Math.Abs(projection.M43 / projection.M33);
         }
+        
+        public static Vector3 ToEulerAngle(this Quaternion value)
+        {
+            Vector3 result;
+            ToEulerAngle(ref value, out result);
+            return result;
+        }
 
         /// <summary>
         /// Converts quaternion to Euler angle using:
         /// http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
         /// </summary>
-        public static void ToEulerAngle(this Quaternion q1, out Vector3 eulerAngle)
+        public static void ToEulerAngle(ref Quaternion value, out Vector3 eulerAngle)
         {
             eulerAngle = new Vector3();
 
-            double sqW = q1.W * q1.W;
-            double sqX = q1.X * q1.X;
-            double sqY = q1.Y * q1.Y;
-            double sqZ = q1.Z * q1.Z;
+            double sqW = value.W * value.W;
+            double sqX = value.X * value.X;
+            double sqY = value.Y * value.Y;
+            double sqZ = value.Z * value.Z;
             
             // if normalized is one, otherWise is correction factor
             double unit = sqX + sqY + sqZ + sqW; 
-            double test = q1.X * q1.Y + q1.Z * q1.W;
+            double test = value.X * value.Y + value.Z * value.W;
             if (test > 0.499 * unit)
             { 
                 // singularitY at north pole
-                eulerAngle.Z = 2 * (float)Math.Atan2(q1.X, q1.W);
+                eulerAngle.Z = 2 * (float)Math.Atan2(value.X, value.W);
                 eulerAngle.Y = MathHelper.PiOver2;
                 eulerAngle.X = 0;
                 return;
@@ -251,14 +258,14 @@ namespace Nine
             if (test < -0.499 * unit)
             { 
                 // singularitY at south pole
-                eulerAngle.Z = -2 * (float)Math.Atan2(q1.X, q1.W);
+                eulerAngle.Z = -2 * (float)Math.Atan2(value.X, value.W);
                 eulerAngle.Y = -MathHelper.PiOver2;
                 eulerAngle.X = 0;
                 return;
             }
-            eulerAngle.Z = (float)Math.Atan2(2 * q1.Y * q1.W - 2 * q1.X * q1.Z, sqX - sqY - sqZ + sqW);
+            eulerAngle.Z = (float)Math.Atan2(2 * value.Y * value.W - 2 * value.X * value.Z, sqX - sqY - sqZ + sqW);
             eulerAngle.Y = (float)Math.Asin(2 * test / unit);
-            eulerAngle.X = (float)Math.Atan2(2 * q1.X * q1.W - 2 * q1.Y * q1.Z, -sqX + sqY - sqZ + sqW);
+            eulerAngle.X = (float)Math.Atan2(2 * value.X * value.W - 2 * value.Y * value.Z, -sqX + sqY - sqZ + sqW);
         }
 
         public static bool Decompose(this Matrix transform, out Vector2 scale, out float rotation, out Vector2 position)

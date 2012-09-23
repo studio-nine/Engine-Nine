@@ -32,17 +32,13 @@ namespace Nine.Graphics
     public interface ICamera
     {
         /// <summary>
-        /// Gets the view, projection matrix and viewport of this camera.
+        /// Gets the view, projection matrix of this camera.
         /// </summary>
-        /// <param name="viewport">
-        /// Indicates the rectangular region of the screen, or null to specify that
-        /// this camera will be rendered to the whole screen.
-        /// </param>
         /// <returns>
         /// Returns a value indicating whether the content this camera will be
         /// rendered onto the screen.
         /// </returns>
-        bool TryGetViewFrustum(out Matrix view, out Matrix projection, out Viewport? viewport);
+        bool TryGetViewFrustum(out Matrix view, out Matrix projection);
     }
 
     /// <summary>

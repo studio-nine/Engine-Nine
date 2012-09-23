@@ -106,7 +106,7 @@ namespace Nine.Graphics
         }
         private Dictionary<TextureUsage, Texture> textures;
         
-        object IComponent.Parent
+        IContainer IComponent.Parent
         {
             get { return model; }
             set { throw new InvalidOperationException(); }

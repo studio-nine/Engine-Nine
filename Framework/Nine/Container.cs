@@ -8,11 +8,10 @@ namespace Nine
     /// <summary>
     /// Defines a generic object container.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IContainer
     {
         /// <summary>
-        /// Gets a readonly list of children of this container.
+        /// Gets a read-only list of children of this container.
         /// </summary>
         IList Children { get; }
     }
@@ -20,13 +19,12 @@ namespace Nine
     /// <summary>
     /// Defines an object that can be contained by a parent container.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IComponent
     {
         /// <summary>
         /// Gets or sets the parent container.
         /// </summary>
-        object Parent { get; set; }
+        IContainer Parent { get; set; }
     }
 
     /// <summary>
@@ -44,7 +42,7 @@ namespace Nine
             get { return parent; }
         }
 
-        object IComponent.Parent
+        IContainer IComponent.Parent
         {
             get { return Parent; }
             set { SetParent(value); }

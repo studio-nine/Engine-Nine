@@ -31,7 +31,7 @@ namespace Test
 #if !SILVERLIGHT
             var graphics = new GraphicsDeviceManager(this);
 
-            graphics.PreferMultiSampling = true;
+            //graphics.PreferMultiSampling = true;
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 800;
@@ -58,7 +58,7 @@ namespace Test
             testGames = (from type in Assembly.GetExecutingAssembly().GetTypes().OrderBy(type => type.Name)
                          where type.IsClass && typeof(ITestGame).IsAssignableFrom(type)
                          select (ITestGame)Activator.CreateInstance(type)).ToArray();
-            //testGames = new ITestGame[] { new ShadowMapTest() };
+            //testGames = new ITestGame[] { new PixelPerfectTest() };
             testScenes = new Scene[testGames.Length];
 
             // Shows the next scene
@@ -102,8 +102,8 @@ namespace Test
 
             // Gets the drawing context to adjust drawing settings.
             var drawingContext = scene.GetDrawingContext(GraphicsDevice);
-            drawingContext.Settings.BackgroundColor = new Color(0.5f, 0.5f, 0.5f);
-            drawingContext.Settings.TextureFilter = TextureFilter.Anisotropic;
+            drawingContext.BackgroundColor = new Color(0.5f, 0.5f, 0.5f);
+            drawingContext.TextureFilter = TextureFilter.Anisotropic;
 
             Window.Title = testGames[nextTest].GetType().Name;
 

@@ -31,7 +31,7 @@
         protected internal override void EndApplyLocalParameters(DrawingContext context)
         {
             if (lightBufferParameter != null)
-                context.graphics.SamplerStates[lightBufferIndex] = context.settings.SamplerState;
+                context.graphics.SamplerStates[lightBufferIndex] = context.SamplerState;
         }
 
         protected internal override void GetDependentPasses(ICollection<Type> passTypes)

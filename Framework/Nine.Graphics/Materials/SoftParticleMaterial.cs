@@ -42,7 +42,7 @@
         partial void EndApplyLocalParameters(DrawingContext context)
         {
             context.graphics.Textures[1] = null;
-            context.graphics.SamplerStates[1] = context.settings.SamplerState;
+            context.graphics.SamplerStates[1] = context.SamplerState;
         }
     }
 }

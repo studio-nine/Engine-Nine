@@ -264,6 +264,36 @@ namespace Nine.Content.Pipeline.Xaml
         }
 
         /// <summary>
+        /// Gets the rotation of the target object
+        /// </summary>
+        public static Vector3 GetRotation(object target)
+        {
+            Matrix transform;
+            Vector3 scale;
+            Vector3 translation;
+            Quaternion rotation;
+            
+            return (TryGetTransform(target, out transform) && transform.Decompose(out scale, out rotation, out translation)) ? rotation.ToEulerAngle() : Vector3.Zero;
+        }
+
+        /// <summary>
+        /// Sets the rotation of the target object.
+        /// </summary>
+        public static void SetRotation(object target, Vector3 value)
+        {
+            Matrix transform;
+            Vector3 scale;
+            Vector3 translation;
+            Quaternion rotation;
+
+            if (TryGetTransform(target, out transform) && transform.Decompose(out scale, out rotation, out translation))
+            {
+                Quaternion.CreateFromYawPitchRoll(value.Y, value.X, value.Z, out rotation);
+                TrySetTransform(target, scale, rotation, translation);
+            }
+        }
+
+        /// <summary>
         /// Gets the position of the target object
         /// </summary>
         public static Vector3 GetPosition(object target)

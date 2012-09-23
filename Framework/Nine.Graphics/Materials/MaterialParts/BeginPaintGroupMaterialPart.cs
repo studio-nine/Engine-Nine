@@ -29,14 +29,14 @@
             maskTextureScale.Y = 1.0f / maskTextureScale.Y;
         }
 
-        protected internal override void ApplyGlobalParameters(DrawingContext context)
+        protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
             if (maskTextureScaleParameter != null)
-            {
                 maskTextureScaleParameter.SetValue(maskTextureScale);
+            if (maskTexture0 != null)
                 maskTexture0Parameter.SetValue(maskTexture0);
+            if (maskTexture1 != null)
                 maskTexture1Parameter.SetValue(maskTexture1);
-            }
         }
 
         protected internal override void OnResolveMaterialPart(MaterialUsage usage, MaterialPart existingInstance)
@@ -54,7 +54,8 @@
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return GetShaderCode("BeginPaintGroup");
+            var maskCount = MaterialPaintGroup.GetMaskTextures(MaterialGroup).Count;
+            return GetShaderCode("BeginPaintGroup").Replace("{$T2}", maskCount > 1 ? "" : "//");
         }
     }
 }

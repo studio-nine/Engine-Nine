@@ -23,6 +23,12 @@
             set { blur.BlurAmount = value; }
         }
 
+        public bool AdaptationEnabled
+        {
+            get { return luminanceChain.AdaptationEnabled; }
+            set { luminanceChain.AdaptationEnabled = value; }
+        }
+
         public float AdaptationSpeed
         {
             get { return luminanceChain.AdaptationSpeed; }

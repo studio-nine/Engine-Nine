@@ -2,8 +2,7 @@ namespace Nine.Animations
 {
     using System;
     using System.ComponentModel;
-
-
+    
     /// <summary>
     /// Defines the behavior of the last ending keyframe.
     /// </summary>
@@ -55,55 +54,24 @@ namespace Nine.Animations
     public abstract class KeyframeAnimation : TimelineAnimation
     {
         /// <summary>
-        /// Creates a new instance of <c>KeyframeAnimation</c>.
-        /// </summary>
-        protected KeyframeAnimation()
-        {
-            CurrentFrame = 0;
-            Repeat = float.MaxValue;
-        }
-
-        #region BeginFrame & EndFrame
-        /// <summary>
-        /// Gets or sets the frame at which this <see cref="KeyframeAnimation"/> should begin.
+        /// Gets or sets the inclusive frame at which this <see cref="KeyframeAnimation"/> should begin.
         /// </summary>
         public int? BeginFrame
         {
-            get
-            {
-                if (BeginTime.HasValue)
-                    return (int)(BeginTime.Value.TotalSeconds * TotalFrames / TotalDuration.TotalSeconds);
-                return null;
-            }
-            set
-            {
-                if (value.HasValue)
-                    BeginTime = TimeSpan.FromSeconds(value.Value * TotalDuration.TotalSeconds / TotalFrames);
-                else
-                    BeginTime = null;
-            }
+            get { return beginFrame; }
+            set { beginFrame = value; UpdateBeginEndTime(); }
         }
+        private int? beginFrame;
 
         /// <summary>
-        /// Gets or sets the frame at which this <see cref="KeyframeAnimation"/> should end.
+        /// Gets or sets the exclusive frame at which this <see cref="KeyframeAnimation"/> should end.
         /// </summary>
         public int? EndFrame
         {
-            get
-            {
-                if (EndTime.HasValue)
-                    return (int)(EndTime.Value.TotalSeconds * TotalFrames / TotalDuration.TotalSeconds);
-                return null;
-            }
-            set
-            {
-                if (value.HasValue)
-                    EndTime = TimeSpan.FromSeconds(value.Value * TotalDuration.TotalSeconds / TotalFrames);
-                else
-                    EndTime = null;
-            }
+            get { return endFrame; }
+            set { endFrame = value; UpdateBeginEndTime(); }
         }
-        #endregion
+        private int? endFrame;
 
         /// <summary>
         /// Gets or sets number of frames to be played per second.
@@ -127,7 +95,7 @@ namespace Nine.Animations
         public int TotalFrames
         {
             get { return totalFrames; }
-            protected set { totalFrames = value; UpdateDuration(); }
+            protected set { totalFrames = value; UpdateDuration(); UpdateBeginEndTime(); }
         }
         private int totalFrames;
 
@@ -151,6 +119,15 @@ namespace Nine.Animations
         /// Occurs when this animation is about to exit the current frame.
         /// </summary>
         public event EventHandler<KeyframeEventArges> ExitFrame;
+
+        /// <summary>
+        /// Creates a new instance of <c>KeyframeAnimation</c>.
+        /// </summary>
+        protected KeyframeAnimation()
+        {
+            CurrentFrame = 0;
+            Repeat = float.MaxValue;
+        }
 
         /// <summary>
         /// Gets the index of the frame at the specified position.
@@ -191,7 +168,6 @@ namespace Nine.Animations
         protected override void OnStopped()
         {
             hasPlayed = false;
-
             base.OnStopped();
         }
 
@@ -200,8 +176,9 @@ namespace Nine.Animations
         /// </summary>
         protected override void OnStarted()
         {
+            // Override BeginTime & EndTime with BeginFrame & EndFrame.
+            UpdateBeginEndTime();
             hasPlayed = false;
-
             base.OnStarted();
         }
 
@@ -211,7 +188,6 @@ namespace Nine.Animations
         protected override void OnCompleted()
         {
             hasPlayed = false;
-
             base.OnCompleted();
         }
 
@@ -249,6 +225,19 @@ namespace Nine.Animations
         {
             int realFrames = Math.Max(0, (ending == KeyframeEnding.Discard ? (totalFrames - 1) : totalFrames));
             TotalDuration = TimeSpan.FromSeconds(realFrames / FramesPerSecond);
+        }
+
+        private void UpdateBeginEndTime()
+        {
+            if (beginFrame.HasValue && totalFrames > 0)
+                BeginTime = TimeSpan.FromSeconds(beginFrame.Value * TotalDuration.TotalSeconds / totalFrames);
+            else
+                BeginTime = null;
+
+            if (endFrame.HasValue && totalFrames > 0)
+                EndTime = TimeSpan.FromSeconds(endFrame.Value * TotalDuration.TotalSeconds / totalFrames);
+            else
+                EndTime = null;
         }
 
         /// <summary>

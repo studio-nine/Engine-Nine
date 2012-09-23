@@ -16,14 +16,12 @@ namespace Test
         public Scene CreateTestScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
-            scene.Add(new ScreenCamera(graphics, ScreenCameraCoordinate.ThreeDimension));
+            scene.Add(new Camera2D(graphics));
 
             var texture = content.Load<Texture2D>("Textures/Butterfly");
             var link = new Group();
             scene.Add(link);
-
-            scene.Add(new Sprite(graphics) { Texture = content.Load<Texture2D>("Textures/Bits"), Anchor = Vector2.Zero });
-            scene.Add(new TextSprite(graphics) { Text = "Engine Nine", FlipY = true, Font = content.Load<SpriteFont>("Consolas") });
+            scene.Add(new TextSprite(graphics) { Text = "Engine Nine", Font = content.Load<SpriteFont>("Consolas") });
 
             var size = 8;
             var step = 50;
@@ -34,7 +32,6 @@ namespace Test
                 child.Add(new Sprite(graphics)
                 {
                     Alpha = 0.5f,
-                    FlipY = true,
                     Texture = texture,
                     Color = Color.Yellow,
                     Anchor = new Vector2(0, 0),

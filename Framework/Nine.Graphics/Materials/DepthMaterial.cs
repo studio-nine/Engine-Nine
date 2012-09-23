@@ -7,8 +7,7 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Defines a material to show object depth.
     /// </summary>
-    [ContentSerializable]
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    [NotContentSerializable]
     public partial class DepthMaterial : IEffectSkinned
     {
         #region Properties
@@ -22,22 +21,19 @@ namespace Nine.Graphics.Materials
         }
         bool skinningEnabled;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether texture is enabled.
-        /// </summary>
-        public bool TextureEnabled
+        public bool AlphaTestEnabled
         {
-            get { return textureEnabled; }
-            set { textureEnabled = value; UpdateShaderIndex(); }
+            get { return alphaTestEnabled; }
+            set { alphaTestEnabled = value; UpdateShaderIndex(); }
         }
-        bool textureEnabled;
+        bool alphaTestEnabled;
 
         public int ReferenceAlpha
         {
-            get { return referenceAlpha.HasValue ? referenceAlpha.Value : Constants.ReferenceAlpha; }
-            set { referenceAlpha = (value == Constants.ReferenceAlpha ? (int?)null : value); }
+            get { return referenceAlpha; }
+            set { referenceAlpha = value; }
         }
-        internal int? referenceAlpha;
+        internal int referenceAlpha = Constants.ReferenceAlpha;
 
         private int shaderIndex;
         #endregion
@@ -45,23 +41,20 @@ namespace Nine.Graphics.Materials
         #region Methods
         private void UpdateShaderIndex()
         {
-            shaderIndex = skinningEnabled ? (textureEnabled ? 3 : 1) :
-                                            (textureEnabled ? 2 : 0);
+            shaderIndex = skinningEnabled ? (alphaTestEnabled ? 3 : 1) :
+                                            (alphaTestEnabled ? 2 : 0);
         }
 
         partial void BeginApplyLocalParameters(DrawingContext context, DepthMaterial previousMaterial)
         {
-            if (previousMaterial != null && shaderIndex != previousMaterial.shaderIndex)
+            if (previousMaterial == null || shaderIndex != previousMaterial.shaderIndex)
                 effect.CurrentTechnique = effect.Techniques[shaderIndex];
-            if (referenceAlpha.HasValue)
-                effect.referenceAlpha.SetValue(referenceAlpha.Value);
+            if (alphaTestEnabled)
+            {
+                effect.Texture.SetValue(texture);                
+                effect.referenceAlpha.SetValue(referenceAlpha / 255f);
+            }
             effect.worldViewProjection.SetValue(world * context.matrices.ViewProjection);
-        }
-
-        partial void EndApplyLocalParameters(DrawingContext context)
-        {
-            if (referenceAlpha.HasValue)
-                effect.referenceAlpha.SetValue(Constants.ReferenceAlpha);
         }
 
         public void SetBoneTransforms(Matrix[] boneTransforms)

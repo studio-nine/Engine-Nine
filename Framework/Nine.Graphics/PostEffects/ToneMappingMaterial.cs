@@ -30,7 +30,7 @@ namespace Nine.Graphics.Materials
         {
             GraphicsDevice.Textures[1] = null;
             GraphicsDevice.Textures[2] = null;
-            GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = context.settings.SamplerState;
+            GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = context.SamplerState;
         }
 
         public override void SetTexture(TextureUsage textureUsage, Texture texture)

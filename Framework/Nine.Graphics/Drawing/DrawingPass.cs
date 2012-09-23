@@ -72,7 +72,7 @@ namespace Nine.Graphics.Drawing
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             if (ClearBackground)
-                context.graphics.Clear(context.settings.BackgroundColor);
+                context.graphics.Clear(context.BackgroundColor);
 
             var count = drawables.Count;
             if (count <= 0)
@@ -150,7 +150,7 @@ namespace Nine.Graphics.Drawing
                 // - During the drawing pass, the first sampler state is reset to default
                 //   to correct the changes made in post processing.
                 //---------------------------------------------------------------------
-                graphics.SamplerStates[0] = context.settings.SamplerState;
+                graphics.SamplerStates[0] = context.SamplerState;
 
                 // Draw opaque objects     
                 graphics.DepthStencilState = DepthStencilState.Default;

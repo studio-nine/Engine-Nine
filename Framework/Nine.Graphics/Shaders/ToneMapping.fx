@@ -14,6 +14,7 @@ float3 Tonemap(float3 x)
     float E = 0.02;
     float F = 0.30;
 
+    // ((x*(0.22*x+0.1*0.3)+0.2*0.02)/(x*(0.22*x+0.3)+0.2*0.3))-0.02/0.3
     return ((x*(A*x+C*B)+D*E)/(x*(A*x+B)+D*F))-E/F;
 }
 
@@ -23,7 +24,7 @@ float4 PS(float2 TexCoord : TEXCOORD0) : COLOR0
     float4 bloom = tex2D( BloomSampler, TexCoord );
     float4 final = color + bloom * BloomIntensity;    
     float avgLum = tex2D(LuminanceSampler, float2(0.5f, 0.5f)).x;    
-    final.rgb = Tonemap(Exposure * final) / Tonemap(avgLum);
+    final.rgb = Tonemap(Exposure * final) / Tonemap(max(0.002f, avgLum));
     return float4(final.rgb, 1);
 }
 

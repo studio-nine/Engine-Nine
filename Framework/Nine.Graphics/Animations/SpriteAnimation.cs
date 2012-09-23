@@ -24,7 +24,7 @@
         public TextureAtlas Source
         {
             get { return source; }
-            set { source = value; if (source != null) TotalFrames = source.Count; }
+            set { source = value; TotalFrames = source != null ? source.Count : 0; }
         }
         private TextureAtlas source;
 

@@ -98,7 +98,7 @@
             if (shadowMapParameter != null)
             {
                 context.graphics.Textures[shadowMapSamplerIndex] = null;
-                context.graphics.SamplerStates[shadowMapSamplerIndex] = context.settings.SamplerState;
+                context.graphics.SamplerStates[shadowMapSamplerIndex] = context.SamplerState;
             }
         }
 

@@ -95,7 +95,7 @@ namespace Tutorial
 
             // Gets the drawing context to adjust drawing settings.
             var drawingContext = scene.GetDrawingContext(GraphicsDevice);
-            drawingContext.Settings.TextureFilter = TextureFilter.Anisotropic;
+            drawingContext.TextureFilter = TextureFilter.Anisotropic;
             
             Window.Title = tutorials[nextTutorial];
 

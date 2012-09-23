@@ -1,7 +1,7 @@
 float2 MaskTextureScale;
 
 texture2D MaskTexture0;
-texture2D MaskTexture1;
+{$T2}texture2D MaskTexture1;
 
 sampler MaskSampler0 = sampler_state
 {
@@ -10,7 +10,7 @@ sampler MaskSampler0 = sampler_state
 
 sampler MaskSampler1 = sampler_state
 {
-    Texture = (MaskTexture1);
+    {$T2}Texture = (MaskTexture1);
 };
 
 // TODO: Make this dynamic

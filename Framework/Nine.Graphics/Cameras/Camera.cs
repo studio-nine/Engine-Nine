@@ -41,8 +41,8 @@ namespace Nine.Graphics.Cameras
         #endregion
 
         #region Projection
-        private int previousDefaultViewportWidth;
-        private int previousDefaultViewportHeight;
+        private int currentViewportWidth;
+        private int currentViewportHeight;
         private float fieldOfView = MathHelper.PiOver4;
         private float nearPlaneDistance = 1;
         private float farPlaneDistance = 1000;
@@ -72,12 +72,7 @@ namespace Nine.Graphics.Cameras
         /// </summary>
         public float AspectRatio
         {
-            get
-            {
-                return (viewport.HasValue ? viewport.Value.AspectRatio : GraphicsDevice.Viewport.AspectRatio)
-                     * (viewportScale.Max.X - viewportScale.Min.X)
-                     / (viewportScale.Max.Y - viewportScale.Min.Y);
-            }
+            get { return GraphicsDevice.Viewport.AspectRatio; }
         }
 
         /// <summary>
@@ -102,48 +97,22 @@ namespace Nine.Graphics.Cameras
         /// </summary>
         private void UpdateProjectionMatrix()
         {
-            // Check whether GraphicsDevice.Viewport has changed
-            if (!viewport.HasValue)
+            var viewport = GraphicsDevice.Viewport;
+            if (viewport.Width != currentViewportWidth || viewport.Height != currentViewportHeight)
             {
-                if (GraphicsDevice.Viewport.Width != previousDefaultViewportWidth ||
-                    GraphicsDevice.Viewport.Height != previousDefaultViewportHeight)
-                {
-                    previousDefaultViewportWidth = GraphicsDevice.Viewport.Width;
-                    previousDefaultViewportHeight = GraphicsDevice.Viewport.Height;
-                    projectionMatrixNeedsUpdate = true;
-                }
+                currentViewportWidth = viewport.Width;
+                currentViewportHeight = viewport.Height;
+                projectionMatrixNeedsUpdate = true;
             }
 
             if (projectionMatrixNeedsUpdate)
             {
-                Matrix.CreatePerspectiveFieldOfView(fieldOfView, AspectRatio, nearPlaneDistance, farPlaneDistance, out projectionMatrix);
+                Matrix.CreatePerspectiveFieldOfView(fieldOfView, viewport.AspectRatio, nearPlaneDistance, farPlaneDistance, out projectionMatrix);
                 projectionMatrixNeedsUpdate = false;
             }
         }
         #endregion
-
-        #region Viewport
-        /// <summary>
-        /// Gets or sets the viewport of this camera.
-        /// </summary>
-        public Viewport? Viewport
-        {
-            get { return viewport; }
-            set { viewport = value; projectionMatrixNeedsUpdate = true; }
-        }
-        internal Viewport? viewport;
-
-        /// <summary>
-        /// Gets or sets the scale factor that is applied to the viewport.
-        /// </summary>
-        public BoundingRectangle ViewportScale
-        {
-            get { return viewportScale; }
-            set { viewportScale = value; projectionMatrixNeedsUpdate = true; }
-        }
-        private BoundingRectangle viewportScale = new BoundingRectangle(Vector2.Zero, Vector2.One);
-        #endregion
-
+        
         #region Properties
         /// <summary>
         /// Gets a value indicating whether this <see cref="Camera"/> is enabled.
@@ -200,11 +169,10 @@ namespace Nine.Graphics.Cameras
                 context.camera = null;
         }
 
-        bool ICamera.TryGetViewFrustum(out Matrix view, out Matrix projection, out Viewport? viewport)
+        bool ICamera.TryGetViewFrustum(out Matrix view, out Matrix projection)
         {
             view = this.View;
             projection = this.Projection;
-            viewport = this.viewport;
             return enabled;
         }
         #endregion

@@ -1,6 +1,7 @@
 ﻿namespace Nine.Graphics
 {
     using System;
+    using System.ComponentModel;    
     using System.Collections.Generic;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
@@ -8,7 +9,7 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Animations;
     using Nine.Graphics.Drawing;
-    using Nine.Graphics.Materials;    
+    using Nine.Graphics.Materials;
     
     /// <summary>
     /// Defines a 2D textured sprite.
@@ -60,11 +61,17 @@
         /// <summary>
         /// Gets or sets the blend state of this sprite. The default value is BlendState.AlphaBlend.
         /// </summary>
+#if WINDOWS
+        [TypeConverter(typeof(Nine.Graphics.Design.BlendStateConverter))]
+#endif
         public BlendState BlendState { get; set; }
 
         /// <summary>
         /// Gets or sets the sampler state of this sprite. The default value is SamplerState.LinearClamp.
         /// </summary>
+#if WINDOWS
+        [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
+#endif
         public SamplerState SamplerState { get; set; }
         
         /// <summary>
@@ -193,6 +200,9 @@
         /// <summary>
         /// Gets or sets the rectangular region in the source texture.
         /// </summary>
+#if WINDOWS
+        [System.ComponentModel.TypeConverter(typeof(Nine.Design.RectangleConverter))]
+#endif
         public Rectangle? SourceRectangle
         {
             get { return sourceRectangle; }
@@ -301,7 +311,7 @@
             {
                 var rect = sourceRectangle.Value;
                 left = rect.X / textureWidth; right = (rect.X + rect.Width) / textureWidth;
-                top = rect.Y / textureHeight; bottom = (rect.Y + rect.Height) / textureHeight;
+                bottom = rect.Y / textureHeight; top = (rect.Y + rect.Height) / textureHeight;
 
                 width = rect.Width;
                 height = rect.Height;
@@ -312,7 +322,7 @@
                 height = textureHeight;
 
                 left = 0f; right = 1f;
-                top = 0f; bottom = 1f;
+                bottom = 0f; top = 1f;
             }
 
             if (flipX)
@@ -388,7 +398,7 @@
                 var spriteEffects = SpriteEffects.None;
                 if (flipX)
                     spriteEffects |= SpriteEffects.FlipHorizontally;
-                if (flipY)
+                if (!flipY)
                     spriteEffects |= SpriteEffects.FlipVertically;
 
                 float worldRotation;

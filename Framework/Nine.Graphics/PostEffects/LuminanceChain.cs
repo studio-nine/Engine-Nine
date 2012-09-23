@@ -16,13 +16,22 @@
     class LuminanceChain : PostEffectChain
     {
         /// <summary>
+        /// Gets or sets whether eye adaptation is enabled.
+        /// </summary>
+        public bool AdaptationEnabled
+        {
+            get { return adaptationEffect.Enabled; }
+            set { adaptationEffect.Enabled = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the speed that determine how fast the eye adapts to the changes
-        /// of the luminance in the scene, or specify zero to disable adaption completely.
+        /// of the luminance in the scene.
         /// </summary>
         public float AdaptationSpeed
         {
             get { return adaptationEffect.Speed; }
-            set { adaptationEffect.Speed = value; adaptationEffect.Enabled = value > 0; }
+            set { adaptationEffect.Speed = value; }
         }
         private AdaptationEffect adaptationEffect;
 

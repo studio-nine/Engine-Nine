@@ -1,6 +1,7 @@
 ﻿namespace Nine.Content.Pipeline.Xaml
 {
     using System;
+    using System.Collections.Generic;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
 
@@ -9,34 +10,26 @@
     /// </summary>
     public class Degrees : MarkupExtension
     {
-        /// <summary>
-        /// Gets or sets the degrees.
-        /// </summary>
-        public float Value { get; set; }
+        public object Value { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Degrees"/> class.
-        /// </summary>
-        public Degrees() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Degrees"/> class.
-        /// </summary>
-        public Degrees(float degrees) 
+        public Degrees(float degrees)
         {
-            Value = degrees;
+            Value = MathHelper.ToRadians(degrees);
         }
 
-        /// <summary>
-        /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
-        /// </summary>
-        /// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
-        /// <returns>
-        /// The object value to set on the property where the extension is applied.
-        /// </returns>
+        public Degrees(float v1, float v2)
+        {
+            Value = new Vector2(MathHelper.ToRadians(v1), MathHelper.ToRadians(v2));
+        }
+        
+        public Degrees(float v1, float v2, float v3)
+        {
+            Value = new Vector3(MathHelper.ToRadians(v1), MathHelper.ToRadians(v2), MathHelper.ToRadians(v3));
+        }
+
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return MathHelper.ToRadians(Value);
+            return Value;
         }
     }
 }

@@ -165,7 +165,7 @@
         #endregion
 
         #region IContainedObject
-        object IComponent.Parent
+        IContainer IComponent.Parent
         {
             get { return surface; }
             set { throw new InvalidOperationException(); }

@@ -18,18 +18,19 @@ namespace Nine
         /// <summary>
         /// Gets the parent of this object.
         /// </summary>
+        [ContentSerializerIgnore]
         public Transformable Parent
         {
             get { return parent; }
         }
 
-        object IComponent.Parent
+        IContainer IComponent.Parent
         {
-            get { return Parent; }
+            get { return parent as IContainer; }
             set { SetParent(value); }
         }
 
-        private void SetParent(object value)
+        private void SetParent(IContainer value)
         {
             if (parent != value)
             {

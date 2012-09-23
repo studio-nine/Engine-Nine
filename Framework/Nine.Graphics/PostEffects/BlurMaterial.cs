@@ -10,13 +10,14 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// A post processing screen effect that blurs the whole screen.
     /// </summary>
+    [ContentSerializable]
     public partial class BlurMaterial
     {
         public const float MaxBlurAmount = 10;
         private const int MaxSampleCount = 15;
 
         /// <summary>
-        /// Gets or sets the amount of bluring.
+        /// Gets or sets the amount of blurring.
         /// </summary>
         public float BlurAmount
         {
@@ -25,12 +26,12 @@ namespace Nine.Graphics.Materials
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether depth buffer will be sampled when bluring the scene.
+        /// Gets or sets a value indicating whether depth buffer will be sampled when blurring the scene.
         /// </summary>
         internal bool DepthBufferEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets the direction of bluring in radians.
+        /// Gets or sets the direction of blurring in radians.
         /// </summary>
         public float Direction { get; set; }
 
@@ -59,7 +60,7 @@ namespace Nine.Graphics.Materials
 
         /// <summary>
         /// Computes sample weightings and texture coordinate offsets
-        /// for one pass of a separable gaussian blur filter.
+        /// for one pass of a separable Gaussian blur filter.
         /// </summary>
         void SetBlurEffectParameters(float dx, float dy)
         {
@@ -120,7 +121,7 @@ namespace Nine.Graphics.Materials
         }
 
         /// <summary>
-        /// Evaluates a single point on the gaussian falloff curve.
+        /// Evaluates a single point on the Gaussian falloff curve.
         /// Used for setting up the blur filter weightings.
         /// </summary>
         private float ComputeGaussian(float n)

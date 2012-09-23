@@ -11,7 +11,6 @@ namespace Nine.Graphics.Drawing
     /// <summary>
     /// Defines a light used by deferred rendering.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IDeferredLight
     {
         /// <summary>
@@ -23,7 +22,7 @@ namespace Nine.Graphics.Drawing
     /// <summary>
     /// Represents a deferred lighting technique.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    [NotContentSerializable]
     public class LightPrePass : Pass, IDisposable
     {
         #region Properties
@@ -303,7 +302,7 @@ namespace Nine.Graphics.Drawing
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-            GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = context.settings.SamplerState;
+            GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = context.SamplerState;
 
             context.textures[TextureUsage.LightBuffer] = LightBuffer;
             return LightBuffer;

@@ -11,7 +11,7 @@ namespace Nine.Graphics.Drawing
     /// <summary>
     /// Defines a pass that draws all the 2D sprites.
     /// </summary>
-    sealed class SpritePass : Pass, IDisposable
+    public class SpritePass : Pass, IDisposable
     {
         private bool isDrawing;
         private BasicEffect basicEffect;

@@ -26,7 +26,7 @@ namespace Nine.Graphics.Materials
         partial void EndApplyLocalParameters(DrawingContext context)
         {
             GraphicsDevice.Textures[1] = null;
-            GraphicsDevice.SamplerStates[1] = context.settings.SamplerState;
+            GraphicsDevice.SamplerStates[1] = context.SamplerState;
         }
 
         public override void SetTexture(TextureUsage textureUsage, Texture texture)

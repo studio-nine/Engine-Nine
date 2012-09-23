@@ -119,8 +119,8 @@
     <Compile Include="Drawing\DepthPrePass.cs" />
     <Compile Include="Drawing\LightPrePass.cs" />
     <Compile Include="Drawing\PassGroup.cs" />
-    <Compile Include="Drawing\TextureCollection.cs" />
-    <Compile Include="Drawing\MatrixCollection.cs" />
+    <Compile Include="TextureCollection.cs" />
+    <Compile Include="MatrixCollection.cs" />
     <Compile Include="Drawing\Pass.cs" />
     <Compile Include="Drawing\DrawingQueue.cs" />
     <Compile Include="GraphicsDeviceService.cs" />
@@ -196,9 +196,7 @@
     <Compile Include="DirectionalLight.cs" />
     <Compile Include="PointLight.cs" />
     <Compile Include="SpotLight.cs" />
-    <Compile Include="Drawing\DrawingContext.cs" />
-    <Compile Include="Drawing\Settings.cs" />
-    <Compile Include="Drawing\Statistics.cs" />
+    <Compile Include="DrawingContext.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="SkyBox.cs" />
     <Compile Include="Design\BlendStateReader.cs" />
@@ -240,7 +238,7 @@
     <Compile Include="PostEffects\PostEffect.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Cameras\ScreenCamera.cs" />
+    <Compile Include="Cameras\Camera2D.cs" />
     <Compile Include="VertexTypes\VertexPositionColorNormalTexture.cs" />
     <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
@@ -275,7 +273,6 @@
     </None>
     <None Include="Shaders\RestoreDepthBuffer.fx" />
     <None Include="Shaders\VertexPassThrough2.fx" />
-    <None Include="Shaders\Shadow.fx" />
     <None Include="Shaders\Decal.fx" />
     <None Include="Shaders\Clear.fx" />
     <None Include="Shaders\DeferredDirectionalLight.fx" />

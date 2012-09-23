@@ -5,7 +5,7 @@ namespace Nine.Graphics.Materials
 
     partial class VertexPassThrough2Material
     {
-        partial void ApplyGlobalParameters(Drawing.DrawingContext context)
+        partial void ApplyGlobalParameters(DrawingContext context)
         {
             var pixelSize = new Vector2();
             var viewport = context.graphics.Viewport;
@@ -21,7 +21,7 @@ namespace Nine.Graphics.Materials
 
     partial class VertexPassThrough3Material
     {
-        partial void ApplyGlobalParameters(Drawing.DrawingContext context)
+        partial void ApplyGlobalParameters(DrawingContext context)
         {
             var pixelSize = new Vector2();
             var viewport = context.graphics.Viewport;

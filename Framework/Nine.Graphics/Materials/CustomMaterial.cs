@@ -99,7 +99,7 @@ namespace Nine.Graphics.Materials
             if (source != null)
                 parameters.EndApplyLocalParameters();
             if (SamplerState != null)
-                context.graphics.SamplerStates[0] = context.settings.SamplerState;
+                context.graphics.SamplerStates[0] = context.SamplerState;
         }
 
         #region IEffectParameterProvider

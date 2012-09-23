@@ -100,7 +100,7 @@ namespace Nine.Graphics.Materials
             if (SamplerState != null)
             {
                 GraphicsDevice.SamplerStates[0] =
-                GraphicsDevice.SamplerStates[1] = context.settings.SamplerState;
+                GraphicsDevice.SamplerStates[1] = context.SamplerState;
             }
         }
 
@@ -110,7 +110,7 @@ namespace Nine.Graphics.Materials
             if (usage == MaterialUsage.Depth)
             {
                 var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice);
-                result.TextureEnabled = (texture != null && IsTransparent);
+                result.AlphaTestEnabled = (texture != null && IsTransparent);
                 return result;
             }
 

@@ -4,8 +4,7 @@
     using System.ComponentModel;
     using System.Globalization;
     using System.Xaml;
-
-
+    
     class RangeConverter : TypeConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)

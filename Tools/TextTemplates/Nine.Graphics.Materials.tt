@@ -73,7 +73,7 @@ namespace Nine.Graphics.Materials
             OnCreated();
         }
 
-        protected override void OnBeginApply(Nine.Graphics.Drawing.DrawingContext context, Nine.Graphics.Materials.Material previousMaterial)
+        protected override void OnBeginApply(Nine.Graphics.DrawingContext context, Nine.Graphics.Materials.Material previousMaterial)
         {
             <#= materialName #> previous = previousMaterial as <#= materialName #>;
             if (previous == null)
@@ -82,15 +82,15 @@ namespace Nine.Graphics.Materials
             effect.CurrentTechnique.Passes[0].Apply();
         }
 
-        protected override void OnEndApply(Nine.Graphics.Drawing.DrawingContext context)
+        protected override void OnEndApply(Nine.Graphics.DrawingContext context)
         {
             EndApplyLocalParameters(context);
         }
                 
         partial void OnCreated();
-        partial void ApplyGlobalParameters(Nine.Graphics.Drawing.DrawingContext context);
-        partial void BeginApplyLocalParameters(Nine.Graphics.Drawing.DrawingContext context, <#= materialName #> previousMaterial);
-        partial void EndApplyLocalParameters(Nine.Graphics.Drawing.DrawingContext context);
+        partial void ApplyGlobalParameters(Nine.Graphics.DrawingContext context);
+        partial void BeginApplyLocalParameters(Nine.Graphics.DrawingContext context, <#= materialName #> previousMaterial);
+        partial void EndApplyLocalParameters(Nine.Graphics.DrawingContext context);
     }
     
     [System.CodeDom.Compiler.GeneratedCode("Nine.Graphics.Materials.tt", "1.0.0.0")]

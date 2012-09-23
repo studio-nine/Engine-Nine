@@ -1,6 +1,7 @@
 ﻿namespace Nine.Graphics
 {
     using System;
+    using System.ComponentModel;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -51,6 +52,9 @@
         /// <summary>
         /// Gets or sets the blend state of this sprite. The default value is BlendState.AlphaBlend.
         /// </summary>
+#if WINDOWS
+        [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
+#endif
         public BlendState BlendState { get; set; }
 
         /// <summary>
@@ -179,7 +183,7 @@
                 var spriteEffects = SpriteEffects.None;
                 if (flipX)
                     spriteEffects |= SpriteEffects.FlipHorizontally;
-                if (flipY)
+                if (!flipY)
                     spriteEffects |= SpriteEffects.FlipVertically;
 
                 float worldRotation;

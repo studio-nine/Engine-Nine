@@ -1,9 +1,9 @@
 ﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <ScreenCamera CoordinateType="TwoDimension"/>
+    <Camera2D/>
     <FullScreenQuad Texture="{ContentReference ../Textures/box}" />
 
-    <Group Transform2D.Position="640,360" Transform2D.Scale="1,1" Transform2D.Rotation="0">
+    <Group Transform2D.Scale="1,1" Transform2D.Rotation="0">
         
         <Sprite Texture="{ContentReference ../Textures/checker}" />
 

@@ -1,4 +1,4 @@
-namespace Nine.Graphics.Drawing
+namespace Nine.Graphics
 {
     using System;
     using System.Collections;
@@ -10,7 +10,7 @@ namespace Nine.Graphics.Drawing
     using Nine.Graphics.Cameras;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
-    using DirectionalLight = Nine.Graphics.DirectionalLight;
+    using Nine.Graphics.Drawing;
 
     /// <summary>
     /// A drawing context contains commonly used global parameters for rendering.
@@ -28,6 +28,11 @@ namespace Nine.Graphics.Drawing
         internal GraphicsDevice graphics;
 
         /// <summary>
+        /// Gets or sets the color of the background.
+        /// </summary>
+        public Color BackgroundColor { get; set; }
+
+        /// <summary>
         /// Gets or sets the active camera of the current drawing frustum.
         /// </summary>
         /// <remarks>
@@ -40,24 +45,6 @@ namespace Nine.Graphics.Drawing
             set { camera = value; }
         }
         internal ICamera camera;
-        
-        /// <summary>
-        /// Gets the graphics settings
-        /// </summary>
-        public Settings Settings
-        {
-            get { return settings; }
-            set { settings = (value ?? new Settings()); }
-        }
-        internal Settings settings;
-
-        /// <summary>
-        /// Gets the graphics statistics.
-        /// </summary>
-        public Statistics Statistics 
-        {
-            get { throw new NotImplementedException(); }
-        }
 
         /// <summary>
         /// Gets the elapsed time since last update.
@@ -116,7 +103,7 @@ namespace Nine.Graphics.Drawing
             get { return textures; }
         }
         internal TextureCollection textures;
-
+        
         /// <summary>
         /// Gets the main pass that is used to render the scene.
         /// </summary>
@@ -134,6 +121,85 @@ namespace Nine.Graphics.Drawing
             get { return rootPass; }
         }
         internal PassGroup rootPass;
+
+        #endregion
+
+        #region SamplerState
+        /// <summary>
+        /// Gets or sets the texture filter quality for this drawing pass.
+        /// </summary>
+        public TextureFilter TextureFilter
+        {
+            get { return textureFilter; }
+            set
+            {
+                if (textureFilter != value)
+                {
+                    textureFilter = value;
+                    samplerStateNeedsUpdate = true;
+                }
+            }
+        }
+        private TextureFilter textureFilter = TextureFilter.Linear;
+
+        /// <summary>
+        /// Gets or sets the maximum anisotropy. The default value is 4.
+        /// </summary>
+        public int MaxAnisotropy
+        {
+            get { return maxAnisotropy; }
+            set
+            {
+                if (maxAnisotropy != value)
+                {
+                    maxAnisotropy = value;
+                    samplerStateNeedsUpdate = true;
+                }
+            }
+        }
+        private int maxAnisotropy = 4;
+        private bool samplerStateNeedsUpdate = false;
+        private SamplerState samplerState = SamplerState.LinearWrap;
+
+        /// <summary>
+        /// Gets the default sampler state.
+        /// </summary>
+        public SamplerState SamplerState
+        {
+            get
+            {
+                if (samplerStateNeedsUpdate)
+                {
+                    samplerStateNeedsUpdate = false;
+                    if (maxAnisotropy == 4)
+                    {
+                        if (textureFilter == TextureFilter.Linear)
+                            samplerState = SamplerState.LinearWrap;
+                        else if (textureFilter == TextureFilter.Point)
+                            samplerState = SamplerState.PointWrap;
+                        else if (textureFilter == TextureFilter.Anisotropic)
+                            samplerState = SamplerState.AnisotropicWrap;
+                        else
+                            samplerStateNeedsUpdate = true;
+                    }
+                    else
+                    {
+                        samplerStateNeedsUpdate = true;
+                    }
+
+                    if (samplerStateNeedsUpdate)
+                    {
+                        samplerState = new SamplerState();
+                        samplerState.AddressU = TextureAddressMode.Wrap;
+                        samplerState.AddressV = TextureAddressMode.Wrap;
+                        samplerState.Filter = textureFilter;
+                        samplerState.MaxAnisotropy = maxAnisotropy;
+                        samplerStateNeedsUpdate = false;
+                    }
+                }
+                return samplerState;
+            }
+        }
         #endregion
 
         #region Matrices
@@ -283,8 +349,8 @@ namespace Nine.Graphics.Drawing
                 throw new ArgumentNullException("spatialQuery");
 
             this.spatialQuery = spatialQuery;
-            this.drawables = spatialQuery.CreateSpatialQuery<IDrawableObject>(drawable => drawable.Visible);
-            this.settings = new Settings();
+            this.BackgroundColor = Color.Black;
+            this.drawables = spatialQuery.CreateSpatialQuery<IDrawableObject>(drawable => drawable.Visible);            
             this.graphics = graphics;
             this.defaultLight = new DirectionalLight(graphics)
             {
@@ -389,8 +455,7 @@ namespace Nine.Graphics.Drawing
         {
             var activeCamera = camera;
             Matrix view, projection;
-            Viewport? viewport;
-            activeCamera.TryGetViewFrustum(out view, out projection, out viewport);
+            activeCamera.TryGetViewFrustum(out view, out projection);
             Draw(elapsedTime, view, projection);
         }
 
@@ -490,13 +555,9 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         private void UpdateDefaultSamplerStates()
         {
-            if (settings.DefaultSamplerStateChanged)
-            {
-                var samplerState = settings.SamplerState;
-                for (int i = 0; i < 16; ++i)
-                    graphics.SamplerStates[i] = samplerState;
-                settings.DefaultSamplerStateChanged = false;
-            }
+            var samplerState = SamplerState;
+            for (int i = 0; i < 16; ++i)
+                graphics.SamplerStates[i] = samplerState;
         }
 
         /// <summary>

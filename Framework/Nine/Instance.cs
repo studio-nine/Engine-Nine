@@ -34,6 +34,19 @@ namespace Nine
         private Dictionary<string, object> properties = new Dictionary<string, object>();
 
         /// <summary>
+        /// Initializes a new instance of Instance class.
+        /// </summary>
+        public Instance() { }
+
+        /// <summary>
+        /// Initializes a new instance of Instance class.
+        /// </summary>        
+        public Instance(string template) 
+        {
+            this.Template = template;
+        }
+
+        /// <summary>
         /// Create a new instance of the object from template.
         /// </summary>
         public T CreateInstance<T>(IServiceProvider serviceProvider)

@@ -43,7 +43,8 @@ namespace Nine.Animations
             {
                 if (value < TimeSpan.Zero)
                     throw new ArgumentOutOfRangeException("TotalDuration cannot be negative");
-                totalDuration = value; durationNeedsUpdate = true;
+                totalDuration = value; 
+                durationNeedsUpdate = true;
             }
         }
         private TimeSpan totalDuration;
@@ -57,16 +58,7 @@ namespace Nine.Animations
             {
                 if (durationNeedsUpdate)
                 {
-                    // Clamp begin time and end time
-                    if (beginTime != null && beginTime.Value < TimeSpan.Zero)
-                        beginTime = TimeSpan.Zero;
-                    if (endTime != null && endTime.Value > totalDuration)
-                        endTime = totalDuration;
-
-                    // Recompute duration
-                    duration = (endTime.HasValue ? endTime.Value : totalDuration) - 
-                               (beginTime.HasValue ? beginTime.Value : TimeSpan.Zero);
-
+                    duration = GetEndPosition() - GetBeginPosition();
                     durationNeedsUpdate = false;
                 }
                 return duration;
@@ -288,12 +280,12 @@ namespace Nine.Animations
 
         private TimeSpan GetBeginPosition()
         {
-            return beginTime.HasValue ? beginTime.Value : TimeSpan.Zero;
+            return (beginTime.HasValue && beginTime.Value > TimeSpan.Zero) ? beginTime.Value : TimeSpan.Zero;
         }
 
         private TimeSpan GetEndPosition()
         {
-            return endTime.HasValue ? endTime.Value : TotalDuration;
+            return (endTime.HasValue && endTime.Value < totalDuration) ? endTime.Value : totalDuration;
         }
     }
 }

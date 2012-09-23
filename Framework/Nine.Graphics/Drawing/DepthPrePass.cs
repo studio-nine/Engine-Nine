@@ -11,7 +11,7 @@ namespace Nine.Graphics.Drawing
     /// <summary>
     /// Defines a pass that draws the scene depth buffer prior to the actual rendering.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    [NotContentSerializable]
     public class DepthPrePass : Pass, IDisposable
     {
         private DepthMaterial depthMaterial;

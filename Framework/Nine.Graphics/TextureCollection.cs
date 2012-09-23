@@ -1,4 +1,4 @@
-namespace Nine.Graphics.Drawing
+namespace Nine.Graphics
 {
     using System.ComponentModel;
     using Microsoft.Xna.Framework.Graphics;

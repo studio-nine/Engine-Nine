@@ -84,7 +84,7 @@
                  
                     base.Draw(context, drawables);
 
-                    graphics.SamplerStates[1] = context.settings.SamplerState;
+                    graphics.SamplerStates[1] = context.SamplerState;
                 }
             }
             finally

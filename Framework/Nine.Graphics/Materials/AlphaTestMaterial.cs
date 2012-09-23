@@ -107,7 +107,7 @@ namespace Nine.Graphics.Materials
                 effect.AlphaFunction = Constants.AlphaFunction;
 
             if (SamplerState != null)
-                GraphicsDevice.SamplerStates[0] = context.settings.SamplerState;
+                GraphicsDevice.SamplerStates[0] = context.SamplerState;
         }
 
         protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
@@ -115,8 +115,8 @@ namespace Nine.Graphics.Materials
 #if !WINDOWS_PHONE
             if (usage == MaterialUsage.Depth)
             {
-                var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice) { TextureEnabled = true };
-                result.referenceAlpha = referenceAlpha;
+                var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice) { AlphaTestEnabled = true };
+                result.referenceAlpha = ReferenceAlpha;
                 return result;
             }
 #endif

@@ -66,8 +66,8 @@ namespace Nine
 
             if (!Nine.Content.ContentProperties.IsContentBuild)
             {
-                var objectFactory = value as IObjectFactory;
-                if (objectFactory != null)
+                object createdInstance = null;
+                if (TryGetObjectFactoryInstance(value as IObjectFactory, out createdInstance))
                 {
                     // The value very likely to be added to the tail of the element
                     for (var i = children.Elements.Count - 1; i >= 0; --i)
@@ -79,7 +79,6 @@ namespace Nine
                         }
                     }
 
-                    var createdInstance = objectFactory.CreateInstance(serviceProvider);
                     if (createdInstance != null)
                     {
                         children.Add(createdInstance);
@@ -101,6 +100,22 @@ namespace Nine
             var added = Added;
             if (added != null)
                 added(value);
+        }
+
+        private bool TryGetObjectFactoryInstance(IObjectFactory objectFactory, out object createdInstance)
+        {
+            if (objectFactory == null)
+            {
+                createdInstance = null;
+                return false;
+            }
+
+            createdInstance = objectFactory.CreateInstance(ServiceProvider);
+
+            object childInstance;
+            if (TryGetObjectFactoryInstance(createdInstance as IObjectFactory, out childInstance))
+                createdInstance = childInstance;
+            return true;
         }
 
         [Conditional("DEBUG")]

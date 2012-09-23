@@ -15,7 +15,7 @@ float4 LuminancePS(float2 TexCoord:TEXCOORD0) : COLOR0
             float4 color = tex2D(Sampler, TexCoord + Offset);
 
             float GreyValue = dot(color.rgb, float3(0.299f, 0.587f, 0.114f));
-            average += (0.25f * log( 1e-5 + GreyValue ));
+            average += (0.25f * log(1e-5 + GreyValue));
         }
     }
     return exp(average).xxxx;
@@ -31,10 +31,10 @@ float4 LuminanceScalePS(float2 TexCoord:TEXCOORD0) : COLOR0
             float2 Offset = float2(KernelOffsets4[x], KernelOffsets4[y]) * HalfTexel;
             float4 color = tex2D(Sampler, TexCoord + Offset);
 
-            average += (1.0f / 16) * log(color.r);
+            average += (1.0f / 16) * color.r;
         }
     }
-    return exp(average).xxxx;
+    return average.xxxx;
 }
 
 technique t1 { pass p0 { PixelShader = compile ps_2_0 LuminancePS(); } }

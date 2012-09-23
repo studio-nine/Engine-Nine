@@ -135,7 +135,7 @@ namespace Nine.Graphics.Materials
                 effect.WeightsPerVertex = Constants.WeightsPerVertex;
 
             if (SamplerState != null)
-                GraphicsDevice.SamplerStates[0] = context.settings.SamplerState;
+                GraphicsDevice.SamplerStates[0] = context.SamplerState;
         }
 
         protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
@@ -144,7 +144,7 @@ namespace Nine.Graphics.Materials
             if (usage == MaterialUsage.Depth)
             {
                 var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice) { SkinningEnabled = true };
-                result.TextureEnabled = (texture != null && IsTransparent);
+                result.AlphaTestEnabled = (texture != null && IsTransparent);
                 return result;
             }
 
