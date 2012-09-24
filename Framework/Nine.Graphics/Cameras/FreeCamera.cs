@@ -8,7 +8,7 @@
     /// <summary>
     /// A first person free camera.
     /// </summary>
-    public class FreeCamera : Camera
+    public class FreeCamera : Camera, Nine.IUpdateable
     {
         public Vector3 Angle
         { 
@@ -55,7 +55,7 @@
             this.DownKey = Keys.Z;
         }
 
-        public override void Update(TimeSpan elapsedTime)
+        public void Update(TimeSpan elapsedTime)
         {
             // Assume screen size always greater then 100
             var delta = (float)elapsedTime.TotalSeconds;

@@ -9,7 +9,7 @@ namespace Nine.Graphics.Cameras
     /// <summary>
     /// Defines a camera that can be attacked to a <see cref="Transformable"/>.
     /// </summary>
-    public class Camera : Transformable, ICamera, ISceneObject, Nine.IUpdateable
+    public class Camera : Transformable, ICamera, ISceneObject
     {
         #region View
         private bool viewMatrixNeedsUpdate;
@@ -115,16 +115,6 @@ namespace Nine.Graphics.Cameras
         
         #region Properties
         /// <summary>
-        /// Gets a value indicating whether this <see cref="Camera"/> is enabled.
-        /// </summary>
-        public bool Enabled
-        {
-            get { return enabled; }
-            set { enabled = value; }
-        }
-        internal bool enabled = true;
-
-        /// <summary>
         /// Gets the graphics device.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
@@ -143,20 +133,6 @@ namespace Nine.Graphics.Cameras
             projectionMatrixNeedsUpdate = true;
         }
 
-        void Nine.IUpdateable.Update(TimeSpan elapsedTime)
-        {
-            if (Enabled)
-                Update(elapsedTime);
-        }
-
-        /// <summary>
-        /// Updates this camera.
-        /// </summary>
-        public virtual void Update(TimeSpan elapsedTime)
-        {
-
-        }
-
         void ISceneObject.OnAdded(DrawingContext context)
         {
             if (context.camera == null)
@@ -173,7 +149,7 @@ namespace Nine.Graphics.Cameras
         {
             view = this.View;
             projection = this.Projection;
-            return enabled;
+            return true;
         }
         #endregion
     }

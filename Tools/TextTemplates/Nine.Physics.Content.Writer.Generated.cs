@@ -21,16 +21,27 @@ namespace Nine.Content.Pipeline.Physics
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.RigidBody value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Collider", value.Collider);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Position);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Orientation);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Mass);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Velocity);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.AngularVelocity);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Damping);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.AngularDamping);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -46,11 +57,15 @@ namespace Nine.Content.Pipeline.Physics
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Physics.RigidBodyReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Physics.RigidBody, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -68,14 +83,23 @@ namespace Nine.Content.Pipeline.Physics.Colliders
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.BoxCollider value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Size);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Mass);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Friction", value.Friction);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Restitution);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -91,11 +115,15 @@ namespace Nine.Content.Pipeline.Physics.Colliders
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Physics.Colliders.BoxColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Physics.Colliders.BoxCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -110,15 +138,25 @@ namespace Nine.Content.Pipeline.Physics.Colliders
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.CapsuleCollider value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Height);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Radius);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Mass);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Friction", value.Friction);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Restitution);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -134,11 +172,15 @@ namespace Nine.Content.Pipeline.Physics.Colliders
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Physics.Colliders.CapsuleColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Physics.Colliders.CapsuleCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -153,18 +195,27 @@ namespace Nine.Content.Pipeline.Physics.Colliders
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.CompoundCollider value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             {
                 output.Write(value.Colliders.Count);
                 for (var i = 0; i < value.Colliders.Count; ++i)
                     output.WriteObject(value.Colliders[i]);
             }
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Mass);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Friction", value.Friction);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Restitution);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -180,11 +231,15 @@ namespace Nine.Content.Pipeline.Physics.Colliders
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Physics.Colliders.CompoundColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Physics.Colliders.CompoundCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -199,15 +254,25 @@ namespace Nine.Content.Pipeline.Physics.Colliders
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.ConeCollider value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Height);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Radius);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Mass);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Friction", value.Friction);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Restitution);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -223,11 +288,15 @@ namespace Nine.Content.Pipeline.Physics.Colliders
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Physics.Colliders.ConeColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Physics.Colliders.ConeCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -242,15 +311,25 @@ namespace Nine.Content.Pipeline.Physics.Colliders
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.CylinderCollider value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Height);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Radius);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Mass);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Friction", value.Friction);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Restitution);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -266,11 +345,15 @@ namespace Nine.Content.Pipeline.Physics.Colliders
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Physics.Colliders.CylinderColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Physics.Colliders.CylinderCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -285,15 +368,25 @@ namespace Nine.Content.Pipeline.Physics.Colliders
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.ModelCollider value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Source", value.Source);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "CollisionMesh", value.CollisionMesh);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Mass);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Friction", value.Friction);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Restitution);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -309,11 +402,15 @@ namespace Nine.Content.Pipeline.Physics.Colliders
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Physics.Colliders.ModelColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Physics.Colliders.ModelCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -328,14 +425,23 @@ namespace Nine.Content.Pipeline.Physics.Colliders
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.SphereCollider value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Radius);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Mass);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Friction", value.Friction);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Restitution);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -351,11 +457,15 @@ namespace Nine.Content.Pipeline.Physics.Colliders
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Physics.Colliders.SphereColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Physics.Colliders.SphereCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
@@ -370,14 +480,23 @@ namespace Nine.Content.Pipeline.Physics.Colliders
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.TerrainCollider value)
         {
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Heightmap", value.Heightmap);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Enabled);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Mass);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Friction", value.Friction);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Restitution);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "CollisionGroup", value.CollisionGroup);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Transform);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "Name", value.Name);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -393,11 +512,15 @@ namespace Nine.Content.Pipeline.Physics.Colliders
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";        
             return "Nine.Physics.Colliders.TerrainColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
+            if (targetPlatform == Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+                return "System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, publicKeyToken=b77a5c561934e089";
             return "Nine.Physics.Colliders.TerrainCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }

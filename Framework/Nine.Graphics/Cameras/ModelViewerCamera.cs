@@ -53,7 +53,7 @@
             input.Update += new EventHandler<EventArgs>(Input_Update);
         }
 
-        public override void Update(TimeSpan elapsedTime)
+        private void UpdateTransform()
         {
             transform = Matrix.Identity;
             transform.M43 = -Radius;
@@ -85,14 +85,13 @@
             BeginRotation(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             EndRotation(GraphicsDevice.Viewport.Width / 2 + state.ThumbSticks.Right.X * 5 * WheelSpeed,
                         GraphicsDevice.Viewport.Height / 2 - state.ThumbSticks.Right.Y * 5 * WheelSpeed);
+
+            UpdateTransform();
 #endif
         }
 
         void Input_ButtonDown(object sender, MouseEventArgs e)
         {
-            if (!Enabled)
-                return;
-
             if (e.Button == RotateButton)
             {
                 BeginRotation(e.X, e.Y);
@@ -101,26 +100,18 @@
 
         void Input_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!Enabled)
-                return;
-
             if (e.IsButtonDown(RotateButton))
             {
-                EndRotation(e.X, e.Y);
+                EndRotation(e.X, e.Y); 
+                UpdateTransform();
             }
         }
 
         void Input_Wheel(object sender, MouseEventArgs e)
         {
-            if (!Enabled)
-                return;
-
             Radius -= e.WheelDelta * (MaxRadius - MinRadius) * 0.0001f * WheelSpeed;
-
-            if (Radius < MinRadius)
-                Radius = MinRadius;
-            else if (Radius > MaxRadius)
-                Radius = MaxRadius;
+            Radius = MathHelper.Clamp(Radius, MinRadius, MaxRadius);
+            UpdateTransform();
         }
         
         private void BeginRotation(float x, float y)

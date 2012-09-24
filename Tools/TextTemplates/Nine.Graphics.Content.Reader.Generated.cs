@@ -813,7 +813,6 @@ namespace Nine.Graphics.Cameras
             existingInstance.NearPlane = input.ReadSingle();
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
-            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -844,7 +843,6 @@ namespace Nine.Graphics.Cameras
             existingInstance.NearPlane = input.ReadSingle();
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
-            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -920,7 +918,6 @@ namespace Nine.Graphics.Cameras
             existingInstance.NearPlane = input.ReadSingle();
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
-            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -958,7 +955,6 @@ namespace Nine.Graphics.Cameras
             existingInstance.NearPlane = input.ReadSingle();
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
-            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();

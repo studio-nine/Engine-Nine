@@ -57,7 +57,7 @@
             input.Update += new EventHandler<EventArgs>(Input_Update);
         }
 
-        public override void Update(TimeSpan elapsedTime)
+        private void UpdateTransform()
         {
             var forward = new Vector3();
             forward.Y = -(float)Math.Sin(Pitch) * Radius;
@@ -73,9 +73,6 @@
 
         void Input_Update(object sender, EventArgs e)
         {
-            if (!Enabled)
-                return;
-
 #if XBOX
             GamePadState state = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
             if (state.Buttons.LeftShoulder == ButtonState.Pressed)
@@ -93,28 +90,21 @@
             
             lookAt.X -= ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * 0.1f;
             lookAt.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * 0.1f;
+            
+            UpdateTransform();
 #endif
         }
 
 
         void Input_Wheel(object sender, MouseEventArgs e)
         {
-            if (!Enabled)
-                return;
-
             Radius -= e.WheelDelta * (MaxRadius - MinRadius) * 0.0001f * WheelSpeed;
-
-            if (Radius < MinRadius)
-                Radius = MinRadius;
-            else if (Radius > MaxRadius)
-                Radius = MaxRadius;
+            Radius = MathHelper.Clamp(Radius, MinRadius, MaxRadius);
+            UpdateTransform();
         }
 
         void Input_MouseDown(object sender, MouseEventArgs e)
         {
-            if (!Enabled)
-                return;
-
             if (e.Button == RotateButton || e.Button == TranslateButton)
             {
                 startPoint.X = e.X;
@@ -124,9 +114,6 @@
 
         void Input_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!Enabled)
-                return;
-
             if (e.IsButtonDown(TranslateButton))
             {
                 float dx = e.X - startPoint.X;
@@ -146,6 +133,7 @@
 
                 Yaw += dx * 0.002f * MathHelper.Pi;
             }
+            UpdateTransform();
         }
     }
 }

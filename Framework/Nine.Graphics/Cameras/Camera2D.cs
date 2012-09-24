@@ -85,8 +85,14 @@
         
         public bool InputEnabled
         {
-            get { return input.Enabled; }
-            set { input.Enabled = value; }
+            get { return input != null && input.Enabled; }
+            set 
+            {
+                if (value)
+                    EnsureInput();
+                if (input != null)
+                    input.Enabled = value; 
+            }
         }
 
         private Input input;
@@ -106,12 +112,17 @@
             MinZoom = 0.01f;
             MaxZoom = 10f;
             WheelSpeed = 1;
+        }
 
-            input = new Input();
-
-            input.MouseDown += new EventHandler<MouseEventArgs>(Input_ButtonDown);
-            input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
-            input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
+        private void EnsureInput()
+        {
+            if (input == null)
+            {
+                input = new Input();
+                input.MouseDown += new EventHandler<MouseEventArgs>(Input_ButtonDown);
+                input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
+                input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
+            }
         }
 
         private void Input_ButtonDown(object sender, MouseEventArgs e)
