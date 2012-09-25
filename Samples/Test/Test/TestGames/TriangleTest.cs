@@ -60,6 +60,11 @@ namespace Test
         {
             return 0;
         }
+        
+        public bool CastShadow
+        {
+            get { return false; } 
+        }
 
         public void Draw(DrawingContext context, Material material)
         {

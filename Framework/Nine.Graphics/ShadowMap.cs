@@ -185,15 +185,8 @@
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             if (shadowCasterQuery == null)
-            {
-                shadowCasterQuery = context.CreateSpatialQuery<IDrawableObject>(drawable =>
-                {
-                    if (!drawable.Visible)
-                        return false;
-                    var lightable = drawable as ILightable;
-                    return lightable != null && lightable.CastShadow;
-                });
-            }
+                shadowCasterQuery = context.CreateSpatialQuery<IDrawableObject>(drawable => drawable.Visible && drawable.CastShadow);
+
             light.UpdateShadowFrustum(context, shadowCasterQuery);
             shadowCasterQuery.FindAll(light.ShadowFrustum, shadowCasters);
 
@@ -213,6 +206,8 @@
                 for (int i = 0; i < shadowCasters.Count; ++i)
                 {
                     var shadowCaster = shadowCasters[i];
+                    shadowCaster.OnAddedToView(context);
+
                     var material = shadowCaster.Material;
                     if (material == null)
                         material = depthMaterial;

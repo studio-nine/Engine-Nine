@@ -41,17 +41,15 @@ namespace Nine.Graphics.Materials
         #region Methods
         private void UpdateShaderIndex()
         {
-            shaderIndex = skinningEnabled ? (alphaTestEnabled ? 3 : 1) :
-                                            (alphaTestEnabled ? 2 : 0);
+            shaderIndex = skinningEnabled ? (alphaTestEnabled ? 3 : 1) : (alphaTestEnabled ? 2 : 0);
         }
 
         partial void BeginApplyLocalParameters(DrawingContext context, DepthMaterial previousMaterial)
         {
-            if (previousMaterial == null || shaderIndex != previousMaterial.shaderIndex)
-                effect.CurrentTechnique = effect.Techniques[shaderIndex];
+            effect.CurrentTechnique = effect.Techniques[shaderIndex];
             if (alphaTestEnabled)
             {
-                effect.Texture.SetValue(texture);                
+                effect.Texture.SetValue(texture);
                 effect.referenceAlpha.SetValue(referenceAlpha / 255f);
             }
             effect.worldViewProjection.SetValue(world * context.matrices.ViewProjection);

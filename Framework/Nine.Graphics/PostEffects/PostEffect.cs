@@ -173,8 +173,8 @@
         /// </summary>
         void ISceneObject.OnAdded(DrawingContext context)
         {
-            context.rootPass.Passes.Add(this);
-            AddDependency(context.mainPass);
+            context.Passes.Add(this);
+            AddDependency(context.MainPass);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@
         /// </summary>
         void ISceneObject.OnRemoved(DrawingContext context)
         {
-            context.rootPass.Passes.Remove(this);
+            context.Passes.Remove(this);
         }
         #endregion
     }

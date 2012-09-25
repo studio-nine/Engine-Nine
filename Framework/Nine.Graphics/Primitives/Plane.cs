@@ -72,9 +72,9 @@
                 {
                     Vector3 position = new Vector3();
 
-                    position.X = x / (tessellationX - 1) - 0.5f;
+                    position.X = 1f * x / (tessellationX - 1) - 0.5f;
                     position.Y = 0;
-                    position.Z = z / (tessellationZ - 1) - 0.5f;
+                    position.Z = 1f * z / (tessellationZ - 1) - 0.5f;
 
                     Vector2 uv = new Vector2();
 

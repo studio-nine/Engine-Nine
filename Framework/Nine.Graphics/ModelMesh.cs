@@ -126,16 +126,11 @@ namespace Nine.Graphics
         #endregion
 
         #region ILightable
-        bool ILightable.CastShadow 
+        bool IDrawableObject.CastShadow 
         {
             get { return Model != null && Model.CastShadow; } 
         }
 
-        bool ILightable.ReceiveShadow
-        {
-            get { return Model != null && Model.ReceiveShadow; } 
-        }
-        
         int ILightable.MaxReceivedShadows 
         { 
             get { return Model != null ? Model.MaxReceivedShadows : 0; } 

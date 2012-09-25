@@ -65,15 +65,9 @@ namespace Nine.Graphics
                 cube.Draw(context, this.material);
         }
 
-        void IDrawableObject.OnAddedToView(DrawingContext context) 
-        {
-
-        }
-
-        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition) 
-        {
-            return 0; 
-        }
+        void IDrawableObject.OnAddedToView(DrawingContext context) { }
+        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition) { return 0; }
+        bool IDrawableObject.CastShadow { get { return false; } }
 
         #region IDisposable
         /// <summary>

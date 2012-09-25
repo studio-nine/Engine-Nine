@@ -32,11 +32,6 @@
         public bool CastShadow { get; set; }
 
         /// <summary>
-        /// Gets whether the object receives shadow.
-        /// </summary>
-        public bool ReceiveShadow { get; set; }
-
-        /// <summary>
         /// Gets a value indicating whether this primitive resides inside the view frustum last frame.
         /// </summary>
         public bool InsideViewFrustum { get; internal set; }
@@ -303,19 +298,7 @@
 
             Indices.Add((ushort)index);
         }
-
-        /// <summary>
-        /// Adds a new index to the primitive model. This should only be called
-        /// during the InitializePrimitive.
-        /// </summary>
-        protected void AddIndex(params int[] indices)
-        {
-            for (int i = 0; i < indices.Length; ++i)
-            {
-                AddIndex(indices[i]);
-            }
-        }
-
+        
         /// <summary>
         /// Queries the index of the current vertex. This starts at
         /// zero, and increments every time AddVertex is called.

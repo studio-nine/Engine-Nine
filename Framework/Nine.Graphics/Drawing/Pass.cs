@@ -11,6 +11,14 @@ namespace Nine.Graphics.Drawing
     using Nine.Content;
     using Nine.Graphics;
 
+    [Flags]
+    enum PassOperation
+    {
+        None = 0,
+        BeginRenderTarget = 1,
+        EndRenderTarget = 1 << 1,
+    }
+
     /// <summary>
     /// A drawing pass represents a single pass in the composition chain.
     /// </summary>
@@ -62,6 +70,9 @@ namespace Nine.Graphics.Drawing
         /// passes are drawn before this passes draws.
         /// </summary>
         internal FastList<Pass> DependentPasses;
+
+        internal PassOperation PassOperation;
+        internal SurfaceFormat? PassFormat;
         #endregion
 
         #region Methods

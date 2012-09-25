@@ -89,10 +89,9 @@
             float dz = state.ThumbSticks.Right.Y * Speed * 0.04f;
             
             lookAt.X -= ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * 0.1f;
-            lookAt.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * 0.1f;
-            
-            UpdateTransform();
+            lookAt.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * 0.1f;            
 #endif
+            UpdateTransform();
         }
 
 
@@ -100,7 +99,6 @@
         {
             Radius -= e.WheelDelta * (MaxRadius - MinRadius) * 0.0001f * WheelSpeed;
             Radius = MathHelper.Clamp(Radius, MinRadius, MaxRadius);
-            UpdateTransform();
         }
 
         void Input_MouseDown(object sender, MouseEventArgs e)
@@ -133,7 +131,6 @@
 
                 Yaw += dx * 0.002f * MathHelper.Pi;
             }
-            UpdateTransform();
         }
     }
 }

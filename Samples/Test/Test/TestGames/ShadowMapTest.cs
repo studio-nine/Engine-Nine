@@ -38,7 +38,6 @@ namespace Test
                     scene.Add(new Cylinder(graphics)
                     {
                         CastShadow = true,
-                        ReceiveShadow = true,
                         Material = shadowMaterial,
                         Transform = Matrix.CreateScale(1, random.Next(5, 15), 1) * Matrix.CreateTranslation(28 + x * step, random.Next(-2, 2), 28 + z * step)
                     });

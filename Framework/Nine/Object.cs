@@ -2,6 +2,7 @@ namespace Nine
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Windows.Markup;
     using System.Xaml;
     using Microsoft.Xna.Framework.Content;
@@ -104,6 +105,7 @@ namespace Nine
         /// <summary>
         /// Occurs when any of the attached property changed.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public event EventHandler<AttachedPropertyChangedEventArgs> AttachedPropertyChanged;
         #endregion
 

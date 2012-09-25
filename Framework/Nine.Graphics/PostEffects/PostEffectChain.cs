@@ -96,8 +96,8 @@
         /// </summary>
         void ISceneObject.OnAdded(DrawingContext context)
         {
-            context.rootPass.Passes.Add(this);
-            AddDependency(context.mainPass);
+            context.Passes.Add(this);
+            AddDependency(context.MainPass);
         }
 
         /// <summary>
@@ -105,12 +105,11 @@
         /// </summary>
         void ISceneObject.OnRemoved(DrawingContext context)
         {
-            context.rootPass.Passes.Remove(this);
+            context.Passes.Remove(this);
         }
 
         /// <summary>
         /// Draws this pass using the specified drawing context.
-
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {

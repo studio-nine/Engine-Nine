@@ -18,6 +18,11 @@ namespace Nine.Graphics.Drawing
         internal bool ClearBackground;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the drawables should be rendered in wireframe.
+        /// </summary>
+        public bool Wireframe { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the drawable list will be sorted based on material before 
         /// they are rendered. The default value is false.
         /// </summary>
@@ -39,7 +44,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets or sets the material used when the drawable object do not have any material specified.
         /// </summary>
-        public Material DefaultMaterial { get; set; }
+        public Material FallbackMaterial { get; set; }
 
         /// <summary>
         /// Gets or sets the material usage for this drawing pass. When the material usage
@@ -53,6 +58,10 @@ namespace Nine.Graphics.Drawing
 
         private DrawingQueue transparent = new DrawingQueue();
         private DrawingQueue transparentTwoSided = new DrawingQueue();
+
+        private static RasterizerState wireframeCW = new RasterizerState { FillMode = FillMode.WireFrame, CullMode = CullMode.CullClockwiseFace };
+        private static RasterizerState wireframeCCW = new RasterizerState { FillMode = FillMode.WireFrame, CullMode = CullMode.CullCounterClockwiseFace };
+        private static RasterizerState wireframeNone = new RasterizerState { FillMode = FillMode.WireFrame, CullMode = CullMode.None };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pass"/> class.
@@ -80,7 +89,7 @@ namespace Nine.Graphics.Drawing
 
             var graphics = context.graphics;
             var dominantMaterial = Material;
-            var defaultMaterial = DefaultMaterial ?? (DefaultMaterial = new BasicMaterial(graphics) 
+            var defaultMaterial = FallbackMaterial ?? (FallbackMaterial = new BasicMaterial(graphics) 
             {
                 LightingEnabled = true, PreferPerPixelLighting = true,
             });
@@ -156,9 +165,13 @@ namespace Nine.Graphics.Drawing
                 graphics.DepthStencilState = DepthStencilState.Default;
                 graphics.BlendState = BlendState.Opaque;
 
+                var ccw = Wireframe ? wireframeCCW : RasterizerState.CullCounterClockwise;
+                var cw = Wireframe ? wireframeCW : RasterizerState.CullClockwise;
+                var none = Wireframe ? wireframeNone : RasterizerState.CullNone;
+
                 if (opaque.Count > 0)
                 {
-                    graphics.RasterizerState = RasterizerState.CullCounterClockwise;
+                    graphics.RasterizerState = ccw;
 
                     for (int i = 0; i < opaque.Count; ++i)
                     {
@@ -169,7 +182,7 @@ namespace Nine.Graphics.Drawing
 
                 if (opaqueTwoSided.Count > 0)
                 {
-                    graphics.RasterizerState = RasterizerState.CullNone;
+                    graphics.RasterizerState = none;
 
                     for (int i = 0; i < opaqueTwoSided.Count; ++i)
                     {
@@ -184,7 +197,7 @@ namespace Nine.Graphics.Drawing
 
                 if (transparent.Count > 0)
                 {
-                    graphics.RasterizerState = RasterizerState.CullCounterClockwise;
+                    graphics.RasterizerState = ccw;
 
                     for (int i = 0; i < transparent.Count; ++i)
                     {
@@ -194,11 +207,11 @@ namespace Nine.Graphics.Drawing
                     }
                 }
 
-                graphics.RasterizerState = RasterizerState.CullCounterClockwise;
+                graphics.RasterizerState = ccw;
 
                 if (transparentTwoSided.Count > 0)
                 {
-                    graphics.RasterizerState = RasterizerState.CullNone;
+                    graphics.RasterizerState = none;
 
                     for (int i = 0; i < transparentTwoSided.Count; ++i)
                     {

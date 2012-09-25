@@ -52,6 +52,11 @@ namespace Nine.Graphics
         bool Visible { get; }
 
         /// <summary>
+        /// Gets whether the drawable casts shadow.
+        /// </summary>
+        bool CastShadow { get; }
+
+        /// <summary>
         /// Gets the material of the object.
         /// A value of null indicates the object does not have any user specific
         /// material settings, and should be drawn using the default method.
@@ -122,7 +127,7 @@ namespace Nine.Graphics
     /// <summary>
     /// Defines an interface for objects that receives lights and shadows.
     /// </summary>
-    public interface ILightable
+    interface ILightable
     {
         /// <summary>
         /// Gets whether the lighting system should draw multi-pass lighting
@@ -134,16 +139,6 @@ namespace Nine.Graphics
         /// Gets the max number of affecting lights.
         /// </summary>
         int MaxAffectingLights { get; }
-
-        /// <summary>
-        /// Gets whether the drawable casts shadow.
-        /// </summary>
-        bool CastShadow { get; }
-
-        /// <summary>
-        /// Gets whether the drawable receives shadow.
-        /// </summary>
-        bool ReceiveShadow { get; }
 
         /// <summary>
         /// Gets whether the lighting system should draw multi-pass shadow

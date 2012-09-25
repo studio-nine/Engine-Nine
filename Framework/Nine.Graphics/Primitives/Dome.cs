@@ -30,6 +30,16 @@
         private int tessellation = 16;
 
         /// <summary>
+        /// Gets or sets the angle of this primitive.
+        /// </summary>
+        public float Angle
+        {
+            get { return angle; }
+            set { angle = value; Invalidate(); }
+        }
+        private float angle = MathHelper.PiOver4;
+
+        /// <summary>
         /// Constructs a new sphere primitive, using default settings.
         /// </summary>
         public Dome(GraphicsDevice graphicsDevice) : base(graphicsDevice)
@@ -39,7 +49,7 @@
 
         protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
         {
-            return primitive is Dome && ((Dome)primitive).tessellation == tessellation;
+            return primitive is Dome && ((Dome)primitive).tessellation == tessellation && ((Dome)primitive).angle == angle;
         }
 
         protected override void OnBuild()
@@ -47,14 +57,11 @@
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
 
-            float angle = (float)Math.Atan2(1, 0.5);
-            angle = MathHelper.PiOver2 - angle * 2;
-            float radius = (float)(0.5f / Math.Cos(angle));
-            float percentage = (MathHelper.PiOver2 - angle) / MathHelper.Pi;
-            Vector3 sink = -Vector3.Up * (radius - 1);
+            float radius = (float)(0.5f / Math.Sin(angle));
+            Vector3 sink = -Vector3.Up * (float)Math.Cos(angle) * radius;
 
 
-            int verticalSegments = tessellation / 2;
+            int verticalSegments = Math.Max(1, (int)(tessellation / 2 * angle / MathHelper.PiOver2));
             int horizontalSegments = tessellation * 2;
 
             // Start with a single vertex at the bottom of the sphere.
@@ -63,7 +70,7 @@
             // Create rings of vertices at progressively higher latitudes.
             for (int i = 0; i < verticalSegments; ++i)
             {
-                float latitude = ((i + 1) * MathHelper.Pi / verticalSegments) * percentage + MathHelper.PiOver2;
+                float latitude = MathHelper.PiOver2 - ((i + 1) * angle / verticalSegments);
 
                 float dy = (float)Math.Sin(latitude);
                 float dxz = (float)Math.Cos(latitude);

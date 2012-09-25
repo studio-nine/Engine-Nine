@@ -68,7 +68,7 @@ namespace Nine.Graphics
             //set { material = value ?? (new DecalMaterial(GraphicsDevice)); UpdateDecalMaterial(); }
             set { }
         }
-
+        
         /// <summary>
         /// Gets or sets a small offset value that is used as the depth bias to eliminate depth fighting.
         /// </summary>
@@ -492,6 +492,7 @@ namespace Nine.Graphics
         static ushort[] IndexTracker;
 
         void IDrawableObject.OnAddedToView(DrawingContext context) { }
+        bool IDrawableObject.CastShadow { get { return false; } }
         #endregion
 
         #region Dispose

@@ -152,8 +152,7 @@
         }
         private Material materialForRendering;
 
-        bool ILightable.CastShadow { get { return surface.CastShadow; } }
-        bool ILightable.ReceiveShadow { get { return surface.ReceiveShadow; } }
+        bool IDrawableObject.CastShadow { get { return surface.CastShadow; } }
 
         int ILightable.MaxReceivedShadows { get { return 4; } }
         int ILightable.MaxAffectingLights { get { return 1; } }

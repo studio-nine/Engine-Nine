@@ -85,9 +85,8 @@
             BeginRotation(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             EndRotation(GraphicsDevice.Viewport.Width / 2 + state.ThumbSticks.Right.X * 5 * WheelSpeed,
                         GraphicsDevice.Viewport.Height / 2 - state.ThumbSticks.Right.Y * 5 * WheelSpeed);
-
-            UpdateTransform();
 #endif
+            UpdateTransform();
         }
 
         void Input_ButtonDown(object sender, MouseEventArgs e)
@@ -103,7 +102,6 @@
             if (e.IsButtonDown(RotateButton))
             {
                 EndRotation(e.X, e.Y); 
-                UpdateTransform();
             }
         }
 
@@ -111,7 +109,6 @@
         {
             Radius -= e.WheelDelta * (MaxRadius - MinRadius) * 0.0001f * WheelSpeed;
             Radius = MathHelper.Clamp(Radius, MinRadius, MaxRadius);
-            UpdateTransform();
         }
         
         private void BeginRotation(float x, float y)

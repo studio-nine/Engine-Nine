@@ -22,7 +22,6 @@ namespace Test
             scene.Add(new FullScreenQuad(graphics) { Texture = bits, Material = new BasicMaterial(graphics) { SamplerState = SamplerState.PointClamp } });
             //scene.Add(new Sprite(graphics) { Texture = bits, Size = new Vector2(graphics.Viewport.Width / 2, graphics.Viewport.Height / 2), Material = new BasicMaterial(graphics) { SamplerState = SamplerState.PointClamp }, Anchor = Vector2.Zero });
             //scene.Add(new Sprite(graphics) { Texture = bits, Anchor = Vector2.Zero });
-            scene.Add(new HighDynamicRangeEffect(graphics) { AdaptationEnabled = false });
             return scene;
         }
     }

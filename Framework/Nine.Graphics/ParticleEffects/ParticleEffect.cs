@@ -98,7 +98,6 @@
 
         /// <summary>
         /// Gets or sets whether each particles with be blended using additive blending.
-
         /// </summary>
         public bool IsAdditive
         {
@@ -202,6 +201,11 @@
             get { return material; }
         }
         private Material material;
+
+        /// <summary>
+        /// Gets whether the drawable casts shadow.
+        /// </summary>
+        bool IDrawableObject.CastShadow { get { return false; } }
 
         /// <summary>
         /// Gets or sets the emitter prototype of this particle effect.

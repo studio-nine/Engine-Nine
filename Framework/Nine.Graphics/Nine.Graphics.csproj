@@ -276,7 +276,6 @@
     <None Include="Shaders\Decal.fx" />
     <None Include="Shaders\Clear.fx" />
     <None Include="Shaders\DeferredDirectionalLight.fx" />
-    <None Include="Shaders\Deferred.fx" />
     <None Include="Shaders\DeferredLighting.fxh" />
     <None Include="Shaders\DeferredPointLight.fx" />
     <None Include="Shaders\DeferredSpotLight.fx" />

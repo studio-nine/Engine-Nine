@@ -377,6 +377,11 @@ namespace Nine.Graphics
             get { return model.visible; }
         }
 
+        bool IDrawableObject.CastShadow
+        {
+            get { return false; } 
+        
+        }
         Material IDrawableObject.Material
         {
             get { return model.template.GetMaterial(index); }

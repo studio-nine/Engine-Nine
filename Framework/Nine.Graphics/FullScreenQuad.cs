@@ -161,5 +161,6 @@
 
         void IDrawableObject.OnAddedToView(DrawingContext context) { }
         float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition) { return 0; }
+        bool IDrawableObject.CastShadow { get { return false; } }
     }
 }

@@ -47,6 +47,14 @@
         }
 
         /// <summary>
+        /// Gets whether the drawable casts shadow.
+        /// </summary>
+        bool IDrawableObject.CastShadow
+        {
+            get { return false; } 
+        }
+
+        /// <summary>
         /// Provides an optimization hint to skip comparison between primitives.
         /// </summary>
         internal bool AlwaysMergePrimitives = false;

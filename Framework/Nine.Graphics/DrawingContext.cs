@@ -103,24 +103,24 @@ namespace Nine.Graphics
             get { return textures; }
         }
         internal TextureCollection textures;
-        
+
         /// <summary>
         /// Gets the main pass that is used to render the scene.
         /// </summary>
-        public PassGroup MainPass
+        public DrawingPass MainPass
         {
             get { return mainPass; }
         }
-        internal PassGroup mainPass;
+        private DrawingPass mainPass;
 
         /// <summary>
-        /// Gets the root pass of this drawing context composition chain.
+        /// Gets the passes that is used to render the scene.
         /// </summary>
-        public PassGroup RootPass
+        public IList<Pass> Passes
         {
-            get { return rootPass; }
+            get { return rootPass.Passes; }
         }
-        internal PassGroup rootPass;
+        private PassGroup rootPass;
 
         #endregion
 
@@ -317,9 +317,7 @@ namespace Nine.Graphics
         private DynamicPrimitive debugPrimitive;
         private FastList<ISpatialQueryable> debugBoundsInViewFrustum;
         private FastList<IDebugDrawable> debugDrawablesInViewFrustum;
-        private FastList<Pass> activePasses = new FastList<Pass>();
-        private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
-        private FastList<SurfaceFormat?> preferedFormats = new FastList<SurfaceFormat?>();
+        private FastList<Pass> activePasses = new FastList<Pass>();        
         private FastList<IDrawableObject> drawablesInViewFrustum = new FastList<IDrawableObject>();
         private HashSet<Type> dependentPassTypes = new HashSet<Type>();
         private Dictionary<Type, Pass> dependentPassMapping = new Dictionary<Type, Pass>();
@@ -362,11 +360,9 @@ namespace Nine.Graphics
             this.directionalLights = new DirectionalLightCollection(defaultLight);
             this.matrices = new MatrixCollection();
             this.textures = new TextureCollection();
-            this.mainPass = new PassGroup() { name = "MainPass" };
-            this.mainPass.Passes.Add(new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
-            this.mainPass.Passes.Add(new SpritePass());
-            this.rootPass = new PassGroup() { name = "RootPass" };
-            this.rootPass.Passes.Add(mainPass);
+            this.rootPass = new PassGroup();
+            this.rootPass.Passes.Add(mainPass = new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
+            this.rootPass.Passes.Add(new SpritePass());
         }
 
         /// <summary>
@@ -485,13 +481,7 @@ namespace Nine.Graphics
             graphics.SetVertexBuffer(null);
             UpdateDefaultSamplerStates();
 
-            drawablesInViewFrustum.Clear();
-            BoundingFrustum viewFrustum = ViewFrustum;
-            drawables.FindAll(viewFrustum, drawablesInViewFrustum);
-
-            // Notify each drawable when the frame begins
-            for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
-                drawablesInViewFrustum[currentDrawable].OnAddedToView(this);
+            AddDrawablesToView(matrices.ViewFrustum);
 
             UpdatePassGraph();
             UpdateActivePasses();
@@ -503,7 +493,6 @@ namespace Nine.Graphics
             for (int i = 0; i < activePasses.Count; ++i)
             {
                 var pass = activePasses[i];
-                var targetPass = targetPasses[i];
                 var overrideViewFrustum = false;
 
                 // Query the drawables in the current view frustum only when the view frustum changed
@@ -518,36 +507,49 @@ namespace Nine.Graphics
 
                 if (overrideViewFrustum || overrideViewFrustumLastPass)
                 {
-                    drawablesInViewFrustum.Clear();
-                    BoundingFrustum frustum = matrices.ViewFrustum;
-                    drawables.FindAll(frustum, drawablesInViewFrustum);
+                    AddDrawablesToView(matrices.ViewFrustum);
                     overrideViewFrustumLastPass = overrideViewFrustum;
                 }
-
-                if ((targetPass != null || i == activePasses.Count - 1) && intermediate != null)
+                
+                if ((pass.PassOperation & PassOperation.EndRenderTarget) != 0)
                 {
                     intermediate.End();
                     lastRenderTarget = intermediate;
                 }
 
-                if (targetPass != null)
+                if ((pass.PassOperation & PassOperation.BeginRenderTarget) != 0)
                 {
-                    intermediate = pass.PrepareRenderTarget(this, intermediate, preferedFormats[i]);
+                    intermediate = pass.PrepareRenderTarget(this, intermediate, pass.PassFormat);
                     intermediate.Begin();
                     RenderTargetPool.Lock(intermediate);
                 }
-
+                
                 var postEffect = pass as IPostEffect;
                 if (postEffect != null)
+                {
                     postEffect.InputTexture = lastRenderTarget;
-
-                pass.Draw(this, drawablesInViewFrustum);
-
-                RenderTargetPool.Unlock(lastRenderTarget);
+                    pass.Draw(this, drawablesInViewFrustum);
+                    RenderTargetPool.Unlock(lastRenderTarget);
+                }
+                else
+                {
+                    pass.Draw(this, drawablesInViewFrustum);
+                }
             }
 
             currentFrame++;
             isDrawing = false;
+        }
+
+        /// <summary>
+        /// Finds and adds all the drawables in the view frustum.
+        /// </summary>
+        private void AddDrawablesToView(BoundingFrustum viewFrustum)
+        {
+            drawablesInViewFrustum.Clear();
+            drawables.FindAll(viewFrustum, drawablesInViewFrustum);
+            for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
+                drawablesInViewFrustum[currentDrawable].OnAddedToView(this);
         }
 
         /// <summary>
@@ -621,27 +623,30 @@ namespace Nine.Graphics
             activePasses.Clear();
             rootPass.GetActivePasses(activePasses);
 
-            targetPasses.Resize(activePasses.Count);
-            preferedFormats.Resize(activePasses.Count);
-
-            // Determines which pass should be rendered to a texture.
             IPostEffect lastPostEffect = null;
+
             for (int i = activePasses.Count - 1; i >= 0; i--)
             {
-                var postEffect = activePasses[i] as IPostEffect;
-                if (lastPostEffect != null && (postEffect != null || i == 0))
+                var pass = activePasses[i];
+                var postEffect = pass as IPostEffect;
+
+                pass.PassOperation = PassOperation.None;
+                pass.PassFormat = null;
+
+                if (lastPostEffect != null)
                 {
-                    targetPasses[i] = lastPostEffect;
-                    preferedFormats[i] = lastPostEffect.InputFormat;
-                }
-                else
-                {
-                    targetPasses[i] = null;
-                    preferedFormats[i] = null;
+                    if (postEffect != null || i == 0)
+                    {
+                        pass.PassOperation |= PassOperation.BeginRenderTarget;
+                        pass.PassFormat = lastPostEffect.InputFormat;
+                    }
                 }
 
                 if (postEffect != null)
+                {
+                    pass.PassOperation |= PassOperation.EndRenderTarget;
                     lastPostEffect = postEffect;
+                }
             }
         }
 

@@ -92,7 +92,7 @@ namespace Nine.Graphics
                         shadowMap.Light = null;
                         shadowMap.Dispose();
                         if (context != null)
-                            context.mainPass.Passes.Remove(shadowMap);
+                            context.Passes.Remove(shadowMap);
                     }
                     shadowMap = value;
                     if (shadowMap != null)
@@ -100,7 +100,7 @@ namespace Nine.Graphics
                         if (shadowMap.Light != null)
                             throw new InvalidOperationException();
                         if (context != null)
-                            context.mainPass.Passes.Insert(0, shadowMap);
+                            context.Passes.Insert(0, shadowMap);
                         shadowMap.Light = this;
                     }
                 }
@@ -153,7 +153,7 @@ namespace Nine.Graphics
             {
                 if (shadowMap == null)
                     shadowMap = new ShadowMap(GraphicsDevice);
-                context.mainPass.Passes.Insert(0, shadowMap);
+                context.Passes.Insert(0, shadowMap);
             }
             this.context = context;
 #endif
@@ -170,7 +170,7 @@ namespace Nine.Graphics
                 throw new InvalidOperationException();
             if (shadowMap != null)
             {
-                context.mainPass.Passes.Remove(shadowMap);
+                context.Passes.Remove(shadowMap);
                 shadowMap.Dispose();
                 shadowMap = null;
             }

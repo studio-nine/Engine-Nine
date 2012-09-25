@@ -23,10 +23,10 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            var rootPasses = context.rootPass.Passes;
-            for (int i = 0; i < rootPasses.Count; ++i)
+            var passes = context.Passes;
+            for (int i = 0; i < passes.Count; ++i)
             {
-                if (rootPasses[i].Enabled && rootPasses[i] is LightPrePass)
+                if (passes[i].Enabled && passes[i] is LightPrePass)
                     return;
             }
 

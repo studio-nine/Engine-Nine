@@ -2438,7 +2438,6 @@ namespace Nine.Graphics.Primitives
             }
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2472,7 +2471,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2506,7 +2504,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2540,7 +2537,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2573,7 +2569,6 @@ namespace Nine.Graphics.Primitives
             }
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2607,7 +2602,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2639,9 +2633,9 @@ namespace Nine.Graphics.Primitives
                 existingInstance = new Dome(graphicsDevice);
             }
             existingInstance.Tessellation = input.ReadInt32();
+            existingInstance.Angle = input.ReadSingle();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2704,7 +2698,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.TessellationZ = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2738,7 +2731,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2772,7 +2764,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2806,7 +2797,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
@@ -2840,7 +2830,6 @@ namespace Nine.Graphics.Primitives
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();

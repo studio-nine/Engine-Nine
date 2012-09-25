@@ -6,7 +6,7 @@ namespace Nine.Graphics.Drawing
     /// <summary>
     /// Represents a collection of <see cref="Pass"/> that are sorted by dependency.
     /// </summary>
-    internal class PassCollection : Collection<Pass>, IComparer<Pass>, IDependencyProvider<Pass>
+    class PassCollection : Collection<Pass>, IComparer<Pass>, IDependencyProvider<Pass>
     {
         private int[] topologyReorder;
         private FastList<int> order;
