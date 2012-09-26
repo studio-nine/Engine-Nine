@@ -156,15 +156,20 @@ namespace Nine.Graphics
         /// <summary>
         /// Occurs when the bounding box changed.
         /// </summary>
-        public event EventHandler<EventArgs> BoundingBoxChanged;
+        event EventHandler<EventArgs> ISpatialQueryable.BoundingBoxChanged
+        {
+            add { boundingBoxChanged += value; }
+            remove { boundingBoxChanged -= value; }
+        }
+        private EventHandler<EventArgs> boundingBoxChanged;
 
         /// <summary>
         /// Called when the bounding box changed.
         /// </summary>
         protected virtual void OnBoundingBoxChanged()
         {
-            if (BoundingBoxChanged != null)
-                BoundingBoxChanged(this, EventArgs.Empty);
+            if (boundingBoxChanged != null)
+                boundingBoxChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

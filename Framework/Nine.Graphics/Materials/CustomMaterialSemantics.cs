@@ -399,7 +399,7 @@ namespace Nine.Graphics.Materials
 #if SILVERLIGHT
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.texture); } },
 #else
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { if (parameter.ParameterType == EffectParameterType.Texture2D) parameter.SetValue(material.texture); } },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { if (parameter.ParameterType == EffectParameterType.Texture || parameter.ParameterType == EffectParameterType.Texture2D) parameter.SetValue(material.texture); } },
 #endif
         };
     }

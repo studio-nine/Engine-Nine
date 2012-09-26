@@ -94,8 +94,8 @@ namespace Nine.Graphics
         {
             isBoundingFrustumDirty = true;
             isBoundingBoxDirty = true;
-            if (BoundingBoxChanged != null)
-                BoundingBoxChanged(this, EventArgs.Empty);
+            if (boundingBoxChanged != null)
+                boundingBoxChanged(this, EventArgs.Empty);
         }
 
         object ISpatialQueryable.SpatialData { get; set; }
@@ -103,7 +103,13 @@ namespace Nine.Graphics
         /// <summary>
         /// Occurs when the bounding box changed.
         /// </summary>
-        public event EventHandler<EventArgs> BoundingBoxChanged;
+        event EventHandler<EventArgs> ISpatialQueryable.BoundingBoxChanged
+        {
+            add { boundingBoxChanged += value; }
+            remove { boundingBoxChanged -= value; }
+        }
+        private EventHandler<EventArgs> boundingBoxChanged;
+
 
         protected override void OnTransformChanged()
         {

@@ -88,8 +88,8 @@ namespace Nine.Graphics
             Matrix transform = AbsoluteTransform;
             orientedBoundingBox.CreateAxisAligned(ref transform, out boundingBox);
 
-            if (BoundingBoxChanged != null)
-                BoundingBoxChanged(this, EventArgs.Empty);
+            if (boundingBoxChanged != null)
+                boundingBoxChanged(this, EventArgs.Empty);
         }
 
         object ISpatialQueryable.SpatialData { get; set; }
@@ -97,7 +97,13 @@ namespace Nine.Graphics
         /// <summary>
         /// Occurs when the bounding box changed.
         /// </summary>
-        public event EventHandler<EventArgs> BoundingBoxChanged;
+        event EventHandler<EventArgs> ISpatialQueryable.BoundingBoxChanged
+        {
+            add { boundingBoxChanged += value; }
+            remove { boundingBoxChanged -= value; }
+        }
+        private EventHandler<EventArgs> boundingBoxChanged;
+
 
         IList IContainer.Children
         {
@@ -212,8 +218,8 @@ namespace Nine.Graphics
             orientedBoundingBox.Max += BoundingBoxPadding;
             orientedBoundingBox.CreateAxisAligned(ref transform, out boundingBox);
 
-            if (BoundingBoxChanged != null)
-                BoundingBoxChanged(this, EventArgs.Empty);
+            if (boundingBoxChanged != null)
+                boundingBoxChanged(this, EventArgs.Empty);
         }
 
         internal VertexBuffer GetInstanceBuffer()

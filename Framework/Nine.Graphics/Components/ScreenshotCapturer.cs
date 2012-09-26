@@ -100,7 +100,7 @@ namespace Nine.Components
         /// <returns>String</returns>
         private string ScreenshotNameBuilder(int num)
         {
-            return ScreenshotsDirectory + "/Screenshot " + num.ToString("0000") + ".png";
+            return ScreenshotsDirectory + "/Screenshot " + num.ToString("0000") + ".jpg";
         }
         #endregion
 
@@ -214,7 +214,8 @@ namespace Nine.Components
 
                     using (FileStream savedFile = new FileStream(filename = ScreenshotNameBuilder(screenshotNum), FileMode.OpenOrCreate))
                     {
-                        screenshot.SaveAsPng(savedFile, width, height);
+                        // PNG Files have some encoding problems under certain scenes.
+                        screenshot.SaveAsJpeg(savedFile, width, height);
                     }
 #elif XBOX
                     // TODO:

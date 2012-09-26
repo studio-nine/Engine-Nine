@@ -68,7 +68,9 @@
             <ModelMesh>
                 <ModelMesh.Material>
                     <CustomMaterial IsTransparent="true" TwoSided="true" Source="{ContentReference ../Effects/Cage}">
-                        <xna:Vector4 x:Key="BrightColor">1,1,1,1</xna:Vector4>
+                        <CustomMaterial.Parameters>
+                            <xna:Vector4 x:Key="BrightColor">1,1,1,1</xna:Vector4>
+                        </CustomMaterial.Parameters>
                     </CustomMaterial>
                 </ModelMesh.Material>
             </ModelMesh>

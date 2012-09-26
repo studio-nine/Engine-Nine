@@ -74,7 +74,13 @@
         /// <summary>
         /// Occurs when the bounding box changed.
         /// </summary>
-        public event EventHandler<EventArgs> BoundingBoxChanged;
+        event EventHandler<EventArgs> ISpatialQueryable.BoundingBoxChanged
+        {
+            add { boundingBoxChanged += value; }
+            remove { boundingBoxChanged -= value; }
+        }
+        private EventHandler<EventArgs> boundingBoxChanged;
+
 
         object ISpatialQueryable.SpatialData { get; set; }
 
@@ -257,8 +263,7 @@
         {
             if (cachedPrimitive != null)
             {
-                boundingBox = BoundingBoxExtensions.CreateAxisAligned(cachedPrimitive.BoundingBox, AbsoluteTransform);
-                var boundingBoxChanged = BoundingBoxChanged;
+                boundingBox = BoundingBoxExtensions.CreateAxisAligned(cachedPrimitive.BoundingBox, AbsoluteTransform);                
                 if (boundingBoxChanged != null)
                     boundingBoxChanged(this, EventArgs.Empty);
             }

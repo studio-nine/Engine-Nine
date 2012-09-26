@@ -12,15 +12,15 @@
     {
         public Vector3 Angle
         { 
-            get { return angle; } 
-            set { angle = value; }
+            get { return angle; }
+            set { angle = value; UpdateTransform(Vector2.Zero); }
         }
         private Vector3 angle;
 
         public Vector3 Position 
         { 
             get { return position; }
-            set { position = value; } 
+            set { position = value; UpdateTransform(Vector2.Zero); } 
         }
         private Vector3 position;
 
@@ -118,13 +118,19 @@
                 if (keyboard.IsKeyDown(UpKey))
                     position += Vector3.Up * speed * delta;
             }
+            
+            UpdateTransform(move);
+        }
 
+        private Vector2 UpdateTransform(Vector2 move)
+        {
             Matrix.CreateFromYawPitchRoll(-angle.Y, -angle.X, -angle.Z, out transform);
             transform.M41 = position.X += transform.Forward.X * move.X + transform.Left.X * move.Y;
             transform.M42 = position.Y += transform.Forward.Y * move.X + transform.Left.Y * move.Y;
             transform.M43 = position.Z += transform.Forward.Z * move.X + transform.Left.Z * move.Y;
-            
+
             NotifyTransformChanged();
+            return move;
         }
     }
 }

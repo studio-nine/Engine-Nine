@@ -31,6 +31,14 @@ namespace Nine.Content.Pipeline.Processors
         public bool IgnoreRootTransform { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether a second texture coordinate channel
+        /// will be generated if it does not exist.
+        /// </summary>
+        [DefaultValue(false)]
+        [DisplayName("Generate Dual Texture Channel")]
+        public bool GenerateDualTextureChannel { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether animation data will be generated.
         /// </summary>
         [DefaultValue(true)]
@@ -143,7 +151,10 @@ namespace Nine.Content.Pipeline.Processors
             // Find model mesh part bounds.
             FindModelMeshPartBounds(input);
 
-            GenerateVertexColorChannel(input);
+            if (GenerateVertexColor)
+                GenerateVertexColorChannel(input);
+            if (GenerateDualTextureChannel)
+                GenerateDualTextureChannelData(input);
 
             ModelContent model = base.Process(input, context);
 
@@ -314,10 +325,29 @@ namespace Nine.Content.Pipeline.Processors
                 }
             }
 
-            // Recurse (iterating over a copy of the child collection,
-            // because validating children may delete some of them).
             foreach (NodeContent child in node.Children)
                 GenerateVertexColorChannel(child);
+        }
+
+        private void GenerateDualTextureChannelData(NodeContent node)
+        {
+            MeshContent mesh = node as MeshContent;
+
+            if (mesh != null)
+            {
+                foreach (var geometry in mesh.Geometry)
+                {
+                    if (geometry.Vertices.Channels.Contains(VertexChannelNames.TextureCoordinate(0)) &&
+                       !geometry.Vertices.Channels.Contains(VertexChannelNames.TextureCoordinate(1)))
+                    {
+                        geometry.Vertices.Channels.Add<Vector2>(VertexChannelNames.TextureCoordinate(1),
+                        geometry.Vertices.Channels.Get<Vector2>(VertexChannelNames.TextureCoordinate(0)));
+                    }
+                }
+            }
+
+            foreach (NodeContent child in node.Children)
+                GenerateDualTextureChannelData(child);
         }
     }
 }

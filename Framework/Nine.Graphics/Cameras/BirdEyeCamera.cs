@@ -55,6 +55,8 @@
             input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
             input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
             input.Update += new EventHandler<EventArgs>(Input_Update);
+
+            UpdateTransform();
         }
 
         private void UpdateTransform()

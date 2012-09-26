@@ -69,8 +69,8 @@ namespace Nine.Graphics
         private void OnBoundingBoxChanged()
         {
             isBoundingBoxDirty = true;
-            if (BoundingBoxChanged != null)
-                BoundingBoxChanged(this, EventArgs.Empty);
+            if (boundingBoxChanged != null)
+                boundingBoxChanged(this, EventArgs.Empty);
         }
 
         public BoundingSphere BoundingSphere
@@ -83,7 +83,13 @@ namespace Nine.Graphics
         /// <summary>
         /// Occurs when the bounding box changed.
         /// </summary>
-        public event EventHandler<EventArgs> BoundingBoxChanged;
+        event EventHandler<EventArgs> ISpatialQueryable.BoundingBoxChanged
+        {
+            add { boundingBoxChanged += value; }
+            remove { boundingBoxChanged -= value; }
+        }
+        private EventHandler<EventArgs> boundingBoxChanged;
+
 
         protected override void OnTransformChanged()
         {

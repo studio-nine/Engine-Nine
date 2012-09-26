@@ -101,7 +101,7 @@ namespace Nine.Graphics.Materials
                 effect.View = context.View;
                 effect.Projection = context.Projection;
 
-                if (LightingEnabled)
+                if (lightingEnabled)
                     ApplyLights(context, effect);
                 ApplyFog(context, effect);
             }

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 
 namespace Nine.Content.Pipeline.Silverlight
 {
-    [ContentImporter(".fx", ".slfx", DisplayName = "Effect - Silverlight", DefaultProcessor = "SilverlightEffectProcessor")]
+    [ContentImporter(".slfx", DisplayName = "Effect - Silverlight", DefaultProcessor = "SilverlightEffectProcessor")]
     public class SilverlightEffectImporter : ContentImporter<EffectSourceCode>
     {
         public override EffectSourceCode Import(string filename, ContentImporterContext context)

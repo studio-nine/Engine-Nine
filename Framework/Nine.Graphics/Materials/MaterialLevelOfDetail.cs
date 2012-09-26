@@ -32,7 +32,7 @@ namespace Nine.Graphics.Materials
         internal Material current;
         
         /// <summary>
-        /// Gets or sets the distance at which to use the highest quanlity material.
+        /// Gets or sets the distance at which to use the highest quality material.
         /// </summary>
         public float LevelOfDetailStart
         {
@@ -42,7 +42,7 @@ namespace Nine.Graphics.Materials
         private float levelOfDetailStart;
 
         /// <summary>
-        /// Gets or sets the distance at which to use the lowest quanlity material.
+        /// Gets or sets the distance at which to use the lowest quality material.
         /// </summary>
         public float LevelOfDetailEnd
         {
@@ -52,7 +52,7 @@ namespace Nine.Graphics.Materials
         private float levelOfDetailEnd;
 
         /// <summary>
-        /// Gets or sets the overall material quality that is multiplied with the quanlity
+        /// Gets or sets the overall material quality that is multiplied with the quality
         /// determined by LevelOfDetailStart and LevelOfDetailEnd.
         /// </summary>
         public float MaterialQuality
