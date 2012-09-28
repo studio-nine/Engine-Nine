@@ -69,7 +69,7 @@ namespace Nine.Graphics
         float GetDistanceToCamera(Vector3 cameraPosition);
 
         /// <summary>
-        /// Called every frame when this object is added to the main view frustum.
+        /// Called before the draw method whenever the view frustum has changed.
         /// </summary>
         void OnAddedToView(DrawingContext context);
 

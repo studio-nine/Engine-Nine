@@ -127,6 +127,7 @@
     <Compile Include="UniformGrid.cs" />
     <Compile Include="NotificationCollection.cs" />
     <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
+    <Compile Include="Xaml.cs" />
     <None Include="..\..\Tools\TextTemplates\Content.Reader.tth">
       <Link>TextTempates\Content.Reader.tth</Link>
     </None>

@@ -63,7 +63,7 @@ namespace Nine
         void IAttachedPropertyStore.SetProperty(AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
             if (attachedProperties == null)
-                attachedProperties = new Dictionary<AttachableMemberIdentifier, object>();
+                attachedProperties = new AttachableMemberIdentifierCollection();
 
             object oldValue;
             attachedProperties.TryGetValue(attachableMemberIdentifier, out oldValue);
@@ -85,7 +85,7 @@ namespace Nine
         }
 
         [ContentSerializer]
-        internal Dictionary<AttachableMemberIdentifier, object> AttachedProperties
+        internal AttachableMemberIdentifierCollection AttachedProperties
         {
             get { return attachedProperties; }
             set
@@ -95,7 +95,7 @@ namespace Nine
                         pair.Key.Apply(this, pair.Value);
             }
         }
-        private Dictionary<AttachableMemberIdentifier, object> attachedProperties;
+        private AttachableMemberIdentifierCollection attachedProperties;
 
         /// <summary>
         /// Reusing this same event args.

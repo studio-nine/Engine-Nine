@@ -33,7 +33,7 @@ namespace Nine.Physics
             existingInstance.Damping = input.ReadSingle();
             existingInstance.AngularDamping = input.ReadSingle();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -61,7 +61,7 @@ namespace Nine.Physics.Colliders
             existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -87,7 +87,7 @@ namespace Nine.Physics.Colliders
             existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -116,7 +116,7 @@ namespace Nine.Physics.Colliders
             existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -142,7 +142,7 @@ namespace Nine.Physics.Colliders
             existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -168,7 +168,7 @@ namespace Nine.Physics.Colliders
             existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -194,7 +194,7 @@ namespace Nine.Physics.Colliders
             existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -219,7 +219,7 @@ namespace Nine.Physics.Colliders
             existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -244,7 +244,7 @@ namespace Nine.Physics.Colliders
             existingInstance.CollisionGroup = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }

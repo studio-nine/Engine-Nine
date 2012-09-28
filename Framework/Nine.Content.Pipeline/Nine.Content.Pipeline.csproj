@@ -174,7 +174,7 @@
     <Compile Include="Processors\GeometryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xaml\ContentReference.cs" />
-    <Compile Include="Xaml\MarkupExtensionWriters.cs" />
+    <Compile Include="Xaml\ContentWriters.cs" />
     <Compile Include="Xaml\PropertyInstance.cs" />
     <Compile Include="Xaml\XamlSerializer.cs" />
   </ItemGroup>

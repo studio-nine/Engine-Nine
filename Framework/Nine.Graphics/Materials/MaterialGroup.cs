@@ -297,7 +297,7 @@ namespace Nine.Graphics.Materials
             existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.AttachedProperties = input.ReadObject<Dictionary<System.Xaml.AttachableMemberIdentifier, object>>();
+            existingInstance.AttachedProperties = input.ReadObject<AttachableMemberIdentifierCollection>();
 
             existingInstance.Effect = input.ReadExternalReference<Effect>();           
 #if SILVERLIGHT

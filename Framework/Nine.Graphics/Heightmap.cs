@@ -441,8 +441,9 @@
         /// </summary>
         public static void SetWidth(Surface surface, int value)
         {
-            Vector3 size = Vector3.One;
-            AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out size);
+            Vector3 size;
+            if (!AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out size))
+                size = Vector3.UnitZ;
             size.X = value;
             AttachablePropertyServices.SetProperty(surface, SizeProperty, size);
         }
@@ -462,8 +463,9 @@
         /// </summary>
         public static void SetHeight(Surface surface, int value)
         {
-            Vector3 size = Vector3.One;
-            AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out size);
+            Vector3 size;
+            if (!AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out size))
+                size = Vector3.UnitZ;
             size.Y = value;
             AttachablePropertyServices.SetProperty(surface, SizeProperty, size);
         }
@@ -474,8 +476,7 @@
         public static float GetStep(Surface surface)
         {
             Vector3 value = Vector3.One;
-            AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out value);
-            return value.Z;
+            return AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out value) ? value.Z : 1;
         }
 
         /// <summary>

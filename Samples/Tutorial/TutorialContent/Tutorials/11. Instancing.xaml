@@ -10,11 +10,12 @@
         <BasicMaterial Texture="{ContentReference ../Textures/grass}" />
     </Surface>
 
-    <InstancedModel Transform.Position="-64, 0, -64">
+    <InstancedModel Transform.Position="-64, 0, -64" ViewDistance="20">
         <DistributionMap.DistributionMap>
             <DistributionMap Step="0.25" RandomizeRotation="True" VerticalScale="0.5~2" HorizontalScale="0.6~1.4"
                              Density="10000" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
         </DistributionMap.DistributionMap>
+        
         <Cross Tessellation="2">
             <MaterialGroup Texture="{ContentReference ../Textures/fgrass}" TwoSided="True">
                 <!-- 
@@ -59,7 +60,7 @@
         </DistributionMap.DistributionMap>
         <Model Source="{ContentReference ../Models/Dude}">
             <Model.Material>
-                <MaterialGroup Texture="{ContentReference ../Textures/grass}">
+                <MaterialGroup>
                     <DiffuseMaterialPart />
                     <SkinnedMaterialPart />
                     <DirectionalLightMaterialPart />

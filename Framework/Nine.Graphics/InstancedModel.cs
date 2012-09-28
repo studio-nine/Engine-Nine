@@ -35,6 +35,11 @@ namespace Nine.Graphics
         internal bool visible = true;
 
         /// <summary>
+        /// Gets or sets the maximum rage of visible instances. Null means all instances are visible.
+        /// </summary>
+        public float? ViewDistance { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether this model resides inside the view frustum last frame.
         /// </summary>
         /// <remarks>
@@ -113,6 +118,7 @@ namespace Nine.Graphics
         [ContentSerializer]
         internal Matrix[] instanceTransforms;
 
+        private int instanceCount;
         private bool instanceTransformsNeedsUpdate;
         private DynamicVertexBuffer instanceBuffer;
         private VertexDeclaration vertexDeclaration;
@@ -222,11 +228,16 @@ namespace Nine.Graphics
                 boundingBoxChanged(this, EventArgs.Empty);
         }
 
-        internal VertexBuffer GetInstanceBuffer()
+        internal void GetInstanceBuffer(ref Vector3 cameraPosition, bool forceUpdate, out VertexBuffer vertexBuffer, out int vertexCount)
         {
             if (instanceTransforms == null || instanceTransforms.Length <= 0)
-                return null;
+            {
+                vertexBuffer = null;
+                vertexCount = 0;
+                return;
+            }
 
+            instanceTransformsNeedsUpdate |= forceUpdate;
             if (instanceBuffer == null || instanceTransformsNeedsUpdate || instanceBuffer.VertexCount < instanceTransforms.Length)
             {
                 if (vertexDeclaration == null)
@@ -241,10 +252,14 @@ namespace Nine.Graphics
                 }
 
                 if (instanceBuffer != null)
-                    instanceBuffer.Dispose();     
-                instanceBuffer = new DynamicVertexBuffer(GraphicsDevice, vertexDeclaration, instanceTransforms.Length, BufferUsage.WriteOnly);
+                    instanceBuffer.Dispose();
+
+                instanceBuffer = new DynamicVertexBuffer(GraphicsDevice, vertexDeclaration, instanceTransforms.Length, BufferUsage.WriteOnly);                
                 instanceTransformsNeedsUpdate = true;
             }
+
+            vertexCount = instanceCount;
+            vertexBuffer = instanceBuffer;
 
 #if SILVERLIGHT
             if (instanceTransformsNeedsUpdate)
@@ -252,11 +267,61 @@ namespace Nine.Graphics
             if (instanceTransformsNeedsUpdate || instanceBuffer.IsContentLost)
 #endif
             {
-                instanceBuffer.SetData(instanceTransforms, 0, instanceTransforms.Length, SetDataOptions.Discard);
                 instanceTransformsNeedsUpdate = false;
+
+                var data = instanceTransforms;
+                instanceCount = vertexCount = instanceTransforms.Length;
+
+                if (ViewDistance.HasValue)
+                {
+                    Matrix worldToLocal = AbsoluteTransform;
+                    Matrix.Invert(ref worldToLocal, out worldToLocal);
+                    Vector3.Transform(ref cameraPosition, ref worldToLocal, out cameraPosition);
+
+                    PopulateVisibleInstances(ref cameraPosition);
+
+                    data = VisibleInstanceTransforms;
+                    instanceCount = vertexCount = VisibleInstanceCount;
+                    if (instanceCount <= 0)
+                        return;
+                }
+
+                instanceBuffer.SetData(data, 0, instanceCount, SetDataOptions.Discard);
             }
-            return instanceBuffer;
         }
+
+        /// <summary>
+        /// Culls each instance based on camera position.
+        /// </summary>
+        private void PopulateVisibleInstances(ref Vector3 localCameraPosition)
+        {
+            if (VisibleInstanceTransforms == null || VisibleInstanceTransforms.Length < instanceTransforms.Length)
+            {
+                VisibleInstanceTransforms = new Matrix[instanceTransforms.Length];
+            }
+
+            VisibleInstanceCount = 0;
+
+            var viewDistanceSq = ViewDistance.Value * ViewDistance.Value;
+            var length = instanceTransforms.Length;
+
+            for (var i = 0; i < length; ++i)
+            {
+                var transform = instanceTransforms[i];
+                var xx = transform.M41 - localCameraPosition.X;
+                var yy = transform.M42 - localCameraPosition.Y;
+                var zz = transform.M43 - localCameraPosition.Z;
+                var distanceSq = xx * xx + yy * yy + zz * zz;
+
+                if (distanceSq <= viewDistanceSq)
+                {
+                    VisibleInstanceTransforms[VisibleInstanceCount++] = transform;
+                }
+            }
+        }
+
+        private static Matrix[] VisibleInstanceTransforms;
+        private static int VisibleInstanceCount;
         
         /// <summary>
         /// Disposes any resources associated with this instance.
@@ -317,6 +382,13 @@ namespace Nine.Graphics
             this.index = index;
         }
 
+        void IDrawableObject.OnAddedToView(DrawingContext context)
+        {
+            VertexBuffer instanceBuffer;
+            int instanceCount;
+            model.GetInstanceBuffer(ref context.matrices.cameraPosition, true, out instanceBuffer, out instanceCount);
+        }
+
         /// <summary>
         /// Draws this object with the specified material.
         /// </summary>
@@ -328,7 +400,9 @@ namespace Nine.Graphics
             if (model.template == null)
                 return;
 
-            var instanceBuffer = model.GetInstanceBuffer();
+            VertexBuffer instanceBuffer;
+            int instanceCount;
+            model.GetInstanceBuffer(ref context.matrices.cameraPosition, false, out instanceBuffer, out instanceCount);
             if (instanceBuffer == null)
                 return;
 
@@ -362,20 +436,14 @@ namespace Nine.Graphics
             model.template.PrepareMaterial(index, material);
             material.world = model.AbsoluteTransform;
             material.BeginApply(context);
-            model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, model.instanceTransforms.Length);
+            model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, instanceCount);
             material.EndApply(context);
 #endif
         }
 
         float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
         {
-            // There is really no way to calculate a correct distance for instanced models at the moment...
             return 0;
-        }
-
-        void IDrawableObject.OnAddedToView(DrawingContext context) 
-        {
-
         }
 
         bool IDrawableObject.Visible

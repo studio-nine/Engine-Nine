@@ -44,10 +44,10 @@
         /// </summary>
         public Vector3 EmissiveColor
         {
-            get { return emissiveColor.HasValue ? emissiveColor.Value : Constants.EmissiveColor; }
-            set { emissiveColor = (value == Constants.EmissiveColor ? (Vector3?)null : value); }
+            get { return emissiveColor; }
+            set { emissiveColor = value; }
         }
-        private Vector3? emissiveColor;
+        private Vector3 emissiveColor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmissiveMaterialPart"/> class.
@@ -66,7 +66,7 @@
             if (textureParameter != null)
                 textureParameter.SetValue(EmissiveMap);
             if (emissiveColorParameter != null)
-                emissiveColorParameter.SetValue(emissiveColor.Value);
+                emissiveColorParameter.SetValue(emissiveColor);
         }
 
         /// <summary>

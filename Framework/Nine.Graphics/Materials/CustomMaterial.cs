@@ -147,7 +147,7 @@ namespace Nine.Graphics.Materials
         {
             if (existingInstance == null)
                 existingInstance = new CustomMaterial();
-            existingInstance.AttachedProperties = input.ReadObject<Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            existingInstance.AttachedProperties = input.ReadObject<AttachableMemberIdentifierCollection>();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.Source = input.ReadObject<Effect>();
             existingInstance.texture = input.ReadObject<Texture2D>();
