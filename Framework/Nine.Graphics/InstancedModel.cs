@@ -382,11 +382,12 @@ namespace Nine.Graphics
             this.index = index;
         }
 
-        void IDrawableObject.OnAddedToView(DrawingContext context)
+        bool IDrawableObject.OnAddedToView(DrawingContext context)
         {
             VertexBuffer instanceBuffer;
             int instanceCount;
             model.GetInstanceBuffer(ref context.matrices.cameraPosition, true, out instanceBuffer, out instanceCount);
+            return instanceCount > 0 && model.visible;
         }
 
         /// <summary>
@@ -444,11 +445,6 @@ namespace Nine.Graphics
         float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
         {
             return 0;
-        }
-
-        bool IDrawableObject.Visible
-        {
-            get { return model.visible; }
         }
 
         bool IDrawableObject.CastShadow

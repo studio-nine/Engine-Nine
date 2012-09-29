@@ -67,15 +67,6 @@ namespace Nine.Graphics
         internal float totalSeconds;
 
         /// <summary>
-        /// Gets all the visible drawables used by this drawing context.
-        /// </summary>
-        public ISpatialQuery<IDrawableObject> Drawables
-        {
-            get { return drawables; }
-        }
-        internal ISpatialQuery<IDrawableObject> drawables;
-
-        /// <summary>
         /// Gets the bounding box of the current drawing context.
         /// </summary>
         public BoundingBox BoundingBox
@@ -312,6 +303,7 @@ namespace Nine.Graphics
         #region Fields
         private bool isDrawing = false;
         private ISpatialQuery spatialQuery;
+        private ISpatialQuery<IDrawableObject> drawables;
         private ISpatialQuery<IDebugDrawable> debugDrawables;
         private ISpatialQuery<ISpatialQueryable> debugBounds;
         private DynamicPrimitive debugPrimitive;
@@ -348,7 +340,7 @@ namespace Nine.Graphics
 
             this.spatialQuery = spatialQuery;
             this.BackgroundColor = Color.Black;
-            this.drawables = spatialQuery.CreateSpatialQuery<IDrawableObject>(drawable => drawable.Visible);            
+            this.drawables = spatialQuery.CreateSpatialQuery<IDrawableObject>(drawable => drawable.OnAddedToView(this)); 
             this.graphics = graphics;
             this.defaultLight = new DirectionalLight(graphics)
             {
@@ -479,6 +471,8 @@ namespace Nine.Graphics
                 return;
 
             graphics.SetVertexBuffer(null);
+            graphics.Textures[0] = null;
+
             UpdateDefaultSamplerStates();
 
             AddDrawablesToView(matrices.ViewFrustum);
@@ -548,8 +542,6 @@ namespace Nine.Graphics
         {
             drawablesInViewFrustum.Clear();
             drawables.FindAll(viewFrustum, drawablesInViewFrustum);
-            for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
-                drawablesInViewFrustum[currentDrawable].OnAddedToView(this);
         }
 
         /// <summary>

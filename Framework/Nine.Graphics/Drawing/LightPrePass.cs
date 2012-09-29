@@ -259,10 +259,8 @@ namespace Nine.Graphics.Drawing
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             var lightGeometry = light.PrepareLightGeometry(context);
-            if (lightGeometry == null || !lightGeometry.Visible)
+            if (lightGeometry == null || !lightGeometry.OnAddedToView(context))
                 return;
-
-            lightGeometry.OnAddedToView(context);
 
             var lightMaterial = lightGeometry.Material;
             if (lightMaterial == null)
@@ -375,8 +373,11 @@ namespace Nine.Graphics.Drawing
 
             clearMaterial.effect.CurrentTechnique.Passes[0].Apply();
 
+            GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
+
             clearQuad.Draw(context, clearMaterial);
+
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
         }
 

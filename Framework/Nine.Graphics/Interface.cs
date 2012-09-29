@@ -47,11 +47,6 @@ namespace Nine.Graphics
     public interface IDrawableObject
     {
         /// <summary>
-        /// Gets whether this object is visible.
-        /// </summary>
-        bool Visible { get; }
-
-        /// <summary>
         /// Gets whether the drawable casts shadow.
         /// </summary>
         bool CastShadow { get; }
@@ -71,7 +66,11 @@ namespace Nine.Graphics
         /// <summary>
         /// Called before the draw method whenever the view frustum has changed.
         /// </summary>
-        void OnAddedToView(DrawingContext context);
+        /// <returns>
+        /// Returns a value indicating whether this drawable object is visible and should
+        /// be rendered from this view perspective.
+        /// </returns>
+        bool OnAddedToView(DrawingContext context);
 
         /// <summary>
         /// Draws this object with the specified material.

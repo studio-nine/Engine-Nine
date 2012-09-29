@@ -597,7 +597,7 @@
             Dispose(false);
         }
 
-        void IDrawableObject.OnAddedToView(DrawingContext context) { }
+        bool IDrawableObject.OnAddedToView(DrawingContext context) { return Visible; }
     }
 
     struct PrimitiveGroupEntry

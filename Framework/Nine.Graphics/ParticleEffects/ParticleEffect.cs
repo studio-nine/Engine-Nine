@@ -597,9 +597,10 @@
         /// <summary>
         /// Called every frame when this object is added to the main view frustum.
         /// </summary>
-        public void OnAddedToView(DrawingContext context)
+        public bool OnAddedToView(DrawingContext context)
         {
             InsideViewFrustum = true;
+            return Visible;
         }
 
         /// <summary>

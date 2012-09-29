@@ -790,9 +790,10 @@
         /// <summary>
         /// We only want to hook to the pre draw event to update level of detail.
         /// </summary>
-        void IDrawableObject.OnAddedToView(DrawingContext context)
+        bool IDrawableObject.OnAddedToView(DrawingContext context)
         {
             UpdateLevelOfDetail(context.CameraPosition);
+            return false;
         }
 
         void IDrawableObject.Draw(DrawingContext context, Material material) 

@@ -33,11 +33,6 @@ namespace Test
 
     public class TrianglePicker : Component, IDrawableObject
     {
-        public bool Visible
-        {
-            get { return true; }
-        }
-
         public Material Material
         {
             get { return null; }
@@ -51,9 +46,9 @@ namespace Test
                 Matrix.CreateLookAt(new Vector3(0, 10, 0), new Vector3(0, 0, 10), Vector3.Up) *
                 Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4.0f / 3, 1.0f, 10.0f));
 
-        public void OnAddedToView(DrawingContext context)
+        public bool OnAddedToView(DrawingContext context)
         {
-
+            return true;
         }
 
         public float GetDistanceToCamera(Vector3 cameraPosition)

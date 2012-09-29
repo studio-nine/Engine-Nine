@@ -25,6 +25,7 @@ namespace BEPUphysics
     ///<summary>
     /// Main simulation class of BEPUphysics.  Contains various updating stages addition/removal methods for getting objects into the simulation.
     ///</summary>
+    [Nine.NotContentSerializable]
     public class Space : ISpace, IDisposable
     {
         private TimeStepSettings timeStepSettings;

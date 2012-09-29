@@ -496,7 +496,7 @@ namespace Nine.Graphics
         static ushort[] Indices;
         static ushort[] IndexTracker;
 
-        void IDrawableObject.OnAddedToView(DrawingContext context) { }
+        bool IDrawableObject.OnAddedToView(DrawingContext context) { return Visible; }
         bool IDrawableObject.CastShadow { get { return false; } }
         #endregion
 

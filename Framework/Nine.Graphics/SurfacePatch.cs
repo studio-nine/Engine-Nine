@@ -300,10 +300,11 @@
         /// <summary>
         /// Perform any updates before this object is drawed.
         /// </summary>
-        public void OnAddedToView(DrawingContext context)
+        public bool OnAddedToView(DrawingContext context)
         {
             Vector3.Distance(ref context.matrices.cameraPosition, ref center, out distanceToCamera);
             materialForRendering = surface.Material ?? surface.MaterialLevels.UpdateLevelOfDetail(distanceToCamera);
+            return visible;
         }
 
         /// <summary>

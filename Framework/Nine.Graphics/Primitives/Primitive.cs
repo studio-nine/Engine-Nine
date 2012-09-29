@@ -318,7 +318,7 @@
         /// <summary>
         /// Draws this object with the specified material.
         /// </summary>
-        public void OnAddedToView(DrawingContext context)
+        public bool OnAddedToView(DrawingContext context)
         {
             InsideViewFrustum = true;
 
@@ -326,6 +326,7 @@
             Vector3.Distance(ref context.matrices.cameraPosition, ref position, out distanceToCamera);
 
             materialForRendering = Material ?? materialLevels.UpdateLevelOfDetail(distanceToCamera);
+            return Visible;
         }
 
         /// <summary>

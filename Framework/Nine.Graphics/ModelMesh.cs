@@ -44,14 +44,6 @@ namespace Nine.Graphics
         internal Matrix worldTransform = Matrix.Identity;
 
         /// <summary>
-        /// Visibility can be controlled by both ModelPart and Model.
-        /// </summary>
-        bool IDrawableObject.Visible 
-        {
-            get { return visible && model != null && model.visible; } 
-        }
-
-        /// <summary>
         /// Gets or sets the material of this model mesh.
         /// </summary>
         public Material Material
@@ -189,7 +181,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Perform any updates when this object has entered the main view frustum
         /// </summary>
-        public void OnAddedToView(DrawingContext context)
+        public bool OnAddedToView(DrawingContext context)
         {
             model.insideViewFrustum = true;
             if ((materialForRendering = material) == null)
@@ -203,7 +195,8 @@ namespace Nine.Graphics
 
                 materialForRendering = materialLevels.UpdateLevelOfDetail(distanceToCamera) ??
                     model.material ?? model.MaterialLevels.UpdateLevelOfDetail(distanceToCamera);
-            }
+            }             
+            return visible && model != null && model.visible;
         }
 
         /// <summary>

@@ -159,7 +159,7 @@
             material.EndApply(context);
         }
 
-        void IDrawableObject.OnAddedToView(DrawingContext context) { }
+        bool IDrawableObject.OnAddedToView(DrawingContext context) { return Visible; }
         float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition) { return 0; }
         bool IDrawableObject.CastShadow { get { return false; } }
     }
