@@ -135,11 +135,6 @@ namespace Nine.Graphics
         public bool CastShadow { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this model casts shadow.
-        /// </summary>
-        public bool ReceiveShadow { get; set; }
-
-        /// <summary>
         /// Gets or sets the max received shadows.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -266,7 +261,6 @@ namespace Nine.Graphics
 
             Visible = true;
             CastShadow = true;
-            ReceiveShadow = false;
             UseModelTextures = true;
             MaxAffectingLights = 4;
             MaxReceivedShadows = 1;

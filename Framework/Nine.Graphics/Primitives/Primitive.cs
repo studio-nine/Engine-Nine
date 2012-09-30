@@ -35,7 +35,7 @@
         /// Gets a value indicating whether this primitive resides inside the view frustum last frame.
         /// </summary>
         public bool InsideViewFrustum { get; internal set; }
-        
+
         /// <summary>
         /// Gets the material used by this drawable.
         /// </summary>
@@ -66,7 +66,7 @@
             {
                 if (needsRebuild)
                     Rebuild();
-                return boundingBox; 
+                return boundingBox;
             }
         }
         private BoundingBox boundingBox;
@@ -163,91 +163,86 @@
         /// </summary>
         private void Rebuild()
         {
-            try
+            Dispose();
+
+            // Check if we can find a cached vb/ib for this primitive
+            Type type = GetType();
+            List<PrimitiveCache> cachedPrimitives;
+            if (PrimitiveCache.TryGetValue(type, out cachedPrimitives))
             {
-                Dispose();
-
-                // Check if we can find a cached vb/ib for this primitive
-                Type type = GetType();
-                List<PrimitiveCache> cachedPrimitives;
-                if (PrimitiveCache.TryGetValue(type, out cachedPrimitives))
+                for (int i = 0; i < cachedPrimitives.Count; ++i)
                 {
-                    for (int i = 0; i < cachedPrimitives.Count; ++i)
+                    cachedPrimitive = cachedPrimitives[i];
+                    if (cachedPrimitive.IsDisposed)
                     {
-                        cachedPrimitive = cachedPrimitives[i];
-                        if (cachedPrimitive.IsDisposed)
-                        {
-                            cachedPrimitives[i] = cachedPrimitives[cachedPrimitives.Count - 1];
-                            cachedPrimitives.RemoveAt(cachedPrimitives.Count - 1);
-                            i--;
-                            continue;
-                        }
+                        cachedPrimitives[i] = cachedPrimitives[cachedPrimitives.Count - 1];
+                        cachedPrimitives.RemoveAt(cachedPrimitives.Count - 1);
+                        i--;
+                        continue;
+                    }
 
-                        var primitive = (Primitive<T>)cachedPrimitive.Primitive;
-                        if (primitive.GraphicsDevice == GraphicsDevice &&
-                            primitive.invertWindingOrder == invertWindingOrder &&
-                            CanShareBufferWith((Primitive<T>)cachedPrimitive.Primitive))
-                        {
-                            cachedPrimitive.RefCount++;
-                            UpdateBoundingBox();
-                            needsRebuild = false;
-                            return;
-                        }
+                    var primitive = (Primitive<T>)cachedPrimitive.Primitive;
+                    if (primitive.GraphicsDevice == GraphicsDevice &&
+                        primitive.invertWindingOrder == invertWindingOrder &&
+                        CanShareBufferWith((Primitive<T>)cachedPrimitive.Primitive))
+                    {
+                        cachedPrimitive.RefCount++;
+                        UpdateBoundingBox();
+                        needsRebuild = false;
+                        return;
+                    }
+                }
+            }
+
+            OnBuild();
+
+            cachedPrimitive = new PrimitiveCache();
+            cachedPrimitive.RefCount = 1;
+            cachedPrimitive.Primitive = this;
+            cachedPrimitive.Positions = Positions.ToArray();
+            cachedPrimitive.Indices = Indices.ToArray();
+
+            // Create a vertex buffer, and copy our vertex data into it.            
+            cachedPrimitive.VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(T), Vertices.Count, BufferUsage.WriteOnly);
+            cachedPrimitive.VertexBuffer.SetData(Vertices.ToArray());
+
+            // Create an index buffer, and copy our index data into it.
+            if (Indices.Count > 0)
+            {
+                cachedPrimitive.IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(ushort), Indices.Count, BufferUsage.WriteOnly);
+
+                // Handle winding order
+                if (invertWindingOrder)
+                {
+                    for (int i = 0; i < Indices.Count; i += 3)
+                    {
+                        var temp = Indices[i + 1];
+                        Indices[i + 1] = Indices[i + 2];
+                        Indices[i + 2] = temp;
                     }
                 }
 
-                OnBuild();
-
-                cachedPrimitive = new PrimitiveCache();
-                cachedPrimitive.RefCount = 1;
-                cachedPrimitive.Primitive = this;
-                cachedPrimitive.Positions = Positions.ToArray();
-                cachedPrimitive.Indices = Indices.ToArray();
-
-                // Create a vertex buffer, and copy our vertex data into it.            
-                cachedPrimitive.VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(T), Vertices.Count, BufferUsage.WriteOnly);
-                cachedPrimitive.VertexBuffer.SetData(Vertices.ToArray());
-
-                // Create an index buffer, and copy our index data into it.
-                if (Indices.Count > 0)
-                {
-                    cachedPrimitive.IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(ushort), Indices.Count, BufferUsage.WriteOnly);
-
-                    // Handle winding order
-                    if (invertWindingOrder)
-                    {
-                        for (int i = 0; i < Indices.Count; i += 3)
-                        {
-                            var temp = Indices[i + 1];
-                            Indices[i + 1] = Indices[i + 2];
-                            Indices[i + 2] = temp;
-                        }
-                    }
-
-                    cachedPrimitive.IndexBuffer.SetData(Indices.ToArray());
-                }
-
-                cachedPrimitive.PrimitiveCount = Helper.GetPrimitiveCount(primitiveType,
-                    cachedPrimitive.IndexBuffer != null ? cachedPrimitive.IndexBuffer.IndexCount
-                                                        : cachedPrimitive.VertexBuffer.VertexCount);
-
-                cachedPrimitive.BoundingBox = BoundingBox.CreateFromPoints(Positions);
-                UpdateBoundingBox();
-
-                needsRebuild = false;
-
-                // Add to primitive cache
-                if (cachedPrimitives == null)
-                    PrimitiveCache.Add(type, cachedPrimitives = new List<PrimitiveCache>());
-                cachedPrimitives.Add(cachedPrimitive);
+                cachedPrimitive.IndexBuffer.SetData(Indices.ToArray());
             }
-            finally
-            {
-                // Free up the list.
-                Positions.Clear();
-                Indices.Clear();
-                Vertices.Clear();
-            }
+
+            cachedPrimitive.PrimitiveCount = Helper.GetPrimitiveCount(primitiveType,
+                cachedPrimitive.IndexBuffer != null ? cachedPrimitive.IndexBuffer.IndexCount
+                                                    : cachedPrimitive.VertexBuffer.VertexCount);
+
+            cachedPrimitive.BoundingBox = BoundingBox.CreateFromPoints(Positions);
+            UpdateBoundingBox();
+
+            needsRebuild = false;
+
+            // Add to primitive cache
+            if (cachedPrimitives == null)
+                PrimitiveCache.Add(type, cachedPrimitives = new List<PrimitiveCache>());
+            cachedPrimitives.Add(cachedPrimitive);
+
+            // Free up the list.
+            Positions.Clear();
+            Indices.Clear();
+            Vertices.Clear();
         }
 
         /// <summary>
@@ -263,7 +258,7 @@
         {
             if (cachedPrimitive != null)
             {
-                boundingBox = BoundingBoxExtensions.CreateAxisAligned(cachedPrimitive.BoundingBox, AbsoluteTransform);                
+                boundingBox = BoundingBoxExtensions.CreateAxisAligned(cachedPrimitive.BoundingBox, AbsoluteTransform);
                 if (boundingBoxChanged != null)
                     boundingBoxChanged(this, EventArgs.Empty);
             }
@@ -276,12 +271,12 @@
         {
             return false;
         }
-        
+
         /// <summary>
         /// When implemented by derived classes. Call the AddVertex or AddIndex methods to build the prmitive.
         /// </summary>
         protected abstract void OnBuild();
-        
+
         /// <summary>
         /// Adds a new vertex to the primitive model. This should only be called
         /// during the initialization process, before InitializePrimitive.
@@ -291,7 +286,7 @@
             Vertices.Add(vertex);
             Positions.Add(position);
         }
-        
+
         /// <summary>
         /// Adds a new index to the primitive model. This should only be called
         /// during the InitializePrimitive.
@@ -303,7 +298,7 @@
 
             Indices.Add((ushort)index);
         }
-        
+
         /// <summary>
         /// Queries the index of the current vertex. This starts at
         /// zero, and increments every time AddVertex is called.
@@ -391,7 +386,7 @@
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        protected virtual void Dispose(bool disposing) 
+        protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {

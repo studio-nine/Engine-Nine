@@ -10,30 +10,10 @@
     public interface IParticleEmitter
     {
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="IParticleEmitter"/> is enabled.
-        /// </summary>
-        bool Enabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets the position of this <see cref="IParticleEmitter"/>.
-        /// </summary>
-        Vector3 Position { get; set; }
-
-        /// <summary>
-        /// Gets or sets the forward direction of this <see cref="IParticleEmitter"/>.
-        /// </summary>
-        Vector3 Direction { get; set; }
-
-        /// <summary>
-        /// Gets the bounding box that potentially contains all the particles emitted by
-        /// this particle emitter.
+        /// Gets the world space bounding box that potentially contains
+        /// all the particles emitted by this particle emitter.
         /// </summary>
         BoundingBox BoundingBox { get; }
-
-        /// <summary>
-        /// Creates a shadow copy of this instance.
-        /// </summary>
-        IParticleEmitter Clone();
 
         /// <summary>
         /// Updates the emitter, emits any new particles during the update.
@@ -50,7 +30,7 @@
     /// Defines the base class for all particle emitters.
     /// </summary>
     [ContentSerializable]
-    public abstract class ParticleEmitter : IParticleEmitter
+    public abstract class ParticleEmitter : Transformable, IParticleEmitter
     {
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="ParticleEmitter"/> is enabled.
@@ -78,26 +58,6 @@
         /// The default value is forever.
         /// </summary>
         public TimeSpan Lifetime { get; set; }
-
-        /// <summary>
-        /// Gets or sets the position of this emitter.
-        /// </summary>
-        public Vector3 Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
-        private Vector3 position;
-
-        /// <summary>
-        /// Gets or sets the direction of this emitter.
-        /// </summary>
-        public Vector3 Direction
-        {
-            get { return direction; }
-            set { direction = value; }
-        }
-        private Vector3 direction = Vector3.Up;
 
         /// <summary>
         /// Gets or sets the duration of each particle.
@@ -137,15 +97,15 @@
         {
             get
             {
-                BoundingBox box = BoundingBoxValue;
+                BoundingBox box;
+                GetBoundingBox(out box);
                 float border = Speed.Max * Duration.Max + Size.Max * 0.5f;
 
-                box.Max.X += border;
-                box.Max.Y += border;
-                box.Max.Z += border;
-                box.Min.X -= border;
-                box.Min.Y -= border;
-                box.Min.Z -= border;
+                box.Min.X += transform.M41; box.Min.Y += transform.M42; box.Min.Z += transform.M43;
+                box.Max.X += transform.M41; box.Max.Y += transform.M42; box.Max.Z += transform.M43;
+
+                box.Max.X += border; box.Max.Y += border; box.Max.Z += border;
+                box.Min.X -= border; box.Min.Y -= border; box.Min.Z -= border;
                 return box;
             }
         }
@@ -153,6 +113,7 @@
         private float elapsedTime = 0;
         private float timeLeftOver = 0;
         private bool firstParticleEmitted;
+
         private static Random random = new Random();
 
         /// <summary>
@@ -171,50 +132,37 @@
         /// <summary>
         /// Creates the random vector.
         /// </summary>
-        protected void CreateRandomVector(ref Vector3 velocity)
+        protected void Randomize(out Vector3 result)
         {
             double r = random.NextDouble() * Math.PI * 2;
             double z = random.NextDouble() * 2 - 1;
             double p = Math.Sqrt(1 - (z * z));
 
-            velocity.X = (float)(Math.Cos(r) * p);
-            velocity.Y = (float)(Math.Sin(r) * p);
-            velocity.Z = (float)z;
+            result = new Vector3();
+            result.X = (float)(Math.Cos(r) * p);
+            result.Y = (float)(Math.Sin(r) * p);
+            result.Z = (float)z;
         }
 
         /// <summary>
         /// Creates the random vector.
         /// </summary>
-        protected void CreateRandomVector(ref Vector3 velocity, float spread)
-        {
-            CreateRandomVector(ref velocity, ref direction, spread);
-        }
-
-        /// <summary>
-        /// Creates the random vector.
-        /// </summary>
-        protected void CreateRandomVector(ref Vector3 velocity, ref Vector3 direction, float spread)
+        protected void Randomize(float spread, out Vector3 result)
         {
             if (spread >= MathHelper.Pi)
-                CreateRandomVector(ref velocity);
+                Randomize(out result);
             else if (spread <= 0)
-                velocity = direction;
+                result = Vector3.Up;
             else
             {
                 double a = random.NextDouble() * Math.PI * 2;
                 double b = random.NextDouble() * spread + MathHelper.PiOver2;
                 double r = Math.Cos(b);
 
-                velocity.X = (float)(r * Math.Cos(a));
-                velocity.Y = (float)(r * Math.Sin(a));
-                velocity.Z = (float)(Math.Sin(b));
-
-                if (direction != Vector3.Up)
-                {
-                    Matrix rotation = new Matrix();
-                    MatrixHelper.CreateRotation(ref Up, ref direction, out rotation);
-                    Vector3.TransformNormal(ref velocity, ref rotation, out velocity);
-                }
+                result = new Vector3();
+                result.X = (float)(r * Math.Cos(a));
+                result.Y = (float)(r * Math.Sin(a));
+                result.Z = (float)(Math.Sin(b));
             }
         }
 
@@ -235,7 +183,7 @@
 
             if (elapsedTime > Lifetime.TotalSeconds + Delay.TotalSeconds)
                 return true;
-
+            
             Particle particle = new Particle();
 
             if (EmitCount > 0)
@@ -285,41 +233,31 @@
 
         private void EmitNewParticle(ParticleEffect particleEffect, float lerpAmount, ref Particle particle)
         {
-            Emit(lerpAmount, ref particle.Position, ref particle.Velocity);
+            if (Emit(lerpAmount, ref particle.Position, ref particle.Velocity))
+            {
+                particle.Alpha = 1;
+                particle.Rotation = Rotation.Min + (float)random.NextDouble() * (Rotation.Max - Rotation.Min);
+                particle.Duration = Duration.Min + (float)random.NextDouble() * (Duration.Max - Duration.Min);
+                particle.Velocity *= Speed.Min + (float)random.NextDouble() * (Speed.Max - Speed.Min);
+                particle.Size = Size.Min + (float)random.NextDouble() * (Size.Max - Size.Min);
+                particle.Color = Microsoft.Xna.Framework.Color.Lerp(Color.Min, Color.Max, (float)random.NextDouble());
 
-            particle.Alpha = 1;
-            particle.Rotation = Rotation.Min + (float)random.NextDouble() * (Rotation.Max - Rotation.Min);
-            particle.Duration = Duration.Min + (float)random.NextDouble() * (Duration.Max - Duration.Min);
-            particle.Velocity *= Speed.Min + (float)random.NextDouble() * (Speed.Max - Speed.Min);
-            particle.Size = Size.Min + (float)random.NextDouble() * (Size.Max - Size.Min);
-            particle.Color = Microsoft.Xna.Framework.Color.Lerp(Color.Min, Color.Max, (float)random.NextDouble());
+                Vector3.Transform(ref particle.Position, ref transform, out particle.Position);
+                Vector3.TransformNormal(ref particle.Velocity, ref transform, out particle.Velocity);
 
-            Vector3.Add(ref particle.Position, ref position, out particle.Position);
-
-            particleEffect.Emit(ref particle);
-        }
-
-        /// <summary>
-        /// Creates a shadow copy of this instance.
-        /// </summary>
-        public virtual IParticleEmitter Clone()
-        {
-            var emitter = (ParticleEmitter)MemberwiseClone();
-            emitter.elapsedTime = 0;
-            emitter.timeLeftOver = 0;
-            emitter.firstParticleEmitted = false;
-            return emitter;
+                particleEffect.Emit(ref particle);
+            }
         }
 
         /// <summary>
         /// Gets the bounding box that defines the region of this particle emitter without been offset by Position.
         /// </summary>
-        protected abstract BoundingBox BoundingBoxValue { get; }
+        protected abstract void GetBoundingBox(out BoundingBox boundingBox);
 
         /// <summary>
         /// Emits a new particle.
         /// </summary>
-        public abstract void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity);
+        public abstract bool Emit(float lerpAmount, ref Vector3 position, ref Vector3 direction);
     }
     #endregion
 }

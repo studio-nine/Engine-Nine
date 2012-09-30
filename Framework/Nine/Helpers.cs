@@ -211,7 +211,7 @@ namespace Nine
 
         static BoundingFrustum frustum = new BoundingFrustum(Matrix.Identity);
 
-        internal static float GetFarClip(this Matrix projection)
+        internal static float GetFarClip(ref Matrix projection)
         {
             frustum.Matrix = projection;
             return (frustum.Near.Normal * frustum.Near.D - frustum.Far.Normal * frustum.Far.D).Length();

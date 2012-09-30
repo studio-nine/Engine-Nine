@@ -192,41 +192,42 @@
 
             Matrix oldView = context.matrices.view;
             Matrix oldProjection = context.matrices.projection;
-            try
+
+            Begin();
+
+            // Leave the border pixels untouched so the shadow will not be stretched
+            // when using clamped sampling.
+            var viewport = context.graphics.Viewport;
+            context.graphics.Viewport = new Viewport(viewport.X + 1, viewport.Y + 1, viewport.Width - 2, viewport.Height - 2);
+
+            context.matrices.View = light.ShadowFrustum.Matrix;
+            context.matrices.Projection = Matrix.Identity;
+
+            context.graphics.SamplerStates[0] = SamplerState.PointClamp;
+            context.graphics.BlendState = BlendState.Opaque;
+            context.graphics.DepthStencilState = DepthStencilState.Default;
+
+            for (int i = 0; i < shadowCasters.Count; ++i)
             {
-                Begin();
+                var shadowCaster = shadowCasters[i];
+                if (!shadowCaster.OnAddedToView(context))
+                    continue;
 
-                context.matrices.View = light.ShadowFrustum.Matrix;
-                context.matrices.Projection = Matrix.Identity;
+                var material = shadowCaster.Material;
+                if (material == null)
+                    material = depthMaterial;
+                else
+                    material = material.GetMaterialByUsage(MaterialUsage.Depth);
 
-                context.graphics.SamplerStates[0] = SamplerState.PointClamp;
-                context.graphics.BlendState = BlendState.Opaque;
-                context.graphics.DepthStencilState = DepthStencilState.Default;
-
-                for (int i = 0; i < shadowCasters.Count; ++i)
-                {
-                    var shadowCaster = shadowCasters[i];
-                    if (!shadowCaster.OnAddedToView(context))
-                        continue;
-
-                    var material = shadowCaster.Material;
-                    if (material == null)
-                        material = depthMaterial;
-                    else
-                        material = material.GetMaterialByUsage(MaterialUsage.Depth);
-
-                    if (material != null)
-                        shadowCaster.Draw(context, material);
-                }
+                if (material != null)
+                    shadowCaster.Draw(context, material);
             }
-            finally
-            {
-                shadowCasters.Clear();
-                End(context);
 
-                context.matrices.View = oldView;
-                context.matrices.Projection = oldProjection;
-            }
+            shadowCasters.Clear();
+            End(context);
+
+            context.matrices.View = oldView;
+            context.matrices.Projection = oldProjection;
         }
 
         public void Dispose()

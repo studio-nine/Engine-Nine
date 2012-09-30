@@ -309,19 +309,15 @@ namespace Nine.Graphics.Materials
             }
 #endif
 
-            try
-            {
-                MaterialPart.IsContentRead = true;
 
-                count = input.ReadInt32();
-                for (Index = 0; Index < count; Index++)
-                    existingInstance.MaterialParts.Add(input.ReadObject<MaterialPart>());
-            }
-            finally
-            {
-                Index = -1;
-                MaterialPart.IsContentRead = false;
-            }
+            MaterialPart.IsContentRead = true;
+
+            count = input.ReadInt32();
+            for (Index = 0; Index < count; Index++)
+                existingInstance.MaterialParts.Add(input.ReadObject<MaterialPart>());
+            Index = -1;
+            MaterialPart.IsContentRead = false;
+
             existingInstance.ExtendedMaterials = input.ReadObject<Dictionary<MaterialUsage, MaterialGroup>>();
             return existingInstance;
         }

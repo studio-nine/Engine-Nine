@@ -74,7 +74,7 @@ namespace <#= namespaceGroup.Key #>
         {
 #>
             {
-                output.Write(value.<#= member.Name #>.Count);
+                output.Write(checked((ushort)value.<#= member.Name #>.Count));
                 for (var i = 0; i < value.<#= member.Name #>.Count; ++i)
                     output.WriteObject(value.<#= member.Name #>[i]);
             }
@@ -84,7 +84,7 @@ namespace <#= namespaceGroup.Key #>
         {
 #>
             {
-                output.Write(value.<#= member.Name #>.Count);
+                output.Write(checked((ushort)value.<#= member.Name #>.Count));
                 foreach (var pair in value.<#= member.Name #>)
                 {
                     output.WriteObject(pair.Key);
@@ -97,6 +97,18 @@ namespace <#= namespaceGroup.Key #>
         {
 #>
             output.WriteObject(value.<#= member.Name #>);
+<#
+        }
+        else if (memberType == typeof(string))
+        {
+#>
+            output.Write(value.<#= member.Name #> ?? string.Empty);
+<#
+        }
+        else if (memberType.IsEnum)
+        {
+#>
+            output.Write((ushort)value.<#= member.Name #>);
 <#
         }
         else

@@ -22,7 +22,7 @@ namespace Nine.Animations
         {
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Controllers.Add(input.ReadObject<Nine.Animations.IBoneAnimationController>());
             }
@@ -30,7 +30,7 @@ namespace Nine.Animations
             existingInstance.BlendDuration = input.ReadObject<System.TimeSpan>();
             existingInstance.KeyController = input.ReadObject<Nine.Animations.ITimelineAnimation>();
             existingInstance.IsSychronized = input.ReadBoolean();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -50,7 +50,7 @@ namespace Nine.Animations
                 existingInstance = new BoneAnimationClip();
             existingInstance.FramesPerSecond = input.ReadInt32();
             existingInstance.TotalFrames = input.ReadInt32();
-            existingInstance.PreferredEnding = input.ReadObject<Nine.Animations.KeyframeEnding>();
+            existingInstance.PreferredEnding = (Nine.Animations.KeyframeEnding)input.ReadUInt16();
             existingInstance.Transforms = input.ReadObject<Microsoft.Xna.Framework.Matrix[][]>();
             return existingInstance;
         }
@@ -70,16 +70,16 @@ namespace Nine.Animations
             existingInstance.BeginFrame = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.EndFrame = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.FramesPerSecond = input.ReadSingle();
-            existingInstance.Ending = input.ReadObject<Nine.Animations.KeyframeEnding>();
+            existingInstance.Ending = (Nine.Animations.KeyframeEnding)input.ReadUInt16();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -98,20 +98,20 @@ namespace Nine.Animations
             if (existingInstance == null)
                 existingInstance = new SpriteAnimation();
             existingInstance.Source = input.ReadObject<Nine.Graphics.TextureAtlas>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginFrame = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.EndFrame = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.FramesPerSecond = input.ReadSingle();
-            existingInstance.Ending = input.ReadObject<Nine.Animations.KeyframeEnding>();
+            existingInstance.Ending = (Nine.Animations.KeyframeEnding)input.ReadUInt16();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -142,7 +142,7 @@ namespace Nine.Graphics
             }
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.AmbientLightColor = input.ReadVector3();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -182,7 +182,7 @@ namespace Nine.Graphics
             existingInstance.Duration = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.FadeDuration = input.ReadObject<System.TimeSpan>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -208,8 +208,7 @@ namespace Nine.Graphics
 #endif
                 existingInstance = new DirectionalLight(graphicsDevice);
             }
-            existingInstance.ShadowStart = input.ReadSingle();
-            existingInstance.ShadowEnd = input.ReadSingle();
+            existingInstance.ShadowDistance = input.ReadSingle();
             existingInstance.Direction = input.ReadVector3();
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.DiffuseColor = input.ReadVector3();
@@ -218,7 +217,7 @@ namespace Nine.Graphics
             existingInstance.CastShadow = input.ReadBoolean();
             existingInstance.ShadowMap = input.ReadObject<Nine.Graphics.ShadowMap>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -240,7 +239,7 @@ namespace Nine.Graphics
             existingInstance.FogEnd = input.ReadSingle();
             existingInstance.FogColor = input.ReadVector3();
             existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -269,7 +268,7 @@ namespace Nine.Graphics
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -291,7 +290,7 @@ namespace Nine.Graphics
             existingInstance.indices = input.ReadObject<System.UInt16[]>();
             existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -348,7 +347,7 @@ namespace Nine.Graphics
             existingInstance.Template = input.ReadObject<Nine.Graphics.ISupportInstancing>();
             existingInstance.BoundingBoxPadding = input.ReadVector3();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -375,7 +374,7 @@ namespace Nine.Graphics
                 existingInstance = new Model(graphicsDevice);
             }
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Meshes.Add(input.ReadObject<Nine.Graphics.ModelMesh>());
             }
@@ -388,18 +387,17 @@ namespace Nine.Graphics
             existingInstance.MultiPassLightingEnabled = input.ReadBoolean();
             existingInstance.MaxAffectingLights = input.ReadInt32();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.MaxReceivedShadows = input.ReadInt32();
             existingInstance.MultiPassShadowEnabled = input.ReadBoolean();
             existingInstance.OrientedBoundingBox = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.BoundingBox>>();
             existingInstance.SharedSkeleton = input.ReadObject<Nine.Graphics.Skeleton>();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Attachments.Add(input.ReadObject<Nine.Graphics.ModelAttachment>());
             }
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -418,7 +416,7 @@ namespace Nine.Graphics
             if (existingInstance == null)
                 existingInstance = new ModelAttachment();
             existingInstance.Transformable = input.ReadObject<Nine.Transformable>();
-            existingInstance.Bone = input.ReadObject<System.String>();
+            existingInstance.Bone = input.ReadString();
             existingInstance.Transform = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.UseBoneScale = input.ReadBoolean();
             existingInstance.ShareSkeleton = input.ReadBoolean();
@@ -459,7 +457,7 @@ namespace Nine.Graphics
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.UseModelTextures = input.ReadObject<System.Nullable<System.Boolean>>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -549,7 +547,7 @@ namespace Nine.Graphics
             existingInstance.CastShadow = input.ReadBoolean();
             existingInstance.ShadowMap = input.ReadObject<Nine.Graphics.ShadowMap>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -576,12 +574,12 @@ namespace Nine.Graphics
                 existingInstance = new ShadowMap(graphicsDevice);
             }
             existingInstance.Size = input.ReadInt32();
-            existingInstance.SurfaceFormat = input.ReadObject<Microsoft.Xna.Framework.Graphics.SurfaceFormat>();
+            existingInstance.SurfaceFormat = (Microsoft.Xna.Framework.Graphics.SurfaceFormat)input.ReadUInt16();
             existingInstance.BlurEnabled = input.ReadBoolean();
             existingInstance.BlurAmount = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -610,7 +608,7 @@ namespace Nine.Graphics
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Color = input.ReadVector3();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.TextureCube>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -648,7 +646,7 @@ namespace Nine.Graphics
             existingInstance.CastShadow = input.ReadBoolean();
             existingInstance.ShadowMap = input.ReadObject<Nine.Graphics.ShadowMap>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -692,7 +690,7 @@ namespace Nine.Graphics
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.SourceRectangle = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -720,7 +718,7 @@ namespace Nine.Graphics
             }
             existingInstance.PatchSegmentCount = input.ReadInt32();
             existingInstance.TextureTransform = input.ReadMatrix();
-            existingInstance.VertexTypeSerializer = input.ReadObject<System.String>();
+            existingInstance.VertexTypeSerializer = input.ReadString();
             existingInstance.Heightmap = input.ReadObject<Nine.Graphics.Heightmap>();
             existingInstance.LevelOfDetailStart = input.ReadSingle();
             existingInstance.LevelOfDetailEnd = input.ReadSingle();
@@ -729,9 +727,8 @@ namespace Nine.Graphics
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -758,7 +755,7 @@ namespace Nine.Graphics
                 existingInstance = new TextSprite(graphicsDevice);
             }
             existingInstance.Visible = input.ReadBoolean();
-            existingInstance.Text = input.ReadObject<System.String>();
+            existingInstance.Text = input.ReadString();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.Color = input.ReadColor();
             existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
@@ -772,7 +769,7 @@ namespace Nine.Graphics
             existingInstance.Size = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
             existingInstance.Anchor = input.ReadVector2();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -808,14 +805,14 @@ namespace Nine.Graphics.Cameras
             existingInstance.MaxRadius = input.ReadSingle();
             existingInstance.WheelSpeed = input.ReadSingle();
             existingInstance.Speed = input.ReadSingle();
-            existingInstance.RotateButton = input.ReadObject<Nine.MouseButtons>();
-            existingInstance.TranslateButton = input.ReadObject<Nine.MouseButtons>();
+            existingInstance.RotateButton = (Nine.MouseButtons)input.ReadUInt16();
+            existingInstance.TranslateButton = (Nine.MouseButtons)input.ReadUInt16();
             existingInstance.LookAt = input.ReadVector3();
             existingInstance.NearPlane = input.ReadSingle();
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -845,7 +842,7 @@ namespace Nine.Graphics.Cameras
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -878,7 +875,7 @@ namespace Nine.Graphics.Cameras
             existingInstance.WheelSpeed = input.ReadSingle();
             existingInstance.InputEnabled = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -909,18 +906,18 @@ namespace Nine.Graphics.Cameras
             existingInstance.TurnSpeed = input.ReadSingle();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.PrecisionModeSpeed = input.ReadSingle();
-            existingInstance.ForwardKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
-            existingInstance.BackwardKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
-            existingInstance.LeftKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
-            existingInstance.RightKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
-            existingInstance.UpKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
-            existingInstance.DownKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
-            existingInstance.PrecisionModeKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.ForwardKey = (Microsoft.Xna.Framework.Input.Keys)input.ReadUInt16();
+            existingInstance.BackwardKey = (Microsoft.Xna.Framework.Input.Keys)input.ReadUInt16();
+            existingInstance.LeftKey = (Microsoft.Xna.Framework.Input.Keys)input.ReadUInt16();
+            existingInstance.RightKey = (Microsoft.Xna.Framework.Input.Keys)input.ReadUInt16();
+            existingInstance.UpKey = (Microsoft.Xna.Framework.Input.Keys)input.ReadUInt16();
+            existingInstance.DownKey = (Microsoft.Xna.Framework.Input.Keys)input.ReadUInt16();
+            existingInstance.PrecisionModeKey = (Microsoft.Xna.Framework.Input.Keys)input.ReadUInt16();
             existingInstance.NearPlane = input.ReadSingle();
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -952,12 +949,12 @@ namespace Nine.Graphics.Cameras
             existingInstance.WheelSpeed = input.ReadSingle();
             existingInstance.Center = input.ReadVector3();
             existingInstance.MouseWheelEnabled = input.ReadBoolean();
-            existingInstance.RotateButton = input.ReadObject<Nine.MouseButtons>();
+            existingInstance.RotateButton = (Nine.MouseButtons)input.ReadUInt16();
             existingInstance.NearPlane = input.ReadSingle();
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -988,7 +985,7 @@ namespace Nine.Graphics.Materials
             }
             existingInstance.DiffuseColor = input.ReadVector3();
             existingInstance.ReferenceAlpha = input.ReadInt32();
-            existingInstance.AlphaFunction = input.ReadObject<Microsoft.Xna.Framework.Graphics.CompareFunction>();
+            existingInstance.AlphaFunction = (Microsoft.Xna.Framework.Graphics.CompareFunction)input.ReadUInt16();
             existingInstance.VertexColorEnabled = input.ReadBoolean();
             existingInstance.SamplerState = input.ReadObject<Microsoft.Xna.Framework.Graphics.SamplerState>();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
@@ -997,7 +994,7 @@ namespace Nine.Graphics.Materials
             existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1037,7 +1034,7 @@ namespace Nine.Graphics.Materials
             existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1071,7 +1068,7 @@ namespace Nine.Graphics.Materials
             existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1089,15 +1086,15 @@ namespace Nine.Graphics.Materials
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new CustomMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Parameters.Add(
                         input.ReadObject<System.String>(),
                         input.ReadObject<System.Object>());
             }
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1123,7 +1120,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new DebugMaterial(graphicsDevice);
             }
-            existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
+            existingInstance.TextureUsage = (Nine.Graphics.TextureUsage)input.ReadUInt16();
             existingInstance.SamplerState = input.ReadObject<Microsoft.Xna.Framework.Graphics.SamplerState>();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
@@ -1131,7 +1128,7 @@ namespace Nine.Graphics.Materials
             existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1168,7 +1165,7 @@ namespace Nine.Graphics.Materials
             existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1207,7 +1204,7 @@ namespace Nine.Graphics.Materials
             existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1226,7 +1223,7 @@ namespace Nine.Graphics.Materials
             if (existingInstance == null)
                 existingInstance = new MaterialLevelOfDetail();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.MaterialLevels.Add(input.ReadObject<Nine.Graphics.Materials.Material>());
             }
@@ -1249,13 +1246,13 @@ namespace Nine.Graphics.Materials
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new MaterialPaintGroup();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.MaterialParts.Add(input.ReadObject<Nine.Graphics.Materials.MaterialPart>());
             }
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1294,7 +1291,7 @@ namespace Nine.Graphics.Materials
             existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
             existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1315,10 +1312,10 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new AlphaTestMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.AlphaFunction = input.ReadObject<Microsoft.Xna.Framework.Graphics.CompareFunction>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.AlphaFunction = (Microsoft.Xna.Framework.Graphics.CompareFunction)input.ReadUInt16();
             existingInstance.ReferenceAlpha = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1336,8 +1333,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BeginLightMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1355,8 +1352,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BeginPaintGroupMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1374,9 +1371,9 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ColorMatrixMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.ColorMatrix = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1394,8 +1391,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DeferredLightsMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1413,8 +1410,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DepthAndNormalMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1432,8 +1429,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DepthMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1451,12 +1448,12 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DetailMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.DetailTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Attenuation = input.ReadSingle();
             existingInstance.Distance = input.ReadSingle();
             existingInstance.DetailTextureScale = input.ReadVector2();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1474,15 +1471,15 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DiffuseMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.VertexColorEnabled = input.ReadBoolean();
             existingInstance.DiffuseColorEnabled = input.ReadBoolean();
             existingInstance.TextureEnabled = input.ReadBoolean();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.DiffuseColor = input.ReadVector3();
             existingInstance.OverlayColor = input.ReadVector3();
-            existingInstance.TextureAlphaUsage = input.ReadObject<Nine.Graphics.Materials.MaterialParts.TextureAlphaUsage>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.TextureAlphaUsage = (Nine.Graphics.Materials.MaterialParts.TextureAlphaUsage)input.ReadUInt16();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1500,8 +1497,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DirectionalLightMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1519,9 +1516,9 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new DualTextureMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.Texture2 = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1539,12 +1536,12 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new EmissiveMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.EmissiveMapEnabled = input.ReadBoolean();
             existingInstance.EmissiveColorEnabled = input.ReadBoolean();
             existingInstance.EmissiveMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.EmissiveColor = input.ReadVector3();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1562,8 +1559,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new EndLightMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1581,8 +1578,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new EndPaintGroupMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1600,8 +1597,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new FogMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1619,8 +1616,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new InstancedMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1638,9 +1635,9 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new NormalMapMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.NormalMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1658,13 +1655,13 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ShadowMapMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.ShadowColor = input.ReadVector3();
             existingInstance.LightViewProjection = input.ReadMatrix();
             existingInstance.ShadowMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.FilterSize = input.ReadInt32();
             existingInstance.Seed = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1682,10 +1679,10 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SkinnedMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.MaxBones = input.ReadInt32();
             existingInstance.WeightsPerVertex = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1703,13 +1700,13 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SpecularMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.SpecularMapEnabled = input.ReadBoolean();
             existingInstance.SpecularColorEnabled = input.ReadBoolean();
             existingInstance.SpecularMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.SpecularPower = input.ReadSingle();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1727,8 +1724,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new TangentTransformMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1746,9 +1743,9 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new TextureTransformMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
             existingInstance.TextureTransform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1766,8 +1763,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new VertexTransformMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.ParameterSuffix = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -1795,34 +1792,6 @@ namespace Nine.Graphics.ParticleEffects
         }
     }
     /// <summary>
-    /// Content reader for <c>BoneEmitter</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class BoneEmitterReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.BoneEmitter>
-    {
-        protected override Nine.Graphics.ParticleEffects.BoneEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.BoneEmitter existingInstance)
-        {
-            Group.EnsureDefaultServiceProvider(input.ContentManager);
-            if (existingInstance == null)
-                existingInstance = new BoneEmitter();
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.EmitCount = input.ReadInt32();
-            existingInstance.Emission = input.ReadSingle();
-            existingInstance.Delay = input.ReadObject<System.TimeSpan>();
-            existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
-            existingInstance.Position = input.ReadVector3();
-            existingInstance.Direction = input.ReadVector3();
-            existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
-            existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
-            existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
-            existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
-            existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
     /// Content reader for <c>BoxEmitter</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -1835,7 +1804,6 @@ namespace Nine.Graphics.ParticleEffects
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BoxEmitter();
-            existingInstance.Transform = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.Box = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
             existingInstance.Spread = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
@@ -1843,13 +1811,14 @@ namespace Nine.Graphics.ParticleEffects
             existingInstance.Emission = input.ReadSingle();
             existingInstance.Delay = input.ReadObject<System.TimeSpan>();
             existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
-            existingInstance.Position = input.ReadVector3();
-            existingInstance.Direction = input.ReadVector3();
             existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
             existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadString();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -1888,20 +1857,20 @@ namespace Nine.Graphics.ParticleEffects
             existingInstance.Radiate = input.ReadBoolean();
             existingInstance.Height = input.ReadSingle();
             existingInstance.Spread = input.ReadSingle();
-            existingInstance.Up = input.ReadVector3();
             existingInstance.Radius = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.EmitCount = input.ReadInt32();
             existingInstance.Emission = input.ReadSingle();
             existingInstance.Delay = input.ReadObject<System.TimeSpan>();
             existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
-            existingInstance.Position = input.ReadVector3();
-            existingInstance.Direction = input.ReadVector3();
             existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
             existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadString();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -1960,13 +1929,14 @@ namespace Nine.Graphics.ParticleEffects
             existingInstance.Emission = input.ReadSingle();
             existingInstance.Delay = input.ReadObject<System.TimeSpan>();
             existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
-            existingInstance.Position = input.ReadVector3();
-            existingInstance.Direction = input.ReadVector3();
             existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
             existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadString();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -1991,7 +1961,7 @@ namespace Nine.Graphics.ParticleEffects
 #endif
                 existingInstance = new ParticleEffect(graphicsDevice);
             }
-            existingInstance.ParticleType = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleType>();
+            existingInstance.ParticleType = (Nine.Graphics.ParticleEffects.ParticleType)input.ReadUInt16();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Stretch = input.ReadSingle();
@@ -2003,12 +1973,12 @@ namespace Nine.Graphics.ParticleEffects
             existingInstance.IsAsync = input.ReadBoolean();
             existingInstance.Emitter = input.ReadObject<Nine.Graphics.ParticleEffects.IParticleEmitter>();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Controllers.Add(input.ReadObject<Nine.Graphics.ParticleEffects.IParticleController>());
             }
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2032,13 +2002,14 @@ namespace Nine.Graphics.ParticleEffects
             existingInstance.Emission = input.ReadSingle();
             existingInstance.Delay = input.ReadObject<System.TimeSpan>();
             existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
-            existingInstance.Position = input.ReadVector3();
-            existingInstance.Direction = input.ReadVector3();
             existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
             existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadString();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -2118,13 +2089,14 @@ namespace Nine.Graphics.ParticleEffects
             existingInstance.Emission = input.ReadSingle();
             existingInstance.Delay = input.ReadObject<System.TimeSpan>();
             existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
-            existingInstance.Position = input.ReadVector3();
-            existingInstance.Direction = input.ReadVector3();
             existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
             existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadString();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
     }
@@ -2171,7 +2143,7 @@ namespace Nine.Graphics.PostEffects
             existingInstance.RenderTargetScale = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2202,7 +2174,7 @@ namespace Nine.Graphics.PostEffects
             existingInstance.RenderTargetScale = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2233,7 +2205,7 @@ namespace Nine.Graphics.PostEffects
             existingInstance.BloomIntensity = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2260,11 +2232,11 @@ namespace Nine.Graphics.PostEffects
                 existingInstance = new BlurEffect(graphicsDevice);
             }
             existingInstance.BlurAmount = input.ReadSingle();
-            existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
+            existingInstance.TextureUsage = (Nine.Graphics.TextureUsage)input.ReadUInt16();
             existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2297,7 +2269,7 @@ namespace Nine.Graphics.PostEffects
             existingInstance.Quality = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2331,7 +2303,7 @@ namespace Nine.Graphics.PostEffects
             existingInstance.BloomIntensity = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2355,7 +2327,7 @@ namespace Nine.Graphics.PostEffects
             existingInstance.RenderTargetScale = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2374,15 +2346,15 @@ namespace Nine.Graphics.PostEffects
             if (existingInstance == null)
                 existingInstance = new PostEffectChain();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Effects.Add(input.ReadObject<Nine.Graphics.Drawing.Pass>());
             }
-            existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
+            existingInstance.TextureUsage = (Nine.Graphics.TextureUsage)input.ReadUInt16();
             existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2401,14 +2373,14 @@ namespace Nine.Graphics.PostEffects
             if (existingInstance == null)
                 existingInstance = new PostEffectGroup();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffectChain>());
             }
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2443,7 +2415,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2476,7 +2448,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2509,7 +2481,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2542,7 +2514,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2574,7 +2546,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2607,7 +2579,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2641,7 +2613,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2669,7 +2641,7 @@ namespace Nine.Graphics.Primitives
             }
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.DepthBias = input.ReadSingle();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2703,7 +2675,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2736,7 +2708,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2769,7 +2741,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2802,7 +2774,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -2835,7 +2807,7 @@ namespace Nine.Graphics.Primitives
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.InvertWindingOrder = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }

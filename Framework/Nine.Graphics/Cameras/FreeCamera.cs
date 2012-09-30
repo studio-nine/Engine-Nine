@@ -53,6 +53,8 @@
             this.RightKey = Keys.D;
             this.UpKey = Keys.X;
             this.DownKey = Keys.Z;
+
+            UpdateTransform(Vector2.Zero);
         }
 
         public void Update(TimeSpan elapsedTime)
@@ -122,7 +124,7 @@
             UpdateTransform(move);
         }
 
-        private Vector2 UpdateTransform(Vector2 move)
+        private void UpdateTransform(Vector2 move)
         {
             Matrix.CreateFromYawPitchRoll(-angle.Y, -angle.X, -angle.Z, out transform);
             transform.M41 = position.X += transform.Forward.X * move.X + transform.Left.X * move.Y;
@@ -130,7 +132,6 @@
             transform.M43 = position.Z += transform.Forward.Z * move.X + transform.Left.Z * move.Y;
 
             NotifyTransformChanged();
-            return move;
         }
     }
 }

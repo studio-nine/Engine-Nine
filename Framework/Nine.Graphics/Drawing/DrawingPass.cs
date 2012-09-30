@@ -89,148 +89,145 @@ namespace Nine.Graphics.Drawing
 
             var graphics = context.graphics;
             var dominantMaterial = Material;
-            var defaultMaterial = FallbackMaterial ?? (FallbackMaterial = new BasicMaterial(graphics) 
+            var defaultMaterial = FallbackMaterial ?? (FallbackMaterial = new BasicMaterial(graphics)
             {
-                LightingEnabled = true, PreferPerPixelLighting = true,
+                LightingEnabled = true,
+                PreferPerPixelLighting = true,
             });
 
-            try
+
+            for (int i = 0; i < count; ++i)
             {
-                for (int i = 0; i < count; ++i)
+                var drawable = drawables[i];
+
+                var material = dominantMaterial ?? drawable.Material ?? defaultMaterial;
+                if (MaterialUsage != MaterialUsage.Default)
+                    material = material.GetMaterialByUsage(MaterialUsage);
+
+                while (material != null)
                 {
-                    var drawable = drawables[i];
-
-                    var material = dominantMaterial ?? drawable.Material ?? defaultMaterial;
-                    if (MaterialUsage != MaterialUsage.Default)
-                        material = material.GetMaterialByUsage(MaterialUsage);
-
-                    while (material != null)
+                    var twoSided = material.TwoSided;
+                    if (material.IsTransparent)
                     {
-                        var twoSided = material.TwoSided;
-                        if (material.IsTransparent)
-                        {
-                            if (twoSided)
-                                transparentTwoSided.Add(drawable, material);
-                            else
-                                transparent.Add(drawable, material);
-                        }
+                        if (twoSided)
+                            transparentTwoSided.Add(drawable, material);
                         else
-                        {
-                            if (twoSided)
-                                opaqueTwoSided.Add(drawable, material);
-                            else
-                                opaque.Add(drawable, material);
-                        }
-                        material = material.NextMaterial;
+                            transparent.Add(drawable, material);
                     }
-                }
-
-                if (MaterialSortEnabled)
-                {
-                    opaque.SortByMaterial();
-                    opaqueTwoSided.SortByMaterial();
-                    
-                    if (!TransparencySortEnabled)
+                    else
                     {
-                        transparent.SortByMaterial();
-                        transparentTwoSided.SortByMaterial();
+                        if (twoSided)
+                            opaqueTwoSided.Add(drawable, material);
+                        else
+                            opaque.Add(drawable, material);
                     }
+                    material = material.NextMaterial;
                 }
-                
-                if (TransparencySortEnabled)
+            }
+
+            if (MaterialSortEnabled)
+            {
+                opaque.SortByMaterial();
+                opaqueTwoSided.SortByMaterial();
+
+                if (!TransparencySortEnabled)
                 {
-                    transparent.SortByViewDistance(ref context.matrices.cameraPosition);
-                    transparentTwoSided.SortByViewDistance(ref context.matrices.cameraPosition);
+                    transparent.SortByMaterial();
+                    transparentTwoSided.SortByMaterial();
                 }
+            }
 
-                //---------------------------------------------------------------------
-                // Sampler state management rules:
-                //
-                // - When possible, do not modify sampler states in HLSL.
-                // - When a material modifies any sampler state, it should restore the 
-                //   state to defaults.
-                // - When a post processing material modifies sampler state 1-n, it should
-                //   restore the state to defaults.
-                // - When a post processing material modifies sampler state 0, no need to restore.
-                // - A post processing material should always set sampler state 0.
-                //
-                // - All sampler states will be set to the default on application startup
-                //   or the default state changed.
-                // - During the drawing pass, the first sampler state is reset to default
-                //   to correct the changes made in post processing.
-                //---------------------------------------------------------------------
-                graphics.SamplerStates[0] = context.SamplerState;
+            if (TransparencySortEnabled)
+            {
+                transparent.SortByViewDistance(ref context.matrices.cameraPosition);
+                transparentTwoSided.SortByViewDistance(ref context.matrices.cameraPosition);
+            }
 
-                // Draw opaque objects     
-                graphics.DepthStencilState = DepthStencilState.Default;
-                graphics.BlendState = BlendState.Opaque;
+            //---------------------------------------------------------------------
+            // Sampler state management rules:
+            //
+            // - When possible, do not modify sampler states in HLSL.
+            // - When a material modifies any sampler state, it should restore the 
+            //   state to defaults.
+            // - When a post processing material modifies sampler state 1-n, it should
+            //   restore the state to defaults.
+            // - When a post processing material modifies sampler state 0, no need to restore.
+            // - A post processing material should always set sampler state 0.
+            //
+            // - All sampler states will be set to the default on application startup
+            //   or the default state changed.
+            // - During the drawing pass, the first sampler state is reset to default
+            //   to correct the changes made in post processing.
+            //---------------------------------------------------------------------
+            graphics.SamplerStates[0] = context.SamplerState;
 
-                var ccw = Wireframe ? wireframeCCW : RasterizerState.CullCounterClockwise;
-                var cw = Wireframe ? wireframeCW : RasterizerState.CullClockwise;
-                var none = Wireframe ? wireframeNone : RasterizerState.CullNone;
+            // Draw opaque objects     
+            graphics.DepthStencilState = DepthStencilState.Default;
+            graphics.BlendState = BlendState.Opaque;
 
-                if (opaque.Count > 0)
-                {
-                    graphics.RasterizerState = ccw;
+            var ccw = Wireframe ? wireframeCCW : RasterizerState.CullCounterClockwise;
+            var cw = Wireframe ? wireframeCW : RasterizerState.CullClockwise;
+            var none = Wireframe ? wireframeNone : RasterizerState.CullNone;
 
-                    for (int i = 0; i < opaque.Count; ++i)
-                    {
-                        var entry = opaque.Elements[i];
-                        entry.Drawable.Draw(context, entry.Material);
-                    }
-                }
-
-                if (opaqueTwoSided.Count > 0)
-                {
-                    graphics.RasterizerState = none;
-
-                    for (int i = 0; i < opaqueTwoSided.Count; ++i)
-                    {
-                        var entry = opaqueTwoSided.Elements[i];
-                        entry.Drawable.Draw(context, entry.Material);
-                    }
-                }
-
-                // Draw transparent objects
-                graphics.DepthStencilState = DepthStencilState.DepthRead;
-                graphics.BlendState = BlendState.AlphaBlend;
-
-                if (transparent.Count > 0)
-                {
-                    graphics.RasterizerState = ccw;
-
-                    for (int i = 0; i < transparent.Count; ++i)
-                    {
-                        var entry = transparent.Elements[i];
-                        graphics.BlendState = entry.Material.IsAdditive ? BlendState.Additive : BlendState.AlphaBlend;
-                        entry.Drawable.Draw(context, entry.Material);
-                    }
-                }
-
+            if (opaque.Count > 0)
+            {
                 graphics.RasterizerState = ccw;
 
-                if (transparentTwoSided.Count > 0)
+                for (int i = 0; i < opaque.Count; ++i)
                 {
-                    graphics.RasterizerState = none;
-
-                    for (int i = 0; i < transparentTwoSided.Count; ++i)
-                    {
-                        var entry = transparentTwoSided.Elements[i];
-                        graphics.BlendState = entry.Material.IsAdditive ? BlendState.Additive : BlendState.AlphaBlend;
-                        entry.Drawable.Draw(context, entry.Material);
-                    }
+                    var entry = opaque.Elements[i];
+                    entry.Drawable.Draw(context, entry.Material);
                 }
             }
-            finally
-            {
-                opaque.Clear();
-                opaqueTwoSided.Clear();
-                transparent.Clear();
-                transparentTwoSided.Clear();
 
-                // Counter clock wise culling is the default rasterizer state. Restore it afer the drawing pass.
-                graphics.RasterizerState = RasterizerState.CullCounterClockwise;
+            if (opaqueTwoSided.Count > 0)
+            {
+                graphics.RasterizerState = none;
+
+                for (int i = 0; i < opaqueTwoSided.Count; ++i)
+                {
+                    var entry = opaqueTwoSided.Elements[i];
+                    entry.Drawable.Draw(context, entry.Material);
+                }
             }
+
+            // Draw transparent objects
+            graphics.DepthStencilState = DepthStencilState.DepthRead;
+            graphics.BlendState = BlendState.AlphaBlend;
+
+            if (transparent.Count > 0)
+            {
+                graphics.RasterizerState = ccw;
+
+                for (int i = 0; i < transparent.Count; ++i)
+                {
+                    var entry = transparent.Elements[i];
+                    graphics.BlendState = entry.Material.IsAdditive ? BlendState.Additive : BlendState.AlphaBlend;
+                    entry.Drawable.Draw(context, entry.Material);
+                }
+            }
+
+            graphics.RasterizerState = ccw;
+
+            if (transparentTwoSided.Count > 0)
+            {
+                graphics.RasterizerState = none;
+
+                for (int i = 0; i < transparentTwoSided.Count; ++i)
+                {
+                    var entry = transparentTwoSided.Elements[i];
+                    graphics.BlendState = entry.Material.IsAdditive ? BlendState.Additive : BlendState.AlphaBlend;
+                    entry.Drawable.Draw(context, entry.Material);
+                }
+            }
+
+            opaque.Clear();
+            opaqueTwoSided.Clear();
+            transparent.Clear();
+            transparentTwoSided.Clear();
+
+            // Counter clock wise culling is the default rasterizer state. Restore it after the drawing pass.
+            graphics.RasterizerState = RasterizerState.CullCounterClockwise;
         }
     }
 }

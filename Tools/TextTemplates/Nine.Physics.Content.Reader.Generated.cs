@@ -32,7 +32,7 @@ namespace Nine.Physics
             existingInstance.AngularVelocity = input.ReadVector3();
             existingInstance.Damping = input.ReadSingle();
             existingInstance.AngularDamping = input.ReadSingle();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -58,9 +58,9 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
-            existingInstance.CollisionGroup = input.ReadObject<System.String>();
+            existingInstance.CollisionGroup = input.ReadString();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -84,9 +84,9 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
-            existingInstance.CollisionGroup = input.ReadObject<System.String>();
+            existingInstance.CollisionGroup = input.ReadString();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -105,7 +105,7 @@ namespace Nine.Physics.Colliders
             if (existingInstance == null)
                 existingInstance = new CompoundCollider();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Colliders.Add(input.ReadObject<Nine.Physics.Colliders.Collider>());
             }
@@ -113,9 +113,9 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
-            existingInstance.CollisionGroup = input.ReadObject<System.String>();
+            existingInstance.CollisionGroup = input.ReadString();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -139,9 +139,9 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
-            existingInstance.CollisionGroup = input.ReadObject<System.String>();
+            existingInstance.CollisionGroup = input.ReadString();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -165,9 +165,9 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
-            existingInstance.CollisionGroup = input.ReadObject<System.String>();
+            existingInstance.CollisionGroup = input.ReadString();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -186,14 +186,14 @@ namespace Nine.Physics.Colliders
             if (existingInstance == null)
                 existingInstance = new ModelCollider();
             existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
-            existingInstance.CollisionMesh = input.ReadObject<System.String>();
+            existingInstance.CollisionMesh = input.ReadString();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
-            existingInstance.CollisionGroup = input.ReadObject<System.String>();
+            existingInstance.CollisionGroup = input.ReadString();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -216,9 +216,9 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
-            existingInstance.CollisionGroup = input.ReadObject<System.String>();
+            existingInstance.CollisionGroup = input.ReadString();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -241,9 +241,9 @@ namespace Nine.Physics.Colliders
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
-            existingInstance.CollisionGroup = input.ReadObject<System.String>();
+            existingInstance.CollisionGroup = input.ReadString();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }

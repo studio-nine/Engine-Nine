@@ -25,8 +25,8 @@ namespace Tutorial
 
             graphics.PreferMultiSampling = true;
             graphics.SynchronizeWithVerticalRetrace = false;
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 800;
+            //graphics.PreferredBackBufferWidth = 1280;
+            //graphics.PreferredBackBufferHeight = 800;
 
             Window.AllowUserResizing = true;
 #endif
@@ -46,7 +46,7 @@ namespace Tutorial
             // Add a frame rate counter component.
             // FrameRate is not an Xna game component, it is achieved using an extension method
             // defined in Nine.Components. So you have to include that namespace first.
-            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
 
             // An input component is required for framework to handle input events.
             // You can optionally pass in the handle to the current window, so the input event

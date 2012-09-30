@@ -14,16 +14,9 @@ namespace Nine.Graphics
     public partial class DirectionalLight : Light
     {
         /// <summary>
-        /// Gets or sets a value indicating the start distance of the region that can be
-        /// shadowed by this directional light from the camera's perspective.
+        /// Gets or sets the distance between the camera and the shadowed region.
         /// </summary>
-        public float ShadowStart { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating the end distance of the region that can be
-        /// shadowed by this directional light from the camera's perspective.
-        /// </summary>
-        public float ShadowEnd { get; set; }
+        public float ShadowDistance { get; set; }
 
         /// <summary>
         /// Gets or sets the direction of this light.
@@ -63,8 +56,7 @@ namespace Nine.Graphics
         /// </summary>
         public DirectionalLight(GraphicsDevice graphics) : base(graphics)
         {
-            ShadowStart = 0;
-            ShadowEnd = float.MaxValue;
+            ShadowDistance = float.MaxValue;
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
         }
@@ -94,16 +86,29 @@ namespace Nine.Graphics
             int length;
             Vector3[] intersections;
             ContainmentType containmentType;
-
-            var sceneBounds = context.BoundingBox;
-            var viewFrustum = context.matrices.ViewFrustum;
             
-            // TODO: Trim view frustum based on shadow start and shadow end.
-            sceneBounds.Intersects(viewFrustum, out intersections, out length);
+            var sceneBounds = context.BoundingBox;
+            var shadowFrustumMatrix = context.matrices.ViewProjection;
+
+            /*
+            var projectionInverse = context.matrices.ProjectionInverse;
+            
+            // Trim view frustum based on shadow distance
+            //var farClip = (projectionInverse.M43 - projectionInverse.M33) / (projectionInverse.M44 - projectionInverse.M34);
+            var farClip = MatrixHelper.GetFarClip(ref context.matrices.projection);
+            if (farClip > ShadowDistance)
+            {
+                var scaleZ = farClip / Math.Max(1, ShadowDistance);
+                shadowFrustumMatrix = context.matrices.view * Matrix.CreateScale(1, 1, scaleZ) * context.matrices.projection;
+            }
+            */
+
+            shadowFrustum.Matrix = shadowFrustumMatrix;
+            sceneBounds.Intersects(shadowFrustum, out intersections, out length);
 
             // Include the corners of the view frustum and scene bounds since
             // they are not included in the above intersections.
-            viewFrustum.GetCorners(Corners);
+            shadowFrustum.GetCorners(Corners);
             for (int i = 0; i < BoundingFrustum.CornerCount; i++)
             {
                 sceneBounds.Contains(ref Corners[i], out containmentType);
@@ -114,7 +119,7 @@ namespace Nine.Graphics
             sceneBounds.GetCorners(Corners);
             for (int i = 0; i < BoundingFrustum.CornerCount; i++)
             {
-                viewFrustum.Contains(ref Corners[i], out containmentType);
+                shadowFrustum.Contains(ref Corners[i], out containmentType);
                 if (containmentType == ContainmentType.Contains)
                     intersections[length++] = Corners[i];
             }
@@ -156,7 +161,6 @@ namespace Nine.Graphics
             Vector3.Subtract(ref sceneBounds.Max, ref sceneBounds.Min, out cross);
             var near = far - cross.Length();
             
-            Matrix shadowFrustumMatrix;
             Matrix.CreateOrthographicOffCenter(left, right, bottom, top, near, far, out shadowFrustumMatrix);
             Matrix.Multiply(ref view, ref shadowFrustumMatrix, out shadowFrustumMatrix);
             shadowFrustum.Matrix = shadowFrustumMatrix;

@@ -54,17 +54,12 @@ namespace Nine.Graphics.Drawing
                 drawingPass.MaterialUsage = MaterialUsage.Depth;                
             }
 
-            try
-            {
-                depthBuffer.Begin();
-                graphics.Clear(Color.White);
-                drawingPass.Draw(context, drawables);
-            }
-            finally
-            {
-                depthBuffer.End();
-                context.textures[TextureUsage.DepthBuffer] = depthBuffer;
-            }
+            depthBuffer.Begin();
+            graphics.Clear(Color.White);
+            drawingPass.Draw(context, drawables);
+            depthBuffer.End();
+
+            context.textures[TextureUsage.DepthBuffer] = depthBuffer;
         }
 
         public void Dispose()

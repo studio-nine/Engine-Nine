@@ -249,7 +249,12 @@
         /// <summary>
         /// Occurs when the bounding box changed.
         /// </summary>
-        public event EventHandler<EventArgs> BoundingBoxChanged;
+        event EventHandler<EventArgs> ISpatialQueryable.BoundingBoxChanged
+        {
+            add { boundingBoxChanged += value; }
+            remove { boundingBoxChanged -= value; }
+        }
+        private EventHandler<EventArgs> boundingBoxChanged;
         #endregion
 
         #region Fields
@@ -332,17 +337,14 @@
         protected override void OnTransformChanged()
         {
             var absoluteTransform = AbsoluteTransform;
-            var absolutePosition = absoluteTransform.Translation;
+            var transformable = emitter as Transformable;
+            if (transformable != null)
+                transformable.Transform = absoluteTransform;
 
-            emitter.Position = absolutePosition;
-            emitter.Direction = absoluteTransform.Forward;
+            boundingBox = emitter.BoundingBox;
 
-            var emitterBounds = emitter.BoundingBox;
-            boundingBox.Min = emitterBounds.Min + absolutePosition;
-            boundingBox.Max = emitterBounds.Max + absolutePosition;
-
-            if (BoundingBoxChanged != null)
-                BoundingBoxChanged(this, EventArgs.Empty);
+            if (boundingBoxChanged != null)
+                boundingBoxChanged(this, EventArgs.Empty);
         }
 
         private void OnEmitterChanged()

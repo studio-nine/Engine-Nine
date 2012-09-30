@@ -22,70 +22,50 @@ namespace Nine
 
         public void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result)
         {
-            try
-            {
-                adapter.Result = result;
-                adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
+            adapter.Result = result;
+            adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
 
-                var count = sceneManagers.Count;
-                for (int i = 0; i < count; ++i)
-                    sceneManagers[i].FindAll(ref boundingSphere, adapter);
-            }
-            finally
-            {
-                adapter.Result = null;
-            }
+            var count = sceneManagers.Count;
+            for (int i = 0; i < count; ++i)
+                sceneManagers[i].FindAll(ref boundingSphere, adapter);
+
+            adapter.Result = null;
         }
 
         public void FindAll(ref Ray ray, ICollection<T> result)
         {
-            try
-            {
-                adapter.Result = result;
-                adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
+            adapter.Result = result;
+            adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
 
-                var count = sceneManagers.Count;
-                for (int i = 0; i < count; ++i)
-                    sceneManagers[i].FindAll(ref ray, adapter);
-            }
-            finally
-            {
-                adapter.Result = null;
-            }
+            var count = sceneManagers.Count;
+            for (int i = 0; i < count; ++i)
+                sceneManagers[i].FindAll(ref ray, adapter);
+
+            adapter.Result = null;
         }
 
         public void FindAll(ref BoundingBox boundingBox, ICollection<T> result)
         {
-            try
-            {
-                adapter.Result = result;
-                adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
+            adapter.Result = result;
+            adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
 
-                var count = sceneManagers.Count;
-                for (int i = 0; i < count; ++i)
-                    sceneManagers[i].FindAll(ref boundingBox, adapter);
-            }
-            finally
-            {
-                adapter.Result = null;
-            }
+            var count = sceneManagers.Count;
+            for (int i = 0; i < count; ++i)
+                sceneManagers[i].FindAll(ref boundingBox, adapter);
+
+            adapter.Result = null;
         }
 
         public void FindAll(BoundingFrustum boundingFrustum, ICollection<T> result)
         {
-            try
-            {
-                adapter.Result = result;
-                adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
+            adapter.Result = result;
+            adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
 
-                var count = sceneManagers.Count;
-                for (int i = 0; i < count; ++i)
-                    sceneManagers[i].FindAll(boundingFrustum, adapter);
-            }
-            finally
-            {
-                adapter.Result = null;
-            }
+            var count = sceneManagers.Count;
+            for (int i = 0; i < count; ++i)
+                sceneManagers[i].FindAll(boundingFrustum, adapter);
+
+            adapter.Result = null;
         }
 
         class CollectionAdapter : SpatialQueryCollectionAdapter<ISpatialQueryable>
@@ -103,15 +83,9 @@ namespace Nine
 
             public override void Add(ISpatialQueryable item)
             {
-                try
-                {
-                    currentItem = item;
-                    ContainerTraverser.Traverse(item, traverser);
-                }
-                finally
-                {
-                    currentItem = null;
-                }
+                currentItem = item;
+                ContainerTraverser.Traverse(item, traverser);
+                currentItem = null;
             }
 
             public void IncludeTopLevelNonSpatialQueryableDesendants(IList<object> topLevelObjects)

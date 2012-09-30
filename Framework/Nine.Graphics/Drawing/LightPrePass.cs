@@ -140,10 +140,8 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            try
+            Begin(context);
             {
-                Begin(context);
-
                 if (drawingPass == null)
                 {
                     drawingPass = new DrawingPass();
@@ -151,11 +149,8 @@ namespace Nine.Graphics.Drawing
                 }
                 drawingPass.Draw(context, drawables);
             }
-            finally
-            {
-                End(context);
-            }
-            
+            End(context);
+
             context.textures[TextureUsage.DepthBuffer] = depthBuffer;
             context.textures[TextureUsage.NormalBuffer] = normalBuffer;
 
@@ -164,20 +159,15 @@ namespace Nine.Graphics.Drawing
                 lightQuery = context.CreateSpatialQuery<IDeferredLight>(null);
                 deferredLights = new FastList<IDeferredLight>();
             }
-                        
-            try
+
+            BeginLights(context);
             {
-                BeginLights(context); 
-                
                 lightQuery.FindAll(context.ViewFrustum, deferredLights);
                 for (int i = 0; i < deferredLights.Count; ++i)
                     DrawLight(context, deferredLights[i]);
-            }
-            finally
-            {
-                EndLights(context);
                 deferredLights.Clear();
             }
+            EndLights(context);
 
             context.textures[TextureUsage.LightBuffer] = lightBuffer;
         }
@@ -221,7 +211,7 @@ namespace Nine.Graphics.Drawing
             GraphicsDevice.SetRenderTarget(null);
             hasSceneBegin = false;
         }
-        
+
         /// <summary>
         /// Begins the rendering of all the lights in the scene.
         /// </summary>
@@ -269,20 +259,15 @@ namespace Nine.Graphics.Drawing
             lightMaterial.SetTexture(TextureUsage.DepthBuffer, depthBuffer);
             lightMaterial.SetTexture(TextureUsage.NormalMap, normalBuffer);
 
-            try
-            {
-                lightMaterial.BeginApply(context);
+            lightMaterial.BeginApply(context);
 
-                // Draw the model, using the specified effect.
-                // Setup correct cull mode so that each pixel is rendered only once.
-                GraphicsDevice.DepthStencilState = greaterDepth;
+            // Draw the model, using the specified effect.
+            // Setup correct cull mode so that each pixel is rendered only once.
+            GraphicsDevice.DepthStencilState = greaterDepth;
 
-                lightGeometry.Draw(context, lightMaterial);
-            }
-            finally
-            {
-                lightMaterial.EndApply(context);
-            }
+            lightGeometry.Draw(context, lightMaterial);
+
+            lightMaterial.EndApply(context);
         }
 
         /// <summary>
@@ -293,7 +278,7 @@ namespace Nine.Graphics.Drawing
             if (!hasLightBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
-            lightBuffer.End();            
+            lightBuffer.End();
             hasLightBegin = false;
 
             // Restore render state to default
@@ -312,9 +297,9 @@ namespace Nine.Graphics.Drawing
 #if SILVERLIGHT
                 depthBuffer.IsDisposed ||
 #else
-                depthBuffer.IsDisposed || depthBuffer.IsContentLost ||
+ depthBuffer.IsDisposed || depthBuffer.IsContentLost ||
 #endif
-                depthBuffer.Width != GraphicsDevice.Viewport.Width ||
+ depthBuffer.Width != GraphicsDevice.Viewport.Width ||
                 depthBuffer.Height != GraphicsDevice.Viewport.Height)
             {
                 if (depthBuffer != null)
@@ -329,9 +314,9 @@ namespace Nine.Graphics.Drawing
 #if SILVERLIGHT
                 normalBuffer.IsDisposed ||
 #else
-                normalBuffer.IsDisposed || normalBuffer.IsContentLost ||
+ normalBuffer.IsDisposed || normalBuffer.IsContentLost ||
 #endif
-                normalBuffer.Width != GraphicsDevice.Viewport.Width ||
+ normalBuffer.Width != GraphicsDevice.Viewport.Width ||
                 normalBuffer.Height != GraphicsDevice.Viewport.Height)
             {
                 if (normalBuffer != null)
@@ -349,9 +334,9 @@ namespace Nine.Graphics.Drawing
 #if SILVERLIGHT
                 lightBuffer.IsDisposed ||
 #else
-                lightBuffer.IsDisposed || lightBuffer.IsContentLost ||
+ lightBuffer.IsDisposed || lightBuffer.IsContentLost ||
 #endif
-                lightBuffer.Width != GraphicsDevice.Viewport.Width ||
+ lightBuffer.Width != GraphicsDevice.Viewport.Width ||
                 lightBuffer.Height != GraphicsDevice.Viewport.Height)
             {
                 if (lightBuffer != null)

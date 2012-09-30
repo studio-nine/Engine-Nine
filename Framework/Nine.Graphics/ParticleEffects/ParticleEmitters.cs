@@ -17,17 +17,18 @@
             get { return spread; }
             set { spread = value; } 
         }
-        private float spread = MathHelper.Pi;        
+        private float spread = MathHelper.Pi;
 
-        protected override BoundingBox BoundingBoxValue
+        protected override void GetBoundingBox(out BoundingBox box)
         {
-            get { return new BoundingBox(); }
+            box.Min = box.Max = Vector3.Zero;
         }
 
-        public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
+        public override bool Emit(float lerpAmount, ref Vector3 position, ref Vector3 direction)
         {
             position = Vector3.Zero;
-            CreateRandomVector(ref velocity, spread);
+            Randomize(spread, out direction);
+            return true;
         }
     }
 
@@ -36,25 +37,6 @@
     /// </summary>
     public class BoxEmitter : ParticleEmitter
     {
-        public Matrix? Transform 
-        {
-            get
-            {
-                if (hasTransform)
-                    return transform;
-                return null;
-            }
-            set
-            {
-                if ((hasTransform = (value != null)))
-                {
-                    transform = value.Value;
-                }
-            }
-        }
-        private bool hasTransform;
-        private Matrix transform;
-
         public BoundingBox Box { get; set; }
 
         public float Spread
@@ -64,37 +46,24 @@
         }
         private float spread = MathHelper.Pi;
 
-        protected override BoundingBox BoundingBoxValue
-        {
-            get 
-            {
-                if (!hasTransform)
-                    return Box;
-                
-                Box.GetCorners(corners);
-                Vector3.Transform(corners, ref transform, corners);
-                return BoundingBox.CreateFromPoints(corners);
-            }
-        }
-        static Vector3[] corners = new Vector3[BoundingBox.CornerCount];
-
         public BoxEmitter()
         {
             Box = new BoundingBox(Vector3.One * -1.0f, Vector3.One * 1.0f);
         }
 
-        public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
+        protected override void GetBoundingBox(out BoundingBox boundingBox)
+        {
+            boundingBox = Box;
+        }
+
+        public override bool Emit(float lerpAmount, ref Vector3 position, ref Vector3 direction)
         {
             position.X = Box.Min.X + (float)(Random.NextDouble() * (Box.Max.X - Box.Min.X));
             position.Y = Box.Min.Y + (float)(Random.NextDouble() * (Box.Max.Y - Box.Min.Y));
             position.Z = Box.Min.Z + (float)(Random.NextDouble() * (Box.Max.Z - Box.Min.Z));
 
-            if (Transform != null)
-            {
-                Vector3.Transform(ref position, ref transform, out position);
-            }
-
-            CreateRandomVector(ref velocity, spread);
+            Randomize(spread, out direction);
+            return true;
         }
     }
 
@@ -119,25 +88,27 @@
             Radius = 100;
         }
 
-        protected override BoundingBox BoundingBoxValue
+        protected override void GetBoundingBox(out BoundingBox box)
         {
-            get { return new BoundingBox(Vector3.One * -Radius, Vector3.One * Radius); }
+            box.Min = Vector3.One * -Radius;
+            box.Max = Vector3.One * Radius;
         }
 
-        public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
+        public override bool Emit(float lerpAmount, ref Vector3 position, ref Vector3 direction)
         {
-            CreateRandomVector(ref position);
+            Randomize(out position);
 
             if (Radiate)
-                velocity = position;
+                direction = position;
             else
-                CreateRandomVector(ref velocity, spread);
+                Randomize(spread, out direction);
 
             float radius = Radius;
             if (!Shell)
                 radius *= (float)Random.NextDouble();
 
             position *= radius;
+            return true;
         }
     }
 
@@ -157,29 +128,21 @@
         }
         private float spread = MathHelper.Pi;
 
-        public Vector3 Up
-        {
-            get { return up; }
-            set { value.Normalize(); up = value; }
-        }
-        private Vector3 up;
-
         public float Radius { get; set; }
 
-        protected override BoundingBox BoundingBoxValue
+        protected override void GetBoundingBox(out BoundingBox boundingBox)
         {
-            get { return new BoundingBox(Vector3.One * -Math.Max(Radius, Height * 0.5f), 
-                                         Vector3.One * Math.Max(Radius, Height * 0.5f)); }
+            boundingBox.Min = Vector3.One * -Math.Max(Radius, Height * 0.5f);
+            boundingBox.Max = Vector3.One * Math.Max(Radius, Height * 0.5f);
         }
 
         public CylinderEmitter()
         {
-            Up = Vector3.Up;
             Radius = 100.0f;
             Height = 100.0f;
         }
 
-        public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
+        public override bool Emit(float lerpAmount, ref Vector3 position, ref Vector3 direction)
         {
             double angle = Random.NextDouble() * Math.PI * 2;
 
@@ -191,33 +154,15 @@
             position.X = (float)Math.Cos(angle);
             position.Y = 0;
 
-            bool needTransform = false;
-            Matrix transform = new Matrix();
-            if (up != Vector3.Up)
-            {
-                needTransform = true;
-                transform = MatrixHelper.CreateRotation(Vector3.Up, up);
-            }
-
             if (Radiate)
-            {
-                if (needTransform)
-                    Vector3.TransformNormal(ref position, ref transform, out velocity);
-                else
-                    velocity = position;
-            }
+                direction = position;
+            else
+                Randomize(spread, out direction);
 
             position.Y = -Height * 0.5f + (float)Random.NextDouble() * Height;
             position.X *= radius;
             position.Z *= radius;
-
-            if (needTransform)
-            {
-                Vector3.TransformNormal(ref position, ref transform, out position);
-            }
-
-            if (!Radiate)
-                CreateRandomVector(ref velocity, spread);
+            return true;
         }
     }
 
@@ -226,8 +171,8 @@
     /// </summary>
     public class LineEmitter : ParticleEmitter
     {
-        private List<Vector3> lineList = new List<Vector3>();
-        private List<float> lineWeights = new List<float>();
+        private Vector3[] lineList;
+        private float[] lineWeights;
         private BoundingBox bounds;
 
         public float Spread
@@ -245,76 +190,51 @@
 
         private void UpdateLineList(IEnumerable<Vector3> value)
         {
-            lineList.Clear();
-            lineWeights.Clear();
-
-            lineList.AddRange(value);
+            var positions = new List<Vector3>();
+            var weights = new List<float>();
+            positions.AddRange(value);
 
             float totalLength = 0;
-            for (int i = 0; i < lineList.Count; i += 2)
+            for (int i = 0; i < positions.Count; i += 2)
             {
                 totalLength += Vector3.Subtract(lineList[i], lineList[i + 1]).Length();
-                lineWeights.Add(totalLength);
+                weights.Add(totalLength);
             }
 
             if (totalLength > 0)
             {
                 float invLength = 1 / totalLength;
-                for (int i = 0; i < lineWeights.Count; ++i)
-                    lineWeights[i] *= invLength;
+                for (int i = 0; i < positions.Count; ++i)
+                    weights[i] *= invLength;
             }
             
             bounds = BoundingBox.CreateFromPoints(value);
+
+            lineList = positions.ToArray();
+            lineWeights = weights.ToArray();
         }
 
-        protected override BoundingBox BoundingBoxValue { get { return bounds; } }
-
-        public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
+        protected override void GetBoundingBox(out BoundingBox box)
         {
+            box = bounds;
+        }
+
+        public override bool Emit(float lerpAmount, ref Vector3 position, ref Vector3 direction)
+        {
+            if (lineWeights == null)
+                return false;
+
             float percentage = (float)Random.NextDouble();
-            for (int i = 0; i < lineWeights.Count; ++i)
+            for (int i = 0; i < lineWeights.Length; ++i)
             {
                 if (lineWeights[i] >= percentage)
                 {
-                    Emit(ref position, ref velocity,
-                         lineList[i * 2], lineList[i * 2 + 1], percentage / lineWeights[i]);
-                    break;
+                    Vector3.Lerp(ref lineList[i * 2], ref lineList[i * 2 + 1], percentage / lineWeights[i], out position);
+                    Randomize(spread, out direction);
+                    return true;
                 }
             }
-        }
-
-        private void Emit(ref Vector3 position, ref Vector3 velocity,Vector3 v1, Vector3 v2, float percentage)
-        {
-            position = Vector3.Lerp(v1, v2, percentage);
-            CreateRandomVector(ref velocity, spread);
-        }
-    }
-
-    /// <summary>
-    /// Defines a point emitter that emit particles from a model bone collection in 3D space.
-    /// </summary>
-    public class BoneEmitter : ParticleEmitter
-    {
-        LineEmitter lineEmitter = new LineEmitter();
-
-        public void SetBoneTransforms(Model model, Matrix transform)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetBoneTransforms(BoneAnimation animation, Matrix transform)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override BoundingBox BoundingBoxValue
-        {
-            get { return lineEmitter.BoundingBox; }
-        }
-
-        public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
-        {
-
+            return false;
         }
     }
 }

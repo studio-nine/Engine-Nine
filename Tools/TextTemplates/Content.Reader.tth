@@ -98,7 +98,7 @@ namespace <#= namespaceGroup.Key #>
         {
 #>
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.<#= member.Name #>.Add(input.ReadObject<<#= GetClassFullName(GetCollectionType(memberType)) #>>());
             }
@@ -109,12 +109,24 @@ namespace <#= namespaceGroup.Key #>
             var dictionaryType = GetDictionaryType(memberType);
 #>
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.<#= member.Name #>.Add(
                         input.ReadObject<<#= GetClassFullName(dictionaryType[0]) #>>(),
                         input.ReadObject<<#= GetClassFullName(dictionaryType[1]) #>>());
             }
+<#
+        }
+        else if (memberType == typeof(string))
+        {
+#>
+            existingInstance.<#= member.Name #> = input.ReadString();
+<#
+        }
+        else if (memberType.IsEnum)
+        {
+#>
+            existingInstance.<#= member.Name #> = (<#= memberTypeName #>)input.ReadUInt16();
 <#
         }
         else

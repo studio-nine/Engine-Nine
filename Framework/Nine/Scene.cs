@@ -123,18 +123,13 @@ namespace Nine
             if (currentSceneManagerForAddition != null)
                 throw new InvalidOperationException();
 
-            try
-            {
-                if (sceneManager != null && !sceneManagers.Contains(sceneManager))
-                    sceneManagers.Add(sceneManager);
+            if (sceneManager != null && !sceneManagers.Contains(sceneManager))
+                sceneManagers.Add(sceneManager);
 
-                currentSceneManagerForAddition = sceneManager;
-                Add(item);
-            }
-            finally
-            {
-                currentSceneManagerForAddition = null;
-            }
+            currentSceneManagerForAddition = sceneManager;
+            Add(item);
+
+            currentSceneManagerForAddition = null;
         }
 
         /// <summary>

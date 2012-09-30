@@ -149,23 +149,18 @@
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            try
-            {
-                RenderTargetPool.Lock(InputTexture as RenderTarget2D);
+            RenderTargetPool.Lock(InputTexture as RenderTarget2D);
 
-                if (fullScreenQuad == null)
-                    fullScreenQuad = new FullScreenQuad(context.graphics);
-                
-                context.graphics.BlendState = BlendState;
-                context.graphics.DepthStencilState = DepthStencilState.None;
+            if (fullScreenQuad == null)
+                fullScreenQuad = new FullScreenQuad(context.graphics);
 
-                Material.texture = InputTexture;
-                fullScreenQuad.Draw(context, Material);
-            }
-            finally
-            {
-                RenderTargetPool.Unlock(InputTexture as RenderTarget2D);
-            }
+            context.graphics.BlendState = BlendState;
+            context.graphics.DepthStencilState = DepthStencilState.None;
+
+            Material.texture = InputTexture;
+            fullScreenQuad.Draw(context, Material);
+
+            RenderTargetPool.Unlock(InputTexture as RenderTarget2D);
         }
 
         /// <summary>

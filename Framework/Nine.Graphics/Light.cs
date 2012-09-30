@@ -14,7 +14,6 @@ namespace Nine.Graphics
     /// <summary>
     /// Defines a base class for a light used by the render system.
     /// </summary>
-    [ContentProperty("ShadowMap")]
     public abstract class Light : Transformable, ISceneObject, IDebugDrawable
     {
         #region Properties

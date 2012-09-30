@@ -8,7 +8,7 @@
         To enable shadows, first find a light that can cast shadow. Typically it is the main directional
         light of the scene. Set the CastShadow property to True to make this light cast shadow.
     -->
-    <DirectionalLight CastShadow="True" DiffuseColor="0.5, 0.5, 0.5" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
+    <DirectionalLight CastShadow="True" Direction="-1, -1, -1" ShadowMap="{ShadowMap Size=4096}" />
     
     <!--
         Surfaces will receive shadows by default, but the default material of the surface will not show the
@@ -30,7 +30,7 @@
         To enable self shadow, mark the model as receive shadow and choose a material that supports 
         shadow mapping. Adjust shadow bias to eliminate possible depth fight artifacts.
     -->
-    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-20, 0, 0" ReceiveShadow="True" AnimationCullingEnabled="False">
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-20, 0, 0" AnimationCullingEnabled="False">
         <Model.Material>
             <MaterialGroup>
                 <SkinnedMaterialPart />

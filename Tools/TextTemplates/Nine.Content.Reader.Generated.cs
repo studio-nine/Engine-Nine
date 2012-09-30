@@ -90,13 +90,13 @@ namespace Nine
             if (existingInstance == null)
                 existingInstance = new Group(input.ContentManager.ServiceProvider);
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Children.Add(input.ReadObject<System.Object>());
             }
             existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -114,16 +114,16 @@ namespace Nine
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new Instance();
-            existingInstance.Template = input.ReadObject<System.String>();
+            existingInstance.Template = input.ReadString();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Properties.Add(
                         input.ReadObject<System.String>(),
                         input.ReadObject<System.Object>());
             }
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -158,13 +158,13 @@ namespace Nine
             if (existingInstance == null)
                 existingInstance = new Scene(input.ContentManager.ServiceProvider);
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Children.Add(input.ReadObject<System.Object>());
             }
             existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -218,12 +218,12 @@ namespace Nine.Animations
             if (existingInstance == null)
                 existingInstance = new AnimationGroup();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Animations.Add(input.ReadObject<Nine.Animations.IAnimation>());
             }
             existingInstance.Repeat = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -242,7 +242,7 @@ namespace Nine.Animations
             if (existingInstance == null)
                 existingInstance = new AnimationPlayer();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Animations.Add(
                         input.ReadObject<System.String>(),
@@ -264,8 +264,8 @@ namespace Nine.Animations
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new AnimationReference();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -284,12 +284,12 @@ namespace Nine.Animations
             if (existingInstance == null)
                 existingInstance = new AnimationSequence();
             {
-                var count = input.ReadInt32();
+                var count = input.ReadUInt16();
                 for (var i = 0; i < count; ++i)
                     existingInstance.Animations.Add(input.ReadObject<Nine.Animations.IAnimation>());
             }
             existingInstance.Repeat = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -310,19 +310,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<System.Boolean>>();
             existingInstance.To = input.ReadObject<System.Nullable<System.Boolean>>();
             existingInstance.By = input.ReadObject<System.Nullable<System.Boolean>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -343,19 +343,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<System.Byte>>();
             existingInstance.To = input.ReadObject<System.Nullable<System.Byte>>();
             existingInstance.By = input.ReadObject<System.Nullable<System.Byte>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -376,19 +376,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<System.Char>>();
             existingInstance.To = input.ReadObject<System.Nullable<System.Char>>();
             existingInstance.By = input.ReadObject<System.Nullable<System.Char>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -409,19 +409,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Color>>();
             existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Color>>();
             existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Color>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -442,19 +442,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<System.Decimal>>();
             existingInstance.To = input.ReadObject<System.Nullable<System.Decimal>>();
             existingInstance.By = input.ReadObject<System.Nullable<System.Decimal>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -473,7 +473,7 @@ namespace Nine.Animations
             if (existingInstance == null)
                 existingInstance = new DelayAnimation();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -494,19 +494,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<System.Double>>();
             existingInstance.To = input.ReadObject<System.Nullable<System.Double>>();
             existingInstance.By = input.ReadObject<System.Nullable<System.Double>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -527,19 +527,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<System.Int16>>();
             existingInstance.To = input.ReadObject<System.Nullable<System.Int16>>();
             existingInstance.By = input.ReadObject<System.Nullable<System.Int16>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -560,19 +560,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.To = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.By = input.ReadObject<System.Nullable<System.Int32>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -593,19 +593,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<System.Int64>>();
             existingInstance.To = input.ReadObject<System.Nullable<System.Int64>>();
             existingInstance.By = input.ReadObject<System.Nullable<System.Int64>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -626,19 +626,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -659,19 +659,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Point>>();
             existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Point>>();
             existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Point>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -692,19 +692,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Quaternion>>();
             existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Quaternion>>();
             existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Quaternion>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -725,19 +725,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
             existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
             existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -758,19 +758,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<System.Single>>();
             existingInstance.To = input.ReadObject<System.Nullable<System.Single>>();
             existingInstance.By = input.ReadObject<System.Nullable<System.Single>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -788,19 +788,19 @@ namespace Nine.Animations
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new TweenAnimation<T>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -821,19 +821,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
             existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
             existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -854,19 +854,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector3>>();
             existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector3>>();
             existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector3>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }
@@ -887,19 +887,19 @@ namespace Nine.Animations
             existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector4>>();
             existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector4>>();
             existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector4>>();
-            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Easing = (Nine.Animations.Easing)input.ReadUInt16();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.TargetProperty = input.ReadString();
             existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.StartupDirection = (Nine.Animations.AnimationDirection)input.ReadUInt16();
+            existingInstance.Direction = (Nine.Animations.AnimationDirection)input.ReadUInt16();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;
         }

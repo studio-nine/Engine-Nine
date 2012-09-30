@@ -6,7 +6,7 @@
     using Microsoft.Xna.Framework.Content;
 
     /// <summary>
-    /// Defines an controller that controls the appearence and behavior of each
+    /// Defines an controller that controls the appearance and behavior of each
     /// individual particle.
     /// </summary>
     public interface IParticleController

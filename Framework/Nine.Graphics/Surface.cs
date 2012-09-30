@@ -222,11 +222,6 @@
         /// Gets or sets a value indicating whether this object casts shadow.
         /// </summary>
         public bool CastShadow { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this object receives shadow.
-        /// </summary>
-        public bool ReceiveShadow { get; set; }
         #endregion
         
         #region ISpatialQueryable
@@ -323,7 +318,6 @@
             LevelOfDetailStart = 100;
             LevelOfDetailEnd = 1000;
             Visible = true;
-            ReceiveShadow = true;
             Material = null;
         }
 

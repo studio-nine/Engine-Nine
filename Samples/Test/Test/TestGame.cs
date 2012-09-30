@@ -51,14 +51,14 @@ namespace Test
         /// </summary>
         protected override void LoadContent()
         {
-            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
 
             // Find all test games
             testGames = (from type in Assembly.GetExecutingAssembly().GetTypes().OrderBy(type => type.Name)
                          where type.IsClass && typeof(ITestGame).IsAssignableFrom(type)
                          select (ITestGame)Activator.CreateInstance(type)).ToArray();
-            //testGames = new ITestGame[] { new PixelPerfectTest() };
+            //testGames = new ITestGame[] { new ShadowMapTest() };
             testScenes = new Scene[testGames.Length];
 
             // Shows the next scene
