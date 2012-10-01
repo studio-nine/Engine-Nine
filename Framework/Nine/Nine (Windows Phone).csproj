@@ -130,7 +130,6 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Triangle.cs" />
-    <Compile Include="Math2D.cs" />
     <Compile Include="Octree.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />

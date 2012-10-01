@@ -37,15 +37,6 @@ namespace Nine
             InitDelegates();
         }
 
-        /// <summary>
-        /// Creates a new instance of GridSceneManager.
-        /// </summary>
-        public GridSceneManager(BoundingBox bounds, int countX, int countY)
-            : base(new BoundingRectangle(bounds), countX, countY)
-        {
-            InitDelegates();
-        }
-
         private void InitDelegates()
         {
             add = new Predicate<Point>(Add);
@@ -93,20 +84,25 @@ namespace Nine
                 BoundingRectangle bounds = GetSegmentBounds(grid.X, grid.Y);
 
                 entry.Bounds.Min.X = bounds.Min.X;
-                entry.Bounds.Min.Y = bounds.Min.Y;
+                entry.Bounds.Min.Z = bounds.Min.Y;
                 entry.Bounds.Max.X = bounds.Max.X;
-                entry.Bounds.Max.Y = bounds.Max.Y;
+                entry.Bounds.Max.Z = bounds.Max.Y;
             }
 
             entry.Objects.Add(obj);
             entry.ObjectBounds.Add(box);
 
-            if (box.Min.Z < entry.Bounds.Min.Z)
-                entry.Bounds.Min.Z = box.Min.Z;
-            if (box.Max.Z > entry.Bounds.Max.Z)
-                entry.Bounds.Max.Z = box.Max.Z;
+            if (box.Min.Y < entry.Bounds.Min.Y)
+                entry.Bounds.Min.Y = box.Min.Y;
+            if (box.Max.Y > entry.Bounds.Max.Y)
+                entry.Bounds.Max.Y = box.Max.Y;
 
-            BoundingRectangle rectangle = new BoundingRectangle(box);
+            BoundingRectangle rectangle = new BoundingRectangle();
+            rectangle.Min.X = box.Min.X;
+            rectangle.Min.Y = box.Min.Z;
+            rectangle.Max.X = box.Max.X;
+            rectangle.Max.Y = box.Max.Z;
+
             float precision = Vector2.Subtract(rectangle.Max, rectangle.Min).Length() * 0.25f;
             if (precision < rayPickPrecision)
                 rayPickPrecision = precision;
@@ -131,7 +127,7 @@ namespace Nine
                         var entry = Data[index];
                         entry.Objects.Clear();
                         entry.ObjectBounds.Clear();
-                        entry.Bounds.Max.Z = entry.Bounds.Min.Z = 0;
+                        entry.Bounds.Max.Y = entry.Bounds.Min.Y = 0;
                     }
                 }
             }
@@ -257,7 +253,7 @@ namespace Nine
 
         public int Count { get; private set; }
 
-        bool ICollection<ISpatialQueryable>.IsReadOnly
+        public bool IsReadOnly
         {
             get { return false; }
         }

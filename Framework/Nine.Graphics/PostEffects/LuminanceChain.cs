@@ -61,11 +61,5 @@
             Effects.Add(adaptationEffect = new AdaptationEffect() { RenderTargetSize = Vector2.One, Speed = 5 });
             TextureUsage = TextureUsage.Luminance;
         }
-
-        [ContentSerializerIgnore]
-        public override IList<Pass> Effects
-        {
-            get { return base.Effects; }
-        }
     }
 }

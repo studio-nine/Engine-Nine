@@ -236,7 +236,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the squared distance from the position of the object to the current camera.
         /// </summary>
-        public float GetDistanceToCamera(Vector3 cameraPosition)
+        public float GetDistanceToCamera(ref Vector3 cameraPosition)
         {
             return (AbsoluteTransform.Translation - cameraPosition).Length();
         }
@@ -531,6 +531,11 @@ namespace Nine.Graphics
                 {
                     indexBuffer.Dispose();
                     indexBuffer = null;
+                }
+                if (rasterizeState != null)
+                {
+                    rasterizeState.Dispose();
+                    rasterizeState = null;
                 }
             }
         }

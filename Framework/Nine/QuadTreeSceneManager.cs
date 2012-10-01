@@ -22,15 +22,15 @@ namespace Nine
         {
             get 
             {
-                return new BoundingBox(new Vector3(Tree.Bounds.Min, Tree.Root.Value.MinHeight),
-                                       new Vector3(Tree.Bounds.Max, Tree.Root.Value.MaxHeight)); 
+                return new BoundingBox(new Vector3(Tree.Bounds.Min, Tree.root.value.MinHeight),
+                                       new Vector3(Tree.Bounds.Max, Tree.root.value.MaxHeight)); 
             } 
         }
 
         /// <summary>
         /// Gets the max depth of this QuadTreeSceneManager.
         /// </summary>
-        public int MaxDepth { get { return Tree.MaxDepth; } }
+        public int MaxDepth { get { return Tree.maxDepth; } }
 
         /// <summary>
         /// Creates a new instance of QuadTreeSceneManager.
@@ -82,7 +82,7 @@ namespace Nine
 
             item.SpatialData = new QuadTreeSceneManagerSpatialData<ISpatialQueryable>();
 
-            AddWithResize(Tree.Root, item);
+            AddWithResize(Tree.root, item);
 
             item.BoundingBoxChanged += boundingBoxChanged;
 
@@ -98,15 +98,21 @@ namespace Nine
             {
                 needResize = false;
 
-                var newBounds = BoundingRectangle.CreateMerged(Tree.Bounds, new BoundingRectangle(item.BoundingBox));
+                BoundingRectangle newBounds = new BoundingRectangle();
+                newBounds.Min.X = item.BoundingBox.Min.X;
+                newBounds.Min.Y = item.BoundingBox.Min.Z;
+                newBounds.Max.X = item.BoundingBox.Max.X;
+                newBounds.Max.Y = item.BoundingBox.Max.Z;
+
+                BoundingRectangle.CreateMerged(ref Tree.root.bounds, ref newBounds, out newBounds);
                 var extends = 0.5f * ((newBounds.Max - newBounds.Min) - (Tree.Bounds.Max - Tree.Bounds.Min));
 
                 newBounds.Min -= extends;
                 newBounds.Max += extends;
 
-                Resize(newBounds);
+                Resize(ref newBounds);
 
-                Add(Tree.Root, item);
+                Add(Tree.root, item);
 
                 if (needResize)
                 {
@@ -133,10 +139,17 @@ namespace Nine
 
         private TraverseOptions Add(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
-            ContainmentType containment = node.Bounds.Contains(new BoundingRectangle(item.BoundingBox));
+            ContainmentType containment;
+            BoundingRectangle itemRectangle = new BoundingRectangle();
+            BoundingBox itemBounds = item.BoundingBox;
+            itemRectangle.Min.X = itemBounds.Min.X;
+            itemRectangle.Min.Y = itemBounds.Min.Z;
+            itemRectangle.Max.X = itemBounds.Max.X;
+            itemRectangle.Max.Y = itemBounds.Max.Z;
+            node.bounds.Contains(ref itemRectangle, out containment);
 
             // Expand the tree to root if the object is too large
-            if (node == Tree.Root && containment != ContainmentType.Contains)
+            if (node == Tree.root && containment != ContainmentType.Contains)
             {
                 needResize = true;
                 return TraverseOptions.Stop;
@@ -147,11 +160,11 @@ namespace Nine
 
             if (containment == ContainmentType.Intersects)
             {
-                AddToNode(item, node.Parent);
+                AddToNode(item, node.parent);
                 return TraverseOptions.Stop;
             }
 
-            if (containment == ContainmentType.Contains && node.Depth == Tree.MaxDepth - 1)
+            if (containment == ContainmentType.Contains && node.depth == Tree.maxDepth - 1)
             {
                 AddToNode(item, node);
                 return TraverseOptions.Stop;
@@ -161,15 +174,15 @@ namespace Nine
 
         private void AddToNode(ISpatialQueryable item, QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
-            if (node.Value.List == null)
+            if (node.value.List == null)
             {
-                node.Value.List = new List<ISpatialQueryable>();
+                node.value.List = new List<ISpatialQueryable>();
             }
 
             var data = (QuadTreeSceneManagerSpatialData<ISpatialQueryable>)item.SpatialData;
             data.Tree = Tree;
             data.Node = node;
-            node.Value.List.Add(item);
+            node.value.List.Add(item);
             addedToNode = true;
 
             // Bubble up the tree to adjust the node bounds accordingly.
@@ -177,20 +190,20 @@ namespace Nine
             // TODO: Adjust node bounds when objects removed from nodes.
             while (node != null)
             {
-                if (node.Value.Initialized)
+                if (node.value.Initialized)
                 {
-                    if (item.BoundingBox.Min.Z < node.Value.MinHeight)
-                        node.Value.MinHeight = item.BoundingBox.Min.Z;
-                    if (item.BoundingBox.Max.Z > node.Value.MaxHeight)
-                        node.Value.MaxHeight = item.BoundingBox.Max.Z;
+                    if (item.BoundingBox.Min.Y < node.value.MinHeight)
+                        node.value.MinHeight = item.BoundingBox.Min.Y;
+                    if (item.BoundingBox.Max.Y > node.value.MaxHeight)
+                        node.value.MaxHeight = item.BoundingBox.Max.Y;
                 }
                 else
                 {
-                    node.Value.MinHeight = item.BoundingBox.Min.Z;
-                    node.Value.MaxHeight = item.BoundingBox.Max.Z;
-                    node.Value.Initialized = true;
+                    node.value.MinHeight = item.BoundingBox.Min.Y;
+                    node.value.MaxHeight = item.BoundingBox.Max.Y;
+                    node.value.Initialized = true;
                 }
-                node = node.Parent;
+                node = node.parent;
             }
         }
 
@@ -201,20 +214,20 @@ namespace Nine
                 return false;
 
             var node = data.Node;
-            if (!node.Value.List.Remove(item))
+            if (!node.value.List.Remove(item))
             {
                 // Something must be wrong if we cannot remove it.
                 throw new InvalidOperationException();
             }
 
-            while (node.Value.List == null || node.Value.List.Count <= 0)
+            while (node.value.List == null || node.value.List.Count <= 0)
             {
-                if (node.Parent == null)
+                if (node.parent == null)
                     break;
-                node = node.Parent;
+                node = node.parent;
             }
 
-            Tree.Collapse(node, n => n.Value.List == null || n.Value.List.Count <= 0);
+            Tree.Collapse(node, n => n.value.List == null || n.value.List.Count <= 0);
 
             item.SpatialData = null;
             item.BoundingBoxChanged -= boundingBoxChanged;
@@ -225,27 +238,30 @@ namespace Nine
 
         private void BoundingBoxChanged(object sender, EventArgs e)
         {
-            ISpatialQueryable item = (ISpatialQueryable)sender;
-
-            if (item == null)
-                throw new ArgumentNullException("item");
-
+            var item = (ISpatialQueryable)sender;
             var data = (QuadTreeSceneManagerSpatialData<ISpatialQueryable>)item.SpatialData;
-            if (data == null)
-                throw new InvalidOperationException();
 
             // Bubble up the tree to find the node that fit the size of the object
-            var node = data.Node;
-            while (node.Bounds.Contains(new BoundingRectangle(item.BoundingBox)) != ContainmentType.Contains)
+            var node = data.Node;            
+            while (true)
             {
-                if (node.Parent == null)
+                ContainmentType containment;
+                BoundingRectangle itemRectangle = new BoundingRectangle();
+                BoundingBox itemBounds = item.BoundingBox;
+                itemRectangle.Min.X = itemBounds.Min.X;
+                itemRectangle.Min.Y = itemBounds.Min.Z;
+                itemRectangle.Max.X = itemBounds.Max.X;
+                itemRectangle.Max.Y = itemBounds.Max.Z;
+                node.bounds.Contains(ref itemRectangle, out containment);
+
+                if (containment == ContainmentType.Contains || node.parent == null)
                     break;
-                node = node.Parent;
+                node = node.parent;
             }
 
             if (node != data.Node)
             {
-                if (!data.Node.Value.List.Remove(item))
+                if (!data.Node.value.List.Remove(item))
                 {
                     // Something must be wrong if we cannot remove it.
                     throw new InvalidOperationException();
@@ -270,7 +286,7 @@ namespace Nine
             Count = 0;
         }
 
-        private void Resize(BoundingRectangle boundingRectangle)
+        private void Resize(ref BoundingRectangle boundingRectangle)
         {
             var items = new ISpatialQueryable[Count];
 
@@ -309,9 +325,9 @@ namespace Nine
         {
             foreach (var node in Tree)
             {
-                if (node.Value.List != null)
+                if (node.value.List != null)
                 {
-                    foreach (var val in node.Value.List)
+                    foreach (var val in node.value.List)
                         yield return val;
                 }
             }
@@ -328,21 +344,21 @@ namespace Nine
         {
             this.result = result;
             this.ray = ray;
-            Tree.Traverse(findAllRay);
+            Tree.Traverse(Tree.root, findAllRay);
             this.result = null;
         }
 
         private TraverseOptions FindAllRay(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
-            if (!node.Value.Initialized)
+            if (!node.value.Initialized)
                 return TraverseOptions.Skip;
 
             float? intersection;
-            bool skip = (node != Tree.Root);
+            bool skip = (node != Tree.root);
             if (skip)
             {
-                var nodeBounds = new BoundingBox(new Vector3(node.Bounds.Min, node.Value.MinHeight),
-                                                 new Vector3(node.Bounds.Max, node.Value.MaxHeight));
+                var nodeBounds = new BoundingBox(new Vector3(node.Bounds.Min, node.value.MinHeight),
+                                                 new Vector3(node.Bounds.Max, node.value.MaxHeight));
 
                 nodeBounds.Intersects(ref ray, out intersection);
                 if (intersection.HasValue)
@@ -354,12 +370,12 @@ namespace Nine
             if (skip)
                 return TraverseOptions.Skip;
 
-            if (node.Value.List != null)
+            if (node.value.List != null)
             {
-                var count = node.Value.List.Count;
+                var count = node.value.List.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    var val = node.Value.List[i];
+                    var val = node.value.List[i];
                     val.BoundingBox.Intersects(ref ray, out intersection);
                     if (intersection.HasValue)
                     {
@@ -374,18 +390,18 @@ namespace Nine
         {
             this.result = result;
             this.boundingBox = boundingBox;
-            Tree.Traverse(findAllBoundingBox);
+            Tree.Traverse(Tree.root, findAllBoundingBox);
             this.result = null;
         }
 
         private TraverseOptions FindAllBoundingBox(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
-            if (!node.Value.Initialized)
+            if (!node.value.Initialized)
                 return TraverseOptions.Skip;
 
             var nodeContainment = ContainmentType.Intersects;
-            var nodeBounds = new BoundingBox(new Vector3(node.Bounds.Min, node.Value.MinHeight),
-                                             new Vector3(node.Bounds.Max, node.Value.MaxHeight));
+            var nodeBounds = new BoundingBox(new Vector3(node.Bounds.Min, node.value.MinHeight),
+                                             new Vector3(node.Bounds.Max, node.value.MaxHeight));
 
             boundingBox.Contains(ref nodeBounds, out nodeContainment);
 
@@ -398,12 +414,12 @@ namespace Nine
                 return TraverseOptions.Skip;
             }
 
-            if (node.Value.List != null)
+            if (node.value.List != null)
             {
-                var count = node.Value.List.Count;
+                var count = node.value.List.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    var val = node.Value.List[i];
+                    var val = node.value.List[i];
                     ContainmentType objectContainment;
                     val.BoundingBox.Contains(ref boundingBox, out objectContainment);
                     if (objectContainment != ContainmentType.Disjoint)
@@ -417,18 +433,18 @@ namespace Nine
         {
             this.result = result;
             this.boundingSphere = boundingSphere;
-            Tree.Traverse(findAllBoundingBox);
+            Tree.Traverse(Tree.root, findAllBoundingBox);
             this.result = null;
         }
 
         private TraverseOptions FindAllBoundingSphere(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
-            if (!node.Value.Initialized)
+            if (!node.value.Initialized)
                 return TraverseOptions.Skip;
 
             var nodeContainment = ContainmentType.Intersects;
-            var boundingBox = new BoundingBox(new Vector3(node.Bounds.Min, node.Value.MinHeight),
-                                              new Vector3(node.Bounds.Max, node.Value.MaxHeight));
+            var boundingBox = new BoundingBox(new Vector3(node.Bounds.Min, node.value.MinHeight),
+                                              new Vector3(node.Bounds.Max, node.value.MaxHeight));
 
             boundingSphere.Contains(ref boundingBox, out nodeContainment);
 
@@ -441,12 +457,12 @@ namespace Nine
                 return TraverseOptions.Skip;
             }
 
-            if (node.Value.List != null)
+            if (node.value.List != null)
             {
-                var count = node.Value.List.Count;
+                var count = node.value.List.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    var val = node.Value.List[i];
+                    var val = node.value.List[i];
                     ContainmentType objectContainment;
                     val.BoundingBox.Contains(ref boundingSphere, out objectContainment);
                     if (objectContainment != ContainmentType.Disjoint)
@@ -460,18 +476,18 @@ namespace Nine
         {
             this.result = result;
             this.boundingFrustum = boundingFrustum;
-            Tree.Traverse(findAllBoundingFrustum);
+            Tree.Traverse(Tree.root, findAllBoundingFrustum);
             this.result = null;
         }
 
         private TraverseOptions FindAllBoundingFrustum(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
-            if (!node.Value.Initialized)
+            if (!node.value.Initialized)
                 return TraverseOptions.Skip;
 
             var nodeContainment = ContainmentType.Intersects;
-            var boundingBox = new BoundingBox(new Vector3(node.Bounds.Min, node.Value.MinHeight),
-                                              new Vector3(node.Bounds.Max, node.Value.MaxHeight));
+            var boundingBox = new BoundingBox(new Vector3(node.Bounds.Min, node.value.MinHeight),
+                                              new Vector3(node.Bounds.Max, node.value.MaxHeight));
 
             boundingFrustum.Contains(ref boundingBox, out nodeContainment);
 
@@ -484,12 +500,12 @@ namespace Nine
                 return TraverseOptions.Skip;
             }
 
-            if (node.Value.List != null)
+            if (node.value.List != null)
             {
-                var count = node.Value.List.Count;
+                var count = node.value.List.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    var val = node.Value.List[i];
+                    var val = node.value.List[i];
                     if (boundingFrustum.Contains(val.BoundingBox) != ContainmentType.Disjoint)
                     {
                         result.Add(val);
@@ -506,12 +522,12 @@ namespace Nine
             while (DesedentsStack.Count > 0)
             {
                 node = DesedentsStack.Pop();
-                if (node.Value.List != null)
+                if (node.value.List != null)
                 {
-                    var count = node.Value.List.Count;
+                    var count = node.value.List.Count;
                     for (int i = 0; i < count; ++i)
                     {
-                        result.Add(node.Value.List[i]);
+                        result.Add(node.value.List[i]);
                     }
                 }
 

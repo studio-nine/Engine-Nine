@@ -63,11 +63,17 @@ namespace Nine.Graphics.Materials
 #if WINDOWS
         [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
 #endif
-        public SamplerState SamplerState { get; set; }
+        public SamplerState SamplerState
+        {
+            get { return samplerState; }
+            set { samplerState = value; }
+        }
+        private SamplerState samplerState;
         #endregion
 
         #region Fields
         private BasicEffect effect;
+        private EffectPass pass;
 
         private static Texture2D previousTexture;
         #endregion
@@ -76,6 +82,7 @@ namespace Nine.Graphics.Materials
         public BasicMaterial(GraphicsDevice graphics)
         {
             effect = GraphicsResources<BasicEffect>.GetInstance(graphics);
+            pass = effect.CurrentTechnique.Passes[0];
             GraphicsDevice = graphics;
         }
 
@@ -126,7 +133,7 @@ namespace Nine.Graphics.Materials
                 previousTexture = effect.Texture = texture;
 
             // Update shader parameters that are always different for each instance.
-            effect.World = World;
+            effect.World = world;
             
             // Update shader parameters that has little or no overhead.
             effect.TextureEnabled = texture != null;
@@ -135,11 +142,11 @@ namespace Nine.Graphics.Materials
             effect.VertexColorEnabled = vertexColorEnabled;
             
             // Finally apply the shader.
-            effect.CurrentTechnique.Passes[0].Apply();
+            pass.Apply();
 
             // Update sampler state
-            if (SamplerState != null)
-                GraphicsDevice.SamplerStates[0] = SamplerState;
+            if (samplerState != null)
+                context.graphics.SamplerStates[0] = samplerState;
         }
 
         protected override void OnEndApply(DrawingContext context)

@@ -157,17 +157,25 @@ namespace Nine.Graphics.Drawing
 
         public void Dispose()
         {
-            if (spriteBatch != null)
-            {
-                spriteBatch.Dispose();
-                spriteBatch = null;
-            }
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (spriteBatch != null)
+                {
+                    spriteBatch.Dispose();
+                    spriteBatch = null;
+                }
+            }
         }
 
         ~SpritePass()
         {
-            Dispose();
+            Dispose(false);
         }
     }
 }

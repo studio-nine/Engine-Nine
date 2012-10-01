@@ -78,7 +78,7 @@ namespace Nine.Graphics
             get { return materialLevels; }
             set { materialLevels = value ?? new MaterialLevelOfDetail(); }
         }
-        private MaterialLevelOfDetail materialLevels = new MaterialLevelOfDetail();
+        internal MaterialLevelOfDetail materialLevels = new MaterialLevelOfDetail();
         #endregion
 
         #region Properties
@@ -501,7 +501,7 @@ namespace Nine.Graphics
         #endregion
 
         #region ISupportInstancing
-        int ISupportInstancing.Count
+        int ISupportInstancing.MeshCount
         {
             get { return Math.Max(modelMeshes.Count, 1); }
         }

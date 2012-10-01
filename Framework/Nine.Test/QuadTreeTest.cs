@@ -11,7 +11,7 @@
         {
             Octree<bool> oct = new Octree<bool>(new BoundingBox(Vector3.Zero, Vector3.One * 4), 2);
 
-            oct.ExpandAll((o) => { return o.Bounds.Contains(Vector3.One * 0.1f) == ContainmentType.Contains; });
+            oct.ExpandAll((o) => { return o.bounds.Contains(Vector3.One * 0.1f) == ContainmentType.Contains; });
 
             object a = new object();
             object b = new object();
@@ -33,8 +33,8 @@
             QuadTree<object> tree = new QuadTree<object>(bounds, 2);
 
             Assert.AreEqual<BoundingRectangle>(bounds, tree.Bounds);
-            Assert.AreEqual<BoundingRectangle>(bounds, tree.Root.Bounds);
-            Assert.AreEqual<int>(0, tree.Root.Depth);
+            Assert.AreEqual<BoundingRectangle>(bounds, tree.root.Bounds);
+            Assert.AreEqual<int>(0, tree.root.depth);
         }
     }
 }

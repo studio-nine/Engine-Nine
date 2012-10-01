@@ -51,7 +51,7 @@ namespace Test
             return true;
         }
 
-        public float GetDistanceToCamera(Vector3 cameraPosition)
+        public float GetDistanceToCamera(ref Vector3 cameraPosition)
         {
             return 0;
         }

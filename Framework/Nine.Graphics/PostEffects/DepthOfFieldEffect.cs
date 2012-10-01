@@ -1,10 +1,11 @@
 ﻿namespace Nine.Graphics.PostEffects
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Materials;
     using Microsoft.Xna.Framework.Content;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a depth of field post processing effect.
@@ -67,14 +68,16 @@
         }
 
         [ContentSerializerIgnore]
-        public override IList<PostEffectChain> Passes
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new IList<PostEffectChain> Passes
         {
             // Prevent content serializer from loading passes.
             get { return base.Passes; }
         }
 
         [ContentSerializerIgnore]
-        public override Material Material
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new Material Material
         {
             get { return base.Material; }
             set { base.Material = value; }

@@ -12,7 +12,7 @@
     /// of the coordinate system is the center of the screen.
     /// </summary>
     [ContentSerializable]
-    public class Camera2D : Nine.Transformable, ICamera, ISceneObject
+    public class Camera2D : Nine.Transformable, ICamera, IGraphicsObject
     {
         #region View
         public Matrix View
@@ -178,13 +178,13 @@
             return zoom = 1.0f / (1 - zoom);
         }
 
-        void ISceneObject.OnAdded(DrawingContext context)
+        void IGraphicsObject.OnAdded(DrawingContext context)
         {
             if (context.camera == null)
                 context.camera = this;
         }
 
-        void ISceneObject.OnRemoved(DrawingContext context)
+        void IGraphicsObject.OnRemoved(DrawingContext context)
         {
             if (context.camera == this)
                 context.camera = null;

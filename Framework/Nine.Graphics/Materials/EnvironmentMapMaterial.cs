@@ -108,7 +108,7 @@ namespace Nine.Graphics.Materials
             if (previousEnvironmentMapMaterial == null || previousEnvironmentMap != EnvironmentMap)
                 previousEnvironmentMap = effect.EnvironmentMap = EnvironmentMap;
 
-            effect.World = World;
+            effect.World = world;
 
             if (SamplerState != null)
                 GraphicsDevice.SamplerStates[0] = SamplerState;

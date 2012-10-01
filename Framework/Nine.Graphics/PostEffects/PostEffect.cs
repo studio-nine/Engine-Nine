@@ -15,13 +15,13 @@
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Material")]
-    public class PostEffect : Pass, ISceneObject, IPostEffect
+    public class PostEffect : Pass, IGraphicsObject, IPostEffect
     {
         #region Properties
         /// <summary>
         /// Gets or sets the material used by this post effect.
         /// </summary>
-        public virtual Material Material { get; set; }
+        public Material Material { get; set; }
 
         /// <summary>
         /// Gets or sets the input texture to be processed.
@@ -166,7 +166,7 @@
         /// <summary>
         /// Called when this scene object is added to the scene.
         /// </summary>
-        void ISceneObject.OnAdded(DrawingContext context)
+        void IGraphicsObject.OnAdded(DrawingContext context)
         {
             context.Passes.Add(this);
             AddDependency(context.MainPass);
@@ -175,7 +175,7 @@
         /// <summary>
         /// Called when this scene object is removed from the scene.
         /// </summary>
-        void ISceneObject.OnRemoved(DrawingContext context)
+        void IGraphicsObject.OnRemoved(DrawingContext context)
         {
             context.Passes.Remove(this);
         }

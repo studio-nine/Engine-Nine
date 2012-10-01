@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Nine;
 
-namespace CubeStressTest
+namespace Test
 {
     class BruteForceSceneManager : ISceneManager<ISpatialQueryable>
     {

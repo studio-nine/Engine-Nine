@@ -87,7 +87,7 @@ namespace Nine
                 ContainerTraverser.Traverse(item, traverser);
                 currentItem = null;
             }
-
+            
             public void IncludeTopLevelNonSpatialQueryableDesendants(IList<object> topLevelObjects)
             {
                 var count = topLevelObjects.Count;

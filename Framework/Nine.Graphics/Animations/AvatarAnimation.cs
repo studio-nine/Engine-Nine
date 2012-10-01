@@ -78,7 +78,7 @@
     /// Defines a basic avatar animation controller from presets.
     /// </summary>
     [NotContentSerializable]
-    public class AvatarAnimationController : Animation, IBoneAnimationController, ITimelineAnimation
+    public class AvatarAnimationController : Animation, IBoneAnimationController, ITimelineAnimation, IDisposable
     {
         public bool Loop { get; set; }
         public float Speed { get { return 1; } set { } }
@@ -150,6 +150,28 @@
             {
                 boneAnimationController.Update(elapsedTime);
             }
+        }
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (Renderer != null)
+                    Renderer.Dispose();
+                if (avatarAnimation != null)
+                    avatarAnimation.Dispose();
+            }
+        }
+
+        ~AvatarAnimationController()
+        {
+            Dispose(false);
         }
     }
     #endregion

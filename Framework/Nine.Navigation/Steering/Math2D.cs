@@ -1,4 +1,4 @@
-namespace Nine
+namespace Nine.Navigation.Steering
 {
     using System;
     using Microsoft.Xna.Framework;

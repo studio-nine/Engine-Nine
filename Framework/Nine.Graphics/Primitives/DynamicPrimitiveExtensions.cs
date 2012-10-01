@@ -752,8 +752,8 @@
                 
                 tree.Traverse(node =>
                 {
-                    if (!node.HasChildren && node.Value)
-                        dynamicPrimitive.AddSolidBox(node.Bounds, transform, color);
+                    if (!node.hasChildren && node.value)
+                        dynamicPrimitive.AddSolidBox(node.bounds, transform, color);
                     return TraverseOptions.Continue;
                 });
             }

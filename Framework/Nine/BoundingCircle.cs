@@ -32,23 +32,16 @@ namespace Nine
             Center = center;
             Radius = radius;
         }
-
-        /// <summary>
-        /// Create a new instance of BoundingCircle object.
-        /// </summary>
-        public BoundingCircle(BoundingSphere sphere)
-        {
-            Center = new Vector2(sphere.Center.X, sphere.Center.Y);
-            Radius = sphere.Radius;
-        }
-
+        
         /// <summary>
         /// Tests whether the BoundingCircle contains a point.
         /// </summary>
         public ContainmentType Contains(float x, float y)
         {
-            return Math2D.PointInCircle(new Vector2(x, y), Center, Radius)
-                ? ContainmentType.Contains : ContainmentType.Disjoint;
+            var xx = (x - Center.X);
+            var yy = (y - Center.Y);
+
+            return xx * xx + yy * yy < Radius * Radius ? ContainmentType.Contains : ContainmentType.Disjoint;
         }
 
         /// <summary>
@@ -56,8 +49,34 @@ namespace Nine
         /// </summary>
         public ContainmentType Contains(Vector2 point)
         {
-            return Math2D.PointInCircle(point, Center, Radius)
-                ? ContainmentType.Contains : ContainmentType.Disjoint;
+            var xx = (point.X - Center.X);
+            var yy = (point.Y - Center.Y);
+
+            return xx * xx + yy * yy < Radius * Radius ? ContainmentType.Contains : ContainmentType.Disjoint;
+        }
+
+        /// <summary>
+        /// Tests whether the BoundingCircle contains another BoundingCircle.
+        /// </summary>
+        public void Contains(ref BoundingCircle circle, out ContainmentType containmentType)
+        {
+            var xx = (circle.Center.X - Center.X);
+            var yy = (circle.Center.Y - Center.Y);
+            var rr = circle.Radius + Radius;
+            var dr = circle.Radius - Radius;
+            var distanceSq = xx * xx + yy * yy;
+
+            if (distanceSq >= rr * rr)
+            {
+                containmentType = ContainmentType.Disjoint;
+                return;
+            }
+            if (Radius > circle.Radius && distanceSq < dr * dr)
+            {
+                containmentType = ContainmentType.Contains;
+                return;
+            }
+            containmentType = ContainmentType.Intersects;
         }
 
         /// <summary>
@@ -65,7 +84,17 @@ namespace Nine
         /// </summary>
         public ContainmentType Contains(BoundingCircle circle)
         {
-            return Math2D.CircleIntersects(Center, Radius, circle.Center, circle.Radius);
+            var xx = (circle.Center.X - Center.X);
+            var yy = (circle.Center.Y - Center.Y);
+            var rr = circle.Radius + Radius;
+            var dr = circle.Radius - Radius;
+            var distanceSq = xx * xx + yy * yy;
+
+            if (distanceSq >= rr * rr)
+                return ContainmentType.Disjoint;
+            if (Radius > circle.Radius && distanceSq < dr * dr)
+                return ContainmentType.Contains;
+            return ContainmentType.Intersects;
         }
 
         public bool Equals(BoundingCircle other)
@@ -106,7 +135,12 @@ namespace Nine
         /// </summary>
         public static BoundingCircle CreateFromPoints(IEnumerable<Vector2> points)
         {
-            return new BoundingCircle(BoundingSphere.CreateFromPoints(points.Select(pt => new Vector3(pt, 0))));
+            var sphere = BoundingSphere.CreateFromPoints(points.Select(pt => new Vector3(pt, 0)));
+            var result = new BoundingCircle();
+            result.Center.X = sphere.Center.X;
+            result.Center.Y = sphere.Center.Y;
+            result.Radius = sphere.Radius;
+            return result;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Nine.Graphics
     /// <summary>
     /// Defines a base class for a light used by the render system.
     /// </summary>
-    public abstract class Light : Transformable, ISceneObject, IDebugDrawable
+    public abstract class Light : Transformable, IGraphicsObject, IDisposable, IDebugDrawable
     {
         #region Properties
         /// <summary>
@@ -143,7 +143,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Called when this scene object is added to the scene.
         /// </summary>
-        void ISceneObject.OnAdded(DrawingContext context)
+        void IGraphicsObject.OnAdded(DrawingContext context)
         {
 #if !WINDOWS_PHONE
             if (this.context != null)
@@ -162,7 +162,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Called when this scene object is removed from the scene.
         /// </summary>
-        void ISceneObject.OnRemoved(DrawingContext context)
+        void IGraphicsObject.OnRemoved(DrawingContext context)
         {
 #if !WINDOWS_PHONE
             if (this.context == null || context != this.context)
@@ -211,6 +211,33 @@ namespace Nine.Graphics
 #if !WINDOWS_PHONE
             primitive.AddFrustum(ShadowFrustum, null, Constants.ShadowFrustumColor, Constants.TinyLineWidth);
 #endif
+        }
+        #endregion
+
+        #region IDisposable
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+#if !WINDOWS_PHONE
+                if (shadowMap != null)
+                {
+                    shadowMap.Dispose();
+                    shadowMap = null;
+                }
+#endif
+            }
+        }
+
+        ~Light()
+        {
+            Dispose(false);
         }
         #endregion
     }

@@ -10,9 +10,6 @@ namespace Nine
     /// Vote for a generic version of WeakReference at
     /// http://connect.microsoft.com/VisualStudio/feedback/details/98270/make-a-generic-form-of-weakreference-weakreference-t-where-t-class
     /// </remarks>
-#if WINDOWS
-    [Serializable]
-#endif
     public class WeakReference<T> : System.WeakReference where T : class
     {
 #if WINDOWS_PHONE

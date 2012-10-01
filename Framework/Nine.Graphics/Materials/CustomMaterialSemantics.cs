@@ -346,32 +346,32 @@ namespace Nine.Graphics.Materials
         public static CustomEffectParameterBinding[] Bindings = new CustomEffectParameterBinding[]
         {
             // Matrices
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(material.World) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(material.world) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.View) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.Projection) },
 
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(material.World) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(material.world) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.Matrices.ViewTranspose) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.Matrices.ProjectionInverseTranspose) },
                         
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(material.World * context.Matrices.View) },
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(material.World * context.Matrices.ViewProjection) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(material.world * context.Matrices.View) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(material.world * context.Matrices.ViewProjection) },
             
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(Matrix.Invert(material.World)) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(Matrix.Invert(material.world)) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.Matrices.ViewInverse) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.Matrices.ProjectionInverse) },
             
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(Matrix.Invert(material.World)) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(Matrix.Invert(material.world)) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValueTranspose(context.Matrices.ViewInverse) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValueTranspose(context.Matrices.ProjectionInverse) },
                         
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(Matrix.Invert(material.World * context.View)) },
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(material.World * context.View) },
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(Matrix.Invert(material.World * context.View)) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(Matrix.Invert(material.world * context.View)) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(material.world * context.View) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(Matrix.Invert(material.world * context.View)) },
                         
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(Matrix.Invert(material.World * context.Matrices.ViewProjection)) },
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(material.World * context.Matrices.ViewProjection) },
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(Matrix.Invert(material.World * context.Matrices.ViewProjection)) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValue(Matrix.Invert(material.world * context.Matrices.ViewProjection)) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(material.world * context.Matrices.ViewProjection) },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => parameter.SetValueTranspose(Matrix.Invert(material.world * context.Matrices.ViewProjection)) },
                         
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.Matrices.ViewProjection) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(Matrix.Invert(context.Matrices.ViewProjection)) },

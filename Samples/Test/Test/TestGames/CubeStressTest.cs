@@ -15,8 +15,8 @@ namespace Test
         public Scene CreateTestScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
-            //var scene = new Scene(new PassThroughSceneManager());
-            //var scene = new Scene(new BruteForceSceneManager());
+            //scene = new Scene(new PassThroughSceneManager());
+            //scene = new Scene(new BruteForceSceneManager());
             var cube = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/cube");
 
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Vector3.UnitX, Direction = -Vector3.UnitX });
@@ -33,8 +33,8 @@ namespace Test
                 for (var x = 0; x < size; x++)
                     for (var z = 0; z < size; z++)
                     {
-                        //scene.Add(new Nine.Graphics.Model(cube)
-                        scene.Add(new Box(graphics)
+                        scene.Add(new Nine.Graphics.Model(cube)
+                        //scene.Add(new Box(graphics)
                         {
                             Material = new BasicMaterial(graphics) { LightingEnabled = true },
                             Transform = Matrix.CreateTranslation(x * step, y * step, z * step)

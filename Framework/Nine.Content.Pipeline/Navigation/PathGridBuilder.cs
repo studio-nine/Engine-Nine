@@ -161,7 +161,7 @@ namespace Nine.Content.Pipeline.Navigation
 
                     foreach (IGeometry geometry in obstacles)
                     {
-                        int i = 0;
+                        //int i = 0;
                         lock (SyncRoot)
                         {
                             /*

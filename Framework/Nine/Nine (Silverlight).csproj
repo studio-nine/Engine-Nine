@@ -139,7 +139,6 @@
     <Compile Include="Input\MouseState.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="LineSegment.cs" />
-    <Compile Include="Math2D.cs" />
     <Compile Include="NotificationCollection.cs" />
     <Compile Include="Octree.cs" />
     <Compile Include="OctreeSceneManager.cs" />

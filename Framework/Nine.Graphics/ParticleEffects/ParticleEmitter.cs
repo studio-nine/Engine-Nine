@@ -60,7 +60,7 @@
         public TimeSpan Lifetime { get; set; }
 
         /// <summary>
-        /// Gets or sets the duration of each particle.
+        /// Gets or sets the duration of each particle in seconds.
         /// </summary>
         public Range<float> Duration { get; set; }
 

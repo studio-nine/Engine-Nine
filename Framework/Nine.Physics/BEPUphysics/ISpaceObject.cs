@@ -19,9 +19,5 @@
         /// </summary>
         /// <param name="oldSpace">Space from which the object was removed.</param>
         void OnRemovalFromSpace(ISpace oldSpace);
-        /// <summary>
-        /// Gets or sets the user data associated with this object.
-        /// </summary>
-        object Tag { get; set; }
     }
 }

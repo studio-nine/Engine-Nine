@@ -444,6 +444,7 @@ namespace Nine
         {
             if (disposing)
             {
+                animations.Dispose();
                 for (var i = 0; i < children.Count; ++i)
                 {
                     IDisposable disposable = children[i] as IDisposable;

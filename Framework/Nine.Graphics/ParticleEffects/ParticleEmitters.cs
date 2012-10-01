@@ -37,7 +37,8 @@
     /// </summary>
     public class BoxEmitter : ParticleEmitter
     {
-        public BoundingBox Box { get; set; }
+        public Vector3 Min { get; set; }
+        public Vector3 Max { get; set; }
 
         public float Spread
         {
@@ -48,19 +49,21 @@
 
         public BoxEmitter()
         {
-            Box = new BoundingBox(Vector3.One * -1.0f, Vector3.One * 1.0f);
+            Min = Vector3.One * -1.0f;
+            Max = Vector3.One * 1.0f;
         }
 
         protected override void GetBoundingBox(out BoundingBox boundingBox)
         {
-            boundingBox = Box;
+            boundingBox.Min = Min;
+            boundingBox.Max = Max;
         }
 
         public override bool Emit(float lerpAmount, ref Vector3 position, ref Vector3 direction)
         {
-            position.X = Box.Min.X + (float)(Random.NextDouble() * (Box.Max.X - Box.Min.X));
-            position.Y = Box.Min.Y + (float)(Random.NextDouble() * (Box.Max.Y - Box.Min.Y));
-            position.Z = Box.Min.Z + (float)(Random.NextDouble() * (Box.Max.Z - Box.Min.Z));
+            position.X = Min.X + (float)(Random.NextDouble() * (Max.X - Min.X));
+            position.Y = Min.Y + (float)(Random.NextDouble() * (Max.Y - Min.Y));
+            position.Z = Min.Z + (float)(Random.NextDouble() * (Max.Z - Min.Z));
 
             Randomize(spread, out direction);
             return true;

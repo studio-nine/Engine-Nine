@@ -86,7 +86,7 @@ namespace Nine.Graphics.Materials
             if (previousAlphaTestMaterial == null || previousTexture != texture)
                 previousTexture = effect.Texture = texture;
             
-            effect.World = World;
+            effect.World = world;
             effect.VertexColorEnabled = VertexColorEnabled;
 
             if (SamplerState != null)

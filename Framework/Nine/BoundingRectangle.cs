@@ -41,21 +41,11 @@ namespace Nine
         }
 
         /// <summary>
-        /// Create a new instance of BoundingRectangle object.
-        /// </summary>
-        public BoundingRectangle(BoundingBox box)
-        {
-            Min = new Vector2(box.Min.X, box.Min.Y);
-            Max = new Vector2(box.Max.X, box.Max.Y);
-        }
-
-        /// <summary>
         /// Tests whether the BoundingRectangle contains a point.
         /// </summary>
         public ContainmentType Contains(float x, float y)
         {
-            return Math2D.PointInRectangle(new Vector2(x, y), Min, Max)
-                ? ContainmentType.Contains : ContainmentType.Disjoint;
+            return (x >= Min.X && x <= Max.X && y >= Min.Y && y <= Max.Y) ? ContainmentType.Contains : ContainmentType.Disjoint;
         }
 
         /// <summary>
@@ -63,10 +53,9 @@ namespace Nine
         /// </summary>
         public ContainmentType Contains(Vector2 point)
         {
-            return Math2D.PointInRectangle(point, Min, Max)
-                ? ContainmentType.Contains : ContainmentType.Disjoint;
+            return (point.X >= Min.X && point.X <= Max.X && point.Y >= Min.Y && point.Y <= Max.Y) ? ContainmentType.Contains : ContainmentType.Disjoint;
         }
-
+        
         /// <summary>
         /// Tests whether the BoundingRectangle contains another rectangle.
         /// </summary>
@@ -91,6 +80,31 @@ namespace Nine
             {
                 return ContainmentType.Intersects;
             }
+        }
+
+        /// <summary>
+        /// Tests whether the BoundingRectangle contains another rectangle.
+        /// </summary>
+        public void Contains(ref BoundingRectangle rectangle, out ContainmentType containmentType)
+        {
+            if (this.Min.X > rectangle.Max.X ||
+                this.Min.Y > rectangle.Max.Y ||
+                this.Max.X < rectangle.Min.X ||
+                this.Max.Y < rectangle.Min.Y)
+            {
+                containmentType = ContainmentType.Disjoint;
+                return;
+            }
+            
+            if (this.Min.X <= rectangle.Min.X &&
+                this.Min.Y <= rectangle.Min.Y &&
+                this.Max.X >= rectangle.Max.X &&
+                this.Max.Y >= rectangle.Max.Y)
+            {
+                containmentType = ContainmentType.Contains;
+                return;
+            }
+            containmentType = ContainmentType.Intersects;
         }
 
         public bool Equals(BoundingRectangle other)
@@ -151,19 +165,31 @@ namespace Nine
 
         /// <summary>
         /// Creates the merged bounding rectangle.
-        /// </summary>
-        public static BoundingRectangle CreateMerged(BoundingRectangle boundingRectangle1, BoundingRectangle boundingRectangle2)
+        /// </summary>        
+        public static void CreateMerged(ref BoundingRectangle original, ref BoundingRectangle additional, out BoundingRectangle result)
         {
-            if (boundingRectangle1.Min.X > boundingRectangle2.Min.X)
-                boundingRectangle1.Min.X = boundingRectangle2.Min.X;
-            if (boundingRectangle1.Min.Y > boundingRectangle2.Min.Y)
-                boundingRectangle1.Min.Y = boundingRectangle2.Min.Y;
-            if (boundingRectangle1.Max.X < boundingRectangle2.Max.X)
-                boundingRectangle1.Max.X = boundingRectangle2.Max.X;
-            if (boundingRectangle1.Max.Y < boundingRectangle2.Max.Y)
-                boundingRectangle1.Max.Y = boundingRectangle2.Max.Y;
+            result = new BoundingRectangle();
+            result.Min.X = (original.Min.X > additional.Min.X) ? additional.Min.X : original.Min.X;
+            result.Min.Y = (original.Min.Y > additional.Min.Y) ? additional.Min.Y : original.Min.Y;
+            result.Max.X = (original.Max.X < additional.Max.X) ? additional.Max.X : original.Max.X;
+            result.Max.Y = (original.Max.Y < additional.Max.Y) ? additional.Max.Y : original.Max.Y;
+        }
+
+        /// <summary>
+        /// Creates the merged bounding rectangle.
+        /// </summary>
+        public static BoundingRectangle CreateMerged(BoundingRectangle original, BoundingRectangle additional)
+        {
+            if (original.Min.X > additional.Min.X)
+                original.Min.X = additional.Min.X;
+            if (original.Min.Y > additional.Min.Y)
+                original.Min.Y = additional.Min.Y;
+            if (original.Max.X < additional.Max.X)
+                original.Max.X = additional.Max.X;
+            if (original.Max.Y < additional.Max.Y)
+                original.Max.Y = additional.Max.Y;
             
-            return boundingRectangle1;
+            return original;
         }
     }
 }

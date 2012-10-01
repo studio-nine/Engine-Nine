@@ -15,7 +15,7 @@ namespace Nine.Graphics
     /// <summary>
     /// A drawing context contains commonly used global parameters for rendering.
     /// </summary>
-    public class DrawingContext : ISpatialQuery
+    public class DrawingContext : ISpatialQuery, IDisposable
     {
         #region Properties
         /// <summary>
@@ -455,8 +455,8 @@ namespace Nine.Graphics
             if (isDrawing)
                 throw new InvalidOperationException("Cannot trigger another drawing of the scene while it's still been drawn");
 
-            this.View = view;
-            this.Projection = projection;
+            this.matrices.View = view;
+            this.matrices.Projection = projection;
             this.isDrawing = true;
             this.VertexOffset = 0;
             this.VertexBuffer = null;            
@@ -494,8 +494,8 @@ namespace Nine.Graphics
                 Matrix passView, passProjection;
                 if (pass.TryGetViewFrustum(out passView, out passProjection))
                 {
-                    View = passView;
-                    Projection = passProjection;
+                    matrices.View = passView;
+                    matrices.Projection = passProjection;
                     overrideViewFrustum = true;
                 }
 
@@ -677,6 +677,28 @@ namespace Nine.Graphics
             debugPrimitive.Clear();
             debugDrawablesInViewFrustum.Clear();
             debugBoundsInViewFrustum.Clear();
+        }
+        #endregion
+
+        #region IDisposable
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (samplerState != null)
+                    samplerState.Dispose();
+            }
+        }
+
+        ~DrawingContext()
+        {
+            Dispose(false);
         }
         #endregion
     }

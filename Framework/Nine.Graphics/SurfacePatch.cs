@@ -310,7 +310,7 @@
         /// <summary>
         /// Gets the squared distance from the position of the object to the current camera.
         /// </summary>
-        public float GetDistanceToCamera(Vector3 cameraPosition)
+        public float GetDistanceToCamera(ref Vector3 cameraPosition)
         {
             return distanceToCamera;
         }

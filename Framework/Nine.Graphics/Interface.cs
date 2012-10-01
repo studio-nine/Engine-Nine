@@ -13,7 +13,7 @@ namespace Nine.Graphics
     /// Defines an interface for objects that can be added to or removed 
     /// from a drawing context.
     /// </summary>
-    public interface ISceneObject
+    public interface IGraphicsObject
     {
         /// <summary>
         /// Called when this scene object is added to the scene.
@@ -61,7 +61,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the distance from the position of the object to the current camera.
         /// </summary>
-        float GetDistanceToCamera(Vector3 cameraPosition);
+        float GetDistanceToCamera(ref Vector3 cameraPosition);
 
         /// <summary>
         /// Called before the draw method whenever the view frustum has changed.
@@ -180,7 +180,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the subset count.
         /// </summary>
-        int Count { get; }
+        int MeshCount { get; }
 
         /// <summary>
         /// Gets the bounding box of this instance.
@@ -190,28 +190,28 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the material for the given subset.
         /// </summary>
-        Material GetMaterial(int subset);
+        Material GetMaterial(int mesh);
 
         /// <summary>
         /// Prepares the material for rendering.
         /// </summary>
-        void PrepareMaterial(int subset, Material material);
+        void PrepareMaterial(int mesh, Material material);
 
         /// <summary>
         /// Gets the vertex buffer for the given subset.
         /// </summary>
-        void GetVertexBuffer(int subset, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices);
+        void GetVertexBuffer(int mesh, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices);
 
         /// <summary>
         /// Gets the index buffer for the given subset.
         /// </summary>
-        void GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount);
+        void GetIndexBuffer(int mesh, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount);
     }
 
     /// <summary>
     /// Defines an object that supports debug visual.
     /// </summary>
-    public interface IDebugDrawable
+    interface IDebugDrawable
     {
         /// <summary>
         /// Gets whether this object is visible.

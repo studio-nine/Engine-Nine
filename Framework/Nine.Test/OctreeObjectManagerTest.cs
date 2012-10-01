@@ -136,10 +136,10 @@
             Trace.WriteLine(string.Format("Max queries per frame (60 FPS): {0} on {1} objects",
                                         queries.Length / watch.Elapsed.TotalSeconds / 60.0, objects.Length));
 
-            foreach (var g in scene.Tree.GroupBy(n => n.Depth))
+            foreach (var g in scene.Tree.GroupBy(n => n.depth))
             {
-                Trace.WriteLine(string.Format("Objects with depth {0}: {1}", g.Key, g.Sum(n => n.Value != null ? n.Value.Count : 0)));
-                Trace.WriteLine(string.Format("Average objects per node with depth {0}: {1}", g.Key, g.Average(n => n.Value != null ? n.Value.Count : 0)));
+                Trace.WriteLine(string.Format("Objects with depth {0}: {1}", g.Key, g.Sum(n => n.value != null ? n.value.Count : 0)));
+                Trace.WriteLine(string.Format("Average objects per node with depth {0}: {1}", g.Key, g.Average(n => n.value != null ? n.value.Count : 0)));
             }
 
             // Update

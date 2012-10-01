@@ -11,12 +11,6 @@ namespace Nine
     using Microsoft.Xna.Framework.Input.Touch;
 #endif
 
-    public enum InputRaiseMode
-    {
-        Tunneling,
-        Bubbling
-    }
-
     /// <summary>
     /// An input component that manages a set of <c>Input</c> instances based on push model.
     /// </summary>
@@ -27,11 +21,6 @@ namespace Nine
         /// Gets or sets the InputComponent for current context.
         /// </summary>
         public static InputComponent Current { get; set; }
-
-        /// <summary>
-        /// Gets or sets the raise mode.
-        /// </summary>
-        public InputRaiseMode RaiseMode { get; set; }
 
         internal List<WeakReference> inputs = new List<WeakReference>();
 
@@ -218,38 +207,18 @@ namespace Nine
         #region Raise Events
         private void ForEach(Predicate<Input> action)
         {
-            if (RaiseMode == InputRaiseMode.Tunneling)
+            for (int i = 0; i < inputs.Count; ++i)
             {
-                for (int i = 0; i < inputs.Count; ++i)
+                var input = inputs[i].Target as Input;
+                if (input != null)
                 {
-                    var input = inputs[i].Target as Input;
-                    if (input != null)
-                    {
-                        if (action(input))
-                            break;
-                    }
-                    else
-                    {
-                        inputs.RemoveAt(i);
-                        i--;
-                    }
+                    if (action(input))
+                        break;
                 }
-            }
-            else
-            {
-                for (int i = inputs.Count - 1; i >= 0; i--)
+                else
                 {
-                    var input = inputs[i].Target as Input;
-                    if (input != null)
-                    {
-                        if (action(input))
-                            break;
-                    }
-                    else
-                    {
-                        inputs.RemoveAt(i);
-                        i++;
-                    }
+                    inputs.RemoveAt(i);
+                    i--;
                 }
             }
         }

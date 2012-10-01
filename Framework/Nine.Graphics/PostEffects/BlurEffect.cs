@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
@@ -90,7 +91,8 @@
         }
 
         [ContentSerializerIgnore]
-        public override IList<Pass> Effects
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new IList<Pass> Effects
         {
             get { return base.Effects; }
         }

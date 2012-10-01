@@ -290,7 +290,8 @@
             this.Visible = true;
             this.Stretch = 1;
             this.GraphicsDevice = graphics;
-            this.Emitter = new PointEmitter();
+            this.emitter = new PointEmitter();
+            this.boundingBox = this.emitter.BoundingBox;
 
             this.Controllers = new ParticleControllerCollection();
             this.Controllers.ParticleEffect = this;
@@ -608,7 +609,7 @@
         /// <summary>
         /// Gets the squared distance from the position of the object to the current camera.
         /// </summary>
-        public float GetDistanceToCamera(Vector3 cameraPosition)
+        public float GetDistanceToCamera(ref Vector3 cameraPosition)
         {
             return (AbsolutePosition - cameraPosition).Length();
         }
@@ -705,6 +706,10 @@
             {
                 if (primitive != null)
                     primitive.Dispose();
+                if (canUpdate != null)
+                    canUpdate.Dispose();
+                if (canDraw != null)
+                    canDraw.Dispose();
             }
             isDisposed = true;
         }

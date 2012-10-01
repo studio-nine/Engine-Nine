@@ -1804,7 +1804,8 @@ namespace Nine.Graphics.ParticleEffects
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BoxEmitter();
-            existingInstance.Box = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
+            existingInstance.Min = input.ReadVector3();
+            existingInstance.Max = input.ReadVector3();
             existingInstance.Spread = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.EmitCount = input.ReadInt32();

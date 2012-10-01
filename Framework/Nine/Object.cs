@@ -115,8 +115,7 @@ namespace Nine
         /// </summary>
         public override string ToString()
         {
-            var typeName = GetType().Name;
-            return !string.IsNullOrEmpty(name) ? string.Concat(name, ":", typeName) : typeName;
+            return name != null && name != "" ? name : base.ToString();
         }
         #endregion
     }

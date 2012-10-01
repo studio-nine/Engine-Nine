@@ -28,15 +28,6 @@ namespace Nine.Components
     }
 
     /// <summary>
-    /// Command collection used by game console.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class GameConsoleCommandCollection : Dictionary<string, EventHandler<GameConsoleEventArgs>>
-    {
-        internal GameConsoleCommandCollection(StringComparer stringComparer) : base(stringComparer) { }
-    }
-
-    /// <summary>
     /// In game console
     /// </summary>
     public class GameConsole : Nine.IUpdateable, Nine.IDrawable
@@ -58,7 +49,7 @@ namespace Nine.Components
         public SpriteFont Font { get; set; }
         public Input Input { get; private set; }
         public Microsoft.Xna.Framework.Input.Keys ActivateKey { get; set; }
-        public GameConsoleCommandCollection Commands { get; private set; }
+        public IDictionary<string, EventHandler<GameConsoleEventArgs>> Commands { get; private set; }
 
 
         /// <summary>
@@ -105,7 +96,7 @@ namespace Nine.Components
             Input = new Input();
             Input.KeyDown += new EventHandler<KeyboardEventArgs>(Input_KeyDown);
 
-            Commands = new GameConsoleCommandCollection(StringComparer.CurrentCultureIgnoreCase);
+            Commands = new Dictionary<string, EventHandler<GameConsoleEventArgs>>(StringComparer.CurrentCultureIgnoreCase);
 
             // Add default commands
             Commands.Add("Help", delegate(object sender, GameConsoleEventArgs args)

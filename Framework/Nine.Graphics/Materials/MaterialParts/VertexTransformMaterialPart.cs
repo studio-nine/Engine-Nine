@@ -33,7 +33,7 @@
             if (worldParameter != null)
                 worldParameter.SetValue(material.world);
             if (worldInverseTransposeParameter != null)
-                worldViewProjectionParameter.SetValue(material.World * context.Matrices.ViewProjection);
+                worldViewProjectionParameter.SetValue(material.world * context.Matrices.ViewProjection);
             if (worldInverseTransposeParameter != null)
             {
                 Matrix worldInverse;

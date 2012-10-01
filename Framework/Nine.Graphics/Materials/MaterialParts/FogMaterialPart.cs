@@ -23,7 +23,7 @@
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            Matrix worldView = Matrix.Multiply(material.World, context.View);
+            Matrix worldView = Matrix.Multiply(material.world, context.View);
             SetFogVector(ref worldView, context.fogStart, context.fogEnd, fogVectorParameter);
         }
 

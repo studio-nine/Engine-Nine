@@ -16,7 +16,7 @@
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Material")]
-    public class Surface : Transformable, Nine.IContainer, ISceneObject, IDrawableObject, ISurface, IPickable, INotifyCollectionChanged<object>, IDisposable
+    public class Surface : Transformable, Nine.IContainer, IGraphicsObject, IDrawableObject, ISurface, IPickable, INotifyCollectionChanged<object>, IDisposable
     {
         #region Properties
         /// <summary>
@@ -795,7 +795,7 @@
 
         }
 
-        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
+        float IDrawableObject.GetDistanceToCamera(ref Vector3 cameraPosition)
         {
             return 0; 
         }
@@ -826,11 +826,11 @@
         #endregion
 
         #region ISceneObject
-        void ISceneObject.OnAdded(DrawingContext context) 
+        void IGraphicsObject.OnAdded(DrawingContext context) 
         {
             EnsureHeightmapUpToDate();
         }
-        void ISceneObject.OnRemoved(DrawingContext context) { }
+        void IGraphicsObject.OnRemoved(DrawingContext context) { }
         #endregion
 
         #region IDisposable

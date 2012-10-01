@@ -8,7 +8,7 @@ namespace Nine.Graphics
     using Nine.Graphics.Drawing;
 
     [ContentSerializable]
-    public class AmbientLight : Nine.Object, ISceneObject
+    public class AmbientLight : Nine.Object, IGraphicsObject
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
 
@@ -55,14 +55,14 @@ namespace Nine.Graphics
         }
         private Vector3 ambientLightColor;
 
-        void ISceneObject.OnAdded(DrawingContext context)
+        void IGraphicsObject.OnAdded(DrawingContext context)
         {
             this.context = context;
             if (enabled)
                 context.AmbientLightColor = context.AmbientLightColor + ambientLightColor;
         }
 
-        void ISceneObject.OnRemoved(DrawingContext context)
+        void IGraphicsObject.OnRemoved(DrawingContext context)
         {
             if (enabled)
                 context.AmbientLightColor = context.AmbientLightColor - ambientLightColor;

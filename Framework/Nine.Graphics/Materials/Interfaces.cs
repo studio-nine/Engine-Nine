@@ -7,7 +7,7 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Defines an interface for effects that supports shadow mapping.
     /// </summary>
-    public interface IEffectShadowMap
+    interface IEffectShadowMap
     {
         /// <summary>
         /// Gets or sets the view projection matrix of the light that casts the shadow.
@@ -39,7 +39,7 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Gets or sets lighting parameters for the current effect.
     /// </summary>
-    public interface IEffectLights<T>
+    interface IEffectLights<T>
     {
         /// <summary>
         /// Gets a read only collection of lights exposed by this effect.

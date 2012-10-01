@@ -136,8 +136,6 @@ namespace Nine.Physics
             set { space = value; }
         }
         private ISpace space;
-
-        object ISpaceObject.Tag { get; set; }
         #endregion
 
         #region Methods

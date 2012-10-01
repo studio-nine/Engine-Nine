@@ -78,7 +78,7 @@ namespace Nine.Graphics.Materials
             if (previousDualTextureMaterial == null || previousTexture2 != Texture2)
                 previousTexture2 = effect.Texture2 = Texture2;
 
-            effect.World = World;
+            effect.World = world;
             effect.VertexColorEnabled = VertexColorEnabled;
 
             if (SamplerState != null)

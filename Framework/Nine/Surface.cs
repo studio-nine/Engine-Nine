@@ -12,37 +12,12 @@ namespace Nine
     public interface ISurface
     {
         /// <summary>
-        /// Gets the height and normal of the specifed position on the surface.
+        /// Gets the height and normal of the specified position on the surface.
         /// </summary>
         /// <returns>
         /// Returns true if the point resides in the boundary of the surface.
         /// </returns>
         bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal);
-    }
-
-    /// <summary>
-    /// A simple flat surface that implements <see cref="Nine.ISurface"/>.
-    /// </summary>
-    class FlatSurface : ISurface
-    {
-        /// <summary>
-        /// Gets or sets the height of this flat surface.
-        /// </summary>
-        public float Height { get; set; }
-
-        /// <summary>
-        /// Gets the height and normal of the specifed position on the surface.
-        /// </summary>
-        /// <returns>
-        /// Returns true if the point resides in the boundary of the surface.
-        /// </returns>
-        public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
-        {
-            height = Height;
-            normal = Vector3.Up;
-
-            return true;
-        }
     }
 
     /// <summary>
@@ -57,7 +32,7 @@ namespace Nine
         public float ObjectHeight { get; set; }
 
         /// <summary>
-        /// Gets the height and normal of the specifed position on the surface.
+        /// Gets the height and normal of the specified position on the surface.
         /// </summary>
         /// <returns>
         /// Returns true if the point resides in the boundary of the surface.

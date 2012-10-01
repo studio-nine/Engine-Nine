@@ -58,6 +58,16 @@ namespace Nine.Animations
                     channel.Update(elapsedTime);
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var channel in channels.Values)
+                    channel.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 
     /// <summary>
@@ -65,7 +75,7 @@ namespace Nine.Animations
     /// </summary>
     [ContentProperty("Animations")]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class AnimationPlayerChannel : IUpdateable, IDictionary<string, IAnimation>
+    public class AnimationPlayerChannel : IUpdateable, IDisposable
     {
         /// <summary>
         /// Gets the dictionary that stores any animation data.
@@ -167,93 +177,33 @@ namespace Nine.Animations
         /// </summary>
         public virtual void Update(TimeSpan elapsedTime)
         {
-            var updateable = Current as IUpdateable;
+            var updateable = Current as Nine.IUpdateable;
             if (updateable != null)
                 updateable.Update(elapsedTime);
         }
 
-        #region Dictionary
-        // Implements Dictionary interface to make it more xaml friendly.
-        void IDictionary<string, IAnimation>.Add(string key, IAnimation value)
+        public void Dispose()
         {
-            animations.Add(key, value);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        bool IDictionary<string, IAnimation>.ContainsKey(string key)
+        protected virtual void Dispose(bool disposing)
         {
-            return animations.ContainsKey(key);
+            if (disposing)
+            {
+                foreach (var animation in animations.Values)
+                {
+                    var disposable = animation as IDisposable;
+                    if (disposable != null)
+                        disposable.Dispose();
+                }
+            }
         }
 
-        ICollection<string> IDictionary<string, IAnimation>.Keys
+        ~AnimationPlayerChannel()
         {
-            get { return animations.Keys; }
+            Dispose(false);
         }
-
-        bool IDictionary<string, IAnimation>.Remove(string key)
-        {
-            return animations.Remove(key);
-        }
-
-        bool IDictionary<string, IAnimation>.TryGetValue(string key, out IAnimation value)
-        {
-            return animations.TryGetValue(key, out value);
-        }
-
-        ICollection<IAnimation> IDictionary<string, IAnimation>.Values
-        {
-            get { return animations.Values; }
-        }
-
-        IAnimation IDictionary<string, IAnimation>.this[string key]
-        {
-            get { return animations[key]; }
-            set { animations[key] = value; }
-        }
-
-        void ICollection<KeyValuePair<string, IAnimation>>.Add(KeyValuePair<string, IAnimation> item)
-        {
-            ((ICollection<KeyValuePair<string, IAnimation>>)animations).Add(item);
-        }
-
-        void ICollection<KeyValuePair<string, IAnimation>>.Clear()
-        {
-            animations.Clear();
-        }
-
-        bool ICollection<KeyValuePair<string, IAnimation>>.Contains(KeyValuePair<string, IAnimation> item)
-        {
-            return ((ICollection<KeyValuePair<string, IAnimation>>)animations).Contains(item);
-        }
-
-        void ICollection<KeyValuePair<string, IAnimation>>.CopyTo(KeyValuePair<string, IAnimation>[] array, int arrayIndex)
-        {
-            ((ICollection<KeyValuePair<string, IAnimation>>)animations).CopyTo(array, arrayIndex);
-        }
-
-        int ICollection<KeyValuePair<string, IAnimation>>.Count
-        {
-            get { return animations.Count; }
-        }
-
-        bool ICollection<KeyValuePair<string, IAnimation>>.IsReadOnly
-        {
-            get { return false; }
-        }
-
-        bool ICollection<KeyValuePair<string, IAnimation>>.Remove(KeyValuePair<string, IAnimation> item)
-        {
-            return ((ICollection<KeyValuePair<string, IAnimation>>)animations).Remove(item);
-        }
-
-        IEnumerator<KeyValuePair<string, IAnimation>> IEnumerable<KeyValuePair<string, IAnimation>>.GetEnumerator()
-        {
-            return animations.GetEnumerator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return animations.GetEnumerator();
-        }
-        #endregion
     }
 }

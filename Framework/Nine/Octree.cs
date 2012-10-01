@@ -19,7 +19,7 @@ namespace Nine
         /// <summary>
         /// Gets the bounds of the Octree.
         /// </summary>
-        public BoundingBox Bounds { get { return Root.Bounds; } }
+        public BoundingBox Bounds { get { return root.bounds; } }
 
         /// <summary>
         /// For serialization.
@@ -30,7 +30,7 @@ namespace Nine
         /// Creates a new Octree with the specified boundary.
         /// </summary>
         public Octree(BoundingBox bounds, int maxDepth)
-            : base(new OctreeNode<T>() { Bounds = bounds }, maxDepth)
+            : base(new OctreeNode<T>() { bounds = bounds }, maxDepth)
         {
 
         }
@@ -41,15 +41,15 @@ namespace Nine
             OctreeNode<T> octreeNode = (OctreeNode<T>)node;
 
             Vector3 center;
-            Vector3 min = octreeNode.Bounds.Min;
-            Vector3 max = octreeNode.Bounds.Max;
+            Vector3 min = octreeNode.bounds.Min;
+            Vector3 max = octreeNode.bounds.Max;
             Vector3.Add(ref min, ref max, out center);
             Vector3.Multiply(ref center, 0.5f, out center);
 
             for (int i = 0; i < ChildCount; ++i)
             {
                 var child = new OctreeNode<T>();
-                child.Bounds = new BoundingBox
+                child.bounds = new BoundingBox
                 {
                     Min = new Vector3()
                     {
@@ -80,11 +80,9 @@ namespace Nine
         /// </summary>
         public BoundingBox Bounds
         {
-            get { return boundingBox; }
-            internal set { boundingBox = value; }
+            get { return bounds; }
         }
-
-        internal BoundingBox boundingBox;
+        internal BoundingBox bounds;
         internal OctreeNode() { }
     }
 
@@ -95,13 +93,13 @@ namespace Nine
             if (existingInstance == null)
                 existingInstance = new Octree<T>();
 
-            existingInstance.MaxDepth = input.ReadInt32();
-            existingInstance.Root = input.ReadRawObject<OctreeNode<T>>(new OctreeNodeReader<T>());
+            existingInstance.maxDepth = input.ReadInt32();
+            existingInstance.root = input.ReadRawObject<OctreeNode<T>>(new OctreeNodeReader<T>());
 
             // Fix reference
             Stack<OctreeNode<T>> stack = new Stack<OctreeNode<T>>();
 
-            stack.Push(existingInstance.Root);
+            stack.Push(existingInstance.root);
 
             while (stack.Count > 0)
             {
@@ -109,11 +107,11 @@ namespace Nine
 
                 node.Tree = existingInstance;
 
-                if (node.HasChildren)
+                if (node.hasChildren)
                 {
                     foreach (OctreeNode<T> child in node.Children)
                     {
-                        child.Parent = node;
+                        child.parent = node;
                         stack.Push(child);
                     }
                 }
@@ -130,12 +128,12 @@ namespace Nine
             if (existingInstance == null)
                 existingInstance = new OctreeNode<T>();
 
-            existingInstance.HasChildren = input.ReadBoolean();
-            existingInstance.Depth = input.ReadInt32();
-            existingInstance.Bounds = input.ReadObject<BoundingBox>();
-            existingInstance.Value = input.ReadObject<T>();
+            existingInstance.hasChildren = input.ReadBoolean();
+            existingInstance.depth = input.ReadInt32();
+            existingInstance.bounds = input.ReadObject<BoundingBox>();
+            existingInstance.value = input.ReadObject<T>();
 
-            if (existingInstance.HasChildren)
+            if (existingInstance.hasChildren)
             {
                 existingInstance.childNodes = input.ReadObject<OctreeNode<T>[]>();
                 existingInstance.children = new ReadOnlyCollection<OctreeNode<T>>(existingInstance.childNodes);

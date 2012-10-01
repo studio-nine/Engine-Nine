@@ -4,7 +4,7 @@ namespace Nine
     using System.Collections.Generic;
     using System.Diagnostics;
     using Microsoft.Xna.Framework;
-
+    
     #region OctreeSceneManager
     /// <summary>
     /// Manages a collection of objects using quad tree.
@@ -22,7 +22,7 @@ namespace Nine
         /// <summary>
         /// Gets the max depth of this OctreeSceneManager.
         /// </summary>
-        public int MaxDepth { get { return Tree.MaxDepth; } }
+        public int MaxDepth { get { return Tree.maxDepth; } }
 
         /// <summary>
         /// Creates a new instance of OctreeSceneManager.
@@ -74,7 +74,7 @@ namespace Nine
 
             item.SpatialData = new OctreeSceneManagerSpatialData<ISpatialQueryable>();
 
-            AddWithResize(Tree.Root, item);
+            AddWithResize(Tree.root, item);
 
             item.BoundingBoxChanged += boundingBoxChanged;
 
@@ -96,9 +96,9 @@ namespace Nine
                 newBounds.Min -= extends;
                 newBounds.Max += extends;
 
-                Resize(newBounds);
+                Resize(ref newBounds);
 
-                Add(Tree.Root, item);
+                Add(Tree.root, item);
 
                 if (needResize)
                 {
@@ -125,10 +125,12 @@ namespace Nine
 
         private TraverseOptions Add(OctreeNode<List<ISpatialQueryable>> node)
         {
-            ContainmentType containment = node.Bounds.Contains(item.BoundingBox);
+            ContainmentType containment;
+            BoundingBox itemBounds = item.BoundingBox;
+            node.bounds.Contains(ref itemBounds, out containment);
 
             // Expand the tree to root if the object is too large
-            if (node == Tree.Root && containment != ContainmentType.Contains)
+            if (node == Tree.root && containment != ContainmentType.Contains)
             {
                 needResize = true;
                 return TraverseOptions.Stop;
@@ -139,11 +141,11 @@ namespace Nine
 
             if (containment == ContainmentType.Intersects)
             {
-                AddToNode(item, node.Parent);
+                AddToNode(item, node.parent);
                 return TraverseOptions.Stop;
             }
 
-            if (containment == ContainmentType.Contains && node.Depth == Tree.MaxDepth - 1)
+            if (containment == ContainmentType.Contains && node.depth == Tree.maxDepth - 1)
             {
                 AddToNode(item, node);
                 return TraverseOptions.Stop;
@@ -153,12 +155,12 @@ namespace Nine
 
         private void AddToNode(ISpatialQueryable item, OctreeNode<List<ISpatialQueryable>> node)
         {
-            if (node.Value == null)
-                node.Value = new List<ISpatialQueryable>();
+            if (node.value == null)
+                node.value = new List<ISpatialQueryable>();
             var data = (OctreeSceneManagerSpatialData<ISpatialQueryable>)item.SpatialData;
             data.Tree = Tree;
             data.Node = node;
-            node.Value.Add(item);
+            node.value.Add(item);
             addedToNode = true;
         }
 
@@ -169,20 +171,20 @@ namespace Nine
                 return false;
 
             var node = data.Node;
-            if (!node.Value.Remove(item))
+            if (!node.value.Remove(item))
             {
                 // Something must be wrong if we cannot remove it.
                 throw new InvalidOperationException();
             }
 
-            while (node.Value == null || node.Value.Count <= 0)
+            while (node.value == null || node.value.Count <= 0)
             {
-                if (node.Parent == null)
+                if (node.parent == null)
                     break;
-                node = node.Parent;
+                node = node.parent;
             }
 
-            Tree.Collapse(node, n => n.Value == null || n.Value.Count <= 0);
+            Tree.Collapse(node, n => n.value == null || n.value.Count <= 0);
 
             item.SpatialData = null;
             item.BoundingBoxChanged -= boundingBoxChanged;
@@ -193,27 +195,24 @@ namespace Nine
 
         private void BoundingBoxChanged(object sender, EventArgs e)
         {
-            ISpatialQueryable item = (ISpatialQueryable)sender;
-
-            if (item == null)
-                throw new ArgumentNullException("item");
-
+            var item = (ISpatialQueryable)sender;
             var data = (OctreeSceneManagerSpatialData<ISpatialQueryable>)item.SpatialData;
-            if (data == null)
-                throw new InvalidOperationException();
 
             // Bubble up the tree to find the node that fit the size of the object
             var node = data.Node;
-            while (node.Bounds.Contains(item.BoundingBox) != ContainmentType.Contains)
+            while (true)
             {
-                if (node.Parent == null)
+                ContainmentType containment;
+                BoundingBox itemBounds = item.BoundingBox;
+                node.bounds.Contains(ref itemBounds, out containment);
+                if (containment == ContainmentType.Contains || node.parent == null)
                     break;
-                node = node.Parent;
+                node = node.parent;
             }
 
             if (node != data.Node)
             {
-                if (!data.Node.Value.Remove(item))
+                if (!data.Node.value.Remove(item))
                 {
                     // Something must be wrong if we cannot remove it.
                     throw new InvalidOperationException();
@@ -238,7 +237,7 @@ namespace Nine
             Count = 0;
         }
 
-        private void Resize(BoundingBox boundingBox)
+        private void Resize(ref BoundingBox boundingBox)
         {
             var items = new ISpatialQueryable[Count];
 
@@ -277,9 +276,9 @@ namespace Nine
         {
             foreach (var node in Tree)
             {
-                if (node.Value != null)
+                if (node.value != null)
                 {
-                    foreach (var val in node.Value)
+                    foreach (var val in node.value)
                         yield return val;
                 }
             }
@@ -296,17 +295,17 @@ namespace Nine
         {
             this.result = result;
             this.ray = ray;
-            Tree.Traverse(findAllRay);
+            Tree.Traverse(Tree.root, findAllRay);
             this.result = null;
         }
 
         private TraverseOptions FindAllRay(OctreeNode<List<ISpatialQueryable>> node)
         {
             float? intersection;
-            bool skip = (node != Tree.Root);
+            bool skip = (node != Tree.root);
             if (skip)
             {
-                node.Bounds.Intersects(ref ray, out intersection);
+                node.bounds.Intersects(ref ray, out intersection);
                 if (intersection.HasValue)
                 {
                     skip = false;
@@ -316,12 +315,12 @@ namespace Nine
             if (skip)
                 return TraverseOptions.Skip;
 
-            if (node.Value != null)
+            if (node.value != null)
             {
-                var count = node.Value.Count;
+                var count = node.value.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    var val = node.Value[i];
+                    var val = node.value[i];
                     val.BoundingBox.Intersects(ref ray, out intersection);
                     if (intersection.HasValue)
                     {
@@ -336,14 +335,14 @@ namespace Nine
         {
             this.result = result;
             this.boundingBox = boundingBox;
-            Tree.Traverse(findAllBoundingBox);
+            Tree.Traverse(Tree.root, findAllBoundingBox);
             this.result = null;
         }
 
         private TraverseOptions FindAllBoundingBox(OctreeNode<List<ISpatialQueryable>> node)
         {
             var nodeContainment = ContainmentType.Intersects;
-            boundingBox.Contains(ref node.boundingBox, out nodeContainment);
+            boundingBox.Contains(ref node.bounds, out nodeContainment);
 
             if (nodeContainment == ContainmentType.Disjoint)
                 return TraverseOptions.Skip;
@@ -354,12 +353,12 @@ namespace Nine
                 return TraverseOptions.Skip;
             }
             
-            if (node.Value != null)
+            if (node.value != null)
             {
-                var count = node.Value.Count;
+                var count = node.value.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    var val = node.Value[i];
+                    var val = node.value[i];
                     ContainmentType objectContainment;
                     val.BoundingBox.Contains(ref boundingBox, out objectContainment);
                     if (objectContainment != ContainmentType.Disjoint)
@@ -373,14 +372,14 @@ namespace Nine
         {
             this.result = result;
             this.boundingSphere = boundingSphere;
-            Tree.Traverse(findAllBoundingBox);
+            Tree.Traverse(Tree.root, findAllBoundingBox);
             this.result = null;
         }
 
         private TraverseOptions FindAllBoundingSphere(OctreeNode<List<ISpatialQueryable>> node)
         {
             var nodeContainment = ContainmentType.Intersects;
-            boundingSphere.Contains(ref node.boundingBox, out nodeContainment);
+            boundingSphere.Contains(ref node.bounds, out nodeContainment);
 
             if (nodeContainment == ContainmentType.Disjoint)
                 return TraverseOptions.Skip;
@@ -391,12 +390,12 @@ namespace Nine
                 return TraverseOptions.Skip;
             }
 
-            if (node.Value != null)
+            if (node.value != null)
             {
-                var count = node.Value.Count;
+                var count = node.value.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    var val = node.Value[i];
+                    var val = node.value[i];
                     ContainmentType objectContainment;
                     val.BoundingBox.Contains(ref boundingSphere, out objectContainment);
                     if (objectContainment != ContainmentType.Disjoint)
@@ -410,14 +409,14 @@ namespace Nine
         {
             this.result = result;
             this.boundingFrustum = boundingFrustum;
-            Tree.Traverse(findAllBoundingFrustum);
+            Tree.Traverse(Tree.root, findAllBoundingFrustum);
             this.result = null;
         }
 
         private TraverseOptions FindAllBoundingFrustum(OctreeNode<List<ISpatialQueryable>> node)
         {
             var nodeContainment = ContainmentType.Intersects;
-            boundingFrustum.Contains(ref node.boundingBox, out nodeContainment);
+            boundingFrustum.Contains(ref node.bounds, out nodeContainment);
 
             if (nodeContainment == ContainmentType.Disjoint)
                 return TraverseOptions.Skip;
@@ -428,13 +427,15 @@ namespace Nine
                 return TraverseOptions.Skip;
             }
 
-            if (node.Value != null)
+            if (node.value != null)
             {
-                var count = node.Value.Count;
+                var count = node.value.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    var val = node.Value[i];
-                    if (boundingFrustum.Contains(val.BoundingBox) != ContainmentType.Disjoint)
+                    var val = node.value[i];
+                    var boundingBox = val.BoundingBox;
+                    boundingFrustum.Contains(ref boundingBox, out nodeContainment);
+                    if (nodeContainment != ContainmentType.Disjoint)
                     {
                         result.Add(val);
                     }
@@ -445,26 +446,34 @@ namespace Nine
 
         private void AddAllDesedents(OctreeNode<List<ISpatialQueryable>> node)
         {
-            DesedentsStack.Push(node);
-            
-            while (DesedentsStack.Count > 0)
+            DesedentsStackCount = 0;
+            DesedentsStack[DesedentsStackCount++] = node;
+
+            while (DesedentsStackCount > 0)
             {
-                node = DesedentsStack.Pop();
-                if (node.Value != null)
+                node = DesedentsStack[--DesedentsStackCount];
+                if (node.value != null)
                 {
-                    var count = node.Value.Count;
+                    var count = node.value.Count;
                     for (int i = 0; i < count; ++i)
                     {
-                        result.Add(node.Value[i]);
+                        result.Add(node.value[i]);
                     }
                 }
 
-                var children = node.Children;
-                for (int i = 0; i < children.Count; ++i)
-                    DesedentsStack.Push(children[i]);
+                if (node.hasChildren)
+                {
+                    var count = node.children.Count;
+                    var requiredCapacity = count + DesedentsStackCount;
+                    if (requiredCapacity > DesedentsStack.Length)
+                        Array.Resize(ref DesedentsStack, Math.Max(DesedentsStack.Length * 2, requiredCapacity));
+                    for (int i = 0; i < count; ++i)
+                        DesedentsStack[DesedentsStackCount++] = node.children[i];
+                }
             }
-        }        
-        static Stack<OctreeNode<List<ISpatialQueryable>>> DesedentsStack = new Stack<OctreeNode<List<ISpatialQueryable>>>();
+        }
+        static OctreeNode<List<ISpatialQueryable>>[] DesedentsStack = new OctreeNode<List<ISpatialQueryable>>[64];
+        static int DesedentsStackCount = 0;
         #endregion
     }
     #endregion

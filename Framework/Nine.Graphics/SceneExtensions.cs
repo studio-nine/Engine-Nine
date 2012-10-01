@@ -116,17 +116,17 @@ namespace Nine.Graphics
         {
             scene.AddedToScene += (value) =>
             {
-                var sceneObject = value as ISceneObject;
+                var sceneObject = value as IGraphicsObject;
                 if (sceneObject != null)
                     sceneObject.OnAdded(context);                
             };
             scene.RemovedFromScene += (value) =>
             {
-                var sceneObject = value as ISceneObject;
+                var sceneObject = value as IGraphicsObject;
                 if (sceneObject != null)
                     sceneObject.OnRemoved(context);
             };
-            scene.Traverse<ISceneObject>(sceneObject =>
+            scene.Traverse<IGraphicsObject>(sceneObject =>
             {
                 sceneObject.OnAdded(context);
                 return TraverseOptions.Continue;

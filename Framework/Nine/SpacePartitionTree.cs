@@ -35,12 +35,14 @@ namespace Nine
         /// <summary>
         /// Gets the root SpacePartitionTreeNode of this SpacePartitionTree.
         /// </summary>
-        public TNode Root { get; internal set; }
+        public TNode Root { get { return root; } }
+        internal TNode root;
 
         /// <summary>
         /// Gets the max depth of this SpacePartitionTree.
         /// </summary>
-        public int MaxDepth { get; internal set; }
+        public int MaxDepth { get { return maxDepth; } }
+        internal int maxDepth;
 
         private int nodeExpanded;
         private Predicate<TNode> condition;
@@ -64,11 +66,11 @@ namespace Nine
             if (maxDepth < 0)
                 throw new ArgumentOutOfRangeException("maxDepth");
 
-            Root = root;
-            Root.Depth = 0;
-            Root.Parent = null;
-            Root.Tree = this;
-            MaxDepth = maxDepth;
+            this.root = root;
+            this.root.depth = 0;
+            this.root.parent = null;
+            this.root.Tree = this;
+            this.maxDepth = maxDepth;
         }
 
         /// <summary>
@@ -82,13 +84,13 @@ namespace Nine
             if (node.Tree != this)
                 throw new InvalidOperationException(Strings.NodeMustBeAPartOfTheTree);
 
-            if (node.Depth >= MaxDepth)
+            if (node.depth >= maxDepth)
                 return false;
 
-            if (node.HasChildren)
+            if (node.hasChildren)
                 return true;
 
-            node.HasChildren = true;
+            node.hasChildren = true;
             if (node.childNodes == null || node.childNodes.Length <= 0)
             {
                 node.childNodes = ExpandNode(node);
@@ -97,8 +99,8 @@ namespace Nine
                 foreach (var child in node.childNodes)
                 {
                     child.Tree = this;
-                    child.Depth = node.Depth + 1;
-                    child.Parent = node;
+                    child.depth = node.depth + 1;
+                    child.parent = node;
                 }
             }
             return true;
@@ -120,7 +122,7 @@ namespace Nine
         /// </returns>
         public int ExpandAll(Predicate<TNode> condition)
         {
-            return ExpandAll(Root, condition);
+            return ExpandAll(root, condition);
         }
 
         /// <summary>
@@ -154,7 +156,7 @@ namespace Nine
         /// </summary>
         public void Collapse()
         {
-            Collapse(Root);
+            Collapse(root);
         }
 
         /// <summary>
@@ -191,8 +193,8 @@ namespace Nine
 
             if (collapsedThisNode && condition(target))
             {
-                target.HasChildren = false;
-                target.Value = default(T);
+                target.hasChildren = false;
+                target.value = default(T);
                 return count;
             }
             return 0;
@@ -200,7 +202,6 @@ namespace Nine
 
         /// <summary>
         /// Traverses the tree using Depth First Search (DFS). Compare each node 
-
         /// with the condition to determine whether the traverse should continue.
         /// </summary>
         /// <param name="result">
@@ -208,12 +209,11 @@ namespace Nine
         /// </param>
         public void Traverse(Func<TNode, TraverseOptions> result)
         {
-            Traverse(Root, result);
+            Traverse(root, result);
         }
 
         /// <summary>
         /// Traverses the tree using Depth First Search (DFS) from the target. Compare each node 
-
         /// with the condition to determine whether the traverse should continue.
         /// </summary>
         /// <param name="result">
@@ -224,23 +224,24 @@ namespace Nine
             if (target.Tree != this)
                 throw new InvalidOperationException(Strings.NodeMustBeAPartOfTheTree);
 
-            stack.Clear();
-            stack.Push(target);
+            StackCount = 0;
+            Stack[StackCount++] = target;
 
-            while (stack.Count > 0)
+            while (StackCount > 0)
             {
-                TNode node = stack.Pop();
-
-                var traverseOptions = result(node);
-                
+                TNode node = Stack[--StackCount];
+                var traverseOptions = result(node);                
                 if (traverseOptions == TraverseOptions.Stop)
                     break;
-
-                if (traverseOptions == TraverseOptions.Continue)
+                if (traverseOptions == TraverseOptions.Continue && node.hasChildren)
                 {
-                    for (int i = 0; i < node.Children.Count; ++i)
+                    var count = node.children.Count;
+                    var requiredCpacity = count + StackCount;
+                    if (requiredCpacity > Stack.Length)
+                        Array.Resize(ref Stack, Math.Max(Stack.Length * 2, requiredCpacity));
+                    for (int i = 0; i < count; ++i)
                     {
-                        stack.Push(node.Children[i]);
+                        Stack[StackCount++] = node.children[i];
                     }
                 }
             }
@@ -249,17 +250,18 @@ namespace Nine
         /// <summary>
         /// Stack for enumeration.
         /// </summary>
-        static Stack<TNode> stack = new Stack<TNode>();
+        static TNode[] Stack = new TNode[64];
+        static int StackCount = 0;
 
         public IEnumerator<TNode> GetEnumerator()
         {
-            return GetEnumerator(Root).GetEnumerator();
+            return GetEnumerator(root).GetEnumerator();
         }
 
         IEnumerable<TNode> GetEnumerator(TNode node)
         {
             yield return node;
-            if (node != null && node.HasChildren)
+            if (node != null && node.hasChildren)
             {
                 foreach (var child in node.Children)
                 {
@@ -285,29 +287,37 @@ namespace Nine
         /// <summary>
         /// Gets or sets the value contained in the node.
         /// </summary>
-        public T Value;
+        public T Value 
+        {
+            get { return value; } 
+            set { this.value = value; } 
+        }
+        internal T value;
 
         /// <summary>
         /// Gets a value indicating whether this node contains any child nodes.
         /// </summary>
-        public bool HasChildren { get; internal set; }
+        public bool HasChildren { get { return hasChildren; } }
+        internal bool hasChildren;
 
         /// <summary>
         /// Gets the parent node of the SpacePartitionTree Node.
         /// </summary>
-        public TNode Parent { get; internal set; }
+        public TNode Parent { get { return parent; } }
+        internal TNode parent;
 
         /// <summary>
         /// Gets the depth of this SpacePartitionTree node.
         /// </summary>
-        public int Depth { get; internal set; }
+        public int Depth { get { return depth; } }
+        internal int depth;
 
         /// <summary>
         /// Gets a read-only collection of the 8 child nodes.
         /// </summary>
         public ReadOnlyCollection<TNode> Children
         {
-            get { return HasChildren ? children : Empty; }
+            get { return hasChildren ? children : Empty; }
         }
 
         static ReadOnlyCollection<TNode> Empty = new ReadOnlyCollection<TNode>(new TNode[0]);

@@ -14,7 +14,7 @@
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Primitives")]    
-    public class DynamicPrimitive : Nine.Object, IDrawableObject
+    public class DynamicPrimitive : Nine.Object, IDrawableObject, IDisposable
     {
         /// <summary>
         /// Gets the underlying graphics device.
@@ -27,7 +27,12 @@
         /// <summary>
         /// Gets or sets whether this object is visible.
         /// </summary>
-        public bool Visible { get; set; }
+        public bool Visible
+        {
+            get { return visible; }
+            set { visible = value; }
+        }
+        private bool visible;
 
         /// <summary>
         /// Gets or sets the depth bias of this dynamic primitive.
@@ -49,10 +54,7 @@
         /// <summary>
         /// Gets whether the drawable casts shadow.
         /// </summary>
-        bool IDrawableObject.CastShadow
-        {
-            get { return false; } 
-        }
+        public bool CastShadow { get; set; }
 
         /// <summary>
         /// Provides an optimization hint to skip comparison between primitives.
@@ -570,7 +572,7 @@
             material.EndApply(context);
         }
 
-        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
+        float IDrawableObject.GetDistanceToCamera(ref Vector3 cameraPosition)
         {
             return 0;
         }

@@ -412,7 +412,6 @@ namespace Nine.Components
                             // we only close the output stream if we opened it. 
                             if ((output != null) && (TargetFile != null))
                             {
-                                output.Close();
                                 output.Dispose();
                             }
                         }
@@ -422,7 +421,7 @@ namespace Nine.Components
                             // We may have to adjust the last modified time to compensate
                             // for differences in how the .NET Base Class Library deals
                             // with daylight saving time (DST) versus how the Windows
-                            // filesystem deals with daylight saving time. See 
+                            // file system deals with daylight saving time. See 
                             // http://blogs.msdn.com/oldnewthing/archive/2003/10/24/55413.aspx for some context. 
 
                             // in a nutshell: Daylight savings time rules change regularly.  In
@@ -482,7 +481,6 @@ namespace Nine.Components
                         // we cannot use using() here because in some cases we do not want to Dispose the stream!
                         if ((input != null) && (input != memstream))
                         {
-                            input.Close();
                             input.Dispose();
                         }
                     }

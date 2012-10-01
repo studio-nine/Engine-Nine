@@ -110,7 +110,7 @@ namespace Nine.Graphics.Materials
             if (previousSkinnedMaterial == null || previousTexture != texture)
                 previousTexture = effect.Texture = texture;
 
-            effect.World = World;
+            effect.World = world;
             effect.PreferPerPixelLighting = PreferPerPixelLighting;
 
             if (SamplerState != null)

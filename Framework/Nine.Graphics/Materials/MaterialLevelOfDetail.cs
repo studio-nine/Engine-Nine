@@ -1,5 +1,6 @@
 namespace Nine.Graphics.Materials
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows.Markup;
@@ -20,7 +21,7 @@ namespace Nine.Graphics.Materials
         {
             get { return materialLevels; }
         }
-        private List<Material> materialLevels;
+        internal List<Material> materialLevels;
 
         /// <summary>
         /// Gets the current material level.
@@ -93,7 +94,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Manually updates the current selected material based on level of detail settings.
         /// </summary>
-        public Material UpdateLevelOfDetail(float distanceToEye)
+        public Material UpdateLevelOfDetail(float distanceToCamera)
         {
             var count = materialLevels.Count;
             if (count <= 0)
@@ -102,7 +103,7 @@ namespace Nine.Graphics.Materials
             if (count == 1)
                 return current = materialLevels[0];
 
-            float lod = 1 - (distanceToEye - LevelOfDetailStart) / (LevelOfDetailEnd - LevelOfDetailStart);
+            var lod = 1 - (distanceToCamera - LevelOfDetailStart) / (LevelOfDetailEnd - LevelOfDetailStart);
             lod = MathHelper.Clamp(MaterialQuality * lod, 0, 0.99f);
             return current = materialLevels[(int)(count * lod)];
         }

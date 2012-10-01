@@ -179,7 +179,7 @@ namespace Nine.Graphics
             meshes.Clear();
             if (template != null)
             {
-                var count = template.Count;
+                var count = template.MeshCount;
                 for (int i = 0; i < count; ++i)
                     meshes.Add(new InstancedModelMesh(this, i));
             }
@@ -442,7 +442,7 @@ namespace Nine.Graphics
 #endif
         }
 
-        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
+        float IDrawableObject.GetDistanceToCamera(ref Vector3 cameraPosition)
         {
             return 0;
         }

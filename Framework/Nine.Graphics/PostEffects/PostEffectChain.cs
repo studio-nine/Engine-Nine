@@ -13,12 +13,12 @@
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Effects")]
-    public class PostEffectChain : Pass, ISceneObject
+    public class PostEffectChain : Pass, IGraphicsObject
     {
         /// <summary>
         /// Gets a list of post processing effects contained by this chain.
         /// </summary>
-        public virtual IList<Pass> Effects
+        public IList<Pass> Effects
         {
             get { return effects; }
         }
@@ -94,7 +94,7 @@
         /// <summary>
         /// Called when this scene object is added to the scene.
         /// </summary>
-        void ISceneObject.OnAdded(DrawingContext context)
+        void IGraphicsObject.OnAdded(DrawingContext context)
         {
             context.Passes.Add(this);
             AddDependency(context.MainPass);
@@ -103,7 +103,7 @@
         /// <summary>
         /// Called when this scene object is removed from the scene.
         /// </summary>
-        void ISceneObject.OnRemoved(DrawingContext context)
+        void IGraphicsObject.OnRemoved(DrawingContext context)
         {
             context.Passes.Remove(this);
         }

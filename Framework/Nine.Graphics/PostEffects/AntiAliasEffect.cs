@@ -1,6 +1,7 @@
 ﻿namespace Nine.Graphics.PostEffects
 {
     using System;
+    using System.ComponentModel;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
@@ -20,7 +21,8 @@
         }
 
         [ContentSerializerIgnore]
-        public override Material Material
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new Material Material
         {
             get { return base.Material; }
             set { base.Material = value; }

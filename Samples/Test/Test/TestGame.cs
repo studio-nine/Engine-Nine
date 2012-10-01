@@ -51,7 +51,7 @@ namespace Test
         /// </summary>
         protected override void LoadContent()
         {
-            //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
 
             // Find all test games

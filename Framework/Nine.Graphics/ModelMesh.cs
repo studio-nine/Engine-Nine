@@ -120,27 +120,27 @@ namespace Nine.Graphics
         #region ILightable
         bool IDrawableObject.CastShadow 
         {
-            get { return Model != null && Model.CastShadow; } 
+            get { return model != null && model.CastShadow; } 
         }
 
         int ILightable.MaxReceivedShadows 
         { 
-            get { return Model != null ? Model.MaxReceivedShadows : 0; } 
+            get { return model != null ? model.MaxReceivedShadows : 0; } 
         }
 
         int ILightable.MaxAffectingLights 
         {
-            get { return Model != null ? Model.MaxAffectingLights : 0; }
+            get { return model != null ? model.MaxAffectingLights : 0; }
         }
 
         bool ILightable.MultiPassLightingEnabled 
         { 
-            get { return Model != null && Model.MultiPassLightingEnabled; } 
+            get { return model != null && model.MultiPassLightingEnabled; } 
         }
 
         bool ILightable.MultiPassShadowEnabled
         { 
-            get { return Model != null && Model.MultiPassShadowEnabled; }
+            get { return model != null && model.MultiPassShadowEnabled; }
         }
 
         object ILightable.LightingData { get; set; }
@@ -153,7 +153,7 @@ namespace Nine.Graphics
         internal ModelMesh() { }
 
         /// <summary>
-        /// Attaches this <see cref="ModelMesh"/> to a parent <see cref="Model"/>.
+        /// Attaches this <see cref="ModelMesh"/> to a parent <see cref="model"/>.
         /// </summary>
         internal void Attach(Model model, Microsoft.Xna.Framework.Graphics.ModelMesh mesh, Microsoft.Xna.Framework.Graphics.ModelMeshPart part)
         {
@@ -183,26 +183,26 @@ namespace Nine.Graphics
         /// </summary>
         public bool OnAddedToView(DrawingContext context)
         {
+            if (!(visible && model != null && model.visible))
+                return false;
+
             model.insideViewFrustum = true;
-            if ((materialForRendering = material) == null)
-            {
-                var position = new Vector3();
-                position.X = worldTransform.M41;
-                position.Y = worldTransform.M42;
-                position.Z = worldTransform.M43;
 
-                Vector3.Distance(ref context.matrices.cameraPosition, ref position, out distanceToCamera);
+            var xx = (context.matrices.cameraPosition.X - worldTransform.M41);
+            var yy = (context.matrices.cameraPosition.Y - worldTransform.M42);
+            var zz = (context.matrices.cameraPosition.Z - worldTransform.M43);
 
-                materialForRendering = materialLevels.UpdateLevelOfDetail(distanceToCamera) ??
-                    model.material ?? model.MaterialLevels.UpdateLevelOfDetail(distanceToCamera);
-            }             
-            return visible && model != null && model.visible;
+            distanceToCamera = (float)Math.Sqrt(xx * xx + yy * yy + zz * zz);
+            
+            materialForRendering = material ?? materialLevels.UpdateLevelOfDetail(distanceToCamera) ??
+                             model.material ?? model.MaterialLevels.UpdateLevelOfDetail(distanceToCamera);
+            return true;
         }
 
         /// <summary>
         /// Gets the distance from the position of the object to the current camera.
         /// </summary>
-        public float GetDistanceToCamera(Vector3 cameraPosition)
+        public float GetDistanceToCamera(ref Vector3 cameraPosition)
         {
             // This method will always be called after OnAddedToView, so just use the result
             // calculated above.
@@ -261,11 +261,11 @@ namespace Nine.Graphics
         internal bool ApplySkinTransform(Material material)
         {
             var skinned = material.Find<IEffectSkinned>();
-            if (skinned != null && (skinned.SkinningEnabled = Model.IsSkinned))
+            if (skinned != null && (skinned.SkinningEnabled = model.IsSkinned))
             {
                 var skinningEnabled = skinned.SkinningEnabled;
                 if (skinningEnabled)
-                    skinned.SetBoneTransforms(Model.SkinTransforms);
+                    skinned.SetBoneTransforms(model.SkinTransforms);
                 return skinningEnabled;
             }
             return false;

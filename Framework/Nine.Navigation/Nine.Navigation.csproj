@@ -72,6 +72,7 @@
     <Compile Include="Steering\BasicSteeringBehaviors.cs" />
     <Compile Include="Steering\BoundAvoidanceBehavior.cs" />
     <Compile Include="Steering\FlockingBehaviors.cs" />
+    <Compile Include="Steering\Math2D.cs" />
     <Compile Include="Steering\Steerable.cs" />
     <Compile Include="Steering\SteerableAvoidanceBehavior.cs" />
     <Compile Include="Steering\SteeringBehavior.cs" />

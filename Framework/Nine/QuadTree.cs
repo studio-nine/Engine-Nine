@@ -19,7 +19,7 @@ namespace Nine
         /// <summary>
         /// Gets the bounds of the QuadTree node.
         /// </summary>
-        public BoundingRectangle Bounds { get { return Root.Bounds; } }
+        public BoundingRectangle Bounds { get { return root.Bounds; } }
 
         /// <summary>
         /// For serialization.
@@ -30,7 +30,7 @@ namespace Nine
         /// Creates a new Octree with the specified boundary.
         /// </summary>
         public QuadTree(BoundingRectangle bounds, int maxDepth)
-            : base(new QuadTreeNode<T>() { Bounds = bounds }, maxDepth)
+            : base(new QuadTreeNode<T>() { bounds = bounds }, maxDepth)
         {
 
         }
@@ -49,7 +49,7 @@ namespace Nine
             for (int i = 0; i < ChildCount; ++i)
             {
                 var child = new QuadTreeNode<T>();
-                child.Bounds = new BoundingRectangle
+                child.bounds = new BoundingRectangle
                 {
                     Min = new Vector2()
                     {
@@ -76,7 +76,11 @@ namespace Nine
         /// <summary>
         /// Gets the bounds of the QuadTree node.
         /// </summary>
-        public BoundingRectangle Bounds { get; internal set; }
+        public BoundingRectangle Bounds 
+        {
+            get { return bounds; }
+        }
+        internal BoundingRectangle bounds;
 
         internal QuadTreeNode() { }
     }
@@ -88,13 +92,13 @@ namespace Nine
             if (existingInstance == null)
                 existingInstance = new QuadTree<T>();
 
-            existingInstance.MaxDepth = input.ReadInt32();
-            existingInstance.Root = input.ReadRawObject<QuadTreeNode<T>>(new QuadTreeNodeReader<T>());
+            existingInstance.maxDepth = input.ReadInt32();
+            existingInstance.root = input.ReadRawObject<QuadTreeNode<T>>(new QuadTreeNodeReader<T>());
 
             // Fix reference
             Stack<QuadTreeNode<T>> stack = new Stack<QuadTreeNode<T>>();
 
-            stack.Push(existingInstance.Root);
+            stack.Push(existingInstance.root);
 
             while (stack.Count > 0)
             {
@@ -102,11 +106,11 @@ namespace Nine
 
                 node.Tree = existingInstance;
 
-                if (node.HasChildren)
+                if (node.hasChildren)
                 {
                     foreach (QuadTreeNode<T> child in node.Children)
                     {
-                        child.Parent = node;
+                        child.parent = node;
                         stack.Push(child);
                     }
                 }
@@ -123,12 +127,12 @@ namespace Nine
             if (existingInstance == null)
                 existingInstance = new QuadTreeNode<T>();
 
-            existingInstance.HasChildren = input.ReadBoolean();
-            existingInstance.Depth = input.ReadInt32();
-            existingInstance.Bounds = input.ReadObject<BoundingRectangle>();
-            existingInstance.Value = input.ReadObject<T>();
+            existingInstance.hasChildren = input.ReadBoolean();
+            existingInstance.depth = input.ReadInt32();
+            existingInstance.bounds = input.ReadObject<BoundingRectangle>();
+            existingInstance.value = input.ReadObject<T>();
 
-            if (existingInstance.HasChildren)
+            if (existingInstance.hasChildren)
             {
                 existingInstance.childNodes = input.ReadObject<QuadTreeNode<T>[]>();
                 existingInstance.children = new ReadOnlyCollection<QuadTreeNode<T>>(existingInstance.childNodes);

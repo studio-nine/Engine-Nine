@@ -52,13 +52,13 @@
             {
                 collision.CollisionTree.ExpandAll((o) =>
                 {
-                    bool contains = o.Bounds.Contains(new Triangle(
+                    bool contains = o.bounds.Contains(new Triangle(
                                 positions[indices[i]],
                                 positions[indices[i + 1]],
                                 positions[indices[i + 2]])) != ContainmentType.Disjoint;
                     
                     if (contains)
-                        o.Value = true;
+                        o.value = true;
 
                     return contains;
                 });

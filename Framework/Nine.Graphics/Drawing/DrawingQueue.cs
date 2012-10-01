@@ -55,7 +55,7 @@ namespace Nine.Graphics.Drawing
             for (var i = 0; i < Count; ++i)
             {
                 var entry = Elements[i];
-                entry.ViewDistanceSq = entry.Drawable.GetDistanceToCamera(cameraPosition);
+                entry.ViewDistanceSq = entry.Drawable.GetDistanceToCamera(ref cameraPosition);
             }
 
             Array.Sort(Elements, 0, Count, viewDistanceSortComparer);
@@ -73,7 +73,9 @@ namespace Nine.Graphics.Drawing
         {
             public int Compare(DrawingQueueEntry x, DrawingQueueEntry y)
             {
-                return y.ViewDistanceSq.CompareTo(x.ViewDistanceSq);
+                if (x.ViewDistanceSq < y.ViewDistanceSq) return 1;
+                if (x.ViewDistanceSq > y.ViewDistanceSq) return -1;
+                return 0;
             }
         }
     }

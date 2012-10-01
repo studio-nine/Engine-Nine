@@ -9,7 +9,7 @@ namespace Nine.Graphics
     /// Defines an area of fog.
     /// </summary>
     [ContentSerializable]
-    public class Fog : Object, ISceneObject
+    public class Fog : Object, IGraphicsObject
     {
         public float FogStart { get; set; }
         public float FogEnd { get; set; }
@@ -29,7 +29,7 @@ namespace Nine.Graphics
             FogColor = Constants.FogColor;
         }
 
-        void ISceneObject.OnAdded(DrawingContext context)
+        void IGraphicsObject.OnAdded(DrawingContext context)
         {
             this.context = context;
             this.context.FogStart = FogStart;
@@ -37,7 +37,7 @@ namespace Nine.Graphics
             this.context.FogColor = FogColor;
         }
 
-        void ISceneObject.OnRemoved(DrawingContext context)
+        void IGraphicsObject.OnRemoved(DrawingContext context)
         {
             this.context = null;
         }

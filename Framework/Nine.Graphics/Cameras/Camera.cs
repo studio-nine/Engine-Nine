@@ -9,7 +9,7 @@ namespace Nine.Graphics.Cameras
     /// <summary>
     /// Defines a camera that can be attacked to a <see cref="Transformable"/>.
     /// </summary>
-    public class Camera : Transformable, ICamera, ISceneObject
+    public class Camera : Transformable, ICamera, IGraphicsObject
     {
         #region View
         private bool viewMatrixNeedsUpdate;
@@ -133,13 +133,13 @@ namespace Nine.Graphics.Cameras
             projectionMatrixNeedsUpdate = true;
         }
 
-        void ISceneObject.OnAdded(DrawingContext context)
+        void IGraphicsObject.OnAdded(DrawingContext context)
         {
             if (context.camera == null)
                 context.camera = this;
         }
 
-        void ISceneObject.OnRemoved(DrawingContext context)
+        void IGraphicsObject.OnRemoved(DrawingContext context)
         {
             if (context.camera == this)
                 context.camera = null;

@@ -104,41 +104,5 @@ namespace Nine
             OnTransformChanged();
         }
         #endregion
-        /*
-        #region Methods
-        /// <summary>
-        /// Moves the position of this transformable by the vector offset provided along world axes.
-        /// </summary>
-        public void Move(Vector3 translate)
-        {
-            this.position = this.position + translate;
-            NotifyTransformChanged();
-        }
-
-        /// <summary>
-        /// Moves the position of this transformable by the vector offset provided along it's own axes (relative to orientation).
-        /// </summary>
-        public void MoveRelative(Vector3 translate)
-        {
-            // Transform the axes of the relative vector by camera's local axes
-            Vector3 trans = MultiplyQuaternion(orientation, translate);
-
-            this.position = this.position + trans; 
-            NotifyTransformChanged();
-        }
-
-        /// <summary>
-        /// Rotate the transformable around an arbitrary axis.
-        /// </summary>
-        /// <param name="axis"></param>
-        /// <param name="angle"></param>
-        public void Rotate(Vector3 axis, float angle)
-        {
-            Quaternion q;
-            Quaternion.CreateFromAxisAngle(ref axis, angle, out q);
-            Rotate(q);
-        }
-        #endregion
-         */
     }
 }

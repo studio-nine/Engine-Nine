@@ -14,12 +14,12 @@
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Passes")]
-    public class PostEffectGroup : Pass, ISceneObject, IPostEffect
+    public class PostEffectGroup : Pass, IGraphicsObject, IPostEffect
     {
         /// <summary>
         /// Gets a list of post processing chains contained by this group.
         /// </summary>
-        public virtual IList<PostEffectChain> Passes
+        public IList<PostEffectChain> Passes
         {
             get { return passes; }
         }
@@ -43,7 +43,7 @@
         /// Gets or sets the material to combine the composite the result
         /// of each contained pass.
         /// </summary>
-        public virtual Material Material { get; set; }
+        public Material Material { get; set; }
 
         private FastList<RenderTarget2D> passResults = new FastList<RenderTarget2D>();
         private FastList<PostEffect> lastEffects = new FastList<PostEffect>();
@@ -88,7 +88,7 @@
         /// <summary>
         /// Called when this scene object is added to the scene.
         /// </summary>
-        void ISceneObject.OnAdded(DrawingContext context)
+        void IGraphicsObject.OnAdded(DrawingContext context)
         {
             context.Passes.Add(this);
             AddDependency(context.MainPass);
@@ -97,7 +97,7 @@
         /// <summary>
         /// Called when this scene object is removed from the scene.
         /// </summary>
-        void ISceneObject.OnRemoved(DrawingContext context)
+        void IGraphicsObject.OnRemoved(DrawingContext context)
         {
             context.Passes.Remove(this);
         }

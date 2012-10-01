@@ -11,8 +11,8 @@
     {
         protected override void Write(ContentWriter output, QuadTree<T> value)
         {
-            output.Write(value.MaxDepth);
-            output.WriteRawObject<QuadTreeNode<T>>(value.Root, new QuadTreeNodeWriter<T>());
+            output.Write(value.maxDepth);
+            output.WriteRawObject<QuadTreeNode<T>>(value.root, new QuadTreeNodeWriter<T>());
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)
@@ -31,12 +31,12 @@
     {
         protected override void Write(ContentWriter output, QuadTreeNode<T> value)
         {
-            output.Write(value.HasChildren);
-            output.Write(value.Depth);
+            output.Write(value.hasChildren);
+            output.Write(value.depth);
             output.WriteObject<BoundingRectangle>(value.Bounds);
-            output.WriteObject<T>(value.Value);
+            output.WriteObject<T>(value.value);
 
-            if (value.HasChildren)
+            if (value.hasChildren)
                 output.WriteObject(value.Children.ToArray());
         }
 
@@ -58,8 +58,8 @@
     {
         protected override void Write(ContentWriter output, Octree<T> value)
         {
-            output.Write(value.MaxDepth);
-            output.WriteRawObject<OctreeNode<T>>(value.Root, new OctreeNodeWriter<T>());
+            output.Write(value.maxDepth);
+            output.WriteRawObject<OctreeNode<T>>(value.root, new OctreeNodeWriter<T>());
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)
@@ -78,12 +78,12 @@
     {
         protected override void Write(ContentWriter output, OctreeNode<T> value)
         {
-            output.Write(value.HasChildren);
-            output.Write(value.Depth);
-            output.WriteObject<BoundingBox>(value.Bounds);
-            output.WriteObject<T>(value.Value);
+            output.Write(value.hasChildren);
+            output.Write(value.depth);
+            output.WriteObject<BoundingBox>(value.bounds);
+            output.WriteObject<T>(value.value);
 
-            if (value.HasChildren)
+            if (value.hasChildren)
                 output.WriteObject(value.Children.ToArray());
         }
 

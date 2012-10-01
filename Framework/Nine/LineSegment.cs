@@ -27,7 +27,14 @@ namespace Nine
         /// </summary>
         public Vector2 Normal
         {
-            get { return Math2D.Rotate90DegreesCcw(Vector2.Normalize(End - Start)); }
+            get
+            {
+                var result = new Vector2();
+                result.X = Start.Y - End.Y;
+                result.Y = End.X - Start.X;
+                result.Normalize();
+                return result;
+            }
         }
         
         /// <summary>
@@ -35,7 +42,13 @@ namespace Nine
         /// </summary>
         public Vector2 Center
         {
-            get { return (Start + End) * 0.5f; }
+            get
+            {
+                var result = new Vector2();
+                result.X = 0.5f * (Start.X + End.X);
+                result.Y = 0.5f * (Start.Y + End.Y);
+                return result;
+            }
         }
 
         /// <summary>
@@ -52,7 +65,9 @@ namespace Nine
         /// </summary>
         public float Length()
         {
-            return Vector2.Distance(Start, End);
+            var xx = Start.X - End.X;
+            var yy = Start.Y - End.Y;
+            return (float)Math.Sqrt(xx * xx + yy * yy);
         }
 
         /// <summary>
@@ -60,7 +75,9 @@ namespace Nine
         /// </summary>
         public float LengthSquared()
         {
-            return Vector2.DistanceSquared(Start, End);
+            var xx = Start.X - End.X;
+            var yy = Start.Y - End.Y;
+            return xx * xx + yy * yy;
         }
 
         /// <summary>
@@ -68,7 +85,7 @@ namespace Nine
         /// </summary>
         public void Offset(float length)
         {
-            Vector2 normal = Normal;
+            var normal = Normal;
 
             Start += normal * length;
             End += normal * length;

@@ -3004,7 +3004,8 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.ParticleEffects.BoxEmitter value)
         {
-            WriteObject(output, value, "Box", value.Box);
+            output.Write(value.Min);
+            output.Write(value.Max);
             output.Write(value.Spread);
             output.Write(value.Enabled);
             output.Write(value.EmitCount);

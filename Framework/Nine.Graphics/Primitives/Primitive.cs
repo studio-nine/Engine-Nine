@@ -24,7 +24,12 @@
         /// <summary>
         /// Gets or sets whether the drawable is visible.
         /// </summary>
-        public bool Visible { get; set; }
+        public bool Visible
+        {
+            get { return visible; }
+            set { visible = value; }
+        }
+        private bool visible;
 
         /// <summary>
         /// Gets whether the object casts shadow.
@@ -315,19 +320,27 @@
         /// </summary>
         public bool OnAddedToView(DrawingContext context)
         {
+            if (!visible)
+                return false;
+
             InsideViewFrustum = true;
 
-            var position = AbsoluteTransform.Translation;
-            Vector3.Distance(ref context.matrices.cameraPosition, ref position, out distanceToCamera);
+            var worldTransform = AbsoluteTransform;
+
+            var xx = (context.matrices.cameraPosition.X - worldTransform.M41);
+            var yy = (context.matrices.cameraPosition.Y - worldTransform.M42);
+            var zz = (context.matrices.cameraPosition.Z - worldTransform.M43);
+
+            distanceToCamera = (float)Math.Sqrt(xx * xx + yy * yy + zz * zz);
 
             materialForRendering = Material ?? materialLevels.UpdateLevelOfDetail(distanceToCamera);
-            return Visible;
+            return true;
         }
 
         /// <summary>
         /// Gets the distance from the position of the object to the current camera.
         /// </summary>
-        public float GetDistanceToCamera(Vector3 cameraPosition)
+        public float GetDistanceToCamera(ref Vector3 cameraPosition)
         {
             return distanceToCamera;
         }
@@ -337,7 +350,7 @@
         /// </summary>
         public void Draw(DrawingContext context, Material material)
         {
-            material.World = AbsoluteTransform;
+            material.world = AbsoluteTransform;
             material.BeginApply(context);
 
             if (needsRebuild)
@@ -347,13 +360,13 @@
 
             if (cachedPrimitive.IndexBuffer != null)
             {
-                GraphicsDevice.Indices = cachedPrimitive.IndexBuffer;
-                GraphicsDevice.DrawIndexedPrimitives(primitiveType, 0, 0,
+                context.graphics.Indices = cachedPrimitive.IndexBuffer;
+                context.graphics.DrawIndexedPrimitives(primitiveType, 0, 0,
                     cachedPrimitive.VertexBuffer.VertexCount, 0, cachedPrimitive.PrimitiveCount);
             }
             else
             {
-                GraphicsDevice.DrawPrimitives(primitiveType, 0, cachedPrimitive.PrimitiveCount);
+                context.graphics.DrawPrimitives(primitiveType, 0, cachedPrimitive.PrimitiveCount);
             }
 
             material.EndApply(context);
@@ -402,7 +415,7 @@
         #endregion
 
         #region ISupportInstancing
-        int ISupportInstancing.Count
+        int ISupportInstancing.MeshCount
         {
             get { return 1; }
         }

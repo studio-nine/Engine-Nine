@@ -45,9 +45,9 @@
 
         private TraverseOptions TraverseContains(OctreeNode<bool> node)
         {
-            if (node.Value && node.Bounds.Contains(point) == ContainmentType.Contains)
+            if (node.value && node.bounds.Contains(point) == ContainmentType.Contains)
             {
-                if (!node.HasChildren)
+                if (!node.hasChildren)
                 {
                     contains = true;
                     return TraverseOptions.Stop;
@@ -72,7 +72,7 @@
 
         private TraverseOptions TraverseIntersects(OctreeNode<bool> node)
         {
-            if (node.Value && (distance = node.Bounds.Intersects(ray)) != null)
+            if (node.value && (distance = node.bounds.Intersects(ray)) != null)
             {
                 if (neareastDistance == null)
                     neareastDistance = distance.Value;
