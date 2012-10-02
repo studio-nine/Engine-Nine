@@ -55,7 +55,6 @@
                 throw new InvalidOperationException();
 
             bool needLocalTexture = false;
-
             if (needLocalTexture = (currentFrame == null))
             {
                 PrepareRenderTarget(context, InputTexture, null);
@@ -65,7 +64,7 @@
             // Disable the adoption effect when we don't have a valid last frame texture
             // or when the adoption effect has been suspended for several frames.
 #if SILVERLIGHT
-                if (lastFrame == null || lastFrame.IsDisposed)
+            if (lastFrame == null || lastFrame.IsDisposed)
 #else
             if (lastFrame == null || lastFrame.IsDisposed || lastFrame.IsContentLost)
 #endif

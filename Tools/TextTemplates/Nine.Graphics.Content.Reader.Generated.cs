@@ -384,11 +384,7 @@ namespace Nine.Graphics
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.AnimationCullingEnabled = input.ReadBoolean();
             existingInstance.UseModelTextures = input.ReadBoolean();
-            existingInstance.MultiPassLightingEnabled = input.ReadBoolean();
-            existingInstance.MaxAffectingLights = input.ReadInt32();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.MaxReceivedShadows = input.ReadInt32();
-            existingInstance.MultiPassShadowEnabled = input.ReadBoolean();
             existingInstance.OrientedBoundingBox = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.BoundingBox>>();
             existingInstance.SharedSkeleton = input.ReadObject<Nine.Graphics.Skeleton>();
             {
@@ -2642,6 +2638,7 @@ namespace Nine.Graphics.Primitives
             }
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.DepthBias = input.ReadSingle();
+            existingInstance.CastShadow = input.ReadBoolean();
             existingInstance.Name = input.ReadString();
             existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
             return existingInstance;

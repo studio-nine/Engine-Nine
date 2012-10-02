@@ -6,13 +6,13 @@ namespace TutorialData
     using Nine;
     using Nine.Physics;
 
-    public class ExamplePhysicsController : Component, Nine.IUpdateable
+    public class ExamplePhysicsController : Component
     {
         public float Speed { get; set; }
         public Vector3 ResetPosition { get; set; }
         public Keys ResetKey { get; set; }
 
-        public void Update(TimeSpan elapsedTime)
+        protected override void Update(TimeSpan elapsedTime)
         {
             var Body = Parent.Find<RigidBody>();
             var keyboardState = Keyboard.GetState();

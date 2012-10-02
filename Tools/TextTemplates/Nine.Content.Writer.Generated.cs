@@ -429,14 +429,7 @@ namespace Nine.Content.Pipeline.Animations
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.AnimationPlayer value)
         {
-            {
-                output.Write(checked((ushort)value.Animations.Count));
-                foreach (var pair in value.Animations)
-                {
-                    output.WriteObject(pair.Key);
-                    output.WriteObject(pair.Value);
-                }
-            }
+            WriteObject(output, value, "Animations", value.Animations);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)

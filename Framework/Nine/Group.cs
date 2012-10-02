@@ -315,7 +315,7 @@ namespace Nine
 
         #region Find
         /// <summary>
-        /// Performs a depth first search and finds the first desendant transformables with the specified name.
+        /// Performs a depth first search and finds the first descendant transformable with the specified name.
         /// </summary>
         public T FindName<T>(string name) where T : class
         {
@@ -354,9 +354,9 @@ namespace Nine
         /// <summary>
         /// Finds the root object in the scene hierarchy.
         /// </summary>
-        public object FindRoot()
+        public T FindRoot<T>() where T : class
         {
-            return ContainerTraverser.FindRootContainer(this);
+            return ContainerTraverser.FindRootContainer(this) as T;
         }
 
         /// <summary>
@@ -391,7 +391,7 @@ namespace Nine
         /// </summary>
         public Group()
         {
-            children = new NotificationCollection<object>();
+            children = new NotificationCollection<object>() { EnableManipulationWhenEnumerating = true };
             children.Sender = this;
             children.Added += Child_Added;
             children.Removed += Child_Removed;
@@ -400,11 +400,16 @@ namespace Nine
         /// <summary>
         /// Initializes a new instance of the <see cref="Group"/> class.
         /// </summary>
+        public Group(params object[] children) : this()
+        {
+            this.children.AddRange(children);
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Group"/> class.
+        /// </summary>
         public Group(IServiceProvider serviceProvider) : this()
         {
-            if (serviceProvider == null)
-                throw new ArgumentNullException("serviceProvider");
-
             this.serviceProvider = serviceProvider;
         }
         #endregion
@@ -415,10 +420,9 @@ namespace Nine
         /// </summary>
         public virtual void Update(TimeSpan elapsedTime)
         {
-            var count = children.Count;
-            for (int i = 0; i < count; ++i)
+            foreach (var child in children)
             {
-                var updateable = children[i] as Nine.IUpdateable;
+                var updateable = child as Nine.IUpdateable;
                 if (updateable != null)
                     updateable.Update(elapsedTime);
             }

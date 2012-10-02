@@ -556,11 +556,7 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Visible);
             output.Write(value.AnimationCullingEnabled);
             output.Write(value.UseModelTextures);
-            output.Write(value.MultiPassLightingEnabled);
-            output.Write(value.MaxAffectingLights);
             output.Write(value.CastShadow);
-            output.Write(value.MaxReceivedShadows);
-            output.Write(value.MultiPassShadowEnabled);
             output.WriteObject(value.OrientedBoundingBox);
             WriteObject(output, value, "SharedSkeleton", value.SharedSkeleton);
             {
@@ -4331,6 +4327,7 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Visible);
             output.Write(value.DepthBias);
+            output.Write(value.CastShadow);
             output.Write(value.Name ?? string.Empty);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }

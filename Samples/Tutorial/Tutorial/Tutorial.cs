@@ -25,8 +25,8 @@ namespace Tutorial
 
             graphics.PreferMultiSampling = true;
             graphics.SynchronizeWithVerticalRetrace = false;
-            //graphics.PreferredBackBufferWidth = 1280;
-            //graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 800;
 
             Window.AllowUserResizing = true;
 #endif
@@ -53,6 +53,8 @@ namespace Tutorial
             // is driven by windows messages on Windows.
             // This can avoid the event missing problem for Xna pulled input model when frame rate is low.
             Components.Add(new InputComponent(Window.Handle));
+
+            Components.Add(new ScreenshotCapturer(GraphicsDevice));
 
             // Loads the names of tutorial files
             tutorials = Content.Load<string[]>("Tutorials/Tutorials");

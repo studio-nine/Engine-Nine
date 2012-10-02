@@ -18,11 +18,11 @@ namespace TutorialData
     /// using Xaml, and then compiled with the Xna content compiler into the binary .xnb format, and
     /// finally be read through the content manager.
     /// </summary>
-    public class ExampleController : Component, Nine.IUpdateable
+    public class ExampleController : Component
     {
         public float Speed { get; set; }
 
-        public void Update(TimeSpan elapsedTime)
+        protected override void Update(TimeSpan elapsedTime)
         {
             var transform = Parent.Transform;
 

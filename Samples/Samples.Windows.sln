@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorialData", "Tutorial\Tu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test\Test.csproj", "{4E03B037-D845-4586-8A65-E23347CDE72F}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TestContent", "Test\TestContent\TestContent.contentproj", "{CD35B919-F306-47C9-84A8-B970FE1B2696}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestContent", "Test\TestContent\TestContent.contentproj", "{CD35B919-F306-47C9-84A8-B970FE1B2696}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

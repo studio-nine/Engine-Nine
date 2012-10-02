@@ -31,7 +31,7 @@ namespace Nine
     /// Defines a basic component that can be added to a parent game object.
     /// </summary>
     [ContentSerializable]
-    public abstract class Component : Nine.Object, IComponent
+    public abstract class Component : Nine.Object, IUpdateable, IComponent
     {
         #region Properties
         /// <summary>
@@ -60,18 +60,35 @@ namespace Nine
                     if (group == null)
                         throw new InvalidOperationException("This object can only be attached to a Group");
                     parent = group;
-                    OnAdded(parent);
+                    wasAdded = true;
                 }
                 else
                 {
                     if (parent == null)
                         throw new InvalidOperationException("This object does not belongs to the specified container");
+                    if (wasAdded)
+                        OnAdded(parent);
                     OnRemoved(parent);
                     parent = null;
                 }
             }
         }
         private Group parent;
+        private bool wasAdded;
+
+        void IUpdateable.Update(TimeSpan elapsedTime)
+        {
+            if (parent != null)
+            {
+                if (wasAdded)
+                {
+                    OnAdded(parent);
+                    wasAdded = false;
+                }
+                Update(elapsedTime);
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Called when this component is added to a parent group.
@@ -82,7 +99,11 @@ namespace Nine
         /// Called when this component is removed from a parent group.
         /// </summary>
         protected virtual void OnRemoved(Group parent) { }
-        #endregion
+
+        /// <summary>
+        /// Updates the internal state of this component.
+        /// </summary>
+        protected virtual void Update(TimeSpan elapsedTime) { }
     }
 
     static class ContainerTraverser
@@ -134,7 +155,7 @@ namespace Nine
             if (targetObject != null)
                 result.Add(targetObject);
 
-            var targetContainer = targetObject as IContainer;
+            var targetContainer = target as IContainer;
             if (targetContainer == null)
                 return;
 

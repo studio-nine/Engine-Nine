@@ -118,33 +118,29 @@ namespace Nine.Graphics
         public bool UseModelTextures { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether multi-pass lighting is enabled.
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool MultiPassLightingEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets the max affecting lights.
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public int MaxAffectingLights { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether this model casts shadow.
         /// </summary>
         public bool CastShadow { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether multi-pass lighting is enabled.
+        /// </summary>
+        internal bool MultiPassLightingEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the max affecting lights.
+        /// </summary>
+        internal int MaxAffectingLights;
+
+        /// <summary>
         /// Gets or sets the max received shadows.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public int MaxReceivedShadows { get; set; }
+        internal int MaxReceivedShadows;
 
         /// <summary>
         /// Gets or sets a value indicating whether multi-pass shadowing is enabled.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool MultiPassShadowEnabled { get; set; }
+        internal bool MultiPassShadowEnabled;
         #endregion
 
         #region BoundingBox
@@ -200,7 +196,7 @@ namespace Nine.Graphics
         [ContentSerializerIgnore]
         public AnimationPlayer Animations 
         {
-            get { return animations; }
+            get { return animations ?? (animations = new AnimationPlayer()); }
         }
         private AnimationPlayer animations;
 

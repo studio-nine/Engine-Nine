@@ -20,11 +20,11 @@ namespace Test
             //       of the content processor to Silverlight.
             var shadowMaterial = content.Load<Material>("Materials/Shadow");
 
-            //((Nine.Graphics.Drawing.DrawingPass)scene.GetDrawingContext(graphics).MainPass.Passes[0]).MaterialUsage = MaterialUsage.Depth;
+            //scene.GetDrawingContext(graphics).MainPass.MaterialUsage = MaterialUsage.Depth;
 
             //scene.Add(new Nine.Graphics.Cameras.BirdEyeCamera(graphics));
             scene.Add(new Surface(graphics, 1, 256, 256, 32) { Material = shadowMaterial });
-            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = new Vector3(-1, -1, -1), CastShadow = true, ShadowDistance = 10 });
+            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = new Vector3(-1, -1, -1), CastShadow = true });
             //scene.Add(new FullScreenQuad(graphics) { Material = new DebugMaterial(graphics) { SamplerState = SamplerState.PointClamp, TextureUsage = TextureUsage.ShadowMap } });
             //scene.Add(new Sprite(graphics) { Size = Vector2.One * 128, Material = new DebugMaterial(graphics) { SamplerState = SamplerState.PointClamp, TextureUsage = TextureUsage.ShadowMap } });
             //scene.Add(new Sprite(graphics) { Size = Vector2.One * 128, Material = new BasicMaterial(graphics) { SamplerState = SamplerState.PointClamp, Texture = content.Load<Texture2D>("Textures/Bits") } });

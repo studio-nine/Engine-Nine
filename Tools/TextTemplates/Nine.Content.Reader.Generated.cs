@@ -241,13 +241,7 @@ namespace Nine.Animations
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new AnimationPlayer();
-            {
-                var count = input.ReadUInt16();
-                for (var i = 0; i < count; ++i)
-                    existingInstance.Animations.Add(
-                        input.ReadObject<System.String>(),
-                        input.ReadObject<Nine.Animations.IAnimation>());
-            }
+            existingInstance.Animations = input.ReadObject<System.Collections.Generic.IDictionary<System.String, Nine.Animations.IAnimation>>();
             return existingInstance;
         }
     }

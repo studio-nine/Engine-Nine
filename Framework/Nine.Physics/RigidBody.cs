@@ -13,7 +13,7 @@ namespace Nine.Physics
     /// Defines a rigid body in the physics simulation.
     /// </summary>
     [ContentProperty("Collider")]
-    public class RigidBody : Component, ISpaceObject, Nine.IUpdateable
+    public class RigidBody : Component, ISpaceObject
     {
         #region Properties
         /// <summary>
@@ -174,7 +174,7 @@ namespace Nine.Physics
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public void Update(TimeSpan elapsedTime)
+        protected override void Update(TimeSpan elapsedTime)
         {
             Parent.Transform = collider.entity.WorldTransform;
         }

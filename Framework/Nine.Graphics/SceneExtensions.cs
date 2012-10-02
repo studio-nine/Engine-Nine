@@ -38,7 +38,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the drawing context of the specified scene.
         /// </summary>
-        public static DrawingContext GetDrawingContext(Scene scene)
+        private static DrawingContext GetDrawingContextInternal(Scene scene)
         {
             if (scene == null)
                 throw new ArgumentNullException("scene");
@@ -46,6 +46,16 @@ namespace Nine.Graphics
             DrawingContext value = null;
             AttachablePropertyServices.TryGetProperty(scene, DrawingContextProperty, out value);
             return value;
+        }
+
+        /// <summary>
+        /// Gets the drawing context of the specified scene.
+        /// Creates a default drawing context if no drawing context is currently bound
+        /// to the scene.
+        /// </summary>
+        public static DrawingContext GetDrawingContext(this Scene scene)
+        {
+            return GetDrawingContext(scene, GetGraphicsDevice(scene));
         }
 
         /// <summary>
@@ -60,9 +70,9 @@ namespace Nine.Graphics
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            var context = GetDrawingContext(scene);
+            var context = GetDrawingContextInternal(scene);
             if (context == null)
-                SetDrawingContext(scene, context = new DrawingContext(graphics, scene));
+                SetDrawingContext(scene, context = new DrawingContext(graphics, (ISpatialQuery)scene));
             else if (context.graphics != graphics)
                 throw new ArgumentException("graphics");
 
@@ -80,7 +90,7 @@ namespace Nine.Graphics
             if (scene == null)
                 throw new ArgumentNullException("scene");
 
-            var currentContext = GetDrawingContext(scene);
+            var currentContext = GetDrawingContextInternal(scene);
             if (currentContext != null && currentContext != value)
                 throw new InvalidOperationException();
 

@@ -80,8 +80,8 @@ namespace Nine.Graphics
 
         /// <summary>
         /// Gets or sets a value that is appended to the computed bounding box to
-        /// compensate scale & rotation loss, since the auto computed bounding box 
-        /// does not care about the scale & rotation of instance transforms.
+        /// compensate scale and rotation loss, since the auto computed bounding box 
+        /// does not care about the scale and rotation of instance transforms.
         /// </summary>
         public Vector3 BoundingBoxPadding { get; set; }
 

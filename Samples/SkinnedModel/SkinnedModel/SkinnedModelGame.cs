@@ -1,34 +1,21 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
-using Nine;
-using Nine.Graphics;
+namespace SkinnedModel
+{
+    using System;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine;
+    using Nine.Graphics;
 #if !WINDOWS_PHONE
-using Nine.Graphics.Effects;
+    using Nine.Graphics.Effects;
 #endif
-using Nine.Animations;
-using Nine.Components;
+    using Nine.Animations;
+    using Nine.Components;
 #if SILVERLIGHT
 using Keys = System.Windows.Input.Key;
 #endif
-#endregion
 
-namespace SkinnedModel
-{
-    [Category("Graphics")]
-    [DisplayName("Skinned Animation")]
-    [Description("This sample demenstrates how to display skinned character animation.")]
     public class SkinnedModelGame : Microsoft.Xna.Framework.Game
     {
 #if WINDOWS_PHONE

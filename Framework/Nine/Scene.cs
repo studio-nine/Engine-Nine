@@ -69,7 +69,7 @@ namespace Nine
         /// <summary>
         /// Initializes a new instance of the <see cref="Scene"/> class.
         /// </summary>
-        public Scene() : this((ISceneManager<ISpatialQueryable>)null)
+        public Scene() : this(null, null)
         {
 
         }
@@ -77,17 +77,15 @@ namespace Nine
         /// <summary>
         /// Initializes a new instance of the <see cref="Scene"/> class.
         /// </summary>
-        public Scene(IServiceProvider serviceProvider) : base(serviceProvider)
+        public Scene(IServiceProvider serviceProvider) : this(null, serviceProvider)
         {
-            this.defaultSceneManager = new OctreeSceneManager();
-            this.sceneManagers = new List<ISceneManager<ISpatialQueryable>>();
-            this.sceneManagers.Add(this.defaultSceneManager);
+
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scene"/> class.
         /// </summary>
-        public Scene(ISceneManager<ISpatialQueryable> defaultSceneManager)
+        public Scene(ISceneManager<ISpatialQueryable> defaultSceneManager, IServiceProvider serviceProvider) : base(serviceProvider)
         {
             this.defaultSceneManager = defaultSceneManager ?? new OctreeSceneManager();
             this.sceneManagers = new List<ISceneManager<ISpatialQueryable>>();
