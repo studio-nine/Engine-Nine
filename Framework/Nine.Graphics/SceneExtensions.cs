@@ -77,7 +77,7 @@ namespace Nine.Graphics
                 throw new ArgumentException("graphics");
 
             if (context.camera == null)
-                scene.Add(new Nine.Graphics.Cameras.FreeCamera(graphics, new Vector3(0, 10, 40)));
+                scene.Add(new FreeCamera(graphics, new Vector3(0, 10, 40)));
 
             return context;
         }
@@ -112,11 +112,11 @@ namespace Nine.Graphics
         }
 
         /// <summary>
-        /// Draws the debug overlay of the target scene.
+        /// Draws diagnostic information of the target scene.
         /// </summary>
-        public static void DrawDebugOverlay(this Scene scene, GraphicsDevice graphics, TimeSpan elapsedTime)
+        public static void DrawDiagnostics(this Scene scene, GraphicsDevice graphics, TimeSpan elapsedTime)
         {
-            GetDrawingContext(scene, graphics).DrawDebugOverlay();
+            GetDrawingContext(scene, graphics).DrawDiagnostics();
         }
 
         /// <summary>

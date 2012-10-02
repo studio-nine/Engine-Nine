@@ -7,6 +7,7 @@ namespace Nine
     /// <summary>
     /// Manages a collection of objects using grids.
     /// </summary>
+    [Obsolete("Use QuadTreeSceneManager instead")]
     public class GridSceneManager : UniformGrid, ISceneManager<ISpatialQueryable>
     {
         private GridSceneManagerEntry<ISpatialQueryable>[] Data;

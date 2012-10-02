@@ -22,7 +22,7 @@ namespace Test
 
             //scene.GetDrawingContext(graphics).MainPass.MaterialUsage = MaterialUsage.Depth;
 
-            //scene.Add(new Nine.Graphics.Cameras.BirdEyeCamera(graphics));
+            //scene.Add(new Nine.Graphics.BirdEyeCamera(graphics));
             scene.Add(new Surface(graphics, 1, 256, 256, 32) { Material = shadowMaterial });
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = new Vector3(-1, -1, -1), CastShadow = true });
             //scene.Add(new FullScreenQuad(graphics) { Material = new DebugMaterial(graphics) { SamplerState = SamplerState.PointClamp, TextureUsage = TextureUsage.ShadowMap } });

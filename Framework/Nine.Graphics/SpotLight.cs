@@ -178,12 +178,6 @@ namespace Nine.Graphics
             Falloff = 1;
         }
 
-        public override void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
-        {
-            var boundingFrustum = BoundingFrustum;
-            //scene.FindAll(ref boundingFrustum, result);
-        }
-
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
         
             /*
@@ -252,7 +246,7 @@ namespace Nine.Graphics
            
         }  */
 
-        public override void Draw(DrawingContext context, DynamicPrimitive primitive)
+        internal override void Draw(DrawingContext context, DynamicPrimitive primitive)
         {
             primitive.AddFrustum(BoundingFrustum, null, Constants.LightFrustumColor, Constants.MiddleLineWidth);
             base.Draw(context, primitive);

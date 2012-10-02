@@ -23,8 +23,7 @@ namespace Nine
     /// <summary>
     /// A collection of surfaces that can be queried together.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class SurfaceCollection : Collection<ISurface>, ISurface
+    class SurfaceCollection : Collection<ISurface>, ISurface
     {
         /// <summary>
         /// Gets or sets the height of the object used to query surface height and normal.

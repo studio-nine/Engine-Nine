@@ -36,7 +36,7 @@ namespace Nine
 
 
 #if WINDOWS
-        public static string ToContentString(this Matrix matrix)
+        internal static string ToContentString(this Matrix matrix)
         {
             return string.Join(" ", matrix.M11, matrix.M12, matrix.M13, matrix.M14
                                   , matrix.M21, matrix.M22, matrix.M23, matrix.M24
@@ -45,13 +45,13 @@ namespace Nine
         }
 #endif
 
-        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)
+        internal static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)
         {
             foreach (T item in values)
                 collection.Add(item);
         }
 
-        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        internal static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
             foreach (T item in collection)
                 action(item);

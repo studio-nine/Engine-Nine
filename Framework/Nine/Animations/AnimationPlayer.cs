@@ -77,15 +77,6 @@ namespace Nine.Animations
         internal IDictionary<string, IAnimation> Animations;
 
         /// <summary>
-        /// Gets the name of the current animation.
-        /// </summary>
-        public string CurrentName
-        {
-            get { return currentName; }
-        }
-        private string currentName;
-
-        /// <summary>
         /// Gets the current animation.
         /// </summary>
         public IAnimation Current
@@ -118,13 +109,11 @@ namespace Nine.Animations
         {
             if (current != null)
                 current.Stop();
-            currentName = null;
 
             IAnimation animation;
             if (Animations.TryGetValue(animationName, out animation))
             {
                 current = animation;
-                currentName = animationName;
                 current.Play();
             }
             return animation;
@@ -137,7 +126,6 @@ namespace Nine.Animations
         {
             if (current != null)
                 current.Stop();
-            currentName = null;
             if (animation != null)
             {
                 current = animation;
@@ -145,23 +133,7 @@ namespace Nine.Animations
             }
             return current;
         }
-
-        /// <summary>
-        /// Plays the specified animation with a delay.
-        /// </summary>
-        public IAnimation Play(IAnimation animation, TimeSpan delay)
-        {
-            if (current != null)
-                current.Stop();
-            currentName = null;
-            if (animation != null)
-            {
-                current = new AnimationSequence(new DelayAnimation(delay), animation);
-                current.Play();
-            }
-            return current;
-        }
-
+        
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>

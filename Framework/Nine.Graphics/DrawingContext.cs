@@ -7,7 +7,6 @@ namespace Nine.Graphics
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics;
-    using Nine.Graphics.Cameras;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
     using Nine.Graphics.Drawing;
@@ -339,7 +338,7 @@ namespace Nine.Graphics
                 throw new ArgumentNullException("spatialQuery");
 
             this.spatialQuery = spatialQuery;
-            this.BackgroundColor = Color.Black;
+            this.BackgroundColor = new Color(95, 120, 157);
             this.drawables = spatialQuery.CreateSpatialQuery<IDrawableObject>(drawable => drawable.OnAddedToView(this)); 
             this.graphics = graphics;
             this.defaultLight = new DirectionalLight(graphics)
@@ -645,7 +644,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Draws the debug overlay of the target scene.
         /// </summary>
-        internal void DrawDebugOverlay()
+        internal void DrawDiagnostics()
         {
             if (debugDrawables == null)
             {

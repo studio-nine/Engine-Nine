@@ -12,7 +12,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets a value indicating the maximum number of textures supported.
         /// </summary>
-        public const int MaxTextureSlots = 64;
+        public const int MaxTextureSlots = 128;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureCollection"/> class.

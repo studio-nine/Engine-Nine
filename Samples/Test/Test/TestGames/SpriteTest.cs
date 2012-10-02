@@ -9,7 +9,6 @@ namespace Test
     using Nine.Graphics;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
-    using Nine.Graphics.Cameras;
 
     public class SpriteTest : ITestGame
     {

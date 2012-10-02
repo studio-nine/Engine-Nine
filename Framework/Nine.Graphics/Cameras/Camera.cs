@@ -1,4 +1,4 @@
-namespace Nine.Graphics.Cameras
+namespace Nine.Graphics
 {
     using System;
     using Microsoft.Xna.Framework;

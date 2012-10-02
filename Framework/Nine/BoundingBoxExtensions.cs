@@ -329,7 +329,5 @@ namespace Nine
                     result.Max.Z = v.Z;
             }
         }
-
-        public static BoundingBox Max = new BoundingBox(Vector3.One * float.MinValue, Vector3.One * float.MaxValue);
     }
 }

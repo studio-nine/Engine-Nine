@@ -105,8 +105,7 @@ namespace Nine
         /// <summary>
         /// Occurs when any of the attached property changed.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public event EventHandler<AttachedPropertyChangedEventArgs> AttachedPropertyChanged;
+        internal event EventHandler<AttachedPropertyChangedEventArgs> AttachedPropertyChanged;
         #endregion
 
         #region ToString

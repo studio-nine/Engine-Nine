@@ -7,7 +7,7 @@ namespace Nine
 
 
     /// <summary>
-    /// Defines an circle-shaped 2D volume.
+    /// Defines a circle-shaped 2D volume.
     /// </summary>
 #if WINDOWS
     [Serializable()]

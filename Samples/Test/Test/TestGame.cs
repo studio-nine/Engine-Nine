@@ -10,7 +10,6 @@ namespace Test
     using Nine;
     using Nine.Components;
     using Nine.Graphics;
-    using Nine.Graphics.Cameras;
     using Nine.Graphics.Materials;
 
     public interface ITestGame
@@ -102,7 +101,6 @@ namespace Test
 
             // Gets the drawing context to adjust drawing settings.
             var drawingContext = scene.GetDrawingContext(GraphicsDevice);
-            drawingContext.BackgroundColor = new Color(0.5f, 0.5f, 0.5f);
             drawingContext.TextureFilter = TextureFilter.Anisotropic;
 
             Window.Title = testGames[nextTest].GetType().Name;
@@ -127,7 +125,7 @@ namespace Test
         {
             scene.Draw(GraphicsDevice, gameTime.ElapsedGameTime);
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                scene.DrawDebugOverlay(GraphicsDevice, gameTime.ElapsedGameTime);
+                scene.DrawDiagnostics(GraphicsDevice, gameTime.ElapsedGameTime);
             base.Draw(gameTime);
         }
 

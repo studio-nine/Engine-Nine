@@ -33,7 +33,7 @@ namespace Nine
     public interface IGeometry
     {
         /// <summary>
-        /// Gets an optional world transform matrix of the target geometry.
+        /// Gets the world transform matrix of the target geometry.
         /// </summary>
         Matrix Transform { get; }
 

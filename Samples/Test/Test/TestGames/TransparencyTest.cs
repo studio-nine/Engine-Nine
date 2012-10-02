@@ -15,7 +15,7 @@ namespace Test
         public Scene CreateTestScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
-            scene.Add(new Nine.Graphics.Cameras.ModelViewerCamera(graphics) { Center = new Vector3(10, 10, 10) });
+            scene.Add(new Nine.Graphics.ModelViewerCamera(graphics) { Center = new Vector3(10, 10, 10) });
 
             var size = 5;
             var step = 4;

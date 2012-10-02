@@ -5,7 +5,7 @@ namespace Nine
 
 
     /// <summary>
-    /// Defines a 3D triangle made up of tree vertices.
+    /// Defines a 3D triangle made up of three vertices.
     /// </summary>
 #if WINDOWS
     [Serializable()]
@@ -38,7 +38,7 @@ namespace Nine
         }
         
         /// <summary>
-        /// Checks whether the current Triangle intersects a Ray.
+        /// Checks whether the current triangle intersects with a ray.
         /// </summary>
         public float? Intersects(Ray ray)
         {
@@ -48,7 +48,7 @@ namespace Nine
         }
 
         /// <summary>
-        /// Checks whether the current Triangle intersects a Ray.
+        /// Checks whether the current triangle intersects with a ray.
         /// </summary>
         public void Intersects(ref Ray ray, out float? result)
         {
@@ -56,7 +56,7 @@ namespace Nine
         }
         
         /// <summary>
-        /// Checks whether the current Triangle intersects a line segment.
+        /// Checks whether the current triangle intersects with a line segment.
         /// </summary>
         /// <returns>
         /// The distance between the intersection point and v1.
@@ -69,8 +69,11 @@ namespace Nine
         }
 
         /// <summary>
-        /// Checks whether the current Triangle intersects a line segment.
+        /// Checks whether the current triangle intersects with a line segment.
         /// </summary>
+        /// <returns>
+        /// The distance between the intersection point and v1.
+        /// </returns>
         public void Intersects(ref Vector3 v1, ref Vector3 v2, out float? result)
         {
             const float Epsilon = 1E-10F;
@@ -96,20 +99,21 @@ namespace Nine
         }
 
         /// <summary>
-        /// Clips a triangle against a box and split the input triangle when they interests.
+        /// Clips a triangle against a box and split the input triangle when they intersects.
         /// </summary>
+        /// <returns>
+        /// The count of intersection points.
+        /// </returns>
+        /// <remarks>
+        /// The vertices of the output vertices will be copied to the intersections array
+        /// starting from the startIndex parameter.
+        /// </remarks>
         public int Intersects(ref BoundingBox box, Vector3[] intersections, int startIndex)
         {
             return Intersects(ref V1, ref V2, ref V3, ref box, intersections, startIndex);
         }
 
-        /// <summary>
-        /// Clips a triangle against a box and split the input triangle when they interests.
-        /// </summary>
-        /// <returns>The count of new vertices added to the output array</returns>
         /// <remarks>
-        /// The output intersection points will have the same winding order as this triangle.
-        /// 
         /// This algorithm is inspired by a blog post from wolfire games:
         /// http://blog.wolfire.com/2009/06/how-to-project-decals/.
         /// By the way, Overgrowth is AWEOSOME!!!

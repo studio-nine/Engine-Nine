@@ -115,7 +115,7 @@ namespace Nine
         /// Expand the root node and all its child nodes with the specified predication.
         /// </summary>
         /// <param name="condition">
-        /// Wether the bounds of the target SpacePartitionTreeNode contains this value.
+        /// Whether the bounds of the target SpacePartitionTreeNode contains this value.
         /// </param>
         /// <returns>
         /// Number of node expanded.
@@ -205,7 +205,7 @@ namespace Nine
         /// with the condition to determine whether the traverse should continue.
         /// </summary>
         /// <param name="result">
-        /// Returns true when the trverse should continue.
+        /// Returns true when the traverse should continue.
         /// </param>
         public void Traverse(Func<TNode, TraverseOptions> result)
         {
@@ -217,7 +217,7 @@ namespace Nine
         /// with the condition to determine whether the traverse should continue.
         /// </summary>
         /// <param name="result">
-        /// Returns true when the trverse should continue.
+        /// Returns true when the traverse should continue.
         /// </param>
         public void Traverse(TNode target, Func<TNode, TraverseOptions> result)
         {
@@ -313,7 +313,7 @@ namespace Nine
         internal int depth;
 
         /// <summary>
-        /// Gets a read-only collection of the 8 child nodes.
+        /// Gets a read-only collection of the child nodes.
         /// </summary>
         public ReadOnlyCollection<TNode> Children
         {

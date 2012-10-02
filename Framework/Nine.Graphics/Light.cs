@@ -48,7 +48,7 @@ namespace Nine.Graphics
         /// MaterialUsage.Default to indicate that this light does not support
         /// multi-pass lighting effect.
         /// </summary>
-        public virtual MaterialUsage MultiPassMaterial
+        internal virtual MaterialUsage MultiPassMaterial
         {
             get { return MaterialUsage.Default; } 
         }
@@ -181,7 +181,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Finds all the objects affected by this light.
         /// </summary>
-        public virtual void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
+        internal virtual void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
         {
             for (var i = 0; i < drawablesInViewFrustum.Count; ++i)
                 result.Add(drawablesInViewFrustum[i]);
@@ -206,11 +206,16 @@ namespace Nine.Graphics
         /// <summary>
         /// Draws the light frustum.
         /// </summary>
-        public virtual void Draw(DrawingContext context, DynamicPrimitive primitive)
+        internal virtual void Draw(DrawingContext context, DynamicPrimitive primitive)
         {
 #if !WINDOWS_PHONE
             primitive.AddFrustum(ShadowFrustum, null, Constants.ShadowFrustumColor, Constants.TinyLineWidth);
 #endif
+        }
+
+        void IDebugDrawable.Draw(DrawingContext context, DynamicPrimitive primitive)
+        {
+            Draw(context, primitive);
         }
         #endregion
 

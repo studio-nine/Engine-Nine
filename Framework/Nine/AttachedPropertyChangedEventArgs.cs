@@ -7,8 +7,7 @@ namespace Nine
     /// <summary>
     /// Provides data for various property changed events.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class AttachedPropertyChangedEventArgs : EventArgs
+    class AttachedPropertyChangedEventArgs : EventArgs
     {
         /// <summary>
         /// Gets the identifier for the attached property where the value change occurred.

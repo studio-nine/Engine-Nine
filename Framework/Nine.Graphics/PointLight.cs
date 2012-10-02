@@ -105,13 +105,7 @@ namespace Nine.Graphics
             SpecularColor = Vector3.Zero;
         }
 
-        public override void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
-        {
-            var boundingSphere = BoundingSphere;
-            //scene.FindAll(ref boundingSphere, result);
-        }
-
-        public override void Draw(DrawingContext context, DynamicPrimitive primitive)
+        internal override void Draw(DrawingContext context, DynamicPrimitive primitive)
         {
             primitive.AddSphere(BoundingSphere, 8, null, Constants.LightFrustumColor, Constants.MiddleLineWidth);
             base.Draw(context, primitive);

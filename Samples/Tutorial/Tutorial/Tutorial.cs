@@ -8,7 +8,6 @@ namespace Tutorial
     using Nine;
     using Nine.Components;
     using Nine.Graphics;
-    using Nine.Graphics.Cameras;
     using Nine.Physics;
 
     public class TutorialGame : Microsoft.Xna.Framework.Game
@@ -126,7 +125,7 @@ namespace Tutorial
         {
             scene.Draw(GraphicsDevice, gameTime.ElapsedGameTime);
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                scene.DrawDebugOverlay(GraphicsDevice, gameTime.ElapsedGameTime);
+                scene.DrawDiagnostics(GraphicsDevice, gameTime.ElapsedGameTime);
 
             base.Draw(gameTime);
         }
