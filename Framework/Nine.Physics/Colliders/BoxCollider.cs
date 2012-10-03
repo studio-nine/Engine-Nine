@@ -19,20 +19,17 @@ namespace Nine.Physics.Colliders
         /// </summary>
         public Vector3 Size
         {
-            get { return size; }
-            set 
-            {
-                size.X = shape.Width = value.X;
-                size.Y = shape.Height = value.Y;
-                size.Z = shape.Length = value.Z;
-            }
+            get { return new Vector3(shape.Width, shape.Height, shape.Length); }
+            set { shape.Width = value.X; shape.Height = value.Y; shape.Length = value.Z; }
         }
-        private Vector3 size = Vector3.One;
         private BoxShape shape;
 
-        public BoxCollider():base(new Box(Vector3.Zero, 1, 1, 1))
+        public BoxCollider()
         {
-            shape = ((ConvexCollidable<BoxShape>)Collidable).Shape;
+            NotifyColliderChanged(
+                new Entity<ConvexCollidable<BoxShape>>(
+                    new ConvexCollidable<BoxShape>(
+                        shape = new BoxShape(1, 1, 1))));
         }
     }
 }

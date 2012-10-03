@@ -70,9 +70,10 @@
         }
     }
 
-    class CubeInvert : Box
+    [NotContentSerializable]
+    class BoxInvert : Box
     {
-        public CubeInvert(GraphicsDevice graphics) : base(graphics)
+        public BoxInvert(GraphicsDevice graphics) : base(graphics)
         {
             InvertWindingOrder = true;
         }

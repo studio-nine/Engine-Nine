@@ -22,19 +22,18 @@ namespace Nine.Physics.Colliders
         /// </summary>
         public IList<Collider> Colliders
         {
-            get { return Colliders; }
+            get { return colliders; }
         }
         private NotificationCollection<Collider> colliders;
 
         /// <summary>
         /// Initializes a new instance of CompoundCollider.
         /// </summary>
-        public CompoundCollider() : base((Collidable)null)
+        public CompoundCollider()
         {
             colliders = new NotificationCollection<Collider>();
-            //colliders.Added += x => { NotifyColliderChanged(); };
-            //colliders.Removed += x => { NotifyColliderChanged(); };
-            throw new NotImplementedException();
+            colliders.Added += x => { Rebuild(); };
+            colliders.Removed += x => { Rebuild(); };
         }
 
         /// <summary>
@@ -45,21 +44,25 @@ namespace Nine.Physics.Colliders
             foreach (var collider in colliders)
                 this.colliders.Add(collider);
         }
-
-        private static Collidable CreateCollidable(IList<Collider> colliders)
+        
+        private void Rebuild()
         {
             var count = colliders.Count;
             var children = new List<CompoundChildData>(count);
             for (int i = 0; i < count; ++i)
             {
-                var collidable = colliders[i].Collidable;
-                var child = new CompoundChildData();
-                //child.Entry = new CompoundShapeEntry(collidable.Shape,
-                //              new RigidTransform(collidable.Position, collidable.Orientation));
-                //child.Material = collidable.Material;
-                children.Add(child);
+                var entity = colliders[i].entity;
+                if (entity == null)
+                    throw new InvalidOperationException();
+
+                children.Add(new CompoundChildData
+                {
+                    Material = entity.Material,
+                    Entry = new CompoundShapeEntry(entity.CollisionInformation.Shape,
+                        new RigidTransform(entity.Position, entity.Orientation)),
+                });
             }
-            return new CompoundCollidable(children);
+            NotifyColliderChanged(new Entity(new CompoundCollidable(children)));
         }
     }
 }

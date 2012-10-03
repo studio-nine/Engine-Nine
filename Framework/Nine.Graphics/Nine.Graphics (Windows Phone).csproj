@@ -126,8 +126,8 @@
     <Compile Include="ParticleEffects\ConcurrentQueue.cs" />
     <Compile Include="ParticleEffects\ObjectPool.cs" />
     <Compile Include="Primitives\Box.cs" />
-    <Compile Include="Primitives\Centrum.cs" />
     <Compile Include="Primitives\Bezier.cs" />
+    <Compile Include="Primitives\Cone.cs" />
     <Compile Include="Primitives\Cross.cs" />
     <Compile Include="Primitives\DynamicPrimitive.cs" />
     <Compile Include="Primitives\DynamicPrimitiveExtensions.cs" />

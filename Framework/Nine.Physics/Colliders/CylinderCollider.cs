@@ -33,9 +33,12 @@ namespace Nine.Physics.Colliders
         }
         private CylinderShape shape;
 
-        public CylinderCollider() : base(new Cylinder(Vector3.Zero, 1, 1))
+        public CylinderCollider()
         {
-            shape = ((ConvexCollidable<CylinderShape>)Collidable).Shape;
+            NotifyColliderChanged(
+                new Entity<ConvexCollidable<CylinderShape>>(
+                    new ConvexCollidable<CylinderShape>(
+                        shape = new CylinderShape(1, 1))));
         }
     }
 }

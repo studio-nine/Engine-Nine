@@ -63,7 +63,6 @@ namespace BEPUphysics.Collidables
         {
             base.Shape = new StaticMeshShape(vertices, indices);
             Events = new ContactEventManager<StaticMesh>();
-
         }
 
         ///<summary>

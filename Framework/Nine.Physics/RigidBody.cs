@@ -13,7 +13,7 @@ namespace Nine.Physics
     /// Defines a rigid body in the physics simulation.
     /// </summary>
     [ContentProperty("Collider")]
-    public class RigidBody : Component, ISpaceObject
+    public class RigidBody : Component, IContainer, INotifyCollectionChanged<object>
     {
         #region Properties
         /// <summary>
@@ -26,31 +26,43 @@ namespace Nine.Physics
             {
                 if (collider != value)
                 {
-                    if (space != null)
-                    {
-                        if (collider != null)
-                            space.Remove(collider.Entity);
-                        if (value != null)
-                        {
-                            if (value.Entity == null)
-                                throw new InvalidOperationException();
-                            value.Entity.BecomeDynamic(collider.Mass);
-                            space.Add(value.Entity);
-                        }
-                    }
+                    if (value == null)
+                        throw new ArgumentNullException("collider");
+                    
+                    value.Attach(this);
+                    if (value.Entity == null)
+                        throw new InvalidOperationException("collider.Entity");
+
                     collider = value;
+                    entity = collider.entity;
+                    entity.BecomeDynamic(1);
                 }
             }
         }
         private Collider collider;
+        private Entity entity;
 
         /// <summary>
         /// Gets the world transform of this rigid body.
         /// </summary>
         public Matrix Transform
         {
-            get { return collider.entity.WorldTransform; }
-            set { collider.entity.WorldTransform = value; }
+            get 
+            {
+                if (collider.Offset.HasValue)
+                {
+                    var transform = Matrix.CreateTranslation(collider.Offset.Value);
+                    var orientation = Entity.Orientation;
+                    Matrix.Transform(ref transform, ref orientation, out transform);
+
+                    var position = Entity.Position;
+                    transform.M41 += position.X;
+                    transform.M42 += position.Y;
+                    transform.M43 += position.Z;
+                    return transform;
+                }
+                return entity.WorldTransform;
+            }
         }
 
         /// <summary>
@@ -58,8 +70,8 @@ namespace Nine.Physics
         /// </summary>
         public Vector3 Position
         {
-            get { return collider.entity.position; }
-            set { collider.entity.Position = value; }
+            get { return entity.position; }
+            set { entity.Position = value; }
         }
 
         /// <summary>
@@ -67,8 +79,8 @@ namespace Nine.Physics
         /// </summary>
         public Quaternion Orientation
         {
-            get { return collider.entity.orientation; }
-            set { collider.entity.Orientation = value; }
+            get { return entity.orientation; }
+            set { entity.Orientation = value; }
         }
 
         /// <summary>
@@ -76,8 +88,8 @@ namespace Nine.Physics
         /// </summary>
         public float Mass
         {
-            get { return collider.entity.mass; }
-            set { collider.entity.Mass = value; }
+            get { return entity.mass; }
+            set { entity.Mass = value; }
         }
         
         /// <summary>
@@ -85,8 +97,8 @@ namespace Nine.Physics
         /// </summary>
         public Vector3 Velocity
         {
-            get { return collider.entity.linearVelocity; }
-            set { collider.entity.LinearVelocity = value; }
+            get { return entity.linearVelocity; }
+            set { entity.LinearVelocity = value; }
         }
 
         /// <summary>
@@ -94,8 +106,8 @@ namespace Nine.Physics
         /// </summary>
         public Vector3 AngularVelocity
         {
-            get { return collider.entity.angularVelocity; }
-            set { collider.entity.AngularVelocity = value; }
+            get { return entity.angularVelocity; }
+            set { entity.AngularVelocity = value; }
         }
 
         /// <summary>
@@ -103,8 +115,8 @@ namespace Nine.Physics
         /// </summary>
         public float Damping
         {
-            get { return collider.entity.LinearDamping; }
-            set { collider.entity.LinearDamping = value; }
+            get { return entity.LinearDamping; }
+            set { entity.LinearDamping = value; }
         }
 
         /// <summary>
@@ -112,8 +124,8 @@ namespace Nine.Physics
         /// </summary>
         public float AngularDamping
         {
-            get { return collider.entity.AngularDamping; }
-            set { collider.entity.AngularDamping = value; }
+            get { return entity.AngularDamping; }
+            set { entity.AngularDamping = value; }
         }
 
         /// <summary>
@@ -124,27 +136,19 @@ namespace Nine.Physics
         /// </remarks>
         public Entity Entity
         {
-            get { return collider.Entity; }
+            get { return entity; }
         }
-
-        /// <summary>
-        /// Gets the Space to which the object belongs.
-        /// </summary>
-        ISpace ISpaceObject.Space 
-        {
-            get { return space; }
-            set { space = value; }
-        }
-        private ISpace space;
         #endregion
 
         #region Methods
+        internal RigidBody() { }
+
         /// <summary>
         /// Initializes a new instance of Body.
         /// </summary>
-        public RigidBody()
+        public RigidBody(Collider collider)
         {
-            
+            this.Collider = collider;
         }
 
         ///<summary>
@@ -152,7 +156,7 @@ namespace Nine.Physics
         ///</summary>
         public void ApplyImpulse(Vector3 impulse)
         {
-            collider.entity.ApplyLinearImpulse(ref impulse);
+            entity.ApplyLinearImpulse(ref impulse);
         }
 
         ///<summary>
@@ -160,7 +164,7 @@ namespace Nine.Physics
         ///</summary>
         public void ApplyImpulse(Vector3 position, Vector3 impulse)
         {
-            collider.entity.ApplyImpulse(ref position, ref impulse);
+            entity.ApplyImpulse(ref position, ref impulse);
         }
 
         ///<summary>
@@ -168,7 +172,15 @@ namespace Nine.Physics
         ///</summary>
         public void ApplyAngularImpulse(Vector3 impulse)
         {
-            collider.entity.ApplyAngularImpulse(ref impulse);
+            entity.ApplyAngularImpulse(ref impulse);
+        }
+
+        /// <summary>
+        /// Called when this component is added to a parent group.
+        /// </summary>
+        protected override void OnAdded(Group parent)
+        {
+            collider.Transform = parent.Transform;
         }
 
         /// <summary>
@@ -176,20 +188,34 @@ namespace Nine.Physics
         /// </summary>
         protected override void Update(TimeSpan elapsedTime)
         {
-            Parent.Transform = collider.entity.WorldTransform;
+            Parent.Transform = Transform;
         }
-
-        void ISpaceObject.OnAdditionToSpace(ISpace newSpace)
+        
+        event Action<object> INotifyCollectionChanged<object>.Added
         {
-            collider.entity.WorldTransform = Parent.Transform;
-            collider.entity.BecomeDynamic(collider.Mass);
-            newSpace.Add(collider.entity);
+            add { added += value; }
+            remove { added -= value; }
         }
+        private Action<object> added;
 
-        void ISpaceObject.OnRemovalFromSpace(ISpace oldSpace)
+        event Action<object> INotifyCollectionChanged<object>.Removed
         {
-            oldSpace.Remove(collider.entity);
+            add { removed += value; }
+            remove { removed -= value; }
         }
+        private Action<object> removed;
+
+        IList IContainer.Children
+        {
+            get
+            {
+                if (collider == null)
+                    return null;
+                SpaceObjectList[0] = entity;
+                return SpaceObjectList;
+            }
+        }
+        private static ISpaceObject[] SpaceObjectList = new ISpaceObject[1];
         #endregion
     }
 }

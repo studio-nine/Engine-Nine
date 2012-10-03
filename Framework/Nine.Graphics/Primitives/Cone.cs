@@ -5,10 +5,10 @@
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    /// Geometric primitive class for drawing cylinders.
+    /// Geometric primitive class for drawing cones.
     /// </summary>
     [ContentSerializable]
-    public class Centrum : Primitive<VertexPositionNormalTexture>
+    public class Cone : Primitive<VertexPositionNormalTexture>
     {
         /// <summary>
         /// Gets or sets the tessellation of this primitive.
@@ -32,27 +32,28 @@
         /// <summary>
         /// Constructs a new cylinder primitive, using default settings.
         /// </summary>
-        public Centrum(GraphicsDevice graphicsDevice) : base(graphicsDevice)
+        public Cone(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {
 
         }
 
         protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
         {
-            return primitive is Centrum && ((Centrum)primitive).tessellation == tessellation;
+            return primitive is Cone && ((Cone)primitive).tessellation == tessellation;
         }
 
         protected override void  OnBuild()
         {
-            AddVertex(Vector3.Up, Vector3.Up);
-            AddVertex(Vector3.Zero, -Vector3.Up);
+            var offset = new Vector3(0, -0.25f, 0);
 
+            AddVertex(Vector3.Up + offset, Vector3.Up);
+            AddVertex(Vector3.Zero + offset, -Vector3.Up);
 
             for (int i = 0; i < tessellation; ++i)
             {
                 Vector3 normal = GetCircleVector(i, tessellation);
 
-                AddVertex(normal, normal);
+                AddVertex(normal + offset, normal);
                 
                 AddIndex(0);
                 AddIndex(2 + i);
@@ -89,9 +90,10 @@
         }
     }
 
-    class CentrumInvert : Centrum
+    [NotContentSerializable]
+    class ConeInvert : Cone
     {
-        public CentrumInvert(GraphicsDevice graphics) : base(graphics)
+        public ConeInvert(GraphicsDevice graphics) : base(graphics)
         {
             InvertWindingOrder = true;
         }

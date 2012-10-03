@@ -190,7 +190,7 @@
     <Compile Include="PostEffects\ToneMappingMaterial.cs" />
     <Compile Include="Primitives\Bezier.cs" />
     <Compile Include="Primitives\Box.cs" />
-    <Compile Include="Primitives\Centrum.cs" />
+    <Compile Include="Primitives\Cone.cs" />
     <Compile Include="Primitives\Cross.cs" />
     <Compile Include="Primitives\Cylinder.cs" />
     <Compile Include="Primitives\Dome.cs" />

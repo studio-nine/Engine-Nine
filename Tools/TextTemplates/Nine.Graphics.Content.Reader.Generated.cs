@@ -2415,14 +2415,14 @@ namespace Nine.Graphics.Primitives
         }
     }
     /// <summary>
-    /// Content reader for <c>Centrum</c>.
+    /// Content reader for <c>Cone</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class CentrumReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Primitives.Centrum>
+    partial class ConeReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Primitives.Cone>
     {
-        protected override Nine.Graphics.Primitives.Centrum Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Centrum existingInstance)
+        protected override Nine.Graphics.Primitives.Cone Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Cone existingInstance)
         {
             Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
@@ -2433,40 +2433,7 @@ namespace Nine.Graphics.Primitives
                 var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
                                 typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
 #endif
-                existingInstance = new Centrum(graphicsDevice);
-            }
-            existingInstance.Tessellation = input.ReadInt32();
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
-            existingInstance.InvertWindingOrder = input.ReadBoolean();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadString();
-            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>CentrumInvert</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class CentrumInvertReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Primitives.CentrumInvert>
-    {
-        protected override Nine.Graphics.Primitives.CentrumInvert Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.CentrumInvert existingInstance)
-        {
-            Group.EnsureDefaultServiceProvider(input.ContentManager);
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new CentrumInvert(graphicsDevice);
+                existingInstance = new Cone(graphicsDevice);
             }
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();
@@ -2502,38 +2469,6 @@ namespace Nine.Graphics.Primitives
                 existingInstance = new Cross(graphicsDevice);
             }
             existingInstance.Tessellation = input.ReadInt32();
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
-            existingInstance.InvertWindingOrder = input.ReadBoolean();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadString();
-            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>CubeInvert</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class CubeInvertReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Primitives.CubeInvert>
-    {
-        protected override Nine.Graphics.Primitives.CubeInvert Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.CubeInvert existingInstance)
-        {
-            Group.EnsureDefaultServiceProvider(input.ContentManager);
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new CubeInvert(graphicsDevice);
-            }
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.CastShadow = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
@@ -2695,39 +2630,6 @@ namespace Nine.Graphics.Primitives
                                 typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
 #endif
                 existingInstance = new Sphere(graphicsDevice);
-            }
-            existingInstance.Tessellation = input.ReadInt32();
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
-            existingInstance.InvertWindingOrder = input.ReadBoolean();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadString();
-            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>SphereInvert</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class SphereInvertReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Primitives.SphereInvert>
-    {
-        protected override Nine.Graphics.Primitives.SphereInvert Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.SphereInvert existingInstance)
-        {
-            Group.EnsureDefaultServiceProvider(input.ContentManager);
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new SphereInvert(graphicsDevice);
             }
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();

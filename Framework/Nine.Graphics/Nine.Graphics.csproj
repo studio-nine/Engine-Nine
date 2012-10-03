@@ -200,7 +200,7 @@
     <Compile Include="Light.cs" />
     <Compile Include="SkyBox.cs" />
     <Compile Include="Design\BlendStateReader.cs" />
-    <Compile Include="Primitives\Centrum.cs" />
+    <Compile Include="Primitives\Cone.cs" />
     <Compile Include="Primitives\Bezier.cs" />
     <Compile Include="Primitives\Box.cs" />
     <Compile Include="Primitives\Plane.cs" />

@@ -6,48 +6,45 @@ namespace Nine.Physics.Colliders
     using BEPUphysics.Collidables;
     using BEPUphysics.Entities;
     using BEPUphysics.Materials;
+    using Microsoft.Xna.Framework;
 
     /// <summary>
     /// Defines a basic physics collider.
     /// </summary>
-    public abstract class Collider : Transformable, IContainer
+    public abstract class Collider : Transformable, IContainer, INotifyCollectionChanged<object>
     {
-        /// <summary>
-        /// Gets or sets whether this collider is enabled.
-        /// </summary>
-        public bool Enabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets the mass of this collider.
-        /// </summary>
-        public float Mass { get; set; }
-
         /// <summary>
         /// Gets the dynamic and static friction of this collider.
         /// </summary>
         public Range<float> Friction
         {
-            get 
-            {
-                var material = materialOwner.Material;
-                return new Range<float>(material.staticFriction, material.kineticFriction);
-            }
+            get { return friction; }
             set
             {
-                var material = materialOwner.Material;
-                material.StaticFriction = value.Min;
-                material.kineticFriction = value.Max;
+                friction = value;
+                if (materialOwner != null)
+                {
+                    materialOwner.Material.StaticFriction = value.Min;
+                    materialOwner.Material.KineticFriction = value.Max;
+                }
             }
         }
+        private Range<float> friction = new Range<float>(0.6f, 0.8f);
 
         /// <summary>
         /// Gets the restitution of this collider.
         /// </summary>
         public float Restitution
         {
-            get { return materialOwner.Material.bounciness; }
-            set { materialOwner.Material.Bounciness = value; }
+            get { return restitution; }
+            set 
+            {
+                restitution = value;
+                if (materialOwner != null)
+                    materialOwner.Material.Bounciness = value; 
+            }
         }
+        private float restitution = 0.2f;
 
         /// <summary>
         /// Gets the rigid body that contains this collider.
@@ -57,16 +54,6 @@ namespace Nine.Physics.Colliders
             get { return body; }
         }
         private RigidBody body;
-
-        /// <summary>
-        /// Gets or sets the collision group of this collider
-        /// </summary>
-        public string CollisionGroup
-        {
-            get { return collisionGroup; }
-            set { collisionGroup = value; }
-        }
-        private string collisionGroup;
 
         /// <summary>
         /// Gets the Bepu physics collidable associated with this collider.
@@ -85,49 +72,15 @@ namespace Nine.Physics.Colliders
         }
         internal Entity entity;
 
+        internal Vector3? Offset;
+
         private IMaterialOwner materialOwner;
         private ISpaceObject spaceObject;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Collider"/> class.
         /// </summary>
-        protected Collider(Collidable collidable)
-        {
-            if (collidable == null)
-                throw new ArgumentNullException("collidable");
-
-            this.Collidable = collidable;
-            this.materialOwner = (IMaterialOwner)collidable;
-            this.spaceObject = collidable as ISpaceObject;
-            this.Mass = 1;
-            this.Friction = new Range<float>(0.6f, 0.8f);
-            this.Restitution = 0.2f;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Collider"/> class.
-        /// </summary>
-        protected Collider(Entity entity)
-        {
-            if (entity == null || entity.IsDynamic)
-                throw new ArgumentException("entity");
-
-            this.entity = entity;
-            this.materialOwner = entity;
-            this.spaceObject = entity;
-            this.Collidable = entity.CollisionInformation;
-            this.Mass = 1;
-            this.Friction = new Range<float>(0.6f, 0.8f);
-            this.Restitution = 0.2f;
-        }
-
-        /// <summary>
-        /// Notifies that this collider has changed.
-        /// </summary>
-        protected void NotifyColliderChanged()
-        {
-
-        }
+        protected Collider() { }
 
         /// <summary>
         /// Called when this collider is attached to a rigid body.
@@ -152,16 +105,81 @@ namespace Nine.Physics.Colliders
         protected override void OnTransformChanged()
         {
             if (entity != null)
-                entity.WorldTransform = Transform;
+            {
+                if (Offset.HasValue)
+                {
+                    var transform = Matrix.CreateTranslation(-Offset.Value);
+                    Matrix.Multiply(ref transform, ref this.transform, out transform);
+                    entity.WorldTransform = transform;
+                }
+                else
+                {
+                    entity.WorldTransform = transform;
+                }
+            }
             base.OnTransformChanged();
         }
+
+        /// <summary>
+        /// Notifies that this collider has changed.
+        /// </summary>
+        protected void NotifyColliderChanged(ISpaceObject newSpaceObject)
+        {
+            Collidable = newSpaceObject as Collidable;
+            materialOwner = newSpaceObject as IMaterialOwner;
+            if (materialOwner != null)
+            {
+                materialOwner.Material.Bounciness = restitution;
+                materialOwner.Material.StaticFriction = friction.Min;
+                materialOwner.Material.KineticFriction = friction.Max;
+            }
+
+            var entity = newSpaceObject as Entity;
+
+            if (body != null && entity == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (entity != null)
+            {
+                this.entity = entity;
+                this.Collidable = entity.CollisionInformation;
+            }
+
+            if (spaceObject != null && removed != null)
+                removed(spaceObject);
+            spaceObject = newSpaceObject;
+            if (spaceObject != null && added != null)
+                added(spaceObject);
+        }
+
+        event Action<object> INotifyCollectionChanged<object>.Added
+        {
+            add { added += value; }
+            remove { added -= value; }
+        }
+        private Action<object> added;
+
+        event Action<object> INotifyCollectionChanged<object>.Removed
+        {
+            add { removed += value; }
+            remove { removed -= value; }
+        }
+        private Action<object> removed;
 
         /// <summary>
         /// An collider will always have 1 direct child.
         /// </summary>
         IList IContainer.Children
         {
-            get { SpaceObjectList[0] = spaceObject; return SpaceObjectList; }
+            get 
+            {
+                if (spaceObject == null)
+                    return null;
+                SpaceObjectList[0] = spaceObject;
+                return SpaceObjectList; 
+            }
         }
         private static ISpaceObject[] SpaceObjectList = new ISpaceObject[1];
     }

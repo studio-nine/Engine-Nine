@@ -420,7 +420,7 @@
             dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddCentrum(this DynamicPrimitive dynamicPrimitive, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
+        public static void AddCone(this DynamicPrimitive dynamicPrimitive, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
         {
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
@@ -450,7 +450,7 @@
             dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddSolidCentrum(this DynamicPrimitive dynamicPrimitive, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color)
+        public static void AddSolidCone(this DynamicPrimitive dynamicPrimitive, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color)
         {
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
@@ -632,7 +632,7 @@
             var head = (end - start).Length() * Ratio;
 
             dynamicPrimitive.AddLine(start, mid, null, color, lineWidth);
-            dynamicPrimitive.AddSolidCentrum(Vector3.Zero, head, head * 0.5f, 24,
+            dynamicPrimitive.AddSolidCone(Vector3.Zero, head, head * 0.5f, 24,
                 MatrixHelper.CreateRotation(Vector3.Up, Vector3.Normalize(end - start)) *
                 Matrix.CreateTranslation(mid), color);
         }

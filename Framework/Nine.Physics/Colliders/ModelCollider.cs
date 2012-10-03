@@ -8,6 +8,8 @@ namespace Nine.Physics.Colliders
     using BEPUphysics.Entities.Prefabs;
     using BEPUphysics.DataStructures;
     using BEPUphysics.Collidables;
+    using BEPUphysics.CollisionShapes;
+    using BEPUphysics.MathExtensions;
 
     /// <summary>
     /// Represents a collider based on triangle meshes.
@@ -20,7 +22,7 @@ namespace Nine.Physics.Colliders
         public Microsoft.Xna.Framework.Graphics.Model Source
         {
             get { return source; }
-            set { if (source != value) { source = value; } }
+            set { if (source != value) { source = value; RebuildCollider(); } }
         }
         private Microsoft.Xna.Framework.Graphics.Model source;
 
@@ -30,25 +32,54 @@ namespace Nine.Physics.Colliders
         public string CollisionMesh
         {
             get { return collisionMesh; }
-            set { if (collisionMesh != value) { collisionMesh = value; } }
+            set { if (collisionMesh != value) { collisionMesh = value; RebuildCollider(); } }
         }
         private string collisionMesh;
+        
+        private bool isStatic = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelCollider"/> class.
         /// </summary>
-        public ModelCollider()
-            : base(new StaticMesh(null, null))
-        {
+        public ModelCollider() { }
 
+        protected override void OnAttached(RigidBody body)
+        {
+            isStatic = false;
+            RebuildCollider();
         }
-
-        private Collidable CreateCollidable()
+        
+        private void RebuildCollider()
         {
+            if (Nine.Content.ContentProperties.IsContentBuild)
+            {
+                // Fake an entity when we are compiling the model collider.
+                NotifyColliderChanged(new Sphere(Vector3.Zero, 1));
+                return;
+            }
+
+            if (source == null)
+            {
+                NotifyColliderChanged(null);
+                return;
+            }
+
             Vector3[] vertices;
             int[] indices;
             GetVerticesAndIndicesFromModel(source, collisionMesh, out vertices, out indices);
-            return new StaticMesh(vertices, indices);
+
+            if (isStatic)
+            {
+                NotifyColliderChanged(new StaticMesh(vertices, indices));
+                return;
+            }
+
+            // Entities in Bepu is centered, so need to adjust the graphical transform accordingly.
+            var mesh = new MobileMesh(vertices, indices, AffineTransform.Identity, MobileMeshSolidity.Counterclockwise);            
+            Offset = -mesh.Position;
+            mesh.Position = Vector3.Zero;
+            
+            NotifyColliderChanged(mesh);
         }
 
         private static void GetVerticesAndIndicesFromModel(Microsoft.Xna.Framework.Graphics.Model collisionModel, string collisionMesh, out Vector3[] vertices, out int[] indices)

@@ -44,63 +44,35 @@
 
         protected override void  OnBuild()
         {
+            AddVertex(Vector3.Up * 0.5f, Vector3.Up);
+            AddVertex(Vector3.Down * 0.5f, Vector3.Down);
+
             // Create a ring of triangles around the outside of the cylinder.
             for (int i = 0; i < tessellation; ++i)
             {
                 Vector3 normal = GetCircleVector(i, tessellation);
 
-                AddVertex(normal + Vector3.Up, normal);
-                AddVertex(normal, normal);
+                AddVertex(normal + 0.5f * Vector3.Up, normal);
+                AddVertex(normal - 0.5f * Vector3.Up, normal);
 
-                AddIndex(i * 2);
-                AddIndex(i * 2 + 1);
-                AddIndex((i * 2 + 2) % (tessellation * 2));
+                AddIndex(0);
+                AddIndex(2 + i * 2);
+                AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
 
-                AddIndex(i * 2 + 1);
-                AddIndex((i * 2 + 3) % (tessellation * 2));
-                AddIndex((i * 2 + 2) % (tessellation * 2));
-            }
+                AddIndex(2 + i * 2);
+                AddIndex(2 + i * 2 + 1);
+                AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
 
-            // Create flat triangle fan caps to seal the top and bottom.
-            CreateCap(tessellation, 1, 1, Vector3.Up);
-            CreateCap(tessellation, 1, 1, -Vector3.Up);
-        }
+                AddIndex(1);
+                AddIndex(2 + (i * 2 + 3) % (tessellation * 2));
+                AddIndex(2 + i * 2 + 1);
 
-
-        /// <summary>
-        /// Helper method creates a triangle fan to close the ends of the cylinder.
-        /// </summary>
-        void CreateCap(int tessellation, float height, float radius, Vector3 normal)
-        {
-            // Create cap indices.
-            for (int i = 0; i < tessellation - 2; ++i)
-            {
-                if (normal.Y > 0)
-                {
-                    AddIndex(CurrentVertex);
-                    AddIndex(CurrentVertex + (i + 1) % tessellation);
-                    AddIndex(CurrentVertex + (i + 2) % tessellation);
-                }
-                else
-                {
-                    AddIndex(CurrentVertex);
-                    AddIndex(CurrentVertex + (i + 2) % tessellation);
-                    AddIndex(CurrentVertex + (i + 1) % tessellation);
-                }
-            }
-
-            // Create cap vertices.
-            for (int i = 0; i < tessellation; ++i)
-            {
-                Vector3 position = GetCircleVector(i, tessellation) * radius;
-                if (normal.Y > 0)
-                    position += normal * height;
-
-                AddVertex(position, normal);
+                AddIndex(2 + i * 2 + 1);
+                AddIndex(2 + (i * 2 + 3) % (tessellation * 2));
+                AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
             }
         }
-
-
+        
         /// <summary>
         /// Helper method computes a point on a circle.
         /// </summary>

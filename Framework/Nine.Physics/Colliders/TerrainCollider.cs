@@ -21,7 +21,7 @@ namespace Nine.Physics.Colliders
             {
                 if (heightmap != value)
                 {
-                    terrain.Shape = CreateTerrainShape(heightmap = value);
+                    NotifyColliderChanged(terrain = CreateTerrain(heightmap = value));
                     OnTransformChanged();
                 }
             }
@@ -32,39 +32,30 @@ namespace Nine.Physics.Colliders
         /// <summary>
         /// Initializes a new instance of the <see cref="TerrainCollider"/> class.
         /// </summary>
-        public TerrainCollider()
-            : base(new Terrain(CreateTerrainShape(null), AffineTransform.Identity))
-        {
-            terrain = (Terrain)Collidable;
-        }
+        public TerrainCollider() { }
 
         /// <summary>
         /// Called when local or absolute transform changed.
         /// </summary>
         protected override void OnTransformChanged()
         {
-            if (heightmap != null)
+            if (terrain != null && heightmap != null)
             {
                 Matrix matrix;
                 Matrix.CreateScale(heightmap.Step, 1, heightmap.Step, out matrix);
                 Matrix.Multiply(ref matrix, ref transform, out matrix);
                 terrain.WorldTransform = new AffineTransform() { Matrix = matrix };
             }
-            else
-            {
-                terrain.WorldTransform = new AffineTransform() { Matrix = transform };
-            }
             base.OnTransformChanged();
         }
 
-        /// <summary>
-        /// Creates the collidable.
-        /// </summary>
+        private static Terrain CreateTerrain(Heightmap heightmap)
+        {
+            return heightmap != null ? new Terrain(CreateTerrainShape(heightmap), AffineTransform.Identity) : null;
+        }
+
         private static TerrainShape CreateTerrainShape(Heightmap heightmap)
         {
-            if (heightmap == null)
-                return new TerrainShape(new float[2, 2]);
-
             int xLength = heightmap.Width + 1;
             int zLength = heightmap.Height + 1;
 

@@ -120,6 +120,7 @@
         }
     }
 
+    [NotContentSerializable]
     class SphereInvert : Sphere 
     {
         public SphereInvert(GraphicsDevice graphics) : base(graphics)

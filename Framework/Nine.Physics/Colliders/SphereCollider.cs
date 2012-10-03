@@ -24,9 +24,12 @@ namespace Nine.Physics.Colliders
         }
         private SphereShape shape;
 
-        public SphereCollider() : base(new Sphere(Vector3.Zero, 1, 1))
+        public SphereCollider()
         {
-            shape = ((ConvexCollidable<SphereShape>)Collidable).Shape;
+            NotifyColliderChanged(
+                new Entity<ConvexCollidable<SphereShape>>(
+                    new ConvexCollidable<SphereShape>(
+                        shape = new SphereShape(1))));
         }
     }
 }

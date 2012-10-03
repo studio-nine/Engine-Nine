@@ -6,8 +6,8 @@ namespace Nine.Physics.Colliders
     using BEPUphysics.Entities;
     using BEPUphysics.Entities.Prefabs;
     using BEPUphysics.Collidables;
-using BEPUphysics.Collidables.MobileCollidables;
-using BEPUphysics.CollisionShapes.ConvexShapes;
+    using BEPUphysics.Collidables.MobileCollidables;
+    using BEPUphysics.CollisionShapes.ConvexShapes;
 
     /// <summary>
     /// Represents a cone shaped collider.
@@ -33,9 +33,12 @@ using BEPUphysics.CollisionShapes.ConvexShapes;
         }
         private ConeShape shape;
 
-        public ConeCollider() : base(new Capsule(Vector3.Zero, 1, 1))
+        public ConeCollider()
         {
-            shape = ((ConvexCollidable<ConeShape>)Collidable).Shape;
+            NotifyColliderChanged(
+                new Entity<ConvexCollidable<ConeShape>>(
+                    new ConvexCollidable<ConeShape>(
+                        shape = new ConeShape(1, 1))));
         }
     }
 }

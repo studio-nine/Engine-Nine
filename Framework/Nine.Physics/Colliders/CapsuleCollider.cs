@@ -33,9 +33,12 @@ namespace Nine.Physics.Colliders
         }
         private CapsuleShape shape;
 
-        public CapsuleCollider() : base(new Capsule(Vector3.Zero, 1, 1))
+        public CapsuleCollider()
         {
-            shape = ((ConvexCollidable<CapsuleShape>)Collidable).Shape;
+            NotifyColliderChanged(
+                new Entity<ConvexCollidable<CapsuleShape>>(
+                    new ConvexCollidable<CapsuleShape>(
+                        shape = new CapsuleShape(1, 1))));
         }
     }
 }

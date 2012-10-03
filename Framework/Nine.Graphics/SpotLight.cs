@@ -264,7 +264,7 @@ namespace Nine.Graphics
         {
             if (deferredGeometry == null)
             {
-                deferredGeometry = new CentrumInvert(context.graphics)
+                deferredGeometry = new ConeInvert(context.graphics)
                 {
                     Material = deferredMaterial = new DeferredSpotLightMaterial(context.graphics)
                 };
@@ -289,7 +289,7 @@ namespace Nine.Graphics
             return deferredGeometry;
         }
         private DeferredSpotLightMaterial deferredMaterial;
-        private CentrumInvert deferredGeometry;
+        private ConeInvert deferredGeometry;
     }
 #endif
 }
