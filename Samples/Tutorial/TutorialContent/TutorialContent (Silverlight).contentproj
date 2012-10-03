@@ -33,11 +33,21 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
-    <Reference Include="Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9" />
-    <Reference Include="Nine.Content.Pipeline, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
-    <Reference Include="Nine.Content.Pipeline.Silverlight, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
-    <Reference Include="Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9" />
-    <Reference Include="Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
+    <Reference Include="Nine">
+      <HintPath>..\..\..\References\x86\Nine.dll</HintPath>
+    </Reference>
+    <Reference Include="Nine.Content.Pipeline">
+      <HintPath>..\..\..\References\x86\Nine.Content.Pipeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Nine.Content.Pipeline.Silverlight">
+      <HintPath>..\..\..\References\x86\Nine.Content.Pipeline.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="Nine.Graphics">
+      <HintPath>..\..\..\References\x86\Nine.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="Nine.Physics">
+      <HintPath>..\..\..\References\x86\Nine.Physics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
@@ -310,15 +320,6 @@
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Content\Textures\nine.png">
-      <Link>Textures\nine.png</Link>
-      <Name>nine</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tutorials\05. Animations.xaml">
