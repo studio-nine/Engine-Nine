@@ -45,15 +45,13 @@ namespace Tutorial
             // Add a frame rate counter component.
             // FrameRate is not an Xna game component, it is achieved using an extension method
             // defined in Nine.Components. So you have to include that namespace first.
-            //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
 
             // An input component is required for framework to handle input events.
             // You can optionally pass in the handle to the current window, so the input event
             // is driven by windows messages on Windows.
             // This can avoid the event missing problem for Xna pulled input model when frame rate is low.
             Components.Add(new InputComponent(Window.Handle));
-
-            Components.Add(new ScreenshotCapturer(GraphicsDevice));
 
             // Loads the names of tutorial files
             tutorials = Content.Load<string[]>("Tutorials/Tutorials");

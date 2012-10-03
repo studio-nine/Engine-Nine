@@ -1,1 +1,0 @@
-For instructions on how to use this tool, see http://effectcustomtool.codeplex.com/

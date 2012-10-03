@@ -171,9 +171,9 @@
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\fireball\fireball002.DDS">
       <Link>Textures\fireball002.DDS</Link>
-      <Name>fireball002</Name>
-      <Importer>SequentialTextureListImporter</Importer>
-      <Processor>SequentialTextureListProcessor</Processor>
+      <Name>fireball</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureAtlasProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -307,15 +307,6 @@
       <Name>11. Instancing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Content\Textures\nine.png">
-      <Link>Textures\nine.png</Link>
-      <Name>nine</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
     </Compile>
   </ItemGroup>
   <ItemGroup>

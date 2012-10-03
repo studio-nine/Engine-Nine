@@ -310,15 +310,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Textures\nine.png">
-      <Link>Textures\nine.png</Link>
-      <Name>nine</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Tutorials\05. Animations.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>05. Animations</Name>
