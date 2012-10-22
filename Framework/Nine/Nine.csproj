@@ -77,7 +77,7 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Reader.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Content.Reader.Generated.cs">
       <Link>Nine.Content.Reader.Generated.cs</Link>
     </Compile>
     <Compile Include="Animations\AnimationReference.cs" />
@@ -128,27 +128,22 @@
     <Compile Include="NotificationCollection.cs" />
     <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
     <Compile Include="Xaml.cs" />
-    <None Include="..\..\Tools\TextTemplates\Content.Reader.tth">
+    <None Include="..\TextTemplates\Content.Reader.tth">
       <Link>TextTempates\Content.Reader.tth</Link>
     </None>
-    <None Include="..\..\Tools\TextTemplates\Content.tth">
+    <None Include="..\TextTemplates\Content.tth">
       <Link>TextTempates\Content.tth</Link>
     </None>
-    <None Include="..\..\Tools\TextTemplates\Content.Writer.tth">
+    <None Include="..\TextTemplates\Content.Writer.tth">
       <Link>TextTempates\Content.Writer.tth</Link>
     </None>
-    <None Include="..\..\Tools\TextTemplates\Document.tth">
+    <None Include="..\TextTemplates\Document.tth">
       <Link>TextTempates\Document.tth</Link>
     </None>
     <Compile Include="Input\InputEventArgs.cs" />
     <Compile Include="Input\IInputSource.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="SpatialQuery.cs" />
-    <Compile Include="Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Triangle.cs" />
     <Compile Include="Octree.cs" />
     <Compile Include="QuadTree.cs" />
@@ -163,12 +158,6 @@
     <Compile Include="Curves.cs" />
     <Compile Include="Interface.cs" />
     <None Include="Nine.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

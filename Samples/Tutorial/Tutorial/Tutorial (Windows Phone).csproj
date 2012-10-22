@@ -135,7 +135,7 @@
     <Reference Include="Nine.Graphics">
       <HintPath>..\..\..\References\Windows Phone\Nine.Graphics.dll</HintPath>
     </Reference>
-    <Reference Include="Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL">
+    <Reference Include="Nine.Physics, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL">
       <HintPath>..\..\..\References\Windows Phone\Nine.Physics.dll</HintPath>
     </Reference>
     <Reference Include="System" />

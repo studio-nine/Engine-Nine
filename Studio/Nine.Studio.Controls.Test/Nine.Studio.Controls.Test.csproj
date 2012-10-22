@@ -92,12 +92,6 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Nine.Studio.Controls\Nine.Studio.Controls.csproj">
-      <Project>{9E4B7153-EFF8-4E9F-BE67-2090EEFF469B}</Project>
-      <Name>Nine.Studio.Controls</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,12 +1,6 @@
 ﻿namespace Nine.Studio.Shell
 {
     using System;
-
-
-
-
-
-
     using System.Threading.Tasks;
 
     /// <summary>

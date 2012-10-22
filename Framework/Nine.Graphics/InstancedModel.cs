@@ -83,7 +83,12 @@ namespace Nine.Graphics
         /// compensate scale and rotation loss, since the auto computed bounding box 
         /// does not care about the scale and rotation of instance transforms.
         /// </summary>
-        public Vector3 BoundingBoxPadding { get; set; }
+        public Vector3 BoundingBoxPadding
+        {
+            get { return boundingBoxPadding; }
+            set { boundingBoxPadding = value; UpdateBounds(); }
+        }
+        private Vector3 boundingBoxPadding;
 
         /// <summary>
         /// Called when transform changed.
@@ -220,8 +225,8 @@ namespace Nine.Graphics
             }
 
             Matrix transform = AbsoluteTransform;
-            orientedBoundingBox.Min -= BoundingBoxPadding;
-            orientedBoundingBox.Max += BoundingBoxPadding;
+            orientedBoundingBox.Min -= boundingBoxPadding;
+            orientedBoundingBox.Max += boundingBoxPadding;
             orientedBoundingBox.CreateAxisAligned(ref transform, out boundingBox);
 
             if (boundingBoxChanged != null)
@@ -374,7 +379,9 @@ namespace Nine.Graphics
         private InstancedModel model;
         private int index;
         
+#if !WINRT
         static VertexBufferBinding[] Bindings = new VertexBufferBinding[2];
+#endif
 
         public InstancedModelMesh(InstancedModel model, int index)
         {
@@ -395,7 +402,7 @@ namespace Nine.Graphics
         /// </summary>
         public void Draw(DrawingContext context, Material material)
         {
-#if SILVERLIGHT
+#if SILVERLIGHT || WINRT
             throw new NotSupportedException();
 #else
             if (model.template == null)

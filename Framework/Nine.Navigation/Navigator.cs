@@ -226,12 +226,12 @@ namespace Nine.Navigation
 
         #region Events
         /// <summary>
-        /// Occures when this navigator has started to move.
+        /// Occurs when this navigator has started to move.
         /// </summary>
         public event EventHandler<EventArgs> Started;
 
         /// <summary>
-        /// Occures when this navigator has stopped moving when calling <c>Stop</c> 
+        /// Occurs when this navigator has stopped moving when calling <c>Stop</c> 
         /// or when the target is reached or when failed to reach the target.
         /// </summary>
         public event EventHandler<EventArgs> Stopped;

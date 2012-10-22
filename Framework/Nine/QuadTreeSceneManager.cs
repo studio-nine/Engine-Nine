@@ -78,7 +78,7 @@ namespace Nine
             if (item == null)
                 throw new ArgumentNullException("item");
             if (item.SpatialData != null)
-                throw new InvalidOperationException(Strings.AlreadyAddedToASceneManager);
+                throw new InvalidOperationException("The input has already been added to a scene manager.");
 
             item.SpatialData = new QuadTreeSceneManagerSpatialData<ISpatialQueryable>();
 

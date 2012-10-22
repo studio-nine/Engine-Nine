@@ -184,7 +184,7 @@
             if (!(Skeleton.BoneTransforms != null && Skeleton.BoneTransforms.Length > 0 &&
                   Skeleton.BoneTransforms[Skeleton.SkeletonRoot].M44 != 0))
             {
-                throw new InvalidOperationException(Strings.InvalidateSkeleton);
+                throw new InvalidOperationException("The bone transforms of the input skeleton is not valid.");
             }
         }
 

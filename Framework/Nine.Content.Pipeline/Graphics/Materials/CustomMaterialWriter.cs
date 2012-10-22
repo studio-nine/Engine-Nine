@@ -41,7 +41,7 @@
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             if (targetPlatform == TargetPlatform.WindowsPhone)
-                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+                return "Nine.Content.NullReader, Nine, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
             return typeof(CustomMaterialReader).AssemblyQualifiedName;
         }
 

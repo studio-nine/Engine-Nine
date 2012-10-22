@@ -25,10 +25,9 @@
 
             if (resourceDictionary.TryGetValue(graphics, out value))
             {
-                result = value.Target;
-                if (result != null)
+                if (value.TryGetTarget(out result))
                     return result;
-                
+
                 // Need to remove it from the dictionary
                 resourceDictionary.Remove(graphics);
             }

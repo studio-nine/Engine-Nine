@@ -71,7 +71,7 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.WindowsPhone.Reader.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Graphics.Content.WindowsPhone.Reader.Generated.cs">
       <Link>Nine.Graphics.Content.WindowsPhone.Reader.Generated.cs</Link>
     </Compile>
     <Compile Include="AmbientLight.cs" />

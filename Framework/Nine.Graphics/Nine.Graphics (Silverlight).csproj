@@ -73,10 +73,10 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Reader.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Graphics.Content.Reader.Generated.cs">
       <Link>Nine.Graphics.Content.Reader.Generated.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Materials.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Graphics.Materials.Generated.cs">
       <Link>Nine.Graphics.Materials.Generated.cs</Link>
     </Compile>
     <Compile Include="AmbientLight.cs" />

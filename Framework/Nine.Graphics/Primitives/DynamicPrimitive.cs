@@ -156,7 +156,7 @@
         public void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture, Matrix? world, float lineWidth)
         {
             if (hasPrimitiveBegin)
-                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
+                throw new InvalidOperationException("Begin cannot be called until End has been successfully called.");
             
             hasPrimitiveBegin = true;
 
@@ -246,7 +246,7 @@
         private int AddVertexInternal(ref VertexPositionColorTexture vertex, ref Vector3 normal)
         {
             if (!hasPrimitiveBegin)
-                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
+                throw new InvalidOperationException("Begin cannot be called until End has been successfully called.");
 
             var index = baseSegmentVertex + currentVertex;
             if (index >= vertexData.Length)
@@ -284,7 +284,7 @@
         private void AddIndexInternal(int index)
         {
             if (!hasPrimitiveBegin)
-                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);        
+                throw new InvalidOperationException("Begin cannot be called until End has been successfully called.");        
             if (index > ushort.MaxValue)
                 throw new ArgumentOutOfRangeException("index");
 
@@ -305,7 +305,7 @@
             currentSegment++;
 
             if (currentSegment - beginSegment >= 2)
-                throw new ArgumentOutOfRangeException(Strings.PrimitiveTooLarge);
+                throw new ArgumentOutOfRangeException("The Input primitive is too large for a single draw call. Try increase the capability of DynamicPrimitive.");
 
             indexSegments.Add(baseSegmentIndex += currentBaseIndex);
             vertexSegments.Add(baseSegmentVertex += currentBaseVertex);
@@ -488,7 +488,7 @@
         public void Draw(DrawingContext context, Material material)
         {
             if (hasPrimitiveBegin)
-                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
+                throw new InvalidOperationException("Begin cannot be called until End has been successfully called.");
 
             if (material == null)
                 material = this.material;
@@ -553,7 +553,7 @@
                 {
                     if (indexBuffer != null)
                         indexBuffer.Dispose();
-                    indexBuffer = new DynamicIndexBuffer(graphics, typeof(ushort), Math.Max(initialBufferCapacity, indexBufferSize), BufferUsage.WriteOnly);
+                    indexBuffer = new DynamicIndexBuffer(graphics, IndexElementSize.SixteenBits, Math.Max(initialBufferCapacity, indexBufferSize), BufferUsage.WriteOnly);
                 }
 
                 graphics.Indices = null;

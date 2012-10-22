@@ -292,6 +292,17 @@
             }
         }
         private BoundingBox boundingBox;
+        
+        /// <summary>
+        /// Gets or sets a value that is appended to the computed bounding box
+        /// of each surface patch.
+        /// </summary>
+        public Vector3 BoundingBoxPadding
+        {
+            get { return boundingBoxPadding; }
+            set { boundingBoxPadding = value; OnTransformChanged(); }
+        }
+        private Vector3 boundingBoxPadding;
         #endregion
 
         #region Members

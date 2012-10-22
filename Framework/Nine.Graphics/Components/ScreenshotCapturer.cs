@@ -81,7 +81,7 @@ namespace Nine.Components
         public ScreenshotCapturer(GraphicsDevice graphics)
         {
             if (graphics.GraphicsProfile == GraphicsProfile.Reach)
-                throw new NotSupportedException(Strings.InvalidGraphicsProfile);
+                throw new NotSupportedException("The specified graphics profile is not supported.");
 
             GraphicsDevice = graphics;
             ScreenshotsDirectory = "Screenshots";

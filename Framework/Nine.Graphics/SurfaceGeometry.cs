@@ -60,8 +60,7 @@
 
             if (resourceDictionary.TryGetValue(new KeyValuePair<GraphicsDevice, int>(graphics, patchSegmentCount), out value))
             {
-                result = value.Target;
-                if (result != null)
+                if (value.TryGetTarget(out result))
                     return result;
                 resourceDictionary.Remove(new KeyValuePair<GraphicsDevice, int>(graphics, patchSegmentCount));
             }

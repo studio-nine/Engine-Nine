@@ -32,16 +32,15 @@ namespace Nine
         /// <param name="trackResurrection">if set to <c>true</c> [track resurrection].</param>
         public WeakReference(object target, bool trackResurrection) : base(target, trackResurrection) { }
 
-        /// <summary>
-        /// Gets or sets the object (the target) referenced by the current <see cref="T:System.WeakReference"/> object.
-        /// </summary>
-        /// <returns>null if the object referenced by the current <see cref="T:System.WeakReference"/> object has been garbage collected; otherwise, a reference to the object referenced by the current <see cref="T:System.WeakReference"/> object.</returns>
-        ///   
-        /// <exception cref="T:System.InvalidOperationException">The reference to the target object is invalid. This exception can be thrown while setting this property if the value is a null reference or if the object has been finalized during the set operation.</exception>
-        public new T Target
+        public void SetTarget(T target)
         {
-            get { return (T)base.Target; }
-            set { base.Target = value; }
+            base.Target = target;
+        }
+
+        public bool TryGetTarget(out T target)
+        {
+            target = base.Target as T;
+            return target != null;
         }
     }
 }

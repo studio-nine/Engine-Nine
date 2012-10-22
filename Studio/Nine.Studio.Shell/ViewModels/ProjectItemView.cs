@@ -2,11 +2,8 @@
 {
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-
     using System.Linq;
     using System.Windows.Input;
-
-
 
     public class ProjectItemView : INotifyPropertyChanged
     {

@@ -221,7 +221,7 @@ namespace Nine.Graphics
                 if (sharedSkeleton != value)
                 {
                     if (value != null && value.BoneTransforms.Length != skeleton.BoneTransforms.Length)
-                        throw new InvalidOperationException(Strings.SkeletonMismatch);
+                        throw new InvalidOperationException("The shared skeleton does not match the skeleton used by this model.");
                     sharedSkeleton = value;
                     UpdateBoneTransforms();
                 }

@@ -366,14 +366,14 @@
             // positionOnHeightmap is. Remember that integer division always rounds
             // down, so that the result of these divisions is the indices of the "upper
             // left" of the 4 corners of that cell.
-            int left = (int)Math.Floor(positionX * Width / Size.X);
-            int top = (int)Math.Floor(positionZ * Height / Size.Z);
+            int left = (int)Math.Floor(positionX / Step);
+            int top = (int)Math.Floor(positionZ / Step);
 
             // next, we'll use modulus to find out how far away we are from the upper
             // left corner of the cell. Mod will give us a value from 0 to terrainScale,
             // which we then divide by terrainScale to normalize 0 to 1.
-            float xNormalized = positionX - left * Size.X / Width;
-            float zNormalized = positionZ - top * Size.Z / Height;
+            float xNormalized = (positionX - left * Step) / Step;
+            float zNormalized = (positionZ - top * Step) / Step;
 
             if (getHeight)
             {

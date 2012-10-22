@@ -34,7 +34,7 @@
         {
             if (targetPlatform == TargetPlatform.Windows)
                 return typeof(AttachableMemberIdentifier).AssemblyQualifiedName;
-            return "System.Xaml.AttachableMemberIdentifier, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "System.Xaml.AttachableMemberIdentifier, Nine, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
@@ -68,7 +68,7 @@
         {
             if (targetPlatform == TargetPlatform.Windows)
                 return typeof(AttachableMemberIdentifierCollection).AssemblyQualifiedName;
-            return "System.Xaml.AttachableMemberIdentifierCollection, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "System.Xaml.AttachableMemberIdentifierCollection, Nine, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)

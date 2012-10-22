@@ -1,11 +1,6 @@
 ﻿namespace Nine.Studio.Shell
 {
-
-
-
     using System.Windows;
-
-
 
     public partial class App : Application
     {

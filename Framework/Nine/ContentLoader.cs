@@ -24,9 +24,10 @@ namespace Nine
 
 #if WINDOWS_PHONE
             throw new NotSupportedException("ContentManager.Create only works for ContentLoader");
+#elif WINRT
+            return content.ReadAsset<T>(assetName);
 #else
             // Hack into ReadAsset using reflection.
-
             var readAsset = content.GetType().GetMethod("ReadAsset", BindingFlags.Instance | BindingFlags.NonPublic, null, ReadAssetParameterTypes, null);
             var genericReadAsset = readAsset.MakeGenericMethod(typeof(T));
             try

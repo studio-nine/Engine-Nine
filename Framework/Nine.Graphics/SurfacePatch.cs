@@ -248,8 +248,8 @@
 
         internal void UpdatePosition()
         {
-            boundingBox.Min = baseBounds.Min + surface.AbsolutePosition;
-            boundingBox.Max = baseBounds.Max + surface.AbsolutePosition;
+            boundingBox.Min = baseBounds.Min + surface.AbsolutePosition - surface.BoundingBoxPadding;
+            boundingBox.Max = baseBounds.Max + surface.AbsolutePosition + surface.BoundingBoxPadding;
             
             var offset = new Vector3();
             offset.X = X * heightmap.Step * segmentCount;
@@ -396,10 +396,9 @@
                 // Cannot initialize weak reference to null in silverlight
                 WeakVertices = new WeakReference<T[]>(vertices = new T[VertexCount]);
             }
-            vertices = WeakVertices.Target;
-            if (vertices == null || vertices.Length < VertexCount)
+            if (!WeakVertices.TryGetTarget(out vertices) || vertices == null || vertices.Length < VertexCount)
             {
-                WeakVertices.Target = vertices = new T[VertexCount];
+                WeakVertices.SetTarget(vertices = new T[VertexCount]);
             }
 
             // Fill vertices

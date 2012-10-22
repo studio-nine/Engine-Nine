@@ -12,15 +12,13 @@ using Nine.Studio.Extensibility;
 namespace Nine.Studio
 {
 
-using Exporter = Lazy<IExporter, IMetadata>;
-using Factory = Lazy<IFactory, IMetadata>;
-using Importer = Lazy<IImporter, IMetadata>;
-using Settings = Lazy<ISettings, IMetadata>;
-using Tool = Lazy<ITool, IMetadata>;
-using Visualizer = Lazy<IVisualizer, IMetadata>;
-
-
-
+    using Exporter = Lazy<IExporter, IMetadata>;
+    using Factory = Lazy<IFactory, IMetadata>;
+    using Importer = Lazy<IImporter, IMetadata>;
+    using Settings = Lazy<ISettings, IMetadata>;
+    using Tool = Lazy<ITool, IMetadata>;
+    using Visualizer = Lazy<IVisualizer, IMetadata>;
+    
     /// <summary>
     /// Represents extensions to the editor.
     /// </summary>

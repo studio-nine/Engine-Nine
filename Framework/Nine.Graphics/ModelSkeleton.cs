@@ -181,7 +181,7 @@
         public Matrix[] GetSkinTransforms()
         {
             if (InverseAbsoluteBindPose == null)
-                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
+                throw new NotSupportedException("The input skeleton does not support skinning.");
 
             Matrix[] skin = new Matrix[InverseAbsoluteBindPose.Count];
 
@@ -214,7 +214,7 @@
         public Matrix[] GetSkinTransforms(Matrix world)
         {
             if (InverseAbsoluteBindPose == null)
-                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
+                throw new NotSupportedException("The input skeleton does not support skinning.");
 
             Matrix[] skin = new Matrix[InverseAbsoluteBindPose.Count];
 
@@ -242,7 +242,7 @@
         public void GetSkinTransforms(Matrix world, Matrix[] skinTransforms)
         {
             if (InverseAbsoluteBindPose == null)
-                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
+                throw new NotSupportedException("The input skeleton does not support skinning.");
 
             if (bones == null || bones.Length < BoneTransforms.Length)
                 bones = new Matrix[BoneTransforms.Length];
@@ -264,7 +264,7 @@
         public void GetSkinTransforms(Matrix[] skinTransforms)
         {
             if (InverseAbsoluteBindPose == null)
-                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
+                throw new NotSupportedException("The input skeleton does not support skinning.");
 
             if (bones == null || bones.Length < BoneTransforms.Length)
                 bones = new Matrix[BoneTransforms.Length];

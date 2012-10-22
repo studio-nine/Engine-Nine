@@ -253,12 +253,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <SplashScreen Include="Images\Splash.png" />
-    <Resource Include="Images\Outlook15_modern_1.png" />
-    <Resource Include="Images\Background.png" />
     <None Include="App.config" />
-    <Content Include="Content\Terrain.fbx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Nine.snk" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -269,31 +264,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Nine.ico" />
-    <Resource Include="Images\Grid.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\SaveAllHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\saveHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\DeleteHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\CopyHS.png" />
-    <Resource Include="Images\CutHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\PasteHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\OpenFile.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\TerrainTex.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.resx">
@@ -304,10 +274,6 @@
     <EmbeddedResource Include="Strings.zh.resx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nine.Studio.Controls\Nine.Studio.Controls.csproj">
-      <Project>{9E4B7153-EFF8-4E9F-BE67-2090EEFF469B}</Project>
-      <Name>Nine.Studio.Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Nine.Studio\Nine.Studio.csproj">
       <Project>{412AE201-B5E8-436E-9468-E6CC94739055}</Project>
       <Name>Nine.Studio</Name>

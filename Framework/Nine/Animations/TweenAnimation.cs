@@ -226,17 +226,20 @@ namespace Nine.Animations
             if (add == null)
                 throw new NotSupportedException(
                     "Type " + typeof(T).Name + " cannot be added with an offset. " +
-                    "Please specify an add operater in the constructor.");
+                    "Please specify an add operator in the constructor.");
 
             return add(x, y);
         }
 
         private void SetDefaultLerp()
         {
-            // This is a generic limitaion,
+            // This is a generic limitation,
             // we have to assign the lerp using reflection.
-            FieldInfo field = typeof(TweenAnimation<T>).GetField("lerp", BindingFlags.NonPublic | BindingFlags.Instance);
-
+#if WINRT
+            var field = typeof(TweenAnimation<T>).GetTypeInfo().GetDeclaredField("lerp");
+#else
+            var field = typeof(TweenAnimation<T>).GetField("lerp", BindingFlags.NonPublic | BindingFlags.Instance);
+#endif
             if (typeof(T) == typeof(float))
                 field.SetValue(this, (Interpolate<float>)MathHelper.Lerp);
             else if (typeof(T) == typeof(double))
@@ -277,10 +280,13 @@ namespace Nine.Animations
 
         private void SetDefaultAdd()
         {
-            // This is a generic limitaion,
+            // This is a generic limitation,
             // we have to assign the lerp using reflection.
-            FieldInfo field = typeof(TweenAnimation<T>).GetField("add", BindingFlags.NonPublic | BindingFlags.Instance);
-
+#if WINRT
+            var field = typeof(TweenAnimation<T>).GetTypeInfo().GetDeclaredField("add");
+#else
+            var field = typeof(TweenAnimation<T>).GetField("add", BindingFlags.NonPublic | BindingFlags.Instance);
+#endif
             if (typeof(T) == typeof(float))
                 field.SetValue(this, (Operator<float>)AddHelper.Add);
             else if (typeof(T) == typeof(double))

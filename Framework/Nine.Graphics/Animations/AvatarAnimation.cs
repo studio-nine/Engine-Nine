@@ -110,7 +110,7 @@
         public AvatarAnimationController(AvatarRenderer renderer, BoneAnimationClip clip)
         {
             if (clip.Transforms.Length != AvatarRenderer.BoneCount)
-                throw new ArgumentException(Strings.InvalidAvatarAnimationClip);
+                throw new ArgumentException("The input animation clip is not a valid avatar animation.");
 
             Renderer = renderer;
             Loop = true;

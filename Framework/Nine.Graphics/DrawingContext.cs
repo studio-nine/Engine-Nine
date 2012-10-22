@@ -4,6 +4,8 @@ namespace Nine.Graphics
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
+    using System.Reflection;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics;
@@ -600,7 +602,11 @@ namespace Nine.Graphics
         /// </summary>
         private Pass CreatePass(Type passType)
         {
+#if WINRT
+            var defaultConstructor = passType.GetTypeInfo().DeclaredConstructors.FirstOrDefault(c => c.GetParameters().Length == 0);
+#else
             var defaultConstructor = passType.GetConstructor(Type.EmptyTypes);
+#endif
             if (defaultConstructor != null)
                 return (Pass)defaultConstructor.Invoke(null);
             return (Pass)Activator.CreateInstance(passType, new object[] { graphics });

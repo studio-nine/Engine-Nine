@@ -9,6 +9,12 @@ namespace Nine.Physics
     using Microsoft.Xna.Framework;
     using Nine.Physics.Colliders;
 
+    public enum RigidBodyType
+    {
+        Dynamic,
+        Kinematic,
+    }
+
     /// <summary>
     /// Defines a rigid body in the physics simulation.
     /// </summary>
@@ -35,12 +41,37 @@ namespace Nine.Physics
 
                     collider = value;
                     entity = collider.entity;
-                    entity.BecomeDynamic(1);
+                    UpdateBodyType();
                 }
             }
         }
         private Collider collider;
         private Entity entity;
+
+        /// <summary>
+        /// Gets or sets whether this rigid body is dynamic or kinematic.
+        /// </summary>
+        public RigidBodyType BodyType
+        {
+            get { return bodyType; }
+            set
+            {
+                if (bodyType != value)
+                {
+                    bodyType = value;
+                    UpdateBodyType();
+                }
+            }
+        }
+        private RigidBodyType bodyType;
+
+        private void UpdateBodyType()
+        {
+            if (bodyType == RigidBodyType.Kinematic)
+                entity.BecomeKinematic();
+            else
+                entity.BecomeDynamic(Mass <= 0 ? 1 : Mass);
+        }
 
         /// <summary>
         /// Gets the world transform of this rigid body.

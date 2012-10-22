@@ -80,7 +80,7 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Reader.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Physics.Content.Reader.Generated.cs">
       <Link>Nine.Physics.Content.Reader.Generated.cs</Link>
     </Compile>
     <Compile Include="BEPUphysics\BroadPhaseEntries\BroadPhaseEntry.cs" />

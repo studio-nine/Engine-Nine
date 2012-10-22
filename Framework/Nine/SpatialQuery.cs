@@ -25,7 +25,7 @@ namespace Nine
         /// <summary>
         /// Gets or sets a predicate that converts the result of the inner query.
         /// </summary>
-        public Converter<TInput, TOutput> Converter { get; set; }
+        public Func<TInput, TOutput> Converter { get; set; }
 
         private CollectionAdapter adapter;
 
