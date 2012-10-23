@@ -251,6 +251,42 @@ namespace Nine.Graphics
         }
     }
     /// <summary>
+    /// Content reader for <c>ChaseCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ChaseCameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ChaseCamera>
+    {
+        protected override Nine.Graphics.ChaseCamera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ChaseCamera existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ChaseCamera(graphicsDevice);
+            }
+            existingInstance.Target = input.ReadObject<Nine.Transformable>();
+            existingInstance.PositionOffset = input.ReadVector3();
+            existingInstance.LookAtOffset = input.ReadVector3();
+            existingInstance.Stiffness = input.ReadSingle();
+            existingInstance.Damping = input.ReadSingle();
+            existingInstance.Mass = input.ReadSingle();
+            existingInstance.NearPlane = input.ReadSingle();
+            existingInstance.FarPlane = input.ReadSingle();
+            existingInstance.FieldOfView = input.ReadSingle();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadString();
+            existingInstance.AttachedProperties = input.ReadObject<System.Windows.Markup.AttachableMemberIdentifierCollection>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>Decal</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -896,6 +932,7 @@ namespace Nine.Graphics
             }
             existingInstance.PatchSegmentCount = input.ReadInt32();
             existingInstance.TextureTransform = input.ReadMatrix();
+            existingInstance.Topology = (Nine.Graphics.SurfaceTopology)input.ReadUInt16();
             existingInstance.VertexTypeSerializer = input.ReadString();
             existingInstance.Heightmap = input.ReadObject<Nine.Graphics.Heightmap>();
             existingInstance.LevelOfDetailStart = input.ReadSingle();

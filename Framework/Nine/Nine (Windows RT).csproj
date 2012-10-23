@@ -125,6 +125,7 @@
     <Compile Include="BoundingCircle.cs" />
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContentLoader.cs" />
     <Compile Include="ContentSerializableAttribute.cs" />

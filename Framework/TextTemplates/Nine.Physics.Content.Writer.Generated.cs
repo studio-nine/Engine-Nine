@@ -22,6 +22,7 @@ namespace Nine.Content.Pipeline.Physics
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.RigidBody value)
         {
             WriteObject(output, value, "Collider", value.Collider);
+            output.Write((ushort)value.BodyType);
             output.Write(value.Position);
             output.Write(value.Orientation);
             output.Write(value.Mass);

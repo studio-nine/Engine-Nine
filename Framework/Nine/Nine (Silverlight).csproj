@@ -102,6 +102,7 @@
     <Compile Include="Components\IGameComponent.cs" />
     <Compile Include="Components\IUpdateable.cs" />
     <Compile Include="Components\ZipContentmanager.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContentLoader.cs" />
     <Compile Include="ContentSerializableAttribute.cs" />

@@ -87,6 +87,7 @@
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="Content\ContentProperties.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Design\RectangleConverter.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="SpatialQueryExtensions.cs" />

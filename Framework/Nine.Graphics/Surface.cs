@@ -11,6 +11,34 @@
     using Nine.Graphics.Materials;
 
     /// <summary>
+    /// Defines how the triangles of the surface are organized.
+    /// </summary>
+    public enum SurfaceTopology
+    {
+        /// <summary>
+        /// Triangle with a right angle at the (-i,-j) position and another at the (+i,+j) position.
+        /// The topology of adjacent quads are mirrored.
+        /// </summary>
+        BottomLeftUpperRightCrossed,
+
+        /// <summary>
+        /// Triangle with a right angle at the (+i,-j) position and another at the high (-i,+j) position.
+        /// /// The topology of adjacent quads are mirrored.
+        /// </summary>
+        BottomRightUpperLeftCrossed,
+
+        /// <summary>
+        /// Triangle with a right angle at the (-i,-j) position and another at the (+i,+j) position.
+        /// </summary>
+        BottomLeftUpperRight,
+
+        /// <summary>
+        /// Triangle with a right angle at the (+i,-j) position and another at the high (-i,+j) position.
+        /// </summary>
+        BottomRightUpperLeft
+    }
+
+    /// <summary>
     /// A triangle mesh constructed from heightmap to represent game surface. 
     /// The up axis of the surface is Vector.UnitY.
     /// </summary>
@@ -40,7 +68,15 @@
         public int PatchSegmentCount
         {
             get { return patchSegmentCount; }
-            set { patchSegmentCount = value; heightmapNeedsUpdate = true; }
+            set
+            {
+                if (patchSegmentCount != value)
+                {
+                    patchSegmentCount = value;
+                    geometryNeedsUpdate = true;
+                    heightmapNeedsUpdate = true;
+                }
+            }
         }
         private int patchSegmentCount = 32;
         
@@ -112,7 +148,25 @@
             }        
         }
         Matrix textureTransform = Matrix.Identity;
-        
+
+        /// <summary>
+        /// Gets or sets the topology of the surface triangles.
+        /// </summary>
+        public SurfaceTopology Topology
+        {
+            get { return topology; }
+            set
+            {
+                if (topology != value)
+                {
+                    geometryNeedsUpdate = true;
+                    heightmapNeedsUpdate = true;
+                    topology = value;
+                }
+            }
+        }
+        private SurfaceTopology topology;
+
         /// <summary>
         /// Gets the current vertex type used by this surface.
         /// </summary>
@@ -311,9 +365,18 @@
         /// </summary>
         internal SurfaceGeometry Geometry
         {
-            get { return geometry ?? (geometry = SurfaceGeometry.GetInstance(GraphicsDevice, PatchSegmentCount)); }
+            get
+            {
+                if (geometry == null || geometryNeedsUpdate)
+                {
+                    geometry = SurfaceGeometry.GetInstance(GraphicsDevice, patchSegmentCount, topology);
+                    geometryNeedsUpdate = false;
+                }
+                return geometry;
+            }
         }
         private SurfaceGeometry geometry;
+        private bool geometryNeedsUpdate;
         #endregion
 
         #region Initialization

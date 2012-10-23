@@ -76,6 +76,7 @@
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="AttachedPropertyStore.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContentLoader.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />

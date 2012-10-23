@@ -203,7 +203,6 @@ namespace Nine.Graphics
 
                 for (int i = 0; i < instanceTransforms.Length; ++i)
                 {
-                    // TODO: Include scale & rotation
                     if (instanceTransforms[i].M41 > instanceBounds.Max.X)
                         instanceBounds.Max.X = instanceTransforms[i].M41;
                     else if (instanceTransforms[i].M41 < instanceBounds.Min.X)

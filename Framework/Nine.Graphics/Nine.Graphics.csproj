@@ -103,6 +103,7 @@
     <Compile Include="Animations\BoneAnimationClip.cs" />
     <Compile Include="Animations\LookAtController.cs" />
     <Compile Include="Animations\SpriteAnimation.cs" />
+    <Compile Include="Cameras\ChaseCamera.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="PostEffects\BloomMaterial.cs" />

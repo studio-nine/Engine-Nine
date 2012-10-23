@@ -197,9 +197,9 @@
                     }
                 }
 
-                int count = SurfaceGeometry.GetIndicesForLevel(segmentCount, 0, false, false, false, false, null, 0);
+                int count = surface.Geometry.GetIndicesForLevel(0, false, false, false, false, null, 0);
                 geometryIndices = new ushort[count];
-                SurfaceGeometry.GetIndicesForLevel(segmentCount, 0, false, false, false, false, geometryIndices, 0);
+                surface.Geometry.GetIndicesForLevel(0, false, false, false, false, geometryIndices, 0);
             }
             vertices = this.geometryPositions;
             indices = this.geometryIndices;

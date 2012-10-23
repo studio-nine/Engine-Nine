@@ -24,6 +24,7 @@ namespace Nine.Physics
             if (existingInstance == null)
                 existingInstance = new RigidBody();
             existingInstance.Collider = input.ReadObject<Nine.Physics.Colliders.Collider>();
+            existingInstance.BodyType = (Nine.Physics.RigidBodyType)input.ReadUInt16();
             existingInstance.Position = input.ReadVector3();
             existingInstance.Orientation = input.ReadQuaternion();
             existingInstance.Mass = input.ReadSingle();

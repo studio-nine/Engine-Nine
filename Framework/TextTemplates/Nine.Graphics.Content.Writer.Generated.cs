@@ -359,6 +359,51 @@ namespace Nine.Content.Pipeline.Graphics
         }
     }
     /// <summary>
+    /// Content writer for <c>ChaseCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ChaseCameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.ChaseCamera>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.ChaseCamera value)
+        {
+            WriteObject(output, value, "ChaseTarget", value.Target);
+            output.Write(value.PositionOffset);
+            output.Write(value.LookAtOffset);
+            output.Write(value.Stiffness);
+            output.Write(value.Damping);
+            output.Write(value.Mass);
+            output.Write(value.NearPlane);
+            output.Write(value.FarPlane);
+            output.Write(value.FieldOfView);
+            output.Write(value.Transform);
+            output.Write(value.Name ?? string.Empty);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ChaseCameraReader, Nine.Graphics, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ChaseCamera, Nine.Graphics, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>Decal</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -1323,6 +1368,7 @@ namespace Nine.Content.Pipeline.Graphics
         {
             output.Write(value.PatchSegmentCount);
             output.Write(value.TextureTransform);
+            output.Write((ushort)value.Topology);
             output.Write(value.VertexTypeSerializer ?? string.Empty);
             WriteObject(output, value, "Heightmap", value.Heightmap);
             output.Write(value.LevelOfDetailStart);
