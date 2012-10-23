@@ -53,6 +53,6 @@
         }
 
         protected virtual void LoadContent() { }
-        protected abstract void Draw(TimeSpan elapsedTime);
+        protected abstract void Draw(float elapsedTime);
     }
 }

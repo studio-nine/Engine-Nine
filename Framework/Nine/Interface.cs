@@ -11,9 +11,10 @@ namespace Nine
     public interface IUpdateable
     {
         /// <summary>
-        /// Updates the internal state of the object based on game time.
+        /// Updates the internal state of the object based on
+        /// the elapsed game time since last frame in seconds.
         /// </summary>
-        void Update(TimeSpan elapsedTime);
+        void Update(float elapsedTime);
     }
 
     /// <summary>
@@ -22,9 +23,10 @@ namespace Nine
     public interface IDrawable
     {
         /// <summary>
-        /// Draws the internal state of the object.
+        /// Draws the internal state of the object based on
+        /// the elapsed game time since last frame in seconds.
         /// </summary>
-        void Draw(TimeSpan elapsedTime);
+        void Draw(float elapsedTime);
     }
 
     /// <summary>

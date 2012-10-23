@@ -21,7 +21,7 @@
         /// <returns>
         /// Returns true when this emitter has stopped emitting new particles.
         /// </returns>
-        bool Update(ParticleEffect particleEffect, float elapsedSeconds);
+        bool Update(ParticleEffect particleEffect, float elapsedTime);
     }
     #endregion
 
@@ -173,7 +173,7 @@
         /// </summary>
         public bool Update(ParticleEffect particleEffect, float elapsedSeconds)
         {
-            if (!Enabled || elapsedSeconds < 0)
+            if (!Enabled || elapsedTime < 0)
                 return false;
 
             // Check for delay

@@ -219,12 +219,12 @@ namespace Nine.Animations
         /// Signals related events.
         /// </summary>
         /// <param name="elapsedTime"></param>
-        public override void Update(TimeSpan elapsedTime)
+        public override void Update(float elapsedTime)
         {
             if (State != AnimationState.Playing)
                 return;
 
-            TimeSpan increment = TimeSpan.FromTicks((long)(elapsedTime.Ticks * (double)Speed));
+            TimeSpan increment = TimeSpan.FromSeconds(elapsedTime * Speed);
 
             // Repeat sets an absolute upper bound on how long the animation may run
             TimeSpan max_elapsed = TimeSpan.MaxValue;

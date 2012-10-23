@@ -58,7 +58,7 @@ namespace Nine.Animations
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public abstract void Update(TimeSpan elapsedTime);
+        public abstract void Update(float elapsedTime);
 
         /// <summary>
         /// Plays the animation from start.

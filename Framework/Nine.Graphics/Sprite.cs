@@ -236,7 +236,7 @@
         /// <summary>
         /// Updates the animations of this sprite.
         /// </summary>
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             if (animations != null)
                 animations.Update(elapsedTime);

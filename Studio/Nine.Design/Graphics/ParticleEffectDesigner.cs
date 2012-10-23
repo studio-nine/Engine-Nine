@@ -29,7 +29,7 @@
             DisplayName = string.Format(Strings.ViewFormat, Strings.ParticleEffect);
         }
 
-        protected override void Draw(TimeSpan elapsedTime)
+        protected override void Draw(float elapsedTime)
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
         }

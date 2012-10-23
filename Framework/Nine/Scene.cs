@@ -57,12 +57,12 @@ namespace Nine
         /// <summary>
         /// Occurs when the scene is starting to update.
         /// </summary>
-        public event Action<TimeSpan> Updating;
+        public event Action<float> Updating;
 
         /// <summary>
         /// Occurs when the scene has finished updating.
         /// </summary>
-        public event Action<TimeSpan> Updated;
+        public event Action<float> Updated;
         #endregion
 
         #region Initialization
@@ -95,7 +95,7 @@ namespace Nine
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public override void Update(TimeSpan elapsedTime)
+        public override void Update(float elapsedTime)
         {
             var updating = Updating;
             if (updating != null)

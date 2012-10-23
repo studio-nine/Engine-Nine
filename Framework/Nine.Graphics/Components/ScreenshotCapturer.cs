@@ -241,7 +241,7 @@ namespace Nine.Components
                 Captured(this, e);
         }
 
-        public void Draw(TimeSpan elapsedTime)
+        public void Draw(float elapsedTime)
         {
             bool pressed = Keyboard.GetState().IsKeyDown(CaptureKey) ||
                 (CaptureButton.HasValue && GamePad.GetState(PlayerIndex.One).IsButtonDown(CaptureButton.Value));

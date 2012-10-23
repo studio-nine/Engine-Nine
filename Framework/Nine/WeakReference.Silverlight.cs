@@ -42,16 +42,15 @@ namespace Nine
             this.inner = new WeakReference((object)target, trackResurrection); 
         }
 
-        public T Target 
+        public bool TryGetTarget(out T result)
         {
-            get { return (T)this.inner.Target; }
-            set { this.inner.Target = value; }
-        } 
- 
-        public bool IsAlive 
+            return (result = inner.Target as T) != null;
+        }
+        
+        public void SetTarget(T value)
         {
-            get { return this.inner.IsAlive; }
-        } 
+            inner.Target = value;
+        }
     } 
 #endif
 }

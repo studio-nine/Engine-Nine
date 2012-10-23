@@ -418,7 +418,7 @@ namespace Nine
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public virtual void Update(TimeSpan elapsedTime)
+        public virtual void Update(float elapsedTime)
         {
             foreach (var child in children)
             {

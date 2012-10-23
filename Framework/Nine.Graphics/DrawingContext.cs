@@ -50,12 +50,11 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the elapsed time since last update.
         /// </summary>
-        public TimeSpan ElapsedTime
+        public float ElapsedTime
         {
             get { return elapsedTime; }
         }
-        internal TimeSpan elapsedTime;
-        internal float elapsedSeconds;
+        internal float elapsedTime;
 
         /// <summary>
         /// Gets the total seconds since the beginning of the drawing context.
@@ -440,7 +439,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Draws the specified scene.
         /// </summary>
-        public void Draw(TimeSpan elapsedTime)
+        public void Draw(float elapsedTime)
         {
             var activeCamera = camera;
             Matrix view, projection;
@@ -451,7 +450,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Draws the specified scene.
         /// </summary>
-        public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection)
+        public void Draw(float elapsedTime, Matrix view, Matrix projection)
         {
             if (isDrawing)
                 throw new InvalidOperationException("Cannot trigger another drawing of the scene while it's still been drawn");
@@ -463,8 +462,7 @@ namespace Nine.Graphics
             this.VertexBuffer = null;            
             this.PreviousMaterial = null;
             this.elapsedTime = elapsedTime;
-            this.totalTime += elapsedTime;
-            this.elapsedSeconds = (float)elapsedTime.TotalSeconds;
+            this.totalTime += TimeSpan.FromSeconds(elapsedTime);
             this.totalSeconds = (float)totalTime.TotalSeconds;
             this.boundingBoxNeedsUpdate = true;
 

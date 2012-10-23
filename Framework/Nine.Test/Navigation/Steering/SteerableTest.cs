@@ -7,7 +7,7 @@
     [TestClass()]
     public class SteererTest
     {
-        private static TimeSpan ElapsedTime = TimeSpan.FromSeconds(0.102342f);
+        private static float ElapsedTime = 0.102342f;
 
         [TestMethod()]
         public void SeekToPosition()

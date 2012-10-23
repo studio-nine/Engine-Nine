@@ -76,7 +76,7 @@ namespace Nine
         private Scene scene;
         private bool wasAdded;
 
-        void IUpdateable.Update(TimeSpan elapsedTime)
+        void IUpdateable.Update(float elapsedTime)
         {
             if (parent != null)
             {
@@ -103,6 +103,6 @@ namespace Nine
         /// <summary>
         /// Updates the internal state of this component.
         /// </summary>
-        protected virtual void Update(TimeSpan elapsedTime) { }
+        protected virtual void Update(float elapsedTime) { }
     }
 }

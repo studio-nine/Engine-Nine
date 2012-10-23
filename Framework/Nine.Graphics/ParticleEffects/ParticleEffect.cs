@@ -552,7 +552,7 @@
         /// <summary>
         /// Updates the particle system.
         /// </summary>
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             if (toBeRemoved > 0)
             {
@@ -564,7 +564,7 @@
             }
             EnsureParticlesInitialized();
 
-            elapsedSeconds = (float)elapsedTime.TotalSeconds;
+            elapsedSeconds = elapsedTime;
 
             numFramesBehind++;
 

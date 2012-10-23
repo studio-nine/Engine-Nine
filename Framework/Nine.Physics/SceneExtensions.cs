@@ -59,17 +59,17 @@ namespace Nine.Physics
         /// <summary>
         /// Updates the physics simulation of the scene.
         /// </summary>
-        public static void UpdatePhysics(this Scene scene, TimeSpan elapsedTime)
+        public static void UpdatePhysics(this Scene scene, float elapsedTime)
         {
-            GetSpace(scene).Update((float)elapsedTime.TotalSeconds);
+            GetSpace(scene).Update(elapsedTime);
         }
 
         /// <summary>
-        /// Updates the physics simulation of the scene asnychroniously.
+        /// Updates the physics simulation of the scene asynchronously.
         /// </summary>
-        public static void UpdatePhysicsAsync(this Scene scene, TimeSpan elapsedTime)
+        public static void UpdatePhysicsAsync(this Scene scene, float elapsedTime)
         {
-            GetSpace(scene).Update((float)elapsedTime.TotalSeconds);
+            GetSpace(scene).Update(elapsedTime);
         }
 
         /// <summary>

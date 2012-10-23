@@ -17,7 +17,7 @@
             spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
-        protected override void Draw(TimeSpan elapsedTime)
+        protected override void Draw(float elapsedTime)
         {
             GraphicsDevice.Clear(Color.Transparent);
 

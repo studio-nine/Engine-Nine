@@ -40,7 +40,7 @@ namespace Nine
         public MouseState MouseState { get { return mouseState; } }
         public KeyboardState KeyboardState { get { return keyboardState; } }
 
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             UpdateMouse();
             UpdateKeyboard();

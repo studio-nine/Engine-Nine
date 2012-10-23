@@ -271,7 +271,7 @@ namespace Nine.Graphics
 #endif
                 existingInstance = new ChaseCamera(graphicsDevice);
             }
-            existingInstance.ChaseTarget = input.ReadObject<Nine.Transformable>();
+            existingInstance.Target = input.ReadObject<Nine.Transformable>();
             existingInstance.PositionOffset = input.ReadVector3();
             existingInstance.LookAtOffset = input.ReadVector3();
             existingInstance.Stiffness = input.ReadSingle();

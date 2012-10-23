@@ -135,11 +135,11 @@
             return false;
         }
 
-        public override void Update(TimeSpan elapsedTime)
+        public override void Update(float elapsedTime)
         {
             if (avatarAnimation != null)
             {
-                avatarAnimation.Update(elapsedTime, Loop);
+                avatarAnimation.Update(TimeSpan.FromSeconds(elapsedTime), Loop);
                 if (!Loop && avatarAnimation.CurrentPosition >= avatarAnimation.Length)
                 {
                     Stop();
@@ -205,7 +205,7 @@
             set
             {
                 currentPosition = value;
-                Update(TimeSpan.Zero);
+                Update(0);
             }
         }
 
@@ -288,7 +288,7 @@
             base.OnResumed();
         }
 
-        public override void Update(TimeSpan elapsedTime)
+        public override void Update(float elapsedTime)
         {
             if (Skeleton.State == AvatarRendererState.Ready)
             {

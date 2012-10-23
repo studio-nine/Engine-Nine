@@ -182,22 +182,20 @@ namespace Nine.Graphics
         /// behind the chased object. The camera's animation is controlled by a simple
         /// physical spring attached to the camera and anchored to the desired position.
         /// </summary>
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             UpdateWorldPositions();
-
-            float elapsed = (float)elapsedTime.TotalSeconds;
-
+            
             // Calculate spring force
             Vector3 stretch = position - desiredPosition;
             Vector3 force = -stiffness * stretch - damping * velocity;
 
             // Apply acceleration
             Vector3 acceleration = force / mass;
-            velocity += acceleration * elapsed;
+            velocity += acceleration * elapsedTime;
 
             // Apply velocity
-            position += velocity * elapsed;
+            position += velocity * elapsedTime;
 
             UpdateMatrices();
         }

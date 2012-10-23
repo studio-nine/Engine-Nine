@@ -12,7 +12,7 @@ namespace TutorialData
         public Vector3 ResetPosition { get; set; }
         public Keys ResetKey { get; set; }
 
-        protected override void Update(TimeSpan elapsedTime)
+        protected override void Update(float elapsedTime)
         {
             var Body = Parent.Find<RigidBody>();
             var keyboardState = Keyboard.GetState();

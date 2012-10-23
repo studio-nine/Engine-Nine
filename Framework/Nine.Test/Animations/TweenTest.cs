@@ -23,10 +23,10 @@
                 completed = true;
             };
             tween.Play();
-            tween.Update(TimeSpan.FromSeconds(0.34234f));
-            tween.Update(TimeSpan.FromSeconds(1.284957f));
-            tween.Update(TimeSpan.FromSeconds(0.0001479f));
-            tween.Update(TimeSpan.FromSeconds(2.38562939f));
+            tween.Update(0.34234f);
+            tween.Update(1.284957f);
+            tween.Update(0.0001479f);
+            tween.Update(2.38562939f);
 
             Assert.IsTrue(completed);
             Assert.AreEqual<TimeSpan>(tween.Duration, tween.Position);
@@ -49,7 +49,7 @@
                 completed = true;
             };
             tween.Play();
-            tween.Update(TimeSpan.FromSeconds(0.34234f));
+            tween.Update(0.34234f);
 
             Assert.IsTrue(completed);
             Assert.AreEqual<TimeSpan>(tween.Duration, tween.Position);
@@ -73,10 +73,10 @@
                 completed = true;
             };
             tween.Play();
-            tween.Update(TimeSpan.FromSeconds(0.34234f));
-            tween.Update(TimeSpan.FromSeconds(1.284957f));
-            tween.Update(TimeSpan.FromSeconds(0.0001479f));
-            tween.Update(TimeSpan.FromSeconds(2.38562939f));
+            tween.Update(0.34234f);
+            tween.Update(1.284957f);
+            tween.Update(0.0001479f);
+            tween.Update(2.38562939f);
 
             Assert.IsTrue(completed);
             Assert.AreEqual<TimeSpan>(tween.Duration, tween.Position);
@@ -100,10 +100,10 @@
             };
             tween.StartupDirection = AnimationDirection.Backward;
             tween.Play();
-            tween.Update(TimeSpan.FromSeconds(0.34234f));
-            tween.Update(TimeSpan.FromSeconds(1.284957f));
-            tween.Update(TimeSpan.FromSeconds(0.0001479f));
-            tween.Update(TimeSpan.FromSeconds(2.38562939f));
+            tween.Update(0.34234f);
+            tween.Update(1.284957f);
+            tween.Update(0.0001479f);
+            tween.Update(2.38562939f);
 
             Assert.IsTrue(completed);
             Assert.AreEqual<TimeSpan>(TimeSpan.Zero, tween.Position);

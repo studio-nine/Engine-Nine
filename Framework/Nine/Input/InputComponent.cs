@@ -110,7 +110,7 @@ namespace Nine
         /// <summary>
         /// Will catch all new states for keyboard, mouse and the gamepad.
         /// </summary>
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             if (InputSource is IUpdateable)
                 ((IUpdateable)InputSource).Update(elapsedTime);

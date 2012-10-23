@@ -45,7 +45,7 @@ namespace Nine.Animations
         /// <summary>
         /// Updates the specified elapsed time.
         /// </summary>
-        public override void Update(TimeSpan elapsedTime)
+        public override void Update(float elapsedTime)
         {
             base.Update(elapsedTime);
 
@@ -137,7 +137,7 @@ namespace Nine.Animations
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public virtual void Update(TimeSpan elapsedTime)
+        public virtual void Update(float elapsedTime)
         {
             var updateable = Current as Nine.IUpdateable;
             if (updateable != null)

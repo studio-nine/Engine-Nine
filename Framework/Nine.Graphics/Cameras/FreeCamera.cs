@@ -57,10 +57,9 @@
             UpdateTransform(Vector2.Zero);
         }
 
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             // Assume screen size always greater then 100
-            var delta = (float)elapsedTime.TotalSeconds;
             var move = Vector2.Zero;
             var speed = Speed;
             
@@ -71,8 +70,8 @@
                 angle.X -= gamePad.ThumbSticks.Right.Y * TurnSpeed * 0.001f;
                 angle.Y += gamePad.ThumbSticks.Right.X * TurnSpeed * 0.001f;
 
-                move.X = gamePad.ThumbSticks.Left.Y * Speed * delta;
-                move.Y = gamePad.ThumbSticks.Left.X * Speed * delta;
+                move.X = gamePad.ThumbSticks.Left.Y * Speed * elapsedTime;
+                move.Y = gamePad.ThumbSticks.Left.X * Speed * elapsedTime;
             }
             else
 #endif
@@ -91,8 +90,8 @@
                 {
                     if (mouseDownHasValue)
                     {
-                        angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * delta) / AspectRatio; // pitch
-                        angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * delta); // yaw
+                        angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * elapsedTime) / AspectRatio; // pitch
+                        angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * elapsedTime); // yaw
                     }
                     mouseDown.X = mouse.X;
                     mouseDown.Y = mouse.Y;
@@ -107,18 +106,18 @@
                     speed = PrecisionModeSpeed;
 
                 if (keyboard.IsKeyDown(ForwardKey))
-                    move.X += speed * delta;
+                    move.X += speed * elapsedTime;
                 if (keyboard.IsKeyDown(BackwardKey))
-                    move.X -= speed * delta;
+                    move.X -= speed * elapsedTime;
                 if (keyboard.IsKeyDown(LeftKey))
-                    move.Y += speed * delta;
+                    move.Y += speed * elapsedTime;
                 if (keyboard.IsKeyDown(RightKey))
-                    move.Y -= Speed * delta;
+                    move.Y -= Speed * elapsedTime;
 
                 if (keyboard.IsKeyDown(DownKey))
-                    position += Vector3.Down * speed * delta;
+                    position += Vector3.Down * speed * elapsedTime;
                 if (keyboard.IsKeyDown(UpKey))
-                    position += Vector3.Up * speed * delta;
+                    position += Vector3.Up * speed * elapsedTime;
             }
             
             UpdateTransform(move);

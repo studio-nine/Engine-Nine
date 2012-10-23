@@ -172,7 +172,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             var updateable = template as Nine.IUpdateable;
             if (updateable != null)

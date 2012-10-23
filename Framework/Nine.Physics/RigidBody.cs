@@ -217,7 +217,7 @@ namespace Nine.Physics
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        protected override void Update(TimeSpan elapsedTime)
+        protected override void Update(float elapsedTime)
         {
             Parent.Transform = Transform;
         }

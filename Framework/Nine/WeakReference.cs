@@ -39,8 +39,7 @@ namespace Nine
 
         public bool TryGetTarget(out T target)
         {
-            target = base.Target as T;
-            return target != null;
+            return (target = base.Target as T) != null;
         }
     }
 }

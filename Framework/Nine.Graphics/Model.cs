@@ -383,7 +383,7 @@ namespace Nine.Graphics
         /// Updates the internal state of the object based on game time.
         /// </summary>
         /// <param name="elapsedTime"></param>
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             if (source == null)
                 return;

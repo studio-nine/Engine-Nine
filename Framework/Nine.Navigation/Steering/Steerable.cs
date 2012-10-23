@@ -134,9 +134,8 @@ namespace Nine.Navigation.Steering
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public void Update(TimeSpan gameTime)
+        public void Update(float elapsedTime)
         {
-            float elapsedTime = (float)(gameTime.TotalSeconds);
             if (elapsedTime <= 0)
                 return;
 
