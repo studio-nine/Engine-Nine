@@ -63,6 +63,8 @@
             Stopwatch watch;
             int iteration = 100;
             int[] array = new int[1024 * 1024];
+            for (var i = 0; i < array.Length; ++i)
+                array[i] = i;
 
             foreach (var blockSize in new int[] { 128, 256, 512, 1024, 2048, 4096, 8192, 8192 * 2, 8192 * 4 })
             {
@@ -85,18 +87,35 @@
             watch.Start();
             unsafe
             {
-                fixed (int* pArray = array)
-                    ZeroMemory((byte*)pArray, sizeof(int) * array.Length);
+                for (int i = 0; i < iteration; ++i)
+                {
+                    fixed (int* pArray = array)
+                        ZeroMemory((byte*)pArray, sizeof(int) * array.Length);
+                }
             }
             watch.Stop();
 
             Trace.WriteLine("Max clears per frame (60 FPS): " + iteration / watch.Elapsed.TotalSeconds / 60.0 + ", ZeroMemory ");
+
+            GC.Collect();
+            watch = new Stopwatch();
+            watch.Start();
+            unsafe
+            {
+                for (int i = 0; i < iteration; ++i)
+                {
+                    Array.Clear(array, 0, array.Length);
+                }
+            }
+            watch.Stop();
+
+            Trace.WriteLine("Max clears per frame (60 FPS): " + iteration / watch.Elapsed.TotalSeconds / 60.0 + ", Clear ");
         }
 
         [System.Runtime.InteropServices.DllImport("KERNEL32.DLL", EntryPoint = "RtlZeroMemory")]
         public unsafe static extern bool ZeroMemory(byte* destination, int length);
                 
-        public static void Clear(Array array, int blockSize)
+        public static void Clear(int[] array, int blockSize)
         {
             int index = 0;
 
@@ -106,10 +125,11 @@
             length = array.Length;
             while (index < length)
             {
-                Buffer.BlockCopy(array, 0, array, index, Math.Min(blockSize, length - index));
                 index += blockSize;
+                Buffer.BlockCopy(array, 0, array, index * sizeof(int), 
+                    Math.Min(blockSize, length - index) * sizeof(int));
             }
-        } 
+        }
 
         /// <summary>
         /// http://www.codeproject.com/KB/recipes/PathFinder.aspx

@@ -10,15 +10,14 @@ using Nine.Studio.Extensibility;
 
 namespace Nine.Studio
 {
-using Exporter = Lazy<IExporter, IMetadata>;
-using Importer = Lazy<IImporter, IMetadata>;
-using Visualizer = Lazy<IVisualizer, IMetadata>;
-
-
+    using Exporter = Lazy<IExporter, IMetadata>;
+    using Importer = Lazy<IImporter, IMetadata>;
+    using Visualizer = Lazy<IVisualizer, IMetadata>;
+    
     /// <summary>
     /// Represents a single project managed by a project instance.
     /// </summary>
-    public class ProjectItem : INotifyPropertyChanged, IDisposable
+    public class ProjectItem : ObservableObject, IDisposable
     {
         /// <summary>
         /// Gets the fileName of this document.
@@ -61,7 +60,7 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
                 if (value != _IsModified)
                 {
                     _IsModified = value;
-                    NotifyPropertyChanged("IsModified");
+                    NotifyPropertyChanged();
                 }
             }
         }
@@ -76,8 +75,7 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
             {
                 if (Interlocked.CompareExchange(ref objectModelNeedsReload, 0, 1) == 1)
                 {
-                    // TODO: Reload object model                    
-                    NotifyPropertyChanged("ObjectModel");
+                    NotifyPropertyChanged();
                 }
                 return objectModel;
             }
@@ -175,8 +173,7 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
                 FileName = Path.Combine(Project.Directory, fileName);
 
             Name = Path.GetFileNameWithoutExtension(FileName);
-            RelativeFilename = Global.GetRelativeFilename(FileName, Project.Directory);
-            Verify.IsFalse(Path.IsPathRooted(RelativeFilename), "RelativeFilename");
+            RelativeFilename = FileHelper.GetRelativeFilename(FileName, Project.Directory);
 
             FileInfo info = new FileInfo(FileName);
             IsReadOnly = info.Exists && info.IsReadOnly;
@@ -219,7 +216,7 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
         /// </summary>
         public void Close()
         {
-            Assert.CheckThread();
+            
 
             // Can't close this when any document references this one
             if (Editor.Projects.SelectMany(proj => proj.ProjectItems).Any(doc => doc.References.Contains(this)))
@@ -234,7 +231,7 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
         /// </summary>
         public void Save()
         {
-            Assert.CheckThread();
+            
             Verify.IsNeitherNullNorEmpty(FileName, "FileName");
 
             if (IsModified && CanSave)
@@ -246,7 +243,7 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
         /// </summary>
         public void Save(string fileName)
         {
-            Assert.CheckThread();
+            
             Verify.IsNeitherNullNorEmpty(fileName, "fileName");
 
             Save(fileName, null);
@@ -257,12 +254,9 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
         /// </summary>
         public void Save(string fileName, IExporter exporter)
         {
-            Assert.CheckThread();
-            Assert.IsNotNull(Exporter);
-            Assert.IsNotNull(Exporter.Value);
             Verify.IsNeitherNullNorEmpty(fileName, "fileName");
 
-            FileOperation.BackupAndSave(fileName, stream => Save(stream, exporter));
+            FileHelper.BackupAndSave(fileName, stream => Save(stream, exporter));
         }
 
         /// <summary>
@@ -270,7 +264,7 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
         /// </summary>
         public void Save(Stream stream, IExporter exporter)
         {
-            Assert.CheckThread();
+            
             Verify.IsNotNull(stream, "stream");
 
             if (exporter != null)
@@ -287,7 +281,7 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
         {
             if (sourceFileWatcher == null && File.Exists(FileName))
             {
-                sourceFileWatcher = FileOperation.WatchFileContentChange(FileName, fileName =>
+                sourceFileWatcher = FileHelper.WatchFileContentChange(FileName, fileName =>
                 {
                     Interlocked.Exchange(ref objectModelNeedsReload, 1);
                 });
@@ -310,7 +304,7 @@ using Visualizer = Lazy<IVisualizer, IMetadata>;
 
         private void NotifyPropertyChanged(string propertyName)
         {
-            Assert.CheckThread();
+            
 
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));

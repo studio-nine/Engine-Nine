@@ -70,7 +70,7 @@ namespace Nine.Navigation
         /// </summary>
         public void Clear()
         {
-            UtilityExtensions.FastClear(Index);
+            Array.Clear(Index, 0, Index.Length);
             count = 0;
         }
 

@@ -369,7 +369,9 @@ namespace Nine.Content.Pipeline.Graphics
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.ChaseCamera value)
         {
-            WriteObject(output, value, "ChaseTarget", value.Target);
+            WriteObject(output, value, "Target", value.Target);
+            WriteObject(output, value, "Surface", value.Surface);
+            output.Write(value.SurfaceOffset);
             output.Write(value.PositionOffset);
             output.Write(value.LookAtOffset);
             output.Write(value.Stiffness);
@@ -722,6 +724,8 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "instanceTransforms", value.instanceTransforms);
             if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.Write(value.Visible);
+            if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
+            output.Write(value.CastShadow);
             if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)
             output.WriteObject(value.ViewDistance);
             if (output.TargetPlatform != Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform.WindowsPhone)

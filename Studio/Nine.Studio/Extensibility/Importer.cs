@@ -44,7 +44,7 @@
 
         static Importer()
         {
-            // Force graphics device service to be initialized upfront to walkaround a bug in Win8.
+            // Force graphics device service to be initialized upfront to walk around a bug in Win8.
             graphicsDevice = Nine.Graphics.GraphicsDeviceService.AddRef().GraphicsDevice;
         }
 

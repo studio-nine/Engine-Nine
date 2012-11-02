@@ -7,6 +7,7 @@ using BEPUphysics.ResourceManagement;
 using System.Collections.ObjectModel;
 using BEPUphysics.DataStructures;
 using BEPUphysics.SolverSystems;
+using BEPUphysics.Threading;
 
 namespace BEPUphysics.Constraints
 {

@@ -272,6 +272,8 @@ namespace Nine.Graphics
                 existingInstance = new ChaseCamera(graphicsDevice);
             }
             existingInstance.Target = input.ReadObject<Nine.Transformable>();
+            existingInstance.Surface = input.ReadObject<Nine.ISurface>();
+            existingInstance.SurfaceOffset = input.ReadSingle();
             existingInstance.PositionOffset = input.ReadVector3();
             existingInstance.LookAtOffset = input.ReadVector3();
             existingInstance.Stiffness = input.ReadSingle();
@@ -524,6 +526,7 @@ namespace Nine.Graphics
             }
             existingInstance.instanceTransforms = input.ReadObject<Microsoft.Xna.Framework.Matrix[]>();
             existingInstance.Visible = input.ReadBoolean();
+            existingInstance.CastShadow = input.ReadBoolean();
             existingInstance.ViewDistance = input.ReadObject<System.Nullable<System.Single>>();
             existingInstance.Template = input.ReadObject<Nine.Graphics.ISupportInstancing>();
             existingInstance.BoundingBoxPadding = input.ReadVector3();

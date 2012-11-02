@@ -25,7 +25,7 @@ namespace Nine.Graphics
         public GraphicsDevice GraphicsDevice { get; private set; }
         
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Model"/> should be visible.
+        /// Gets or sets a value indicating whether this <see cref="InstancedModel"/> should be visible.
         /// </summary>
         public bool Visible
         {
@@ -33,6 +33,11 @@ namespace Nine.Graphics
             set { visible = value; }
         }
         internal bool visible = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="InstancedModel"/> should cast shadows.
+        /// </summary>
+        public bool CastShadow { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum rage of visible instances. Null means all instances are visible.
@@ -455,7 +460,7 @@ namespace Nine.Graphics
 
         bool IDrawableObject.CastShadow
         {
-            get { return false; } 
+            get { return model.CastShadow; } 
         
         }
         Material IDrawableObject.Material

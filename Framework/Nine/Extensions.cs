@@ -5,12 +5,8 @@ namespace Nine
     using System.Collections.Generic;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
-
-    /// <summary>
-    /// Contains commonly used utility extension methods.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class UtilityExtensions
+    
+    static class UtilityExtensions
     {
         public static T GetService<T>(this IServiceProvider provider)
         {
@@ -36,7 +32,7 @@ namespace Nine
 
 
 #if WINDOWS
-        internal static string ToContentString(this Matrix matrix)
+        public static string ToContentString(this Matrix matrix)
         {
             return string.Join(" ", matrix.M11, matrix.M12, matrix.M13, matrix.M14
                                   , matrix.M21, matrix.M22, matrix.M23, matrix.M24
@@ -45,13 +41,13 @@ namespace Nine
         }
 #endif
 
-        internal static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)
         {
             foreach (T item in values)
                 collection.Add(item);
         }
 
-        internal static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
             foreach (T item in collection)
                 action(item);
@@ -60,7 +56,7 @@ namespace Nine
         /// <summary>
         /// Tests the target object and its descendants to see if it of type T.
         /// </summary>
-        internal static void ForEachRecursive<T>(this IEnumerable target, Action<T> action)
+        public static void ForEachRecursive<T>(this IEnumerable target, Action<T> action)
         {
             if (target != null)
             {
@@ -71,7 +67,7 @@ namespace Nine
             }
         }
 
-        internal static bool TryGetAttachedProperty<T>(object tag, string propertyName, out T propertyValue)
+        public static bool TryGetAttachedProperty<T>(object tag, string propertyName, out T propertyValue)
         {
             object value;
             var dictionary = tag as IDictionary<string, object>;
@@ -102,7 +98,7 @@ namespace Nine
             }
         }
 
-        internal static int UpperPowerOfTwo(int v)
+        public static int UpperPowerOfTwo(int v)
         {
             v--;
             v |= v >> 1;
@@ -113,35 +109,6 @@ namespace Nine
             v++;
             return v;
         }
-        
-#if WINDOWS && UNSAFE
-        internal static unsafe void FastClear(this int[] array)
-        {
-            fixed (int* pArray = array)
-            {
-                ZeroMemory((byte*)pArray, sizeof(int) * array.Length);
-            }
-        }
-
-        [System.Runtime.InteropServices.DllImport("KERNEL32.DLL", EntryPoint = "RtlZeroMemory")]
-        unsafe static extern bool ZeroMemory(byte* destination, int length);
-#else                
-        internal static void FastClear(this int[] array)
-        {
-            int blockSize = 4096;
-            int index = 0;
-
-            int length = Math.Min(blockSize, array.Length);
-            Array.Clear(array, 0, length);
-
-            length = array.Length;
-            while (index < length)
-            {
-                Buffer.BlockCopy(array, 0, array, index, Math.Min(blockSize, length - index));
-                index += blockSize;
-            }
-        }
-#endif
     }
 
 

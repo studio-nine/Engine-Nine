@@ -9,7 +9,6 @@
 
     static class Constants
     {
-        public const int MaxRecentFilesCount = 10;
         public const int MaxHeaderBytes = 128;
 
         public static readonly string Title = "Engine Nine";

@@ -4,8 +4,51 @@
     using System.Diagnostics;
     using System.IO;
 
-    static class FileOperation
+    static class FileHelper
     {
+        public static string GetNormalizedFileExtension(this string fileExtension)
+        {
+            if (string.IsNullOrEmpty(fileExtension))
+                return "";
+
+            fileExtension = fileExtension.Trim(' ', '.', '|', '*');
+            fileExtension = fileExtension.Insert(0, ".");
+            return fileExtension.ToLowerInvariant();
+        }
+
+        public static string NormalizeFilename(string fileName)
+        {
+            if (fileName == null)
+                return null;
+            return Path.GetFullPath(new Uri(Path.GetFullPath(fileName)).LocalPath)
+                       .Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+        }
+
+        public static string NormalizePath(string fileName)
+        {
+            if (fileName == null)
+                return null;
+            fileName = Path.GetFullPath(new Uri(Path.GetFullPath(fileName)).LocalPath)
+                           .Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            if (!fileName.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                fileName = fileName + Path.DirectorySeparatorChar;
+            return fileName;
+        }
+
+        public static bool FileNameEquals(string filename1, string filename2)
+        {
+            return string.Compare(NormalizeFilename(filename1),
+                                  NormalizeFilename(filename2),
+                                  StringComparison.InvariantCultureIgnoreCase) == 0;
+        }
+
+        public static string GetRelativeFilename(string fileName, string path)
+        {
+            Uri uri = new Uri(NormalizeFilename(fileName));
+            Uri dir = new Uri(NormalizePath(path));
+            return dir.MakeRelativeUri(uri).OriginalString;
+        }
+
         public static void BackupAndSave(string fileName, Action<Stream> save)
         {
             if (string.IsNullOrEmpty(fileName))
@@ -61,7 +104,7 @@
             }
             catch (Exception) 
             {
-                Trace.WriteLine("Error deleting file " + fileName);
+                Trace.TraceError("Error deleting file " + fileName);
             }
         }
 

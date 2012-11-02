@@ -39,9 +39,9 @@ namespace Nine.Physics
                     if (value.Entity == null)
                         throw new InvalidOperationException("collider.Entity");
 
+                    entity = value.entity;
                     collider = value;
-                    entity = collider.entity;
-                    UpdateBodyType();
+                    UpdateBodyType(RigidBodyType.Dynamic);
                 }
             }
         }
@@ -53,19 +53,11 @@ namespace Nine.Physics
         /// </summary>
         public RigidBodyType BodyType
         {
-            get { return bodyType; }
-            set
-            {
-                if (bodyType != value)
-                {
-                    bodyType = value;
-                    UpdateBodyType();
-                }
-            }
+            get { return entity.isDynamic ? RigidBodyType.Dynamic : RigidBodyType.Kinematic; }
+            set { UpdateBodyType(value); }
         }
-        private RigidBodyType bodyType;
 
-        private void UpdateBodyType()
+        private void UpdateBodyType(RigidBodyType bodyType)
         {
             if (bodyType == RigidBodyType.Kinematic)
                 entity.BecomeKinematic();
@@ -83,8 +75,8 @@ namespace Nine.Physics
                 if (collider.Offset.HasValue)
                 {
                     var transform = Matrix.CreateTranslation(collider.Offset.Value);
-                    var orientation = Entity.Orientation;
-                    Matrix.Transform(ref transform, ref orientation, out transform);
+                    var orientation = Matrix.CreateFromQuaternion(Entity.orientation);
+                    Matrix.Multiply(ref transform, ref orientation, out transform);
 
                     var position = Entity.Position;
                     transform.M41 += position.X;
@@ -172,7 +164,13 @@ namespace Nine.Physics
         #endregion
 
         #region Methods
-        internal RigidBody() { }
+        internal RigidBody() 
+        {
+            if (Nine.Content.ContentProperties.IsContentBuild)
+            {
+                Collider = new SphereCollider();
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of Body.
@@ -187,7 +185,7 @@ namespace Nine.Physics
         ///</summary>
         public void ApplyImpulse(Vector3 impulse)
         {
-            entity.ApplyLinearImpulse(ref impulse);
+            entity.ApplyImpulse(ref entity.position, ref impulse);
         }
 
         ///<summary>

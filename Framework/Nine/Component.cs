@@ -57,7 +57,6 @@ namespace Nine
                     if (group == null)
                         throw new InvalidOperationException("This object can only be attached to a Group");
                     parent = group;
-                    scene = parent.FindRoot<Scene>();
                     wasAdded = true;
                 }
                 else
@@ -65,7 +64,10 @@ namespace Nine
                     if (parent == null)
                         throw new InvalidOperationException("This object does not belongs to the specified container");
                     if (wasAdded)
+                    {
+                        scene = parent.FindRoot<Scene>();
                         OnAdded(parent);
+                    }
                     OnRemoved(parent);
                     parent = null;
                     scene = null;
@@ -82,6 +84,7 @@ namespace Nine
             {
                 if (wasAdded)
                 {
+                    scene = parent.FindRoot<Scene>();
                     OnAdded(parent);
                     wasAdded = false;
                 }

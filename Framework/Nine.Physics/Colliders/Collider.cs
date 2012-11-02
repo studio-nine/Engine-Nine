@@ -87,7 +87,7 @@ namespace Nine.Physics.Colliders
         /// </summary>
         internal void Attach(RigidBody body)
         {
-            this.body = body;
+            this.body = body;            
             OnAttached(body);
         }
 

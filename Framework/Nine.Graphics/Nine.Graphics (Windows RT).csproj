@@ -276,11 +276,17 @@
   <ItemGroup>
     <None Include="Nine.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework.Windows8, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6470bebc66b95bbd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\WinRT\MonoGame.Framework.Windows8.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>

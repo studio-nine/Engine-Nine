@@ -361,11 +361,6 @@ namespace Nine
     {
         ContentTypeReader elementReader;
 
-        public override bool CanDeserializeIntoExistingObject
-        {
-            get { return true; }
-        }
-
         protected override void Initialize(ContentTypeReaderManager manager)
         {
             elementReader = manager.GetTypeReader(typeof(T));

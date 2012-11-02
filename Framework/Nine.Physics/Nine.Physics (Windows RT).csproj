@@ -9,8 +9,8 @@
     <ProjectGuid>{D27BA5C1-9B83-49A9-96ED-7A21EF38CE65}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nine</RootNamespace>
-    <AssemblyName>Nine</AssemblyName>
+    <RootNamespace>Nine.Physics</RootNamespace>
+    <AssemblyName>Nine.Physics</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -23,7 +23,7 @@
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\References\WinRT\Nine.XML</DocumentationFile>
+    <DocumentationFile>..\..\References\WinRT\Nine.Physics.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +32,7 @@
     <DefineConstants>TRACE;NETFX_CORE;WINRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\References\WinRT\Nine.XML</DocumentationFile>
+    <DocumentationFile>..\..\References\WinRT\Nine.Physics.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -102,6 +102,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28Windows RT%29.csproj">
+      <Project>{3e9975bc-39ca-4b6f-92b5-dc9c858c916d}</Project>
+      <Name>Nine.Graphics %28Windows RT%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine\Nine %28Windows RT%29.csproj">
       <Project>{e1db98e1-c6bb-4f0e-bf68-b265ed28b3e4}</Project>
       <Name>Nine %28Windows RT%29</Name>
@@ -493,11 +497,17 @@
   <ItemGroup>
     <Content Include="BEPUphysics\License.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework.Windows8, Version=2.0.0.0, Culture=neutral, PublicKeyToken=846ac6d1e06a595c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\WinRT\MonoGame.Framework.Windows8.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>

@@ -51,23 +51,15 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86"/>
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
-    <Reference Include="mscorlib">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="System.Xml" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
       <Private>False</Private>
@@ -122,9 +114,7 @@
     <Compile Include="BoundingBoxExtensions.cs" />
     <Compile Include="ContentSerializableAttribute.cs" />
     <Compile Include="SpacePartitionTree.cs" />
-    <Compile Include="OctreeSceneManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="OctreeSceneManager.cs" />
     <Compile Include="UniformGrid.cs" />
     <Compile Include="NotificationCollection.cs" />
     <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
@@ -149,8 +139,7 @@
     <Compile Include="Octree.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
-    <Compile Include="Input\Input.cs">
-    </Compile>
+    <Compile Include="Input\Input.cs" />
     <Compile Include="GridSceneManager.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="RayExtensions.cs" />
@@ -164,8 +153,4 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>

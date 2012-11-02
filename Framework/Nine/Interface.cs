@@ -164,4 +164,21 @@ namespace Nine
         /// </summary>
         object CreateInstance(IServiceProvider serviceProvider);
     }
+
+    /// <summary>
+    /// This interface supports the infrastructure of the framework and is not 
+    /// intended to be used by externals.
+    /// </summary>
+    interface ISupportTarget
+    {
+        /// <summary>
+        /// Gets or sets the target.
+        /// </summary>
+        object Target { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target property.
+        /// </summary>
+        string TargetProperty { get; set; }
+    }
 }

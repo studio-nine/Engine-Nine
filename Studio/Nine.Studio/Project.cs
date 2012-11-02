@@ -14,8 +14,9 @@
     /// <summary>
     /// Represents project that manages multiple documents.
     /// </summary>
-    public class Project : INotifyPropertyChanged, IDisposable
+    public class Project : ObservableObject, IDisposable
     {
+        #region Properties
         /// <summary>
         /// Gets the fileName of this project.
         /// </summary>
@@ -41,68 +42,78 @@
         /// </summary>
         public bool IsModified
         {
-            get { return _IsModified; }
+            get { return isModified; }
             set
             {
-                if (value != _IsModified)
+                if (value != isModified)
                 {
-                    _IsModified = value;
-                    NotifyPropertyChanged("IsModified");
+                    isModified = value;
+                    NotifyPropertyChanged();
                 }
             }
         }
-        private bool _IsModified;
-        
-        /// <summary>
-        /// Gets a list of documents owned by this project.
-        /// </summary>
-        public ReadOnlyObservableCollection<ProjectItem> ProjectItems { get; private set; }
+        private bool isModified;
 
         /// <summary>
         /// Gets the containing editor instance.
         /// </summary>
         public Editor Editor { get; private set; }
+        
+        /// <summary>
+        /// Gets a list of documents owned by this project.
+        /// </summary>
+        public ReadOnlyObservableCollection<ProjectItem> ProjectItems { get; private set; }
+        internal ObservableCollection<ProjectItem> InnerProjectItems;
 
         /// <summary>
         /// Gets a collection of projects that is referenced by this project.
         /// </summary>
         public ReadOnlyObservableCollection<Project> References { get; private set; }
-
-        /// <summary>
-        /// Gets or sets any user data that will be saved with the project file.
-        /// </summary>
-        public object Tag { get; set; }
-
         internal ObservableCollection<Project> InnerReferences;
-        internal ObservableCollection<ProjectItem> InnerProjectItems;
+        #endregion
 
-        /// <summary>
-        /// Initializes a new project instance.
-        /// </summary>
-        internal Project(Editor editor, string fileName)
+        #region Methods
+        private static readonly string ProjectExtension = ".nine";
+
+        private Project(Editor editor)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(editor, "editor");
-            Verify.IsNeitherNullNorEmpty(fileName, "fileName");
-
             this.Editor = editor;
-            this.IsModified = true;
             this.InnerProjectItems = new ObservableCollection<ProjectItem>();
             this.InnerReferences = new ObservableCollection<Project>();
             this.ProjectItems = new ReadOnlyObservableCollection<ProjectItem>(InnerProjectItems);
             this.References = new ReadOnlyObservableCollection<Project>(InnerReferences);
+        }
 
+        /// <summary>
+        /// Creates an empty project in the editor.
+        /// </summary>
+        public Project(Editor editor, string directory, string fileName) : this(editor)
+        {
+            Verify.IsValidPath(directory, "directory");
+            Verify.IsValidFileName(fileName, "fileName");
+            
             if (!Path.HasExtension(fileName))
-                fileName = fileName + Global.ProjectExtension;
-            FileName = Path.GetFullPath(fileName);
+                fileName += ProjectExtension;
+            FileName = Path.GetFullPath(Path.Combine(directory, fileName));
             Name =  Path.GetFileNameWithoutExtension(FileName);
             Directory = Path.GetDirectoryName(FileName);
-            if (File.Exists(FileName))
-            {
-                Load();
-                FileInfo info = new FileInfo(FileName);
-                IsReadOnly = info.Exists && info.IsReadOnly;
-            }
+        }
+
+        /// <summary>
+        /// Creates a project from a existing file in the editor.
+        /// </summary>
+        public Project(Editor editor, string fileName) : this(editor)
+        {
+            Verify.FileExists(fileName, "fileName");
+
+            FileName = Path.GetFullPath(fileName);
+            Name = Path.GetFileNameWithoutExtension(FileName);
+            Directory = Path.GetDirectoryName(FileName);
+
+            Load();
+            FileInfo info = new FileInfo(FileName);
+            IsReadOnly = info.Exists && info.IsReadOnly;
         }
 
         /// <summary>
@@ -110,7 +121,6 @@
         /// </summary>
         public void AddReference(Project project)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(project, "project");
 
             if (HasCircularDependency(project, this))
@@ -125,7 +135,6 @@
         /// </summary>
         public void RemoveReference(Project project)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(project, "project");
 
             InnerReferences.Remove(project);
@@ -141,8 +150,6 @@
         /// </summary>
         public void Close()
         {
-            Assert.CheckThread();
-
             // Can't close this when any project references this one
             if (Editor.Projects.Any(project => project.References.Contains(this)))
                 throw new InvalidOperationException("Cannot close project because it is referenced by other projects");
@@ -224,8 +231,6 @@
                 }
             }
            
-            Tag = LoadTag(root);
-
             IsModified = false;
         }
 
@@ -245,13 +250,10 @@
         /// </summary>
         public void Save()
         {
-            Assert.CheckThread();
-            Assert.IsNeitherNullNorEmpty(FileName);
-
             if (IsModified)
-                FileOperation.BackupAndSave(FileName, Save);
+                FileHelper.BackupAndSave(FileName, Save);
             
-            Editor.RecentProject(FileName);
+            Editor.AddRecentProject(FileName);
         }
 
         /// <summary>
@@ -259,7 +261,7 @@
         /// </summary>
         private void Save(Stream stream)
         {
-            Assert.CheckThread();
+            
 
             SaveProject(stream);
 
@@ -301,7 +303,7 @@
         /// </summary>
         public ProjectItem CreateProjectItem(string factoryTypeName)
         {
-            Assert.CheckThread();
+            
             Verify.IsNeitherNullNorEmpty(factoryTypeName, "factoryTypeName");
             return CreateProjectItem(Editor.Extensions.Factories.Single(x => x.Value.GetType().Name == factoryTypeName).Value);
         }
@@ -311,7 +313,7 @@
         /// </summary>
         public ProjectItem CreateProjectItem(IFactory factory)
         {
-            Assert.CheckThread();
+            
             Verify.IsNotNull(factory, "factory");
             return CreateProjectItem(factory.Create(Editor, this));
         }
@@ -321,7 +323,7 @@
         /// </summary>
         public ProjectItem CreateProjectItem(object objectModel)
         {
-            Assert.CheckThread();
+            
             Verify.IsNotNull(objectModel, "objectModel");
             
             ProjectItem document = new ProjectItem(this, objectModel, null);
@@ -411,22 +413,12 @@
         #endregion
         
         /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
             Close();
         }
+        #endregion
     }
 }

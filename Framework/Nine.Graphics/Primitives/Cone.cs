@@ -42,7 +42,7 @@
             return primitive is Cone && ((Cone)primitive).tessellation == tessellation;
         }
 
-        protected override void  OnBuild()
+        protected override void OnBuild()
         {
             var offset = new Vector3(0, -0.25f, 0);
 

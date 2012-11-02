@@ -172,7 +172,7 @@ namespace BEPUphysics.Threading
                     {
                         RemoveThread();
                     }
-                    allThreadsIdleNotifier.Close();
+                    allThreadsIdleNotifier.Dispose();
                     allThreadsIdleNotifier = null;
                 }
             }
@@ -295,7 +295,7 @@ namespace BEPUphysics.Threading
                     if (!disposed)
                     {
                         disposed = true;
-                        resetEvent.Close();
+                        resetEvent.Dispose();
                         resetEvent = null;
                         manager.workers.Remove(this);
                         GC.SuppressFinalize(this);

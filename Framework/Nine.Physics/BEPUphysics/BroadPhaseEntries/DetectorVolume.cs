@@ -343,7 +343,11 @@ namespace BEPUphysics.Collidables
         /// <summary>
         /// Used to protect against containment changes coming in from multithreaded narrowphase contexts.
         /// </summary>
-        SpinLock locker = new SpinLock();
+#if WINRT
+        System.Threading.SpinLock locker = new System.Threading.SpinLock();
+#else
+        private readonly SpinLock locker = new SpinLock();
+#endif
         struct ContainmentChange
         {
             public Entity Entity;

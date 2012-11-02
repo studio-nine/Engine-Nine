@@ -40,6 +40,21 @@ namespace Nine.Graphics
         private Transformable target;
 
         /// <summary>
+        /// Gets or sets the collision surface that this chase camera will try to avoid.
+        /// </summary>
+        public ISurface Surface
+        {
+            get { return surface; }
+            set { surface = value; }
+        }
+        private ISurface surface;
+
+        /// <summary>
+        /// Gets or sets the minimum height above the collision surface.
+        /// </summary>
+        public float SurfaceOffset { get; set; }
+
+        /// <summary>
         /// Desired camera position in the chased object's coordinate system.
         /// </summary>
         public Vector3 PositionOffset
@@ -127,16 +142,15 @@ namespace Nine.Graphics
         }
 
         /// <summary>
-        /// Rebuilds object space values in world space. Invoke before publicly
-        /// returning or privately accessing world space values.
+        /// Gets the desired camera position.
         /// </summary>
-        private void UpdateWorldPositions()
+        /// <returns>
+        /// Returns whether the camera should be reset at the desired position.
+        /// </returns>
+        protected virtual bool UpdatePositions(out Vector3 desiredPosition, out Vector3 targetPosition)
         {
-            if (target == null)
-                return;
-
             // Construct a matrix to transform from object space to world space
-            var targetTransform = target.AbsoluteTransform;
+            var targetTransform = target != null ? target.AbsoluteTransform : Matrix.Identity;
             var chaseDirection = targetTransform.Forward;
             var chasePosition = targetTransform.Translation;
 
@@ -147,11 +161,23 @@ namespace Nine.Graphics
 
             // Calculate desired camera properties in world space
             desiredPosition = chasePosition + Vector3.TransformNormal(PositionOffset, transform);
-            lookAt = chasePosition + Vector3.TransformNormal(LookAtOffset, transform);
+            targetPosition = chasePosition + Vector3.TransformNormal(LookAtOffset, transform);
+
+            // Avoid collision with the surface
+            float surfaceHeight;
+            Vector3 surfaceNormal;
+            if (surface != null && 
+                surface.TryGetHeightAndNormal(desiredPosition, out surfaceHeight, out surfaceNormal) &&
+                surfaceHeight > desiredPosition.Y - SurfaceOffset)
+            {
+                desiredPosition.Y = surfaceHeight + SurfaceOffset;
+            }
+
+            return false;
         }
 
         /// <summary>
-        /// Rebuilds camera's view and projection matricies.
+        /// Rebuilds camera's view and projection matrices.
         /// </summary>
         private void UpdateMatrices()
         {
@@ -166,7 +192,7 @@ namespace Nine.Graphics
         /// </summary>
         public void Reset()
         {
-            UpdateWorldPositions();
+            UpdatePositions(out desiredPosition, out lookAt);
 
             // Stop motion
             velocity = Vector3.Zero;
@@ -184,19 +210,23 @@ namespace Nine.Graphics
         /// </summary>
         public void Update(float elapsedTime)
         {
-            UpdateWorldPositions();
-            
-            // Calculate spring force
-            Vector3 stretch = position - desiredPosition;
-            Vector3 force = -stiffness * stretch - damping * velocity;
+            if (UpdatePositions(out desiredPosition, out lookAt))
+            {
+                position = desiredPosition;
+            }
+            else
+            {
+                // Calculate spring force
+                Vector3 stretch = position - desiredPosition;
+                Vector3 force = -stiffness * stretch - damping * velocity;
 
-            // Apply acceleration
-            Vector3 acceleration = force / mass;
-            velocity += acceleration * elapsedTime;
+                // Apply acceleration
+                Vector3 acceleration = force / mass;
+                velocity += acceleration * elapsedTime;
 
-            // Apply velocity
-            position += velocity * elapsedTime;
-
+                // Apply velocity
+                position += velocity * elapsedTime;
+            }
             UpdateMatrices();
         }
 

@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Studio", "Nine.Studio\Nine.Studio.csproj", "{412AE201-B5E8-436E-9468-E6CC94739055}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Studio.Shell", "Nine.Studio.Shell\Nine.Studio.Shell.csproj", "{094C8AB6-33EB-46C1-92FF-807636EFC381}"

@@ -83,16 +83,14 @@
     <Compile Include="Controls\GameHost.cs" />
     <Compile Include="Controls\Interop.cs" />
     <Compile Include="Controls\ServiceContainer.cs" />
+    <Compile Include="ObservableObject.cs" />
     <Compile Include="Extensibility\Metadata.cs" />
     <Compile Include="Serializers\FbxModelImporter.cs" />
     <Compile Include="Serializers\PipelineImporter.cs" />
     <Compile Include="Serializers\TextureImporter.cs" />
     <Compile Include="Serializers\XamlSerializer.cs" />
     <Compile Include="Serializers\XModelImporter.cs" />
-    <Compile Include="Utility\ReflectionHelper.cs" />
-    <Compile Include="Utility\Debug.cs" />
     <Compile Include="EditorInitializations.cs" />
-    <Compile Include="Utility\Enumerable2.cs" />
     <Compile Include="TypeDescriptorHelper.cs" />
     <Compile Include="Extensibility\Attributes.cs" />
     <Compile Include="Extensibility\AttributeProvider.cs" />
@@ -121,7 +119,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utility\FileOperation.cs" />
+    <Compile Include="Utility\FileHelper.cs" />
     <Compile Include="Utility\Verify.cs" />
     <Compile Include="Visualizers\GameVisualizer.cs" />
     <Compile Include="Visualizers\GraphicsVisualizer.cs" />
