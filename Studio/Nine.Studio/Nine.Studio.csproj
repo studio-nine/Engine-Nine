@@ -44,9 +44,6 @@
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
-    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
-    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Nine">
@@ -61,7 +58,6 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Presentation" />
@@ -83,26 +79,18 @@
     <Compile Include="Controls\GameHost.cs" />
     <Compile Include="Controls\Interop.cs" />
     <Compile Include="Controls\ServiceContainer.cs" />
+    <Compile Include="Extensibility\ExportAttribute.cs" />
     <Compile Include="ObservableObject.cs" />
-    <Compile Include="Extensibility\Metadata.cs" />
-    <Compile Include="Serializers\FbxModelImporter.cs" />
-    <Compile Include="Serializers\PipelineImporter.cs" />
-    <Compile Include="Serializers\TextureImporter.cs" />
-    <Compile Include="Serializers\XamlSerializer.cs" />
-    <Compile Include="Serializers\XModelImporter.cs" />
-    <Compile Include="EditorInitializations.cs" />
-    <Compile Include="TypeDescriptorHelper.cs" />
+    <Compile Include="Extensibility\Extension.cs" />
+    <Compile Include="Utility\TypeDescriptorHelper.cs" />
     <Compile Include="Extensibility\Attributes.cs" />
     <Compile Include="Extensibility\AttributeProvider.cs" />
     <Compile Include="Extensibility\Settings.cs" />
     <Compile Include="Extensibility\Tool.cs" />
     <Compile Include="Extensibility\Factory.cs" />
     <Compile Include="Extensibility\Exporter.cs" />
-    <Compile Include="Extensibility\Serializer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Global.cs" />
-    <Compile Include="EditorHelper.cs" />
+    <Compile Include="Utility\CollectionHelper.cs" />
     <Compile Include="EditorExtensions.cs" />
     <Compile Include="ProjectItem.cs" />
     <Compile Include="Editor.cs" />
@@ -112,8 +100,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serializers\TextSerializer.cs" />
-    <Compile Include="Serializers\XmlSerializer.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -124,6 +110,7 @@
     <Compile Include="Visualizers\GameVisualizer.cs" />
     <Compile Include="Visualizers\GraphicsVisualizer.cs" />
     <Compile Include="Visualizers\Texture2DVisualizer.cs" />
+    <Compile Include="Xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.resx">

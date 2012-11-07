@@ -465,7 +465,7 @@ namespace BEPUphysics.Entities
 #if WINRT
         public System.Threading.SpinLock SpinLock
 #else
-        public SpinLock
+        public SpinLock SpinLock
 #endif
         {
             get

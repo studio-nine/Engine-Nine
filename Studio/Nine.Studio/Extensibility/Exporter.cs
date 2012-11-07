@@ -10,14 +10,14 @@
     public interface IExporter
     {
         /// <summary>
-        /// Gets the file extensions supported by this serializer.
-        /// </summary>
-        IEnumerable<string> FileExtensions { get; }
-
-        /// <summary>
-        /// Gets the target type that can be serialized by this IDocumentSerializer.
+        /// Gets the target type that is supported by this exporter.
         /// </summary>
         Type TargetType { get; }
+
+        /// <summary>
+        /// Gets the file extensions supported by this serializer.
+        /// </summary>
+        IEnumerable<string> GetSupportedFileExtensions();
 
         /// <summary>
         /// Exports the object into a stream.
@@ -31,17 +31,8 @@
     public abstract class Exporter<T> : IExporter
     {
         public Type TargetType { get { return typeof(T); } }
-        public ICollection<string> FileExtensions { get; private set; }
-
-        public Exporter()
-        {
-            FileExtensions = new HashSet<string>();
-        }
-
-        IEnumerable<string> IExporter.FileExtensions
-        {
-            get { return FileExtensions; }
-        }
+        
+        public abstract IEnumerable<string> GetSupportedFileExtensions();
 
         void IExporter.Export(Stream output, object value)
         {
@@ -51,6 +42,6 @@
             Export(output, (T)value);
         }
 
-        protected abstract void Export(Stream output, T value);
+        protected abstract void Export(Stream output, T value);        
     }
 }

@@ -120,7 +120,14 @@ namespace Nine.Studio
         {
             Verify.IsNeitherNullNorEmpty(filePath, parameterName);
             if (!File.Exists(filePath))
-                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "No file exists at \"{0}\"", filePath), parameterName);
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The file \"{0}\" does not exist", filePath), parameterName);
+        }
+
+        public static void DirectoryExists(string directory, string parameterName)
+        {
+            Verify.IsNeitherNullNorEmpty(directory, parameterName);
+            if (!Directory.Exists(directory))
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The directory \"{0}\" does not exist", directory), parameterName);
         }
     }
 }

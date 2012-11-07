@@ -1,6 +1,8 @@
 ﻿namespace Nine.Studio
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
@@ -11,7 +13,7 @@
     /// <summary>
     /// Represents an instance of editor object.
     /// </summary>
-    public class Editor : ObservableObject, IDisposable
+    public class Editor : ObservableObject, IDependencyProvider<Project>, IDisposable
     {
         #region Properties
         /// <summary>
@@ -29,6 +31,15 @@
         private Version version;
 
         /// <summary>
+        /// Gets the string representation of the editor version.
+        /// </summary>
+        public string VersionString
+        {
+            get { return versionString ?? (versionString = string.Concat(Version.Major, ".", Version.Minor)); }
+        }
+        private string versionString;
+
+        /// <summary>
         /// Gets or sets the current active project.
         /// </summary>
         public Project ActiveProject
@@ -36,7 +47,7 @@
             get { return activeProject; }
             set
             {
-                if (!projects.Contains(value))
+                if (!Projects.Contains(value))
                     throw new InvalidOperationException();
                 activeProject = value;
                 NotifyPropertyChanged();
@@ -48,12 +59,12 @@
         /// Gets all the projects currently opened by the editor.
         /// </summary>
         public ReadOnlyObservableCollection<Project> Projects { get; private set; }
-        private ObservableCollection<Project> projects;
+        internal ObservableCollection<Project> projects;
 
         /// <summary>
         /// Gets a list of recent files.
         /// </summary>
-        public ReadOnlyObservableCollection<string> RecentProjects { get; private set; }
+        public ReadOnlyObservableCollection<string> RecentFiles { get; private set; }
         private ObservableCollection<string> recentFiles;
 
         /// <summary>
@@ -83,8 +94,7 @@
             };
 
             AppDataDirectory = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.ApplicationData), Strings.Title,
-                string.Format("v{0}.{1}", Version.Major, Version.Minor));
+                Environment.SpecialFolder.ApplicationData), Strings.Title, VersionString);
 
             if (!Directory.Exists(AppDataDirectory))
                 Directory.CreateDirectory(AppDataDirectory);
@@ -96,20 +106,20 @@
             Trace.TraceInformation("Application Data Directory {0}", AppDataDirectory);
 
             Extensions = new EditorExtensions();
-            projects = new ObservableCollection<Project>();
-            Projects = new ReadOnlyObservableCollection<Project>(projects);
-            recentFiles = new ObservableCollection<string>();
-            RecentProjects = new ReadOnlyObservableCollection<string>(recentFiles);
+            Projects = new ReadOnlyObservableCollection<Project>(projects = new ObservableCollection<Project>());
+            RecentFiles = new ReadOnlyObservableCollection<string>(recentFiles = new ObservableCollection<string>());
 
             LoadRecentFiles();
         }
 
         private void InitializeTrace()
         {
-            Trace.AutoFlush = true;
-            Trace.Listeners.Add(new TextWriterTraceListener(
-                new FileStream(Path.Combine(AppDataDirectory,
-                string.Concat("Nine.", DateTime.Now.Ticks, ".log")), FileMode.Create)));
+            try
+            {
+                Trace.AutoFlush = true;
+                Trace.Listeners.Add(new TextWriterTraceListener(new FileStream(Path.Combine(AppDataDirectory, "Editor.log"), FileMode.Create)));
+            }
+            catch { }
         }
 
         const string RecentFilesName = "RecentFiles";
@@ -143,51 +153,51 @@
         }
 
         /// <summary>
+        /// Loads the editor extensions from the target path.
+        /// </summary>
+        public void LoadExtensions(string path = ".")
+        {
+            Extensions.Load(path);
+        }
+        
+        /// <summary>
+        /// Creates an empty project in the editor.
+        /// </summary>
+        public Project CreateProject(string name, string directory)
+        {
+            var result = new Project(this, name, directory);
+            projects.Add(result);
+            return result;
+        }
+        
+        /// <summary>
+        /// Creates a project from a existing file in the editor.
+        /// </summary>
+        public Project OpenProject(string fileName)
+        {
+            var result = new Project(this, fileName);
+            projects.Add(result);
+            return result;
+        }
+
+        /// <summary>
         /// Closes the current project.
         /// </summary>
         public void Close()
         {
-            projects.ForEach(proj => proj.Close());
+            var order = new int[Projects.Count];
+            DependencyGraph.Sort(Projects, order, this);
+            order.Select(i => Projects[i]).ToArray().ForEach(proj => proj.Close());
+            Trace.TraceInformation("Editor closed.");
         }
-
-        /// <summary>
-        /// Creates a new project instance with a fileName.
-        /// </summary>
-        public Project CreateProject(string name)
+        
+        int IDependencyProvider<Project>.GetDependencies(IList<Project> elements, int index, int[] dependencies)
         {
-            Verify.IsValidPath(name, "name");
-
-            var project = new Project(this, name);
-            projects.Add(project);
-            AddRecentProject(project.FileName);
-            Trace.TraceInformation("Project {0} created at {1}", project.Name, project.FileName);
-            return project;
-        }
-
-        /// <summary>
-        /// Opens a new project instance from file.
-        /// </summary>
-        public Project OpenProject(string fileName)
-        {
-            Verify.FileExists(fileName, "fileName");
-
-            var project = projects.FirstOrDefault(p => FileHelper.FileNameEquals(p.FileName, fileName));
-            if (project != null)
-                return project;
-
-            project = new Project(this, fileName);
-            projects.Add(project);
-            AddRecentProject(fileName);
-            Trace.TraceInformation("Project {0} opened at {1}", project.Name, project.FileName);
-            return project;
-        }
-
-        internal void CloseProject(Project project)
-        {   
-            Verify.IsNotNull(project, "project");
-
-            projects.Remove(project);
-            Trace.TraceInformation("Project {0} closed at {1}", project.Name, project.FileName);
+            int i = 0;
+            foreach (var proj in Projects)
+                if (proj.References.Contains(elements[index]))
+                    dependencies[i++] = ((IList)elements).IndexOf(proj);
+            return i;
         }
 
         /// <summary>
@@ -200,15 +210,10 @@
             if (ProgressChanged != null)
                 ProgressChanged(this, new ProgressChangedEventArgs((int)(100 * percentage), text));
         }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
+                
+        void IDisposable.Dispose()
         {
             Close();
-            Extensions.Dispose();
-            Trace.TraceInformation("Editor disposed");
         }
         #endregion
     }

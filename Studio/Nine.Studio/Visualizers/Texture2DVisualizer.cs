@@ -1,13 +1,12 @@
 ﻿namespace Nine.Studio.Visualizers
 {
     using System;
-    using System.ComponentModel.Composition;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Studio.Extensibility;
 
-    [Default]
     [Export(typeof(IVisualizer))]
+    [ExportMetadata(IsDefault = true)]
     public class Texture2DVisualizer : GraphicsVisualizer<Texture2D>
     {
         SpriteBatch spriteBatch;

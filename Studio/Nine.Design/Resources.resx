@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="World" xml:space="preserve">
-    <value>World</value>
+  <data name="FbxModel" xml:space="preserve">
+    <value>Fbx Model</value>
+  </data>
+  <data name="ParticleEffect" xml:space="preserve">
+    <value>Particle Effect</value>
+  </data>
+  <data name="Scene" xml:space="preserve">
+    <value>Scene</value>
+  </data>
+  <data name="XModel" xml:space="preserve">
+    <value>X Model</value>
   </data>
 </root>

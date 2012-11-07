@@ -488,14 +488,12 @@
     <Compile Include="Colliders\ModelCollider.cs" />
     <Compile Include="Colliders\SphereCollider.cs" />
     <Compile Include="Colliders\TerrainCollider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RigidBody.cs" />
     <Compile Include="SceneExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Nine.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="BEPUphysics\License.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework.Windows8, Version=2.0.0.0, Culture=neutral, PublicKeyToken=846ac6d1e06a595c, processorArchitecture=MSIL">

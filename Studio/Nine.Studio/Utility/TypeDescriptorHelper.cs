@@ -1,17 +1,16 @@
 ﻿namespace Nine.Studio
 {
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Nine.Studio.Extensibility;
 
-
-
-
-
-
-    /*
     class TypeDescriptorHelper
     {
         static Dictionary<Type, TypeDescriptionProvider> addedProviders = new Dictionary<Type, TypeDescriptionProvider>();
 
-        public static void AddAttributes(IEnumerable<IAttributeProvider> attributeProviders)
+        public static void SetAttributeProviders(IEnumerable<IAttributeProvider> attributeProviders)
         {
             foreach (var type in addedProviders.Keys)
             {
@@ -74,5 +73,4 @@
             return new PropertyDescriptorCollection(properties.ToArray());
         }
     }
-     */
 }

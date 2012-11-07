@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Nine.Studio.Extensibility;
-
-
-namespace Nine.Studio
+﻿namespace Nine.Studio
 {
-    using Exporter = Lazy<IExporter, IMetadata>;
-    using Importer = Lazy<IImporter, IMetadata>;
-    using Visualizer = Lazy<IVisualizer, IMetadata>;
-    
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using Nine.Studio.Extensibility;
+    using System.Diagnostics;
+
     /// <summary>
     /// Represents a single project managed by a project instance.
     /// </summary>
     public class ProjectItem : ObservableObject, IDisposable
     {
+        #region Properties
         /// <summary>
         /// Gets the fileName of this document.
         /// </summary>
@@ -35,11 +32,6 @@ namespace Nine.Studio
         public string RelativeFilename { get; private set; }
 
         /// <summary>
-        /// Gets the metadata of this document.
-        /// </summary>
-        public IMetadata Metadata { get; private set; }
-
-        /// <summary>
         /// Gets a value indicating whether this instance can be saved.
         /// </summary>
         public bool CanSave { get { return Exporter != null; } }
@@ -54,17 +46,17 @@ namespace Nine.Studio
         /// </summary>
         public bool IsModified
         {
-            get { return _IsModified; }
+            get { return isModified; }
             set
             {
-                if (value != _IsModified)
+                if (value != isModified)
                 {
-                    _IsModified = value;
+                    isModified = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        private bool _IsModified;
+        private bool isModified = true;
 
         /// <summary>
         /// Gets the underlying object model.
@@ -86,7 +78,6 @@ namespace Nine.Studio
         /// <summary>
         /// Gets or sets the current selection.
         /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public object Selection { get; set; }
 
         /// <summary>
@@ -112,73 +103,141 @@ namespace Nine.Studio
         /// <summary>
         /// Gets the default exporter of this project item.
         /// </summary>
-        public Exporter Exporter { get; private set; }
+        public Extension<IExporter> Exporter { get; private set; }
 
         /// <summary>
         /// Gets the default importer of this project item.
         /// </summary>
-        public Importer Importer { get; private set; }
+        public Extension<IImporter> Importer { get; private set; }
 
         /// <summary>
         /// Gets the default visualizer of this project item.
         /// </summary>
-        public Visualizer Visualizer { get; private set; }
-
-        /// <summary>
-        /// Gets a dictionary of the parameters used by the importer.
-        /// </summary>
-        public IDictionary<string, object> ImporterParameters { get; private set; }
-        
-        /// <summary>
-        /// Gets or sets any user data that will be saved with the project file.
-        /// </summary>
-        public object Tag { get; set; }
+        public Extension<IVisualizer> Visualizer { get; private set; }
 
         internal List<ProjectItem> InnerReferences;
 
+        private List<string> dependentFiles = new List<string>();
         private int objectModelNeedsReload;
         private IDisposable sourceFileWatcher;
+        #endregion
 
-        /// <summary>
-        /// Initializes a new document instance.
-        /// </summary>
-        internal ProjectItem(Project project, object objectModel, string fileName)
+        #region Method
+        private ProjectItem(Project project)
         {
             Verify.IsNotNull(project, "project");
-            Verify.IsNotNull(objectModel, "objectModel");
 
             this.Project = project;
             this.InnerReferences = new List<ProjectItem>();
             this.References = new ReadOnlyCollection<ProjectItem>(InnerReferences);
+        }
+
+        /// <summary>
+        /// Creates a new project item with the specified object model inside the target project.
+        /// </summary>
+        internal ProjectItem(Project project, object objectModel) : this(project)
+        {
+            Verify.IsNotNull(objectModel, "objectModel");
+
             this.ObjectModel = objectModel;
-            this.IsModified = string.IsNullOrEmpty(fileName);
             this.Exporter = Editor.Extensions.FindExporter(objectModel.GetType());
             this.Importer = Editor.Extensions.FindImporter(objectModel.GetType());
             this.Visualizer = Editor.Extensions.FindVisualizer(objectModel.GetType());
 
-            this.Metadata = new Metadata
+            Verify.IsNotNull(Importer, "Importer");
+            Verify.IsNotNull(Exporter, "Exporter");
+
+            this.FileName = Path.GetFullPath(FileHelper.FindNextValidFileName(
+                            Path.Combine(Project.Directory, Importer.Class, Importer.DisplayName),
+                            Importer.Value.GetSupportedFileExtensions().First()));
+            
+            this.Name = Path.GetFileNameWithoutExtension(FileName);
+            this.RelativeFilename = FileHelper.GetRelativeFileName(FileName, Project.Directory);
+
+            var info = new FileInfo(FileName);
+            this.IsReadOnly = info.Exists && info.IsReadOnly && CanSave;
+        }
+
+        /// <summary>
+        /// Imports a project item from a source file to the specified project.
+        /// </summary>
+        internal ProjectItem(Project project, string fileName, IImporter importer) : this(project)
+        {
+            Verify.IsNotNull(importer, "importer");
+
+            fileName = Path.IsPathRooted(fileName) ? fileName : FileHelper.NormalizeFileName(Path.Combine(Project.Directory, fileName)); 
+
+            this.ObjectModel = importer.Import(fileName, dependentFiles);
+            this.FileName = CopyToProjectDirectory(fileName, Editor.Extensions.GetClass(importer));
+            
+            CopyToProjectDirectory(dependentFiles, Path.GetDirectoryName(Path.GetFullPath(fileName)), Path.GetDirectoryName(FileName));
+
+            this.Importer = new Extension<IImporter>(Editor.Extensions, importer);
+            this.Exporter = Editor.Extensions.FindExporter(objectModel.GetType());
+            this.Visualizer = Editor.Extensions.FindVisualizer(objectModel.GetType());
+
+            Verify.IsNotNull(Importer, "Importer");
+            
+            this.Name = Path.GetFileNameWithoutExtension(FileName);
+            this.RelativeFilename = FileHelper.GetRelativeFileName(FileName, Project.Directory);
+
+            var info = new FileInfo(FileName);
+            this.IsReadOnly = info.Exists && info.IsReadOnly && CanSave;
+        }
+
+        private string CopyToProjectDirectory(string fileName, string folder)
+        {
+            if (fileName.StartsWith(Project.Directory, StringComparison.OrdinalIgnoreCase))
+                return fileName;
+
+            var destFile = Path.GetFullPath(FileHelper.FindNextValidFileName(
+                           Path.Combine(Project.Directory, folder,
+                           Path.GetFileNameWithoutExtension(fileName)),
+                           Path.GetExtension(fileName), false));
+
+            var destPath = Path.GetDirectoryName(destFile);
+            if (!Directory.Exists(destPath))
+                Directory.CreateDirectory(destPath);
+
+            File.Copy(fileName, destFile);
+            return destFile;
+        }
+
+        private void CopyToProjectDirectory(IEnumerable<string> fileNames, string sourceDirectory, string targetDirectory)
+        {
+            if (sourceDirectory.StartsWith(targetDirectory, StringComparison.OrdinalIgnoreCase))
+                return;
+
+            foreach (var fileName in fileNames)
             {
-                DisplayName = Editor.GetDisplayName(objectModel),
-                Category = Editor.GetCategory(objectModel),
-                FolderName = Editor.GetFolderName(ObjectModel),
-            };
+                var relativePath = Path.IsPathRooted(fileName) ? FileHelper.GetRelativeFileName(fileName, sourceDirectory) : fileName;
+                var absolutePath = Path.IsPathRooted(fileName) ? fileName : Path.Combine(sourceDirectory, fileName);
 
-            var extension = Exporter != null ? Exporter.Value.FileExtensions.FirstOrDefault() : null;
-            if (string.IsNullOrEmpty(fileName))
-                fileName = Global.NextName(Path.Combine(Metadata.FolderName, Metadata.DisplayName), extension);
+                if (Path.IsPathRooted(relativePath))
+                {
+                    Trace.TraceWarning("Absolute references found {0}", relativePath);
+                    continue;
+                }
 
-            if (Path.IsPathRooted(fileName))
-                FileName = fileName;
-            else
-                FileName = Path.Combine(Project.Directory, fileName);
+                if (!File.Exists(absolutePath))
+                {
+                    Trace.TraceWarning("Cannot find reference to {0}", absolutePath);
+                    continue;
+                }
 
-            Name = Path.GetFileNameWithoutExtension(FileName);
-            RelativeFilename = FileHelper.GetRelativeFilename(FileName, Project.Directory);
+                var destFile = Path.Combine(targetDirectory, relativePath);
+                if (File.Exists(destFile))
+                {
+                    Trace.TraceWarning("A file named {0} already exist at {0}", relativePath, targetDirectory);
+                    continue;
+                }
 
-            FileInfo info = new FileInfo(FileName);
-            IsReadOnly = info.Exists && info.IsReadOnly;
+                var destPath = Path.GetDirectoryName(destFile);
+                if (!Directory.Exists(destPath))
+                    Directory.CreateDirectory(destPath);
 
-            BeginWatchFileChanges();
+                File.Copy(fileName, destFile);
+            }
         }
 
         /// <summary>
@@ -187,7 +246,9 @@ namespace Nine.Studio
         public void AddReference(ProjectItem projectItem)
         {
             Verify.IsNotNull(projectItem, "projectItem");
-            Verify.IsFalse(HasCircularDependency(projectItem, this), "Target object has a circular dependency");
+
+            if (HasCircularDependency(projectItem, this))
+                throw new InvalidOperationException("Target object has a circular dependency");
             
             if (!InnerReferences.Contains(projectItem))
             {
@@ -216,72 +277,52 @@ namespace Nine.Studio
         /// </summary>
         public void Close()
         {
-            
-
             // Can't close this when any document references this one
             if (Editor.Projects.SelectMany(proj => proj.ProjectItems).Any(doc => doc.References.Contains(this)))
                 throw new InvalidOperationException("Cannot close this project item because it is referenced by other project items");
 
-            Project.InnerProjectItems.Remove(this);
+            Project.ProjectItems.Remove(this);
             References.ForEach(doc => doc.Close());
+
+            var disposable = objectModel as IDisposable;
+            if (disposable != null)
+                disposable.Dispose();
         }
         
-        /// <summary>
-        /// Saves this document
-        /// </summary>
-        public void Save()
+        internal void Save()
         {
-            
             Verify.IsNeitherNullNorEmpty(FileName, "FileName");
 
             if (IsModified && CanSave)
-                Save(FileName);
+                Export(FileName, Exporter.Value);
         }
 
         /// <summary>
-        /// Saves this document
+        /// Exports this project item.
         /// </summary>
-        public void Save(string fileName)
-        {
-            
-            Verify.IsNeitherNullNorEmpty(fileName, "fileName");
-
-            Save(fileName, null);
-        }
-
-        /// <summary>
-        /// Saves this document
-        /// </summary>
-        public void Save(string fileName, IExporter exporter)
+        public void Export(string fileName, IExporter exporter)
         {
             Verify.IsNeitherNullNorEmpty(fileName, "fileName");
+            Verify.IsNotNull(exporter, "exporter");
 
-            FileHelper.BackupAndSave(fileName, stream => Save(stream, exporter));
-        }
-
-        /// <summary>
-        /// Saves this document
-        /// </summary>
-        public void Save(Stream stream, IExporter exporter)
-        {
-            
-            Verify.IsNotNull(stream, "stream");
-
-            if (exporter != null)
+            FileHelper.BackupAndSave(fileName, stream =>
+            {
                 exporter.Export(stream, ObjectModel);
-            else if (Exporter.Value != null)
-                Exporter.Value.Export(stream, ObjectModel);
-            else
-                throw new InvalidOperationException("No valid exporter found.");
+                stream.Flush();
+            });
+        }
 
-            stream.Flush();
+        protected override void NotifyPropertyChanged(string propertyName = null)
+        {
+            isModified = true;
+            base.NotifyPropertyChanged(propertyName);
         }
 
         private void BeginWatchFileChanges()
         {
             if (sourceFileWatcher == null && File.Exists(FileName))
             {
-                sourceFileWatcher = FileHelper.WatchFileContentChange(FileName, fileName =>
+                sourceFileWatcher = FileHelper.WatchFileChanged(FileName, fileName =>
                 {
                     Interlocked.Exchange(ref objectModelNeedsReload, 1);
                 });
@@ -297,26 +338,10 @@ namespace Nine.Studio
             }
         }
 
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            
-
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             Close();
-            EndWatchFileChanges();
         }
+        #endregion
     }
 }

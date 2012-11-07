@@ -1,24 +1,27 @@
 ﻿namespace Nine.Studio.Test
 {
+    using System.IO;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
     using Microsoft.Xna.Framework.Content.Pipeline.Processors;
     using Nine.Studio;
-
-
+    using Microsoft.Xna.Framework.Graphics;
+    
     [TestClass]
     public class SerializationTest
     {
+        string ContentDirectory = @"..\..\..\..\Samples\Content\";
+
         Editor Editor;
         Project Project;
 
         [TestInitialize]
         public void Initialize()
         {
-            Editor = Editor.Launch();
-            Editor.Extensions.LoadDefault();
-            Project = Editor.CreateProject("Project.xml");
+            Editor = new Editor();
+            Editor.LoadExtensions();
+            Project = Editor.CreateProject("Project", Path.GetRandomFileName());
         }
 
         [TestCleanup]
@@ -28,52 +31,44 @@
             Editor.Close();
         }
 
-        [TestMethod]        
-        public void TestSaveLoadText()
-        {
-            var doc = Project.CreateProjectItem("HaHa");
-            doc.Save("Doc.txt");
-            doc = Project.Import("Doc.txt");
-            Assert.AreEqual("HaHa", doc.ObjectModel);
-        }
-
         [TestMethod]
-        [DeploymentItem(@"Content/Background.png", "Content")]
         public void TestSaveLoadTexture()
         {
-            var doc = Project.Import(@"Content/Background.png");
-            TextureContent imported = (TextureContent)doc.ObjectModel;
-            Assert.AreEqual(173, imported.Faces[0][0].Width);
-            Assert.AreEqual(173, imported.Faces[0][0].Height);
+            var doc = Project.Import(Path.GetFullPath(Path.Combine(ContentDirectory, @"Textures\fire.png")));
+            Texture2D imported = (Texture2D)doc.ObjectModel;
+            Assert.AreEqual(256, imported.Width);
+            Assert.AreEqual(256, imported.Height);
             Project.Save();
             Project.Close();
-            Project = Editor.OpenProject("Project.xml");
+            Project = Editor.OpenProject(Editor.RecentFiles[0]);
             Assert.AreEqual(1, Project.ProjectItems.Count);
-            Assert.IsTrue(Project.ProjectItems[0].ObjectModel is TextureContent);
+            Assert.IsTrue(Project.ProjectItems[0].ObjectModel is Texture2D);
         }
 
         [TestMethod]
-        [DeploymentItem(@"Content/Terrain.fbx", "Content")]
-        [DeploymentItem(@"Content/TerrainTex.png", "Content")]
         public void TestSaveLoadFbxModel()
         {
-            var doc = Project.Import(@"Content/Terrain.fbx");
-            ModelContent imported = (ModelContent)doc.ObjectModel;
+            var doc = Project.Import(Path.GetFullPath(Path.Combine(ContentDirectory, @"Models\Terrain\Terrain.fbx")));
+            Model imported = (Model)doc.ObjectModel;
             Project.Save();
             Project.Close();
-            Project = Editor.OpenProject("Project.xml");
+            Project = Editor.OpenProject(Editor.RecentFiles[0]);
             Assert.IsTrue(Project.ProjectItems.Count > 0);
-            Assert.IsTrue(Project.ProjectItems[0].ObjectModel is ModelContent);
+            Assert.IsTrue(Project.ProjectItems[0].ObjectModel is Model);
+            Assert.IsTrue(Project.ProjectItems[0].Importer.Value is Nine.Graphics.Design.FbxModelImporter);
         }
 
         [TestMethod]
-        public void TestNewSaveLoadXnaXmlContent()
+        public void TestSaveLoadXModel()
         {
-            var doc = Project.CreateProjectItem(Matrix.Identity);
-            doc.Save("Doc.xml");
-            doc.Close();
-            doc = Project.Import("Doc.xml");
-            Assert.AreEqual(Matrix.Identity, doc.ObjectModel);
+            var doc = Project.Import(Path.GetFullPath(Path.Combine(ContentDirectory, @"Models\Palm\AlphaPalm.X")));
+            Model imported = (Model)doc.ObjectModel;
+            Project.Save();
+            Project.Close();
+            Project = Editor.OpenProject(Editor.RecentFiles[0]);
+            Assert.IsTrue(Project.ProjectItems.Count > 0);
+            Assert.IsTrue(Project.ProjectItems[0].ObjectModel is Model);
+            Assert.IsTrue(Project.ProjectItems[0].Importer.Value is Nine.Graphics.Design.XModelImporter);
         }
     }
 }

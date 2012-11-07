@@ -10,14 +10,19 @@
     public interface IAttributeProvider
     {
         /// <summary>
-        /// Gets all the attributes attached to the target type.
+        /// Gets the type that this attribute provider works with.
         /// </summary>
-        IEnumerable<Attribute> GetCustomAttributes(Type type);
+        Type TargetType { get; }
 
         /// <summary>
         /// Gets all the attributes attached to the target type.
         /// </summary>
-        IEnumerable<Attribute> GetCustomAttributes(Type type, string member);
+        IEnumerable<Attribute> GetCustomAttributes();
+
+        /// <summary>
+        /// Gets all the attributes attached to the target type.
+        /// </summary>
+        IEnumerable<Attribute> GetCustomAttributes(string member);
     }
 
     /// <summary>
@@ -27,6 +32,8 @@
     {
         private List<Attribute> attributes = new List<Attribute>();
         private Dictionary<string, List<Attribute>> memberAttributes = new Dictionary<string, List<Attribute>>();
+
+        public Type TargetType { get { return typeof(T); } }
 
         protected void AddCustomAttribute(params Attribute[] customAttributes)
         {
@@ -46,19 +53,17 @@
             att.AddRange(customAttributes);
         }
 
-        IEnumerable<Attribute> IAttributeProvider.GetCustomAttributes(Type type, string member)
+        IEnumerable<Attribute> IAttributeProvider.GetCustomAttributes(string member)
         {
             List<Attribute> att;
-            if (type == typeof(T) && memberAttributes.TryGetValue(member, out att))
+            if (memberAttributes.TryGetValue(member, out att))
                 return att;
             return Enumerable.Empty<Attribute>();
         }
 
-        IEnumerable<Attribute> IAttributeProvider.GetCustomAttributes(Type type)
+        IEnumerable<Attribute> IAttributeProvider.GetCustomAttributes()
         {
-            if (type == typeof(T))
-                return attributes;
-            return Enumerable.Empty<Attribute>();
+            return attributes;
         }
     }
 }

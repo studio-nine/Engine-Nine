@@ -25,7 +25,7 @@ namespace Nine.Studio
         /// <summary>
         /// http://www.trelford.com/blog/post/CallMeMaybe.aspx
         /// </summary>
-        protected void NotifyPropertyChanged([CallerMemberName]string propertyName = null)
+        protected virtual void NotifyPropertyChanged([CallerMemberName]string propertyName = null)
         {
             var propertyChanged = PropertyChanged;
             if (propertyChanged != null)

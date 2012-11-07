@@ -6,7 +6,19 @@
 
     static class FileHelper
     {
-        public static string GetNormalizedFileExtension(this string fileExtension)
+        public static string FindNextValidFileName(string filename, string extension, bool startWithDigits = true)
+        {
+            var i = 1;
+            var result = "";
+            
+            if (!startWithDigits && !File.Exists(result = filename + extension))
+                return result;
+
+            while (File.Exists(result = filename + i + extension)) i++;
+            return result;
+        }
+
+        public static string NormalizeExtension(string fileExtension)
         {
             if (string.IsNullOrEmpty(fileExtension))
                 return "";
@@ -16,7 +28,7 @@
             return fileExtension.ToLowerInvariant();
         }
 
-        public static string NormalizeFilename(string fileName)
+        public static string NormalizeFileName(string fileName)
         {
             if (fileName == null)
                 return null;
@@ -37,14 +49,14 @@
 
         public static bool FileNameEquals(string filename1, string filename2)
         {
-            return string.Compare(NormalizeFilename(filename1),
-                                  NormalizeFilename(filename2),
+            return string.Compare(NormalizeFileName(filename1),
+                                  NormalizeFileName(filename2),
                                   StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        public static string GetRelativeFilename(string fileName, string path)
+        public static string GetRelativeFileName(string fileName, string path)
         {
-            Uri uri = new Uri(NormalizeFilename(fileName));
+            Uri uri = new Uri(NormalizeFileName(fileName));
             Uri dir = new Uri(NormalizePath(path));
             return dir.MakeRelativeUri(uri).OriginalString;
         }
@@ -108,7 +120,7 @@
             }
         }
 
-        public static IDisposable WatchFileContentChange(string fileName, Action<string> contentChanged)
+        public static IDisposable WatchFileChanged(string fileName, Action<string> contentChanged)
         {
             Verify.IsNotNull(contentChanged, "contentChanged");
             Verify.IsValidPath(fileName, "fileName");
@@ -116,7 +128,7 @@
             string directory = Path.GetDirectoryName(fileName);
             string filter = Path.GetFileName(fileName);
             
-            FileSystemWatcher watcher = new FileSystemWatcher(directory, filter);
+            var watcher = new FileSystemWatcher(directory, filter);
             watcher.NotifyFilter = NotifyFilters.LastWrite;
             watcher.Changed += (sender, e) => 
             {
@@ -124,7 +136,6 @@
                     contentChanged(Path.Combine(e.FullPath, e.Name));
             };
             watcher.EnableRaisingEvents = true;
-
             return watcher;
         }
     }

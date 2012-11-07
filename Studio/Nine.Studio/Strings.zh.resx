@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FbxModel" xml:space="preserve">
-    <value>Fbx 模型</value>
+  <data name="DirectoryNotEmpty" xml:space="preserve">
+    <value>目标文件夹已经拥有名称为 {0} 的文件夹</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>常规</value>
@@ -135,9 +135,6 @@
   <data name="NoName" xml:space="preserve">
     <value>{未命名}</value>
   </data>
-  <data name="ParticleEffect" xml:space="preserve">
-    <value>粒子特效</value>
-  </data>
   <data name="ShowWireframe" xml:space="preserve">
     <value>显示线框</value>
   </data>
@@ -147,16 +144,10 @@
   <data name="Untitled" xml:space="preserve">
     <value>未命名</value>
   </data>
+  <data name="VersionNotSupported" xml:space="preserve">
+    <value>不能打开该游戏因为他使用了一个更新的编辑器版本。</value>
+  </data>
   <data name="ViewFormat" xml:space="preserve">
     <value>{0}视图</value>
-  </data>
-  <data name="XModel" xml:space="preserve">
-    <value>X 模型</value>
-  </data>
-  <data name="XnaXamlAsset" xml:space="preserve">
-    <value>Xna Xaml 资源</value>
-  </data>
-  <data name="XnaXmlAsset" xml:space="preserve">
-    <value>Xna Xml 资源</value>
   </data>
 </root>
