@@ -17,6 +17,7 @@
     <SolidColorBrush x:Key="Brush-HighlightAccent" Color="#FF0084DC"/>
     <SolidColorBrush x:Key="Brush-Foreground" Color="White"/>
     <SolidColorBrush x:Key="Brush-ForegroundDisabled" Color="#FF646464"/>
+    <SolidColorBrush x:Key="Brush-ForegroundBorder" Color="#FF6E6E6E"/>
     <SolidColorBrush x:Key="Brush-Hover" Color="#FF646464"/>
 
     <System:Double x:Key="Size-SmallIcon">10</System:Double>
@@ -25,331 +26,251 @@
     <Thickness x:Key="Margin-SmallIcon">0</Thickness>
     <Thickness x:Key="Margin-Thin">4</Thickness>
 
+
     <!--
-        Styles
+        Button
     -->
-    <Style x:Key="Button-Minimum" TargetType="{x:Type Button}">
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource Brush-ForegroundBorder}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid Background="#00000000">
+                    <Border Background="{TemplateBinding Background}" VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" >
+                        <TextBlock Name="Content" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Text="{TemplateBinding Content}" FontFamily="{TemplateBinding FontFamily}" FontWeight="{TemplateBinding FontWeight}" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}"/>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                </VisualStateGroup.Transitions>
                                 <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFEEEEEE"/>
-                                        </ColorAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-AccentHover}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Thickness>0</Thickness>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="Pressed"/>
-                                <VisualState x:Name="Disabled"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Rectangle MinHeight="20" Fill="#00000000"/>
-                        <TextBlock x:Name="textBlock" TextWrapping="NoWrap" Text="{TemplateBinding Content, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray" FontSize="9.333" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="RadioButton-Product" TargetType="{x:Type RadioButton}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type RadioButton}">
-                    <Grid Margin="0" d:DesignHeight="140" MinWidth="100">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
+                                <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF00AEEF"/>
-                                        </ColorAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-Accent}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Thickness>0</Thickness>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="Pressed"/>
-                                <VisualState x:Name="Disabled"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Rectangle x:Name="rectangle" MinHeight="20" MinWidth="60" MaxWidth="Infinity" Fill="#FF0071BC"/>
-                        <TextBlock x:Name="textBlock" TextWrapping="NoWrap" Text="{TemplateBinding Content, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="12" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="RadioButton-Menu" TargetType="{x:Type RadioButton}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type RadioButton}">
-                    <Grid Margin="{StaticResource Margin-Menu}" VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" Background="#00000000" MinWidth="100" MinHeight="20">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Disabled"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBoxMouseOver">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFC8C8C8"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed" />
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBoxMouseOver">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF323232"/>
-                                        </ColorAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-                            </VisualStateGroup>
-                            <VisualStateGroup x:Name="CheckStates">
-                                <VisualState x:Name="Checked">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBoxChecked">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF0071BC"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Unchecked">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBoxChecked">
-                                            <EasingColorKeyFrame KeyTime="0" Value="Gray"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Indeterminate"/>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <TextBlock x:Name="textBoxMouseOver" TextWrapping="NoWrap" Text="{TemplateBinding Content, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" VerticalAlignment="Center" Foreground="Gray" FontSize="12" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI" HorizontalAlignment="Center"/>
-                        <TextBlock x:Name="textBoxChecked" TextWrapping="NoWrap" Text="{TemplateBinding Content, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" VerticalAlignment="Center" Foreground="Gray" FontSize="12" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI" HorizontalAlignment="Center"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Visibility" TargetName="textBoxMouseOver" Value="Hidden"/>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="False">
-                            <Setter Property="Visibility" TargetName="textBoxChecked" Value="Hidden"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="ToggleButton-Menu" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Grid Margin="{StaticResource Margin-Menu}" VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" Background="#00000000" MinWidth="100" MinHeight="20">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Disabled"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBoxMouseOver">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFC8C8C8"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed" />
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBoxMouseOver">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF323232"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                            <VisualStateGroup x:Name="CheckStates">
-                                <VisualState x:Name="Checked">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBoxChecked">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF0071BC"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Unchecked">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBoxChecked">
-                                            <EasingColorKeyFrame KeyTime="0" Value="Gray"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Indeterminate"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <TextBlock x:Name="textBoxMouseOver" TextWrapping="NoWrap" Text="{TemplateBinding Content, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" VerticalAlignment="Center" Foreground="Gray" FontSize="12" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI" HorizontalAlignment="Center"/>
-                        <TextBlock x:Name="textBoxChecked" TextWrapping="NoWrap" Text="{TemplateBinding Content, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" VerticalAlignment="Center" Foreground="Gray" FontSize="12" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI" HorizontalAlignment="Center"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Visibility" TargetName="textBoxMouseOver" Value="Hidden"/>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="False">
-                            <Setter Property="Visibility" TargetName="textBoxChecked" Value="Hidden"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+
+    <Style x:Key="Button-Title" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Background" Value="{StaticResource Brush-Accent}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Height" Value="NaN" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="n:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
     </Style>
-    <Style x:Key="Button-Menu" TargetType="{x:Type Button}">
+
+    <Style x:Key="Button-MediumIcon" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Width" Value="30" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="FontFamily" Value="Segoe UI Symbol" />
+        <Setter Property="n:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+    </Style>
+
+    <Style x:Key="Button-Back" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
+        <Setter Property="n:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="60" />
+        <Setter Property="Height" Value="60" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid Margin="{StaticResource Margin-Menu}" VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" Background="#00000000" MinWidth="100" MinHeight="20">
+                    <Grid Background="Transparent" ClipToBounds="True" VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                        <TextBlock Name="Content"  FontFamily="Segoe UI Symbol" FontSize="46" Foreground="{TemplateBinding Foreground}" Background="Transparent" Text="&#xE071;" RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="0"/>
+                                    <TranslateTransform X="10"/>
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Disabled"/>
-                                </VisualStateGroup.Transitions>
                                 <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFC8C8C8"/>
-                                        </ColorAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-Hover}"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="Pressed"/>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF323232"/>
-                                        </ColorAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <TextBlock x:Name="textBlock" TextWrapping="NoWrap" Text="{TemplateBinding Content, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" VerticalAlignment="Center" Foreground="Gray" FontSize="12" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI" HorizontalAlignment="Center"/>
                     </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsDefaulted" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="Button-ToolsMenu" TargetType="{x:Type Button}">
+
+
+
+
+    <!--
+        TextBlock
+    -->
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
+    </Style>
+
+
+
+    <!--
+        TextBox
+    -->
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="10,2" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource Brush-ForegroundBorder}" />
+        <Setter Property="CaretBrush" Value="{StaticResource Brush-Foreground}" />
+        <Setter Property="n:ClickSelectBehavior.IsClickSelect" Value="True" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+        <Setter Property="Height" Value="30" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" Background="#00000000" Margin="0" MinWidth="100" MinHeight="25">
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Grid Background="{TemplateBinding Background}" VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Name="Header" Margin="{TemplateBinding Padding}" FontWeight="Bold" Text="{Binding (n:HeaderBehavior.Header), RelativeSource={RelativeSource TemplatedParent}}" 
+                                       Foreground="{StaticResource Brush-ForegroundBorder}" VerticalAlignment="Center"
+                                       Visibility="{Binding Text, Converter={n:Type n:StringToVisibilityConverter}, RelativeSource={RelativeSource Self}}"/>
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <TextBlock Margin="{TemplateBinding Padding}" Visibility="Collapsed" Name="Watermark" FontStyle="Italic" Text="{Binding (n:HeaderBehavior.Watermark), RelativeSource={RelativeSource TemplatedParent}}" Foreground="{StaticResource Brush-ForegroundBorder}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                        <Rectangle Name="Chrome" StrokeThickness="{TemplateBinding BorderThickness}" Stroke="{TemplateBinding BorderBrush}"/>
+                        <Rectangle Name="FocusChrome" StrokeThickness="{TemplateBinding BorderThickness}" />
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Disabled"/>
-                                </VisualStateGroup.Transitions>
                                 <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFC8C8C8"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed"/>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF323232"/>
-                                        </ColorAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Chrome">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Header">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Watermark">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <TextBlock x:Name="textBlock" TextWrapping="NoWrap" Text="{TemplateBinding Content, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" Foreground="Gray" FontSize="12" FontFamily="Segoe UI" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsDefaulted" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="ToggleButton-Category" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <TextBlock x:Name="textBlock" TextWrapping="NoWrap" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Normal" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Gray" FontSize="32" Margin="0,20,0,0" FontFamily="Segoe UI Light" FontStretch="Condensed" ClipToBounds="True" Text="{TemplateBinding Content, Converter={StaticResource ToLowerConverter}}">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="ReadOnly">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Chrome">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Header">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Watermark">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFC8C8C8"/>
-                                        </ColorAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Chrome">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-AccentHover}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Header">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-Foreground}"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="Pressed"/>
-                                <VisualState x:Name="Disabled"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="FocusChrome">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-Accent}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                    </TextBlock>
+                    </Grid>
+
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False"/>
+                                <Condition Property="Text" Value=""/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="Watermark" Value="Visible"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    
+    
+    
+
+
     <Style x:Key="Separator-Vertical" TargetType="{x:Type Separator}">
         <Setter Property="Template">
             <Setter.Value>
@@ -361,121 +282,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="Button-Close" TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid Margin="{StaticResource Margin-SmallIcon}">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFEEEEEE"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path1">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFEEEEEE"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed"/>
-                                <VisualState x:Name="Disabled"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="#00000000" />
-                        <Path x:Name="path" Stretch="Fill" Width="{StaticResource Size-SmallIcon}" Height="{StaticResource Size-SmallIcon}" Data="F1 M 14.5226,113.541L 34.7572,133.854L 38.5906,130.039L 18.3559,109.725L 14.5226,113.541 Z " Fill="Gray"/>
-                        <Path x:Name="path1" Stretch="Fill" Width="{StaticResource Size-SmallIcon}" Height="{StaticResource Size-SmallIcon}" Data="F1 M 18.227,133.961L 38.7363,113.535L 34.9176,109.699L 14.4083,130.128L 18.227,133.961 Z " Fill="Gray"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsDefaulted" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="Button-Minimize" TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid Margin="{StaticResource Margin-SmallIcon}">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="path">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFEEEEEE"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed"/>
-                                <VisualState x:Name="Disabled"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="#00000000" />
-                        <Border x:Name="path" VerticalAlignment="Center" BorderThickness="0, 0, 0, 2" Width="{StaticResource Size-SmallIcon}" Height="{StaticResource Size-SmallIcon}" BorderBrush="Gray"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsDefaulted" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="Button-Maximized" TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid Margin="{StaticResource Margin-SmallIcon}">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="path">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFEEEEEE"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed"/>
-                                <VisualState x:Name="Disabled"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="#00000000" />
-                        <Border x:Name="path" BorderThickness="1, 2, 1, 1" BorderBrush="Gray" Width="{StaticResource Size-SmallIcon}" Height="{StaticResource Size-SmallIcon}" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsDefaulted" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    
     <Style x:Key="ListView-ToolsGroupExpander" TargetType="{x:Type Expander}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -559,42 +366,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="Button-Dialog" TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid Margin="{StaticResource Margin-Menu}" VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" Background="#00000000">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="textBlock">
-                                            <EasingColorKeyFrame KeyTime="0" Value="White"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed"/>
-                                <VisualState x:Name="Disabled"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <TextBlock x:Name="textBlock" TextWrapping="NoWrap" Text="{TemplateBinding Content, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFC8C8C8" FontSize="12" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI" HorizontalAlignment="Center"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True"/>
-                        <Trigger Property="IsDefaulted" Value="True"/>
-                        <Trigger Property="IsMouseOver" Value="True"/>
-                        <Trigger Property="IsPressed" Value="True"/>
-                        <Trigger Property="IsEnabled" Value="False"/>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    
     <Style x:Key="PropertyGrid-Metro" TargetType="{x:Type extToolkit:PropertyGrid}">
         <Setter Property="Template">
             <Setter.Value>
@@ -733,8 +505,8 @@
                             </Track.DecreaseRepeatButton>
                         </Track>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="Header" IsHitTestVisible="False" Text="{Binding (n:HeaderBehavior.Header), Converter={StaticResource ToUpperConverter}, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFC8C8C8" />
-                            <TextBlock x:Name="Foreground" IsHitTestVisible="False" TextWrapping="NoWrap" Text="{TemplateBinding Value, Converter={StaticResource ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFC8C8C8" FontSize="12" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="Header" IsHitTestVisible="False" Text="{Binding (n:HeaderBehavior.Header), Converter={n:Type n:ToUpperConverter}, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFC8C8C8" />
+                            <TextBlock x:Name="Foreground" IsHitTestVisible="False" TextWrapping="NoWrap" Text="{TemplateBinding Value, Converter={n:Type n:ToUpperConverter}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFC8C8C8" FontSize="12" Margin="{StaticResource Margin-Thin}" FontFamily="Segoe UI" HorizontalAlignment="Left"/>
                         </StackPanel>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -772,152 +544,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="TextBox-Metro" BasedOn="{x:Null}" TargetType="{x:Type TextBox}">
-        <Setter Property="Foreground" Value="{StaticResource Brush-NormalText}"/>
-        <Setter Property="Background" Value="{x:Null}"/>
-        <Setter Property="BorderBrush" Value="#FF808080"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="5,0,0,0"/>
-        <Setter Property="AllowDrop" Value="true"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="ScrollViewer.PanningMode" Value="None"/>
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-        <Setter Property="CaretBrush" Value="{StaticResource Brush-HighlightText}" />
-        <Setter Property="n:ClickSelectBehavior.IsClickSelect" Value="True" />
-        <Setter Property="Height" Value="30" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Grid>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Disabled"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="Bd">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF323232"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Header">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF323232"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="ReadOnly"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="Bd">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFEEEEEE"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Header">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFEEEEEE"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                            <VisualStateGroup x:Name="FocusStates">
-                                <VisualState x:Name="Unfocused"/>
-                                <VisualState x:Name="Focused"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="Transparent" />
-                        <Border x:Name="Bd" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" BorderBrush="Gray">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock x:Name="Header" Text="{Binding (n:HeaderBehavior.Header), Converter={StaticResource ToUpperConverter}, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" FontWeight="Bold" VerticalAlignment="Center"
-                                           Visibility="{Binding Text, Converter={StaticResource StringToVisibilityConverter}, RelativeSource={RelativeSource Self}}"/>
-                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="WatermarkTextBox-Metro" BasedOn="{x:Null}" TargetType="{x:Type extToolkit:WatermarkTextBox}">
-        <Setter Property="Foreground" Value="{StaticResource Brush-NormalText}"/>
-        <Setter Property="Background" Value="{x:Null}"/>
-        <Setter Property="BorderBrush" Value="#FF808080"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="5,0,0,0"/>
-        <Setter Property="AllowDrop" Value="true"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-        <Setter Property="CaretBrush" Value="{StaticResource Brush-HighlightText}" />
-        <Setter Property="Height" Value="30" />
-        <Setter Property="n:ClickSelectBehavior.IsClickSelect" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type extToolkit:WatermarkTextBox}">
-                    <Grid>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver"/>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" To="Disabled"/>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="Bd">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF323232"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Header">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FF323232"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="ReadOnly"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="Bd">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFEEEEEE"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Header">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFEEEEEE"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="Transparent" />
-                        <Border x:Name="Bd" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" BorderBrush="Gray">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock x:Name="Header" Text="{Binding (n:HeaderBehavior.Header), Converter={StaticResource ToUpperConverter}, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" FontWeight="Bold" VerticalAlignment="Center" 
-                                           Visibility="{Binding Text, Converter={StaticResource StringToVisibilityConverter}, RelativeSource={RelativeSource Self}}"/>
-                                <Grid>
-                                    <TextBlock x:Name="PART_WatermarkHost" VerticalAlignment="Center" Text="{TemplateBinding Watermark}" FontStyle="Italic" IsHitTestVisible="False" Margin="{TemplateBinding Padding}" Visibility="Collapsed"/>
-                                    <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
-                                </Grid>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsFocused" Value="False"/>
-                                <Condition Property="Text" Value=""/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Visibility" TargetName="PART_WatermarkHost" Value="Visible"/>
-                        </MultiTrigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    
     <Style x:Key="ColorSpectrumSlider-Metro" TargetType="{x:Type extToolkit:ColorSpectrumSlider}">
         <Setter Property="Orientation" Value="Vertical"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -952,6 +579,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="ToggleButton-ColorCanvas" TargetType="{x:Type ToggleButton}">
         <Setter Property="Foreground" Value="{StaticResource Brush-NormalText}" />
         <Setter Property="Template">
@@ -969,6 +597,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="ColorCanvas-Metro" TargetType="{x:Type extToolkit:ColorCanvas}">
         <Setter Property="Padding" Value="5,0,0,0"/>
         <Setter Property="Foreground" Value="{StaticResource Brush-NormalText}" />
@@ -980,14 +609,14 @@
                         <ToggleButton x:Name="Preview" Style="{StaticResource ToggleButton-ColorCanvas}">
                             <Border x:Name="Bd" Grid.ColumnSpan="3" Height="30" BorderThickness="1" BorderBrush="{StaticResource Brush-NormalText}">
                                 <Grid>
-                                    <Rectangle Fill="{Binding SelectedColor, Converter={StaticResource ColorToSolidColorBrushConverter}, RelativeSource={RelativeSource AncestorType={x:Type extToolkit:ColorCanvas}}}" />
-                                    <TextBlock x:Name="Header" Text="{Binding (n:HeaderBehavior.Header), Converter={StaticResource ToUpperConverter}, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" FontWeight="Bold" VerticalAlignment="Center"
-                                           Foreground="{Binding SelectedColor, Converter={StaticResource ColorToInvertBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <Rectangle Fill="{Binding SelectedColor, Converter={n:Type n:ColorToSolidColorBrushConverter}, RelativeSource={RelativeSource AncestorType={x:Type extToolkit:ColorCanvas}}}" />
+                                    <TextBlock x:Name="Header" Text="{Binding (n:HeaderBehavior.Header), Converter={n:Type n:ToUpperConverter}, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" FontWeight="Bold" VerticalAlignment="Center"
+                                           Foreground="{Binding SelectedColor, Converter={n:Type n:ColorToInvertBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}"/>
                                 </Grid>
                             </Border>
                         </ToggleButton>
 
-                        <Grid x:Name="Canvas" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=Preview}">
+                        <Grid x:Name="Canvas" Visibility="{Binding IsChecked, Converter={n:Type n:BooleanToVisibilityConverter}, ElementName=Preview}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="30" />
@@ -1000,7 +629,7 @@
 
                             <Border x:Name="PART_ColorCanvas" Margin="0,5,0,0" BorderThickness="1,1,0,1" BorderBrush="{StaticResource Brush-NormalText}">
                                 <Grid ClipToBounds="True">
-                                    <Rectangle x:Name="PART_ColorShadingCanvas" Fill="{Binding SelectedColor, Converter={StaticResource ColorToSolidColorBrushConverter}, ElementName=PART_SpectrumSlider}" />
+                                    <Rectangle x:Name="PART_ColorShadingCanvas" Fill="{Binding SelectedColor, Converter={n:Type n:ColorToSolidColorBrushConverter}, ElementName=PART_SpectrumSlider}" />
                                     <Rectangle x:Name="WhiteGradient" IsHitTestVisible="False" >
                                         <Rectangle.Fill>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -1042,132 +671,36 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="Rectangle-FocusVisual" TargetType="{x:Type Rectangle}">
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="Stroke" Value="Black" />
-        <Setter Property="StrokeDashArray" Value="1 2" />
-    </Style>
-    
-    <Style x:Key="Button-LargeIcon" TargetType="{x:Type Button}">
-        <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
-        <Setter Property="Width" Value="60" />
-        <Setter Property="Height" Value="60" />
+    <LinearGradientBrush x:Key="TextBoxBorder" EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+        <GradientStop Color="#ABADB3" Offset="0.05"/>
+        <GradientStop Color="#E2E3EA" Offset="0.07"/>
+        <GradientStop Color="#E3E9EF" Offset="1"/>
+    </LinearGradientBrush>
+    <Style x:Key="TextBoxStyle1" BasedOn="{x:Null}" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-                        <TextBlock Name="Icon" Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Content}" FontFamily="Segoe UI Symbol" FontSize="46" Foreground="{TemplateBinding Foreground}" Background="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Icon">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-Hover}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Icon">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Grid>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Themes:ListBoxChrome x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}" SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Themes:ListBoxChrome>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="Button-MediumIcon" TargetType="{x:Type Button}">
-        <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="Width" Value="30" />
-        <Setter Property="Height" Value="30" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-                        <Rectangle Name="Hover" Fill="Transparent" />
-                        <TextBlock Name="Icon" Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Content}" FontFamily="Segoe UI Symbol" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Hover">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-Hover}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Hover">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-Accent}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Icon">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 
-    <Style x:Key="Button-Title" TargetType="{x:Type Button}">
-        <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="Margin" Value="2" />
-        <Setter Property="Padding" Value="10,0" />
-        <Setter Property="n:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-                        <Rectangle Name="Hover" Fill="{StaticResource Brush-Accent}" />
-                        <TextBlock Name="Content" Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Content}" FontFamily="{TemplateBinding FontFamily}" FontWeight="{TemplateBinding FontWeight}" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Hover">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-AccentHover}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Hover">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-Accent}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush-ForegroundDisabled}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+
 </ResourceDictionary>

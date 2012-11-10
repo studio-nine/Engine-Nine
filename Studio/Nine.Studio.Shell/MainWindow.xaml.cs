@@ -40,12 +40,12 @@ namespace Nine.Studio.Shell
 
         public Task<string> ShowDialogAsync(string title, string description, params string[] options)
         {
-            return null;
+            return ShowDialogAsync(title, description, null, options);
         }
 
         public Task<string> ShowDialogAsync(string title, string description, object content, params string[] options)
         {
-            return null;
+            return ShowDialogAsync(title, description, content, Dock.Right, options);
         }
 
         public Task<string> ShowDialogAsync(string title, string description, object content, Dock dock, params string[] options)

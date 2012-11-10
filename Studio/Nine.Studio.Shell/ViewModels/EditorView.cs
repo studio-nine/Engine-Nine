@@ -12,9 +12,6 @@
     using Nine.Studio.Shell.ViewModels.Data;
     using Nine.Studio.Shell.Windows;           
 
-    /// <summary>
-    /// View model for editor.
-    /// </summary>
     public class EditorView : INotifyPropertyChanged
     {
         #region Properties
@@ -39,6 +36,7 @@
             {
                 if (value != activeProject)
                 {
+                    /*
                     if (value != null)
                     {
                         Verify.IsTrue(value.Editor == Editor, "The project is not owned by this editor");
@@ -47,7 +45,6 @@
 
                     activeProject = value;
                     
-                    /*
                     Importers.Clear();
                     Exporters.Clear();
                     Factories.Clear();

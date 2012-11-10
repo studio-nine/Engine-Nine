@@ -24,7 +24,7 @@
             </Grid.RowDefinitions>
             
             <Rectangle Grid.Column="1" Fill="{StaticResource Brush-Accent}" HorizontalAlignment="Left" Height="5" VerticalAlignment="Bottom" Width="120"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="NoWrap" Text="{Binding Header, Converter={StaticResource ToUpperConverter}, ElementName=userControl}" Foreground="{StaticResource Brush-HighlightText}" FontFamily="Segoe UI" FontSize="26.667" FontWeight="SemiBold" Margin="0,0,0,17.53" ClipToBounds="True" d:LayoutOverrides="Height"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="NoWrap" Text="{Binding Header, Converter={n:Type n:ToUpperConverter}, ElementName=userControl}" Foreground="{StaticResource Brush-HighlightText}" FontFamily="Segoe UI" FontSize="26.667" FontWeight="SemiBold" Margin="0,0,0,17.53" ClipToBounds="True" d:LayoutOverrides="Height"/>
             <StackPanel Grid.Column="1" Grid.Row="2">
                 <TextBlock TextWrapping="Wrap" Text="{Binding Description, ElementName=userControl}" Foreground="{StaticResource Brush-HighlightText}" FontSize="13.333" Grid.RowSpan="2"/>
                 <wpf:PropertyGrid x:Name="PropertyGrid" Style="{StaticResource PropertyGrid-Metro}" />

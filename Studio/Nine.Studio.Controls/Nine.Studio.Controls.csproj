@@ -8,8 +8,8 @@
     <ProjectGuid>{49F76AAC-7F0C-4C9B-B1A8-2ABA6EA1E8AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nine.Studio.Shell</RootNamespace>
-    <AssemblyName>Nine.Studio.Shell</AssemblyName>
+    <RootNamespace>Nine.Studio.Controls</RootNamespace>
+    <AssemblyName>Nine.Studio.Controls</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -75,6 +75,7 @@
     <Compile Include="Behaviors\ClickSelectBehavior.cs" />
     <Compile Include="Behaviors\CommandBinding.cs" />
     <Compile Include="Behaviors\CommandReference.cs" />
+    <Compile Include="Behaviors\TypeExtension.cs" />
     <Compile Include="Behaviors\GroupStyleBehavior.cs" />
     <Compile Include="Behaviors\HeaderBehavior.cs" />
     <Compile Include="Behaviors\NamedGroupDescription.cs" />
@@ -106,7 +107,6 @@
     <Compile Include="Behaviors\SystemParameters2.cs" />
     <Compile Include="Behaviors\WindowChrome.cs" />
     <Compile Include="Behaviors\WindowChromeWorker.cs" />
-    <Compile Include="Controls\WatermarkTextBox.cs" />
     <Compile Include="Converters\EnumTypeConverter.cs" />
     <Compile Include="Converters\EqualtyToBooleanConverter.cs" />
     <Compile Include="Converters\IconConverter.cs" />
@@ -125,14 +125,8 @@
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\WatermarkTextBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <Folder Include="Controls\" />
+    <Folder Include="Themes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

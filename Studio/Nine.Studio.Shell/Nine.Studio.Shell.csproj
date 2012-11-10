@@ -91,6 +91,7 @@
     </Page>
     <Compile Include="BootStrapper.cs" />
     <Compile Include="Settings\GeneralSettings.cs" />
+    <Compile Include="ViewModels\EditorExtension.cs" />
     <Compile Include="ViewModels\Data\ProjectCreationParameters.cs" />
     <Compile Include="ViewModels\EditorShell.cs" />
     <Compile Include="ViewModels\SettingsView.cs" />
@@ -111,7 +112,7 @@
     <Compile Include="Views\ProgressHelper.cs" />
     <Compile Include="Views\WindowHelper.cs" />
     <Compile Include="Views\StyleSelectors.cs" />
-    <Page Include="Views\Converters.xaml">
+    <Page Include="Views\WelcomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

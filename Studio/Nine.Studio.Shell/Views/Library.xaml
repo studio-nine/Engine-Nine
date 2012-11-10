@@ -32,14 +32,14 @@
         <!--
                 <ComboBox Margin="0, 2" ItemsSource="{Binding ReferencedProjects}" DisplayMemberPath="Name"
                           SelectedItem="{Binding SelectedProject, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True"
-                          Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}}">
+                          Visibility="{Binding Converter={n:Type n:NullToVisibilityConverter}}">
                 </ComboBox>
                 -->
     </StackPanel>
     <!--
             <DockPanel>
                 <DockPanel.ContextMenu>
-                    <ContextMenu Opened="ContextMenu_Opened" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}}">
+                    <ContextMenu Opened="ContextMenu_Opened" Visibility="{Binding Converter={n:Type n:NullToVisibilityConverter}}">
                         <MenuItem Header="{x:Static local:Strings.AddNewItem}" IsEnabled="{Binding DocumentFactories.Count}"
                                               ItemsSource="{Binding DocumentFactories}" ItemContainerStyle="{StaticResource NewItemContainerStyle}" />
                         <MenuItem Header="{x:Static local:Strings.Import}" IsEnabled="{Binding Importers.Count}" 
@@ -57,7 +57,7 @@
                                     <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowCommand}" />
                                 </StackPanel.InputBindings>
                                 <StackPanel.ContextMenu>
-                                    <ContextMenu Opened="ContextMenu_Opened" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}}">
+                                    <ContextMenu Opened="ContextMenu_Opened" Visibility="{Binding Converter={n:Type n:NullToVisibilityConverter}}">
                                         <MenuItem Header="{x:Static local:Strings.AddNewItem}" IsEnabled="{Binding DocumentTypes.Count}"
                                                   ItemsSource="{Binding DocumentTypes}" ItemContainerStyle="{StaticResource NewItemContainerStyle}" />
                                         <MenuItem Header="{x:Static local:Strings.Import}" IsEnabled="{Binding Importers.Count}" 

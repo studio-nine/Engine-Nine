@@ -37,7 +37,7 @@
         <ColumnDefinition Width="100"/>
     </Grid.ColumnDefinitions>
 
-    <ContentControl x:Name="EditorCanvas" Content="{Binding ActiveProjectItem, Converter={StaticResource ProjectItemViewToControlConverter}}" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" />
+    <ContentControl x:Name="EditorCanvas" Content="{Binding ActiveProjectItem, Converter={n:Type n:ProjectItemViewToControlConverter}}" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" />
 
     <Rectangle x:Name="EditorCanvasMask" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" />
 
@@ -55,13 +55,13 @@
 
     <StackPanel x:Name="MainMenu" Grid.Row="1" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" HorizontalAlignment="Left" Orientation="Horizontal">
         <RadioButton x:Name="FileButton" Content="{x:Static my:Strings.Nine}" IsChecked="True" Style="{StaticResource RadioButton-Product}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="CreateButton" Content="{x:Static my:Strings.Create}" Visibility="{Binding Factories.Count, Converter={StaticResource IntToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="EditButton" Content="{x:Static my:Strings.Edit}" Visibility="{Binding Tools.Count, Converter={StaticResource BooleanToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="ViewButton" Content="{x:Static my:Strings.View}" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="SceneButton" Content="{x:Static my:Strings.Scene}" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="LibraryButton" Content="{x:Static my:Strings.Library}" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <ToggleButton x:Name="PropertiesButton" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Content="{x:Static my:Strings.Properties}" Style="{StaticResource ToggleButton-Menu}" n:WindowChrome.IsHitTestVisibleInChrome="True" Background="{x:Null}" />
-        <Button x:Name="PlayButton" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Content="{x:Static my:Strings.Play}" Style="{StaticResource Button-Menu}" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="CreateButton" Content="{x:Static my:Strings.Create}" Visibility="{Binding Factories.Count, Converter={n:Type n:IntToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="EditButton" Content="{x:Static my:Strings.Edit}" Visibility="{Binding Tools.Count, Converter={n:Type n:BooleanToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="ViewButton" Content="{x:Static my:Strings.View}" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="SceneButton" Content="{x:Static my:Strings.Scene}" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="LibraryButton" Content="{x:Static my:Strings.Library}" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <ToggleButton x:Name="PropertiesButton" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Content="{x:Static my:Strings.Properties}" Style="{StaticResource ToggleButton-Menu}" n:WindowChrome.IsHitTestVisibleInChrome="True" Background="{x:Null}" />
+        <Button x:Name="PlayButton" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Content="{x:Static my:Strings.Play}" Style="{StaticResource Button-Menu}" n:WindowChrome.IsHitTestVisibleInChrome="True" />
     </StackPanel>
 
     <StackPanel x:Name="ToolsMenu" Grid.Row="3" Grid.Column="0" Margin="50,20,0,50">
@@ -105,14 +105,14 @@
 
         <ListView x:Name="FileMenu" Style="{StaticResource ListView-Tools}" 
                       ItemsSource="{Binding Source={StaticResource FilesViewSource}}"
-                      Visibility="{Binding IsChecked, ElementName=FileButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Visibility="{Binding IsChecked, ElementName=FileButton, Converter={n:Type n:BooleanToVisibilityConverter}}"
                       n:GroupStyleBehavior.GroupStyle="{StaticResource GroupStyle-Metro}"
                       n:ResourceBehavior.Resource="{StaticResource ListViewItem-Tools}">
         </ListView>
 
         <ListView x:Name="ImportMenu" Style="{StaticResource ListView-Tools}" 
                       ItemsSource="{Binding Source={StaticResource ImportersViewSource}}"
-                      Visibility="{Binding IsChecked, ElementName=FileButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Visibility="{Binding IsChecked, ElementName=FileButton, Converter={n:Type n:BooleanToVisibilityConverter}}"
                       n:GroupStyleBehavior.GroupStyle="{StaticResource GroupStyle-Metro}"
                       n:ResourceBehavior.Resource="{StaticResource ListViewItem-Tools}">
             <ListView.ItemTemplate>
@@ -124,12 +124,12 @@
 
         <ListView x:Name="RecentProjectsMenu" Style="{StaticResource ListView-Tools}" 
                       ItemsSource="{Binding Source={StaticResource RecentProjectsViewSource}}"
-                      Visibility="{Binding IsChecked, ElementName=FileButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Visibility="{Binding IsChecked, ElementName=FileButton, Converter={n:Type n:BooleanToVisibilityConverter}}"
                       n:GroupStyleBehavior.GroupStyle="{StaticResource GroupStyle-Metro}"
                       n:ResourceBehavior.Resource="{StaticResource ListViewItem-Tools}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Style="{StaticResource Button-ToolsMenu}" Content="{Binding Converter={StaticResource TruncatePathConverter}}"
+                    <Button Style="{StaticResource Button-ToolsMenu}" Content="{Binding Converter={n:Type n:TruncatePathConverter}}"
                                 Command="{Binding EditorView.OpenCommand, ElementName=Window}" CommandParameter="{Binding}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -137,7 +137,7 @@
 
         <ListView x:Name="CreateMenu" Style="{StaticResource ListView-Tools}" 
                       ItemsSource="{Binding Source={StaticResource FactoriesViewSource}}"
-                      Visibility="{Binding IsChecked, ElementName=CreateButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Visibility="{Binding IsChecked, ElementName=CreateButton, Converter={n:Type n:BooleanToVisibilityConverter}}"
                       n:GroupStyleBehavior.GroupStyle="{StaticResource GroupStyle-Metro}"
                       n:ResourceBehavior.Resource="{StaticResource ListViewItem-Tools}">
             <ListView.ItemTemplate>
@@ -147,7 +147,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <ctrl:Library x:Name="LibraryMenu" Visibility="{Binding IsChecked, ElementName=LibraryButton, Converter={StaticResource BooleanToVisibilityConverter}}"  />
+        <ctrl:Library x:Name="LibraryMenu" Visibility="{Binding IsChecked, ElementName=LibraryButton, Converter={n:Type n:BooleanToVisibilityConverter}}"  />
 
     </StackPanel>
 
@@ -165,7 +165,7 @@
         </StackPanel>
     <DockPanel x:Name="PropertiesMenu" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,20,50,50">
         <wpf:PropertyGrid x:Name="PropertyGrid" SelectedObject="{Binding SelectedObject}" Style="{StaticResource PropertyGrid-Metro}"
-                              Visibility="{Binding IsChecked, ElementName=PropertiesButton, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                              Visibility="{Binding IsChecked, ElementName=PropertiesButton, Converter={n:Type n:BooleanToVisibilityConverter}}" />
     </DockPanel>
         -->
     <Grid x:Name="DialogContainer" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}"/>

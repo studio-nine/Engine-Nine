@@ -220,7 +220,7 @@
     <value>请从属性面板编辑该文件</value>
   </data>
   <data name="Open" xml:space="preserve">
-    <value>打开一个已有的游戏</value>
+    <value>打开其他的游戏</value>
   </data>
   <data name="Options" xml:space="preserve">
     <value>选项</value>
