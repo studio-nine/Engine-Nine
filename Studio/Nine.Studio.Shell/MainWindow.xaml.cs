@@ -1,4 +1,4 @@
-﻿namespace Nine.Studio.Shell.Windows
+namespace Nine.Studio.Shell
 {
     using System;
     using System.ComponentModel;
@@ -10,36 +10,47 @@
 
     public partial class MainWindow : Window, IEditorShell
     {
-        public Editor Editor { get; private set; }
-        public EditorView EditorView { get; private set; }
-
-        private Dock dialogDock = Dock.Left;
-
         public MainWindow()
         {
-            Editor = Editor.Launch();
-            Editor.Extensions.LoadDefault();
-            EditorView = new EditorView(Editor, this);
-            DataContext = EditorView;
-            
             InitializeComponent();
+        }
+
+        public MainWindow(Editor editor, IntPtr splashWindow)
+        {
+            this.ContentRendered += (sender, e) =>
+            {
+                var settings = editor.FindSettings<Settings>();
+                this.WindowState = settings.WindowMaximized ? WindowState.Maximized : WindowState.Normal;
+                this.Width = Math.Min(settings.WindowWidth, SystemParameters.VirtualScreenWidth);
+                this.Height = Math.Min(settings.WindowHeight, SystemParameters.VirtualScreenHeight);
+                this.Left = (SystemParameters.VirtualScreenWidth - Width) / 2;
+                this.Top = (SystemParameters.VirtualScreenHeight - Height) / 2;
+
+                if (splashWindow != IntPtr.Zero)
+                    NativeMethods.ShowWindow(splashWindow, SW.HIDE);
+            };
+
+            InitializeComponent();
+
+            this.DataContext = editor;
+            this.Left = SystemParameters.VirtualScreenWidth;
+            this.Top = SystemParameters.VirtualScreenHeight;
+            this.Content = editor.ToView();
         }
 
         public Task<string> ShowDialogAsync(string title, string description, params string[] options)
         {
-            return ShowDialogAsync(title, description, null, dialogDock, options);
+            return null;
         }
 
         public Task<string> ShowDialogAsync(string title, string description, object content, params string[] options)
         {
-            return ShowDialogAsync(title, description, content, dialogDock, options);
+            return null;
         }
 
         public Task<string> ShowDialogAsync(string title, string description, object content, Dock dock, params string[] options)
         {
-            Dialog dialog = new Dialog();
-            DialogContainer.Children.Add(dialog);
-            return dialog.Show(title, description, content, dock, options);
+            return null;
         }
 
         public Task QueueWorkItem(string title, string description, Task task)
@@ -54,7 +65,7 @@
 
         protected async override void OnClosing(CancelEventArgs e)
         {
-            e.Cancel = await EditorView.Closing();
+            //e.Cancel = await EditorView.Closing();
             base.OnClosing(e);
         }
 

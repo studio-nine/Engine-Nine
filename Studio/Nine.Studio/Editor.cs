@@ -72,7 +72,8 @@
         /// </summary>
         public EditorExtensions Extensions { get; private set; }
 
-        internal readonly string AppDataDirectory;        
+        internal readonly string AppDataDirectory;
+        internal readonly string SettingsDirectory;
         #endregion
 
         #region Methods
@@ -93,11 +94,16 @@
                 Trace.Flush();
             };
 
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             AppDataDirectory = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), Strings.Title, VersionString);
 
             if (!Directory.Exists(AppDataDirectory))
                 Directory.CreateDirectory(AppDataDirectory);
+            
+            SettingsDirectory = Path.Combine(AppDataDirectory, "Settings");
+            if (!Directory.Exists(SettingsDirectory))
+                Directory.CreateDirectory(SettingsDirectory);
 
             InitializeTrace();
 
@@ -116,8 +122,12 @@
         {
             try
             {
-                Trace.AutoFlush = true;
-                Trace.Listeners.Add(new TextWriterTraceListener(new FileStream(Path.Combine(AppDataDirectory, "Editor.log"), FileMode.Create)));
+                var traceFile = Path.Combine(AppDataDirectory, "Editor.log");
+                if (File.Exists(traceFile))
+                    File.Delete(traceFile);
+
+                Trace.AutoFlush = true;                
+                Trace.Listeners.Add(new TextWriterTraceListener(File.OpenWrite(traceFile)));
             }
             catch { }
         }
@@ -135,8 +145,7 @@
 
         private void SaveRecentFiles()
         {
-            File.WriteAllLines(Path.Combine(AppDataDirectory, RecentFilesName), 
-                recentFiles.Take(MaxRecentFilesCount));
+            File.WriteAllLines(Path.Combine(AppDataDirectory, RecentFilesName), recentFiles.Take(MaxRecentFilesCount));
         }
 
         internal void AddRecentProject(string fileName)
@@ -157,7 +166,46 @@
         /// </summary>
         public void LoadExtensions(string path = ".")
         {
-            Extensions.Load(path);
+            Extensions.Load(this, path);
+
+            LoadSettings();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+
+        /// <summary>
+        /// Returns the specified settings from editor extensions.
+        /// </summary>
+        public T FindSettings<T>() where T : Nine.Studio.Extensibility.ISettings
+        {
+            return Extensions.Settings.Select(x => x.Value).OfType<T>().FirstOrDefault();
+        }
+
+        private void LoadSettings()
+        {
+            Directory.GetFiles(SettingsDirectory).ForEach(fileName => LoadSettings(fileName));
+        }
+
+        private void LoadSettings(string fileName)
+        {
+            try
+            {
+                Trace.TraceInformation("Loading settings " + fileName);
+                var result = System.Xaml.XamlServices.Load(fileName);
+                Extensions.Settings.Where(x => x.Value.GetType() == result.GetType())
+                          .ForEach(x => x.Value = (Nine.Studio.Extensibility.ISettings)result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceWarning("Error loading settings file " + fileName);
+            }
+        }
+
+        private void SaveSettings()
+        {
+            Extensions.Settings.ForEach(x => System.Xaml.XamlServices.Save(
+                Path.Combine(SettingsDirectory, x.Value.GetType().FullName), x.Value));
         }
         
         /// <summary>
@@ -188,6 +236,9 @@
             var order = new int[Projects.Count];
             DependencyGraph.Sort(Projects, order, this);
             order.Select(i => Projects[i]).ToArray().ForEach(proj => proj.Close());
+
+            SaveSettings();
+
             Trace.TraceInformation("Editor closed.");
         }
         

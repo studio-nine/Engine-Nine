@@ -9,18 +9,20 @@
     /// </summary>
     public class Extension<T> where T : class
     {
-        public T Value { get; private set; }
+        public Editor Editor { get; private set; }
+        public T Value { get; internal set; }
         public string DisplayName { get; set; }
         public string Category { get; set; }
         public string Class { get; set; }
         public object Icon { get; set; }
         public bool IsDefault { get; set; }
 
-        public Extension(EditorExtensions extensions, T value)
+        public Extension(Editor editor, T value)
         {
+            Verify.IsNotNull(editor, "editor");
             Verify.IsNotNull(value, "value");
             
-            var attributes = extensions.GetCustomAttributes(value.GetType())
+            var attributes = editor.Extensions.GetCustomAttributes(value.GetType())
                                        .Concat(value.GetType().GetCustomAttributes(true));
 
             foreach (var metadata in attributes.OfType<ExportMetadataAttribute>())
@@ -29,9 +31,10 @@
                 Icon = Icon != null ? metadata.Icon: Icon;
             }
 
-            DisplayName = extensions.GetDisplayName(value);
-            Category = extensions.GetCategory(value);
-            Class = extensions.GetClass(value);
+            Editor = editor;
+            DisplayName = editor.Extensions.GetDisplayName(value);
+            Category = editor.Extensions.GetCategory(value);
+            Class = editor.Extensions.GetClass(value);
             Value = value;
         }
         

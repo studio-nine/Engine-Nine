@@ -79,6 +79,7 @@
     <Compile Include="Controls\GameHost.cs" />
     <Compile Include="Controls\Interop.cs" />
     <Compile Include="Controls\ServiceContainer.cs" />
+    <Compile Include="EditorSettings.cs" />
     <Compile Include="Extensibility\ExportAttribute.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Extensibility\Extension.cs" />

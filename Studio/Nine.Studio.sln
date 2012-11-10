@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Studio.Test", "Nine.St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Design", "Nine.Design\Nine.Design.csproj", "{E4749787-541D-46B6-8762-F1711CD2807D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nine", "Nine\Nine.vcxproj", "{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,20 @@ Global
 		{E4749787-541D-46B6-8762-F1711CD2807D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E4749787-541D-46B6-8762-F1711CD2807D}.Release|Win32.ActiveCfg = Release|Any CPU
 		{E4749787-541D-46B6-8762-F1711CD2807D}.Release|x86.ActiveCfg = Release|Any CPU
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Debug|Win32.Build.0 = Debug|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Debug|x86.ActiveCfg = Debug|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Debug|x86.Build.0 = Debug|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Release|Any CPU.ActiveCfg = Release|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Release|Win32.ActiveCfg = Release|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Release|Win32.Build.0 = Release|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Release|x86.ActiveCfg = Release|Win32
+		{F3D6E217-92CD-4F1B-B4B9-35E6C527CEDF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

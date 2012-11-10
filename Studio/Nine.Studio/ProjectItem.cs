@@ -172,7 +172,7 @@
             
             CopyToProjectDirectory(dependentFiles, Path.GetDirectoryName(Path.GetFullPath(fileName)), Path.GetDirectoryName(FileName));
 
-            this.Importer = new Extension<IImporter>(Editor.Extensions, importer);
+            this.Importer = new Extension<IImporter>(Editor, importer);
             this.Exporter = Editor.Extensions.FindExporter(objectModel.GetType());
             this.Visualizer = Editor.Extensions.FindVisualizer(objectModel.GetType());
 

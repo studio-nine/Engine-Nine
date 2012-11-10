@@ -5,9 +5,6 @@
     /// </summary>
     public interface ISettings
     {
-        /// <summary>
-        /// Gets the settings object can is presented in the property grid.
-        /// </summary>
-        object SettingsObject { get; }
+        
     }
 }

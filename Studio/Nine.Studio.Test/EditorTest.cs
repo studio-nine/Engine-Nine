@@ -35,7 +35,7 @@
             editor.LoadExtensions();
 
             var project = editor.CreateProject("Project", Path.GetRandomFileName());
-            var projectItem = project.CreateProjectItem(new SceneFactory());
+            var projectItem = project.Create(new SceneFactory());
 
             Assert.IsNotNull(projectItem.ObjectModel);
             
@@ -76,8 +76,8 @@
             var p1 = editor.CreateProject("Proj1", Path.GetRandomFileName());
             var p2 = editor.CreateProject("Proj2", Path.GetRandomFileName());
 
-            var d1 = p1.CreateProjectItem(new Scene());
-            var d2 = p2.CreateProjectItem(new Scene());
+            var d1 = p1.Create(new Scene());
+            var d2 = p2.Create(new Scene());
 
             d1.AddReference(d2);
 
@@ -118,8 +118,8 @@
             editor.LoadExtensions();
             Project p1 = editor.CreateProject("p1", Path.GetRandomFileName());
             Project p2 = editor.CreateProject("p2", Path.GetRandomFileName());
-            ProjectItem d1 = p1.CreateProjectItem(new Scene());
-            ProjectItem d2 = p2.CreateProjectItem(new Scene());
+            ProjectItem d1 = p1.Create(new Scene());
+            ProjectItem d2 = p2.Create(new Scene());
             d1.AddReference(d2);
             d2.AddReference(d1);
         }

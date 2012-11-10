@@ -53,7 +53,7 @@
         {
             if (item is VisualizerView)
             {
-                return App.Current.TryFindResource("DocumentVisualizerMenuStyle") as Style;
+                return Application.Current.TryFindResource("DocumentVisualizerMenuStyle") as Style;
             }
             return base.SelectStyle(item, container);
         }

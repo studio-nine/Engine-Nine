@@ -24,4 +24,5 @@ using System.Windows.Markup;
 
 
 [assembly: XmlnsPrefix("http://schemas.microsoft.com/nine/2011/xaml", "nine")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio.Xaml")]

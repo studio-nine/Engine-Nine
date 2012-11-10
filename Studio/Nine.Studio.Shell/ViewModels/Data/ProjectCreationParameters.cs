@@ -24,8 +24,8 @@
 
         public ProjectCreationParameters()
         {
-            ProjectDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Global.Title);
-            ProjectName = Global.NextName(Strings.Untitled, Global.ProjectExtension);
+            //ProjectDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Global.Title);
+            //ProjectName = Global.NextName(Strings.Untitled, Global.ProjectExtension);
         }
 
         public string ProjectFilename

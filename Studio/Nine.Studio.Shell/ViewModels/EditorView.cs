@@ -22,18 +22,6 @@
         public Editor Editor { get; private set; }
         public Project Project { get { return ActiveProject != null ? ActiveProject.Project : null; } }
 
-        public string Name { get { return Path.GetFileName(FileName); } }
-        public string FileName { get { return ActiveProject != null ? ActiveProject.FileName : ""; } }
-        public string Title { get { return ActiveProject == null ? Editor.Title : string.Format("{0} - {1}", Name, Editor.Title); } }
-        
-        public ObservableCollection<FactoryView> Factories { get; private set; }
-        public ObservableCollection<SettingsView> Settings { get; private set; }
-        public ObservableCollection<ImporterView> Importers { get; private set; }
-        public ObservableCollection<ExporterView> Exporters { get; private set; }
-        public ObservableCollection<object> Tools { get; private set; }
-
-        public ReadOnlyObservableCollection<string> RecentProjects { get { return Editor.RecentProjects; } }
-
         public bool IsViewVisible
         {
             get
@@ -59,6 +47,7 @@
 
                     activeProject = value;
                     
+                    /*
                     Importers.Clear();
                     Exporters.Clear();
                     Factories.Clear();
@@ -69,7 +58,7 @@
                         Exporters.AddRange(Editor.Extensions.Exporters.Select(s => new ExporterView(this, s.Value, s.Metadata)));
                         Factories.AddRange(Editor.Extensions.Factories.Select(f => new FactoryView(this, f.Value, f.Metadata)));
                     }
-
+                    */
                     NotifyPropertyChanged("FileName");
                     NotifyPropertyChanged("Title");
                     NotifyPropertyChanged("Name");
@@ -133,11 +122,6 @@
             this.Shell = shell;
             this.Editor = editor;
             this.Editor.ProgressChanged += new ProgressChangedEventHandler(Editor_ProgressChanged);
-            this.Factories = new ObservableCollection<FactoryView>();
-            this.Settings = new ObservableCollection<SettingsView>();
-            this.Importers = new ObservableCollection<ImporterView>();
-            this.Exporters = new ObservableCollection<ExporterView>();
-            this.Tools = new ObservableCollection<object>();
 
             NewCommand = new DelegateCommand(NewProject);
             OpenCommand = new DelegateCommand(OpenProject);
@@ -180,7 +164,7 @@
             {
                 var creationParams = new ProjectCreationParameters();
                 if (await Shell.ShowDialogAsync(Strings.Create, null, creationParams, Strings.Create, Strings.Cancel) == Strings.Create)
-                    ActiveProject = new ProjectView(this, Editor.CreateProject(creationParams.ProjectFilename));
+                    ;// ActiveProject = new ProjectView(this, Editor.CreateProject(creationParams.ProjectFilename));
             }
         }
 
@@ -287,7 +271,7 @@
             if (Project == null || !Project.IsModified)
                 return true;
 
-            string description = string.Format(Strings.SaveChangesDescription, Name);
+            string description = string.Format(Strings.SaveChangesDescription, Editor.ActiveProject.Name);
             var dr = await Shell.ShowDialogAsync(Strings.SaveChanges, description, null, Strings.Yes, Strings.No, Strings.Cancel);
             if (dr == Strings.Yes)
             {

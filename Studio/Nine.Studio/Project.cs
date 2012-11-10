@@ -137,7 +137,7 @@
         /// <summary>
         /// Creates a new project item from a factory.
         /// </summary>
-        public ProjectItem CreateProjectItem(IFactory factory)
+        public ProjectItem Create(IFactory factory)
         {
             Verify.IsNotNull(factory, "factory");
 
@@ -149,7 +149,7 @@
         /// <summary>
         /// Creates a new project item with the specified object model inside the target project.
         /// </summary>
-        public ProjectItem CreateProjectItem(object objectModel)
+        public ProjectItem Create(object objectModel)
         {
             var result = new ProjectItem(this, objectModel);
             ProjectItems.Add(result);

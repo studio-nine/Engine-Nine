@@ -1,7 +1,6 @@
-﻿<Application x:Class="Nine.Studio.Shell.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Nine.Studio.Shell" StartupUri="Windows/MainWindow.xaml">
+             xmlns:local="clr-namespace:Nine.Studio.Shell" StartupUri="MainWindow.xaml">
 
     <JumpList.JumpList>
         <JumpList ShowRecentCategory="True" />
@@ -10,7 +9,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Windows/DataTemplates.xaml"/>
+                <ResourceDictionary Source="Views/DataTemplates.xaml"/>
                 <ResourceDictionary Source="Converters/Converters.xaml"/>
                 <ResourceDictionary Source="Images/Images.xaml"/>
                 <ResourceDictionary Source="Themes/Metro.xaml"/>

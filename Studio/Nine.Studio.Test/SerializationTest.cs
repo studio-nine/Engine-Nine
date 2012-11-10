@@ -70,5 +70,17 @@
             Assert.IsTrue(Project.ProjectItems[0].ObjectModel is Model);
             Assert.IsTrue(Project.ProjectItems[0].Importer.Value is Nine.Graphics.Design.XModelImporter);
         }
+
+        [TestMethod]
+        public void TestCreateSaveLoadScene()
+        {
+            var doc = Project.Create(new Scene());
+            Project.Save();
+            Project.Close();
+            Project = Editor.OpenProject(Editor.RecentFiles[0]);
+            Assert.IsTrue(Project.ProjectItems.Count > 0);
+            Assert.IsTrue(Project.ProjectItems[0].ObjectModel is Scene);
+            Assert.IsTrue(Project.ProjectItems[0].Importer.Value is Nine.Design.SceneImporter);
+        }
     }
 }

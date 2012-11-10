@@ -1,8 +1,5 @@
 ﻿namespace Nine.Studio.Shell.Behaviors
 {
-
-
-
     using System.Windows.Input;
 
     public class CommandBinding : System.Windows.Input.CommandBinding

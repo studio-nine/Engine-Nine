@@ -27,8 +27,8 @@
         
         public static void DoWork(Func<object, object> action, Action<object> completed, object state, string title, string text)
         {
-            App.Current.MainWindow.Cursor = Cursors.Wait;
-            ((UIElement)(App.Current.MainWindow.Content)).IsEnabled = false;
+            Application.Current.MainWindow.Cursor = Cursors.Wait;
+            ((UIElement)(Application.Current.MainWindow.Content)).IsEnabled = false;
 
             lock (queueLock)
             {
@@ -60,10 +60,10 @@
                             progress = 1.0 * (finishedTasks + 1) / (queue.Count + finishedTasks);
                     }
 
-                    App.Current.Dispatcher.BeginInvoke((Action<string, string, double?>)
+                    Application.Current.Dispatcher.BeginInvoke((Action<string, string, double?>)
                                            UpdateUI, item.Title, item.Text, progress);
                     var result = item.Action(item.State);
-                    App.Current.Dispatcher.BeginInvoke(item.Completed, result);
+                    Application.Current.Dispatcher.BeginInvoke(item.Completed, result);
 
                     lock (queueLock)
                     {
@@ -76,9 +76,9 @@
             };
             worker.RunWorkerCompleted += (s, e) =>
             {
-                App.Current.Dispatcher.BeginInvoke((Action)HideWaitWindow);
-                App.Current.MainWindow.Cursor = Cursors.Arrow;
-                ((UIElement)(App.Current.MainWindow.Content)).IsEnabled = true;
+                Application.Current.Dispatcher.BeginInvoke((Action)HideWaitWindow);
+                Application.Current.MainWindow.Cursor = Cursors.Arrow;
+                ((UIElement)(Application.Current.MainWindow.Content)).IsEnabled = true;
             };
             worker.RunWorkerAsync();
 
@@ -87,7 +87,7 @@
             {
                 Thread.Sleep(TimeSpan.FromSeconds(1));
                 shownLock.WaitOne();
-                App.Current.Dispatcher.BeginInvoke((Action)ShowWaitWindow);
+                Application.Current.Dispatcher.BeginInvoke((Action)ShowWaitWindow);
                 shownLock.ReleaseMutex();
             };
             timer.RunWorkerAsync();
@@ -95,7 +95,7 @@
 
         public static void UpdateState(string title, string text, double? progress)
         {
-            App.Current.Dispatcher.BeginInvoke((Action<string, string, double?>)UpdateUI, title, text, progress);
+            Application.Current.Dispatcher.BeginInvoke((Action<string, string, double?>)UpdateUI, title, text, progress);
         }
 
         private static void UpdateUI(string title, string text, double? progress)
@@ -124,7 +124,7 @@
             }
 
             window = new WaitWindow();
-            window.Owner = App.Current.MainWindow;
+            window.Owner = Application.Current.MainWindow;
             window.Loaded += (sender, e) =>
             {
                 shownLock.ReleaseMutex();

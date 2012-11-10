@@ -35,32 +35,29 @@
             AttributeProviders.CollectionChanged += (sender, e) => { TypeDescriptorHelper.SetAttributeProviders(AttributeProviders); };
         }
 
-        internal void Load(string path)
+        internal void Load(Editor editor, string path)
         {
             Verify.DirectoryExists(path, "path");
 
             Trace.TraceInformation("Loading default editor extensions at folder {0}", Path.GetFullPath(path));
 
-            var extensions = Directory.GetFiles(path, "*.DLL")
+            var extensions = Directory.GetFiles(path, "*.DLL").Concat(Directory.GetFiles(path, "*.EXE"))
                 .SelectMany(file => LoadExportedTypes(file))
                 .Select(type => new { Export = type.GetCustomAttributes(typeof(ExportAttribute), false).SingleOrDefault(), Type = type })
                 .Where(pair => pair.Export != null)
                 .ToLookup(pair => ((ExportAttribute)pair.Export).ContractType, pair => pair.Type);
 
             AttributeProviders.AddRange(from type in extensions[typeof(IAttributeProvider)] where !AttributeProviders.Any(x => x.GetType() == type) select (IAttributeProvider)Activator.CreateInstance(type));
-            Factories.AddRange(from type in extensions[typeof(IFactory)] where !Factories.Any(x => x.Value.GetType() == type) select new Extension<IFactory>(this, (IFactory)Activator.CreateInstance(type)));
-            Visualizers.AddRange(from type in extensions[typeof(IVisualizer)] where !Visualizers.Any(x => x.Value.GetType() == type) select new Extension<IVisualizer>(this, (IVisualizer)Activator.CreateInstance(type)));
-            Tools.AddRange(from type in extensions[typeof(ITool)] where !Tools.Any(x => x.Value.GetType() == type) select new Extension<ITool>(this, (ITool)Activator.CreateInstance(type)));
-            Importers.AddRange(from type in extensions[typeof(IImporter)] where !Importers.Any(x => x.Value.GetType() == type) select new Extension<IImporter>(this, (IImporter)Activator.CreateInstance(type)));
-            Exporters.AddRange(from type in extensions[typeof(IExporter)] where !Exporters.Any(x => x.Value.GetType() == type) select new Extension<IExporter>(this, (IExporter)Activator.CreateInstance(type)));
-            Settings.AddRange(from type in extensions[typeof(ISettings)] where !Settings.Any(x => x.Value.GetType() == type) select new Extension<ISettings>(this, (ISettings)Activator.CreateInstance(type)));
-            
+            Factories.AddRange(from type in extensions[typeof(IFactory)] where !Factories.Any(x => x.Value.GetType() == type) select new Extension<IFactory>(editor, (IFactory)Activator.CreateInstance(type)));
+            Visualizers.AddRange(from type in extensions[typeof(IVisualizer)] where !Visualizers.Any(x => x.Value.GetType() == type) select new Extension<IVisualizer>(editor, (IVisualizer)Activator.CreateInstance(type)));
+            Tools.AddRange(from type in extensions[typeof(ITool)] where !Tools.Any(x => x.Value.GetType() == type) select new Extension<ITool>(editor, (ITool)Activator.CreateInstance(type)));
+            Importers.AddRange(from type in extensions[typeof(IImporter)] where !Importers.Any(x => x.Value.GetType() == type) select new Extension<IImporter>(editor, (IImporter)Activator.CreateInstance(type)));
+            Exporters.AddRange(from type in extensions[typeof(IExporter)] where !Exporters.Any(x => x.Value.GetType() == type) select new Extension<IExporter>(editor, (IExporter)Activator.CreateInstance(type)));
+            Settings.AddRange(from type in extensions[typeof(ISettings)] where !Settings.Any(x => x.Value.GetType() == type) select new Extension<ISettings>(editor, (ISettings)Activator.CreateInstance(type)));
+
             TraceExtensions();
 
             Trace.TraceInformation("Extensions Loaded.");
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private IEnumerable<Type> LoadExportedTypes(string file)

@@ -10,8 +10,6 @@
 
     public class ProjectView : INotifyPropertyChanged
     {
-        public string Name { get { return Path.GetFileName(FileName); } }
-        public string FileName { get; private set; }
         public Project Project { get; private set; }
         public Editor Editor { get { return EditorView.Editor; } }
         public EditorView EditorView { get; private set; }
@@ -21,25 +19,8 @@
         {
             this.Project = project;
             this.EditorView = editorView;
-            this.FileName = Project.FileName ?? Path.GetFullPath(Global.NextName(Strings.Untitled, Global.ProjectExtension));
-            this.ProjectItems = new ObservableCollection<ProjectItemView>(Project.ProjectItems.Select(pi => new ProjectItemView(this, pi)));
         }
 
-        public void CreateProjectItem(object objectModel)
-        {
-            ProjectItem projectItem = EditorView.Project.CreateProjectItem(objectModel);
-            ProjectItemView piView = new ProjectItemView(this, projectItem);
-            ProjectItems.Add(piView);
-            piView.Show();
-        }
-
-        public void CreateProjectItem(IFactory factory)
-        {
-            ProjectItem projectItem = EditorView.Project.CreateProjectItem(factory);
-            ProjectItemView piView = new ProjectItemView(this, projectItem);
-            ProjectItems.Add(piView);
-            piView.Show();
-        }
 
         public void OpenProjectItem(string fileName)
         {

@@ -196,7 +196,7 @@
                         if (TraversedObjects.Contains(input))
                             continue;
 
-                        Trace.WriteLine(string.Format("{0}.{1} : {2}", attachedProperty.Key.DeclaringType, attachedProperty.Key.MemberName, input.GetType().Name));
+                        //Trace.WriteLine(string.Format("{0}.{1} : {2}", attachedProperty.Key.DeclaringType, attachedProperty.Key.MemberName, input.GetType().Name));
 
                         object output = action(input);
                         if (input != output)
