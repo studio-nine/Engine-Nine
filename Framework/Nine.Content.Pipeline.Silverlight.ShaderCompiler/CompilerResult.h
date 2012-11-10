@@ -2,7 +2,7 @@
 
 using namespace System;
 
-namespace SilverlightShaderCompiler 
+BEGIN_NAMESPACE
 {
 	public ref class CompilerResult
 	{
@@ -11,4 +11,5 @@ namespace SilverlightShaderCompiler
 		property array<unsigned char>^ ConstantsDefinition;
 	};
 }
+END_NAMESPACE
 

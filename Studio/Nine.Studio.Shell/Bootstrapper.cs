@@ -22,7 +22,7 @@
                 var mainWindow = new MainWindow(editor, GetSplashWindow(args));
                 app.Run(app.MainWindow = mainWindow);
                 
-                var settings = editor.FindSettings<Settings>();
+                var settings = editor.FindSettings<GeneralSettings>();
                 settings.WindowWidth = mainWindow.Width;
                 settings.WindowHeight = mainWindow.Height;
                 settings.WindowMaximized = mainWindow.WindowState == WindowState.Maximized;
@@ -58,7 +58,7 @@
         
         private static void InitializeCulture(Editor editor)
         {
-            var culture = new CultureInfo(editor.FindSettings<Settings>().Language);
+            var culture = new CultureInfo(editor.FindSettings<GeneralSettings>().Language);
 
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;

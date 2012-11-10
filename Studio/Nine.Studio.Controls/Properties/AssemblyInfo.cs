@@ -1,40 +1,27 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Markup;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
 [assembly: AssemblyTitle("Nine.Studio.Controls")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Nine.Studio.Controls")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCopyright("Copyright © Engine Nine 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
-//In order to begin building localizable applications, set 
-//<UICulture>CultureYouAreCodingWith</UICulture> in your .csproj file
-//inside a <PropertyGroup>.  For example, if you are using US english
+[assembly: InternalsVisibleTo("Nine.Studio.Shell, PublicKey=0024000004800000940000000602000000240000525341310004000001000100d54af0378afa42a6f5f094c0a4891fd54f7dcd80bcf5d38e56900f0c0a591ffcd4031ec5883a105a96121c0b7625a9de47bd9439c50509388df37cbdbf214038c98f2d837ce53c26b53ed01a593d9c77c5f85a5635031071d295b761e6f0f04ed5c8280f1e65bf8c95d05061c765fad05f4b213b6d7238d834ba0d25b05c8f9d")]
 
-//in your source files, set the <UICulture> to en-US.  Then uncomment
-//the NeutralResourceLanguage attribute below.  Update the "en-US" in
-//the line below to match the UICulture setting in the project file.
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
-//[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
+[assembly: XmlnsPrefix("http://schemas.microsoft.com/nine/2011/xaml", "nine")]
 
-
-[assembly: ThemeInfo(
-    ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
-    //(used if a resource is not found in the page, 
-    // or application resource dictionaries)
-    ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
-    //(used if a resource is not found in the page, 
-    // app, or any theme specific resource dictionaries)
-)]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio.Shell")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio.Shell.Converters")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio.Shell.Behaviors")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio.Controls")]

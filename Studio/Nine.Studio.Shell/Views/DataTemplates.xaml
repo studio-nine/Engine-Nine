@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:c="clr-namespace:Nine.Studio.Shell.Converters"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:ctl="clr-namespace:Nine.Studio.Shell.Windows">
+                    xmlns:n="http://schemas.microsoft.com/nine/2011/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <Style x:Key="NewItemContainerStyle" TargetType="MenuItem">
         <Setter Property="Header" Value="{Binding DocumentFactory.DisplayName}"/>
@@ -17,10 +16,10 @@
         <Setter Property="Header" Value="{Binding DocumentExporter.DisplayName}"/>
         <Setter Property="Command" Value="{Binding ExportCommand}"/>
     </Style>
-
-    <ctl:PropertyMenuStyleSelector x:Key="PropertyMenuStyleSelector" />
-    <ctl:ViewMenuStyleSelector x:Key="ViewMenuStyleSelector" />
-
+<!--
+    <n:PropertyMenuStyleSelector x:Key="PropertyMenuStyleSelector" />
+    <n:ViewMenuStyleSelector x:Key="ViewMenuStyleSelector" />
+-->
     <Style x:Key="DocumentVisualizerMenuStyle" TargetType="MenuItem">
         <Setter Property="Header" Value="{Binding DisplayName}"/>
         <Setter Property="IsChecked" Value="{Binding IsActive, Mode=OneWay}"/>
@@ -44,7 +43,7 @@
             <Setter.Value>
                 <Binding Path="Value">
                     <Binding.Converter>
-                        <c:EnumTypeConverter />
+                        <n:EnumTypeConverter />
                     </Binding.Converter>
                 </Binding>
             </Setter.Value>
@@ -58,7 +57,7 @@
                         <Setter.Value>
                             <MultiBinding Mode="OneWay">
                                 <MultiBinding.Converter>
-                                    <c:EqualtyToBooleanConverter />
+                                    <n:EqualtyToBooleanConverter />
                                 </MultiBinding.Converter>
                                 <Binding />
                                 <Binding Path="DataContext.Value" RelativeSource="{RelativeSource AncestorType=MenuItem}" />

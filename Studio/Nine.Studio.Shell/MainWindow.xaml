@@ -1,13 +1,14 @@
 ﻿<Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:nine="clr-namespace:Nine.Studio.Shell.Behaviors"
+    xmlns:n="http://schemas.microsoft.com/nine/2011/xaml"
     x:Class="Nine.Studio.Shell.MainWindow"
     Title="{Binding Title}" Background="#FF2D2D30" AllowDrop="True"
-    WindowStyle="None" Icon="/Images/Nine.ico" MinWidth="800" MinHeight="600">
-
-    <nine:WindowChrome.WindowChrome>
-        <nine:WindowChrome GlassFrameThickness="-1" ResizeBorderThickness="4" CaptionHeight="36" />
-    </nine:WindowChrome.WindowChrome>
-
+    WindowStyle="None" Icon="/Images/Nine.ico" MinWidth="800" MinHeight="600"
+    BorderThickness="1" BorderBrush="{StaticResource Brush-Accent}">
+    
+    <n:WindowChrome.WindowChrome>
+        <n:WindowChrome GlassFrameThickness="-1" ResizeBorderThickness="4" CaptionHeight="36" />
+    </n:WindowChrome.WindowChrome>
+    
 </Window>

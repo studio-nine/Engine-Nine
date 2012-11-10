@@ -10,9 +10,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Views/DataTemplates.xaml"/>
-                <ResourceDictionary Source="Converters/Converters.xaml"/>
-                <ResourceDictionary Source="Images/Images.xaml"/>
-                <ResourceDictionary Source="Themes/Metro.xaml"/>
+                <ResourceDictionary Source="Views/Converters.xaml"/>
+                <ResourceDictionary Source="Views/Images.xaml"/>
+                <ResourceDictionary Source="Views/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

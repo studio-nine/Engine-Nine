@@ -19,7 +19,7 @@ namespace Nine.Studio.Shell
         {
             this.ContentRendered += (sender, e) =>
             {
-                var settings = editor.FindSettings<Settings>();
+                var settings = editor.FindSettings<GeneralSettings>();
                 this.WindowState = settings.WindowMaximized ? WindowState.Maximized : WindowState.Normal;
                 this.Width = Math.Min(settings.WindowWidth, SystemParameters.VirtualScreenWidth);
                 this.Height = Math.Min(settings.WindowHeight, SystemParameters.VirtualScreenHeight);

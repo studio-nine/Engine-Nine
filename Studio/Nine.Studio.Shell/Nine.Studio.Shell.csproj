@@ -43,7 +43,7 @@
     <ApplicationIcon>Images\Nine.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
@@ -89,53 +89,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Behaviors\ClickSelectBehavior.cs" />
-    <Compile Include="Behaviors\CommandBinding.cs" />
-    <Compile Include="Behaviors\CommandReference.cs" />
-    <Compile Include="Behaviors\HeaderBehavior.cs" />
-    <Compile Include="Behaviors\NamedGroupDescription.cs" />
-    <Compile Include="Behaviors\ResourceBehavior.cs" />
-    <Compile Include="Behaviors\GroupStyleBehavior.cs" />
-    <Compile Include="Behaviors\Standard\CornerRadiusAnimation.cs" />
-    <Compile Include="Behaviors\Standard\CornerRadiusAnimationBase.cs" />
-    <Compile Include="Behaviors\Standard\Debug.cs" />
-    <Compile Include="Behaviors\Standard\Enumerable2.cs" />
-    <Compile Include="Behaviors\Standard\FileWalker.cs" />
-    <Compile Include="Behaviors\Standard\GlassHelper.cs" />
-    <Compile Include="Behaviors\Standard\MergeableCollection.cs" />
-    <Compile Include="Behaviors\Standard\MshtmlProvider.cs" />
-    <Compile Include="Behaviors\Standard\NotifyingList.cs" />
-    <Compile Include="Behaviors\Standard\SmallString.cs" />
-    <Compile Include="Behaviors\Standard\SmallUri.cs" />
-    <Compile Include="Behaviors\Standard\Verify.cs" />
-    <Compile Include="Behaviors\Standard\WicProvider.cs" />
-    <Compile Include="Behaviors\Standard\WindowExtensions.cs" />
-    <Compile Include="Behaviors\SystemCommands.cs" />
-    <Compile Include="Behaviors\SystemParameters2.cs" />
-    <Compile Include="Converters\ProjectItemViewToControlConverter.cs" />
-    <Compile Include="Converters\InvertColorIntensityConverter.cs" />
-    <Compile Include="Converters\StringToVisibilityConverter.cs" />
-    <Compile Include="Converters\EnumTypeConverter.cs" />
-    <Compile Include="Converters\TruncatePathConverter.cs" />
-    <Compile Include="Converters\EqualtyToBooleanConverter.cs" />
-    <Compile Include="Converters\ToLowerConverter.cs" />
-    <Compile Include="Converters\ToUpperConverter.cs" />
-    <Compile Include="Behaviors\Standard\ComGuids.cs" />
-    <Compile Include="Behaviors\Standard\DoubleUtil.cs" />
-    <Compile Include="Behaviors\Standard\DpiHelper.cs" />
-    <Compile Include="Behaviors\Standard\ErrorCodes.cs" />
-    <Compile Include="Behaviors\Standard\MessageWindow.cs" />
-    <Compile Include="Behaviors\Standard\NativeMethods.cs" />
-    <Compile Include="Behaviors\Standard\ShellProvider.cs" />
-    <Compile Include="Behaviors\Standard\StreamHelper.cs" />
-    <Compile Include="Behaviors\Standard\Utilities.cs" />
-    <Compile Include="Behaviors\WindowChrome.cs" />
-    <Compile Include="Behaviors\WindowChromeWorker.cs" />
     <Compile Include="BootStrapper.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Settings\GeneralSettings.cs" />
     <Compile Include="ViewModels\Data\ProjectCreationParameters.cs" />
     <Compile Include="ViewModels\EditorShell.cs" />
-    <Compile Include="Settings\GeneralSettings.cs" />
     <Compile Include="ViewModels\SettingsView.cs" />
     <Compile Include="ViewModels\VisualizerView.cs" />
     <Compile Include="ViewModels\PropertyView.cs" />
@@ -154,7 +111,15 @@
     <Compile Include="Views\ProgressHelper.cs" />
     <Compile Include="Views\WindowHelper.cs" />
     <Compile Include="Views\StyleSelectors.cs" />
-    <Page Include="Converters\Converters.xaml">
+    <Page Include="Views\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Stratch.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\OldEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -166,11 +131,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Images\Images.xaml">
+    <Page Include="Views\Images.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Metro.xaml">
+    <Page Include="Views\Theme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -209,10 +174,6 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="Converters\StringToBooleanConverter.cs" />
-    <Compile Include="Converters\NullToVisibilityConverter.cs" />
-    <Compile Include="Converters\IntToVisibilityConverter.cs" />
-    <Compile Include="Converters\IconConverter.cs" />
     <Compile Include="PropertyHelper.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Strings.Designer.cs">
@@ -243,18 +204,8 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="App.config" />
     <None Include="Nine.snk" />
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -269,6 +220,10 @@
     <EmbeddedResource Include="Strings.zh.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Studio.Controls\Nine.Studio.Controls.csproj">
+      <Project>{49f76aac-7f0c-4c9b-b1a8-2aba6ea1e8af}</Project>
+      <Name>Nine.Studio.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine.Studio\Nine.Studio.csproj">
       <Project>{412AE201-B5E8-436E-9468-E6CC94739055}</Project>
       <Name>Nine.Studio</Name>

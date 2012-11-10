@@ -3,7 +3,7 @@
 #include <strsafe.h>
 #include "Resource.h"
 
-#pragma comment(lib, "mscoree.lib")
+typedef HRESULT (STDAPICALLTYPE *DynamicCLRCreateInstance)(REFCLSID clsid, REFIID riid, LPVOID *ppInterface);
 
 HRESULT RuntimeHost(PCWSTR pszVersion, PCWSTR pszAssemblyPath, PCWSTR pszClassName, PCWSTR pszStaticMethodName, PCWSTR pszStringArg)
 {
@@ -13,8 +13,16 @@ HRESULT RuntimeHost(PCWSTR pszVersion, PCWSTR pszAssemblyPath, PCWSTR pszClassNa
     ICLRRuntimeInfo *pRuntimeInfo = NULL;
     ICLRRuntimeHost *pClrRuntimeHost = NULL;
     ICorRuntimeHost *pCorRuntimeHost = NULL;
-    
-    hr = CLRCreateInstance(CLSID_CLRMetaHost, IID_PPV_ARGS(&pMetaHost));
+
+    HMODULE mscoree = LoadLibrary(L"mscoree.dll");
+    if (NULL == mscoree)
+        goto Cleanup;
+
+    DynamicCLRCreateInstance clrCreateInstance = (DynamicCLRCreateInstance)GetProcAddress(mscoree, "CLRCreateInstance");
+    if (NULL == clrCreateInstance)
+        goto Cleanup;
+
+    hr = clrCreateInstance(CLSID_CLRMetaHost, IID_PPV_ARGS(&pMetaHost));
     if (FAILED(hr))
         goto Cleanup;
     

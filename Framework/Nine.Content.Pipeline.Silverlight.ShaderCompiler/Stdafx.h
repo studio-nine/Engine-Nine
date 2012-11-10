@@ -4,4 +4,6 @@
 
 #pragma once
 
+#define BEGIN_NAMESPACE namespace Nine { namespace Content { namespace Pipeline { namespace Silverlight 
+#define END_NAMESPACE } } }
 

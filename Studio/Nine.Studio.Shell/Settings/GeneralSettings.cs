@@ -1,14 +1,33 @@
-﻿namespace Nine.Studio.Settings
+﻿namespace Nine.Studio.Shell
 {
-    using System.ComponentModel;
     using Nine.Studio.Extensibility;
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Threading;
+    using System.Windows;
 
     [Export(typeof(ISettings))]
-    [LocalizedDisplayName("General")]
     [LocalizedCategory("General")]
+    [LocalizedDisplayName("General")]
     public class GeneralSettings : ISettings
     {
-        [EditorBrowsable]
-        public bool ShowStartPage { get; set; }
+        public string Language { get; set; }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public double WindowWidth { get; set; }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public double WindowHeight { get; set; }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool WindowMaximized { get; set; }
+
+        public GeneralSettings()
+        {
+            Language = "en-US";
+            WindowWidth = 1280;
+            WindowHeight = 720;
+        }
     }
 }
