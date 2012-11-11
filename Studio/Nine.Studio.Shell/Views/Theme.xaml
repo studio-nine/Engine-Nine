@@ -4,7 +4,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                     xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended" 
-                    xmlns:n="http://schemas.microsoft.com/nine/2011/xaml"
+                    xmlns:n="clr-namespace:Nine.Studio.Shell"
                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                     mc:Ignorable="d">
     <!--
@@ -192,7 +192,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Name="Header" Margin="{TemplateBinding Padding}" FontWeight="Bold" Text="{Binding (n:HeaderBehavior.Header), RelativeSource={RelativeSource TemplatedParent}}" 
                                        Foreground="{StaticResource Brush-ForegroundBorder}" VerticalAlignment="Center"
-                                       Visibility="{Binding Text, Converter={n:Type n:StringToVisibilityConverter}, RelativeSource={RelativeSource Self}}"/>
+                                       Visibility="{Binding Text, Converter={n:To IsNeitherNullNorEmpty}, RelativeSource={RelativeSource Self}}"/>
                             <Grid>
                                 <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                                 <TextBlock Margin="{TemplateBinding Padding}" Visibility="Collapsed" Name="Watermark" FontStyle="Italic" Text="{Binding (n:HeaderBehavior.Watermark), RelativeSource={RelativeSource TemplatedParent}}" Foreground="{StaticResource Brush-ForegroundBorder}" VerticalAlignment="Center"/>

@@ -2403,16 +2403,6 @@
 
     #region Interfaces
 
-    [
-        ComImport,
-        InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-        Guid(IID.ServiceProvider)
-    ]
-    internal interface IServiceProvider
-    {
-        [return: MarshalAs(UnmanagedType.IUnknown)]
-        object QueryService(ref Guid guidService, ref Guid riid);
-    }
 
     [
         ComImport,
@@ -3324,10 +3314,6 @@
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        [DllImport("shell32.dll", SetLastError = false)]
-        public static extern Win32Error SHFileOperation(ref SHFILEOPSTRUCT lpFileOp);
-
-        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         [DllImport("user32.dll", EntryPoint = "SystemParametersInfoW", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool _SystemParametersInfo_String(SPI uiAction, int uiParam, [MarshalAs(UnmanagedType.LPWStr)] string pvParam, SPIF fWinIni);
@@ -3567,23 +3553,11 @@
         [DllImport("shell32.dll", EntryPoint = "SHAddToRecentDocs")]
         private static extern void _SHAddToRecentDocs_String(SHARD uFlags, [MarshalAs(UnmanagedType.LPWStr)] string pv);
 
-        // This overload is required.  There's a cast in the Shell code that causes the wrong vtbl to be used
-        // if we let the marshaller convert the parameter to an IUnknown.
-        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        [DllImport("shell32.dll", EntryPoint = "SHAddToRecentDocs")]
-        private static extern void _SHAddToRecentDocs_ShellLink(SHARD uFlags, IShellLinkW pv);
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static void SHAddToRecentDocs(string path)
         {
             _SHAddToRecentDocs_String(SHARD.PATHW, path);
-        }
-
-        // Win7 only.
-        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public static void SHAddToRecentDocs(IShellLinkW shellLink)
-        {
-            _SHAddToRecentDocs_ShellLink(SHARD.LINK, shellLink);
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]

@@ -16,7 +16,7 @@
         public Project Project { get { return ProjectView.Project; } }
         public ProjectView ProjectView { get { return ProjectItemView.ProjectView; } }
         public Editor Editor { get { return EditorView.Editor; } }
-        public EditorView EditorView { get { return ProjectView.EditorView; } }
+        public OldEditorView EditorView { get { return ProjectView.EditorView; } }
         public ObservableCollection<PropertyView> Properties { get; private set; }
         public bool IsDefault { get { return ProjectItemView.DefaultVisualizer == this; } }
 
@@ -51,8 +51,6 @@
             this.ProjectItemView = projectItemView;
             this.Visualizer = visualizer;
             this.Properties = new ObservableCollection<PropertyView>();
-            this.Properties.AddRange(PropertyHelper.GetBrowsableProperties(visualizer)
-                                                             .Select(p => new PropertyView(visualizer, p)));
             this.ShowCommand = new DelegateCommand(Show);
         }
 

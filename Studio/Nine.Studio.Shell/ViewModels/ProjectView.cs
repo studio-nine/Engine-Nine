@@ -6,16 +6,16 @@
     using System.IO;
     using System.Linq;
     using Nine.Studio.Extensibility;
-    using Nine.Studio.Shell.Windows;
+    using Nine.Studio.Shell;
 
     public class ProjectView : INotifyPropertyChanged
     {
         public Project Project { get; private set; }
         public Editor Editor { get { return EditorView.Editor; } }
-        public EditorView EditorView { get; private set; }
+        public OldEditorView EditorView { get; private set; }
         public ObservableCollection<ProjectItemView> ProjectItems { get; private set; }
 
-        public ProjectView(EditorView editorView, Project project)
+        public ProjectView(OldEditorView editorView, Project project)
         {
             this.Project = project;
             this.EditorView = editorView;

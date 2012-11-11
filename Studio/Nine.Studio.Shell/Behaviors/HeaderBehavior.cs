@@ -1,4 +1,4 @@
-﻿namespace Nine.Studio.Shell.Behaviors
+﻿namespace Nine.Studio.Shell
 {
     using System.Windows;
 
@@ -18,6 +18,23 @@
         public static void SetHeader(DependencyObject obj, string value)
         {
             obj.SetValue(HeaderProperty, value);
+        }
+
+
+        public static readonly DependencyProperty WatermarkProperty = DependencyProperty.RegisterAttached(
+            "Watermark",
+            typeof(string),
+            typeof(HeaderBehavior),
+            new UIPropertyMetadata(""));
+
+        public static string GetWatermark(DependencyObject obj)
+        {
+            return (string)obj.GetValue(WatermarkProperty);
+        }
+
+        public static void SetWatermark(DependencyObject obj, string value)
+        {
+            obj.SetValue(WatermarkProperty, value);
         }
     }
 }

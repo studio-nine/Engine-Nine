@@ -1,4 +1,4 @@
-﻿namespace Nine.Studio.Shell.Behaviors
+﻿namespace Nine.Studio.Shell
 {
 
     using System;

@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:n="http://schemas.microsoft.com/nine/2011/xaml"
+                    xmlns:n="clr-namespace:Nine.Studio.Shell"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <Style x:Key="NewItemContainerStyle" TargetType="MenuItem">
         <Setter Property="Header" Value="{Binding DocumentFactory.DisplayName}"/>
-        <Setter Property="Icon" Value="{Binding DocumentFactory.Icon, Converter={StaticResource IconConverter}}"/>
+        <Setter Property="Icon" Value="{Binding DocumentFactory.Icon, Converter={n:Type IconConverter}}"/>
         <Setter Property="Command" Value="{Binding NewCommand}"/>
     </Style>
     <Style x:Key="ImportersContainerStyle" TargetType="MenuItem">
@@ -24,13 +24,13 @@
         <Setter Property="Header" Value="{Binding DisplayName}"/>
         <Setter Property="IsChecked" Value="{Binding IsActive, Mode=OneWay}"/>
         <Setter Property="Command" Value="{Binding ShowCommand}" />
-        <Setter Property="Visibility" Value="{Binding DocumentView.DocumentVisualizers.Count, Converter={StaticResource MoreThanOneToVisibilityConverter}}" />
+        <Setter Property="Visibility" Value="{Binding DocumentView.DocumentVisualizers.Count, Converter={n:Type MoreThanOneToVisibilityConverter}}" />
     </Style>
            
     <Style x:Key="{x:Type sys:Boolean}" TargetType="MenuItem">
         <Setter Property="Header" Value="{Binding DisplayName}"/>
         <Setter Property="ToolTip" Value="{Binding Description}" />
-        <Setter Property="ToolTipService.IsEnabled" Value="{Binding Description, Converter={StaticResource StringToBooleanConverter}}" />
+        <Setter Property="ToolTipService.IsEnabled" Value="{Binding Description, Converter={n:Type StringToBooleanConverter}}" />
         <Setter Property="IsCheckable" Value="True"/>
         <Setter Property="IsChecked" Value="{Binding Value, Mode=TwoWay}" />
     </Style>
@@ -38,14 +38,10 @@
     <Style x:Key="{x:Type sys:Enum}" TargetType="MenuItem">
         <Setter Property="Header" Value="{Binding DisplayName}"/>
         <Setter Property="ToolTip" Value="{Binding Description}" />
-        <Setter Property="ToolTipService.IsEnabled" Value="{Binding Description, Converter={StaticResource StringToBooleanConverter}}" />
+        <Setter Property="ToolTipService.IsEnabled" Value="{Binding Description, Converter={n:Type StringToBooleanConverter}}" />
         <Setter Property="ItemsSource">
             <Setter.Value>
-                <Binding Path="Value">
-                    <Binding.Converter>
-                        <n:EnumTypeConverter />
-                    </Binding.Converter>
-                </Binding>
+                <Binding Path="Value" Converter="{n:Type EnumTypeConverter}" />
             </Setter.Value>
         </Setter>
         <Setter Property="ItemContainerStyle">
@@ -55,10 +51,7 @@
                     <Setter Property="CommandParameter" Value="{Binding}" />
                     <Setter Property="IsChecked">
                         <Setter.Value>
-                            <MultiBinding Mode="OneWay">
-                                <MultiBinding.Converter>
-                                    <n:EqualtyToBooleanConverter />
-                                </MultiBinding.Converter>
+                            <MultiBinding Mode="OneWay" Converter="{n:Type n:EqualtyToBooleanConverter}">
                                 <Binding />
                                 <Binding Path="DataContext.Value" RelativeSource="{RelativeSource AncestorType=MenuItem}" />
                             </MultiBinding>

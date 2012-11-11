@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:n="http://schemas.microsoft.com/nine/2011/xaml"
-    xmlns:ctrl="clr-namespace:Nine.Studio.Shell.Windows"
+    xmlns:n="clr-namespace:Nine.Studio.Shell"
+    xmlns:ctrl="clr-namespace:Nine.Studio.Shell"
     xmlns:my="clr-namespace:Nine.Studio.Shell"        
     xmlns:sys="clr-namespace:System.Collections;assembly=mscorlib"
     xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
@@ -42,9 +42,9 @@
     <Rectangle x:Name="EditorCanvasMask" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" />
 
     <StackPanel x:Name="SettingAndHelp" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-        <Button x:Name="SettingsButton" Content="{x:Static my:Strings.Settings}" Style="{StaticResource Button-Minimum}" n:WindowChrome.IsHitTestVisibleInChrome="True"/>
+        <Button x:Name="SettingsButton" Content="{x:Static n:Strings.Settings}" Style="{StaticResource Button-Minimum}" n:WindowChrome.IsHitTestVisibleInChrome="True"/>
         <Separator Height="8" Style="{StaticResource Separator-Vertical}" VerticalAlignment="Center" Width="1"/>
-        <Button x:Name="HelpButton" Content="{x:Static my:Strings.Help}" Command="{Binding HelpCommand}" Style="{StaticResource Button-Minimum}" n:WindowChrome.IsHitTestVisibleInChrome="True"/>
+        <Button x:Name="HelpButton" Content="{x:Static n:Strings.Help}" Command="{Binding HelpCommand}" Style="{StaticResource Button-Minimum}" n:WindowChrome.IsHitTestVisibleInChrome="True"/>
     </StackPanel>
 
     <StackPanel x:Name="WindowsButtons" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,0">
@@ -54,14 +54,14 @@
     </StackPanel>
 
     <StackPanel x:Name="MainMenu" Grid.Row="1" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" HorizontalAlignment="Left" Orientation="Horizontal">
-        <RadioButton x:Name="FileButton" Content="{x:Static my:Strings.Nine}" IsChecked="True" Style="{StaticResource RadioButton-Product}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="CreateButton" Content="{x:Static my:Strings.Create}" Visibility="{Binding Factories.Count, Converter={n:Type n:IntToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="EditButton" Content="{x:Static my:Strings.Edit}" Visibility="{Binding Tools.Count, Converter={n:Type n:BooleanToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="ViewButton" Content="{x:Static my:Strings.View}" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="SceneButton" Content="{x:Static my:Strings.Scene}" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <RadioButton x:Name="LibraryButton" Content="{x:Static my:Strings.Library}" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
-        <ToggleButton x:Name="PropertiesButton" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Content="{x:Static my:Strings.Properties}" Style="{StaticResource ToggleButton-Menu}" n:WindowChrome.IsHitTestVisibleInChrome="True" Background="{x:Null}" />
-        <Button x:Name="PlayButton" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Content="{x:Static my:Strings.Play}" Style="{StaticResource Button-Menu}" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="FileButton" Content="{x:Static n:Strings.Nine}" IsChecked="True" Style="{StaticResource RadioButton-Product}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="CreateButton" Content="{x:Static n:Strings.Create}" Visibility="{Binding Factories.Count, Converter={n:Type n:IntToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="EditButton" Content="{x:Static n:Strings.Edit}" Visibility="{Binding Tools.Count, Converter={n:Type n:BooleanToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="ViewButton" Content="{x:Static n:Strings.View}" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="SceneButton" Content="{x:Static n:Strings.Scene}" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <RadioButton x:Name="LibraryButton" Content="{x:Static n:Strings.Library}" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" n:WindowChrome.IsHitTestVisibleInChrome="True" />
+        <ToggleButton x:Name="PropertiesButton" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Content="{x:Static n:Strings.Properties}" Style="{StaticResource ToggleButton-Menu}" n:WindowChrome.IsHitTestVisibleInChrome="True" Background="{x:Null}" />
+        <Button x:Name="PlayButton" Visibility="{Binding ActiveProject, Converter={n:Type n:NullToVisibilityConverter}}" Content="{x:Static n:Strings.Play}" Style="{StaticResource Button-Menu}" n:WindowChrome.IsHitTestVisibleInChrome="True" />
     </StackPanel>
 
     <StackPanel x:Name="ToolsMenu" Grid.Row="3" Grid.Column="0" Margin="50,20,0,50">
@@ -76,14 +76,14 @@
             <!-- CollectionViewSource for Files -->
             <CollectionViewSource x:Key="FilesViewSource">
                 <CollectionViewSource.GroupDescriptions>
-                    <n:NamedGroupDescription GroupName="{x:Static my:Strings.File}" />
+                    <n:NamedGroupDescription GroupName="{x:Static n:Strings.File}" />
                 </CollectionViewSource.GroupDescriptions>
                 <CollectionViewSource.Source>
                     <sys:ArrayList>
-                        <Button x:Name="NewButton" Command="{Binding EditorView.NewCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.New}" />
-                        <Button x:Name="OpenButton" Command="{Binding EditorView.OpenCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.Open}" />
-                        <Button x:Name="SaveButton" Command="{Binding EditorView.SaveCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.Save}" />
-                        <Button x:Name="CloseButton" Command="{Binding EditorView.CloseCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.Close}" />
+                        <Button x:Name="NewButton" Command="{Binding EditorView.NewCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static n:Strings.New}" />
+                        <Button x:Name="OpenButton" Command="{Binding EditorView.OpenCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static n:Strings.Open}" />
+                        <Button x:Name="SaveButton" Command="{Binding EditorView.SaveCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static n:Strings.Save}" />
+                        <Button x:Name="CloseButton" Command="{Binding EditorView.CloseCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static n:Strings.Close}" />
                     </sys:ArrayList>
                 </CollectionViewSource.Source>
             </CollectionViewSource>
@@ -91,14 +91,14 @@
             <!-- CollectionViewSource for Importers -->
             <CollectionViewSource x:Key="ImportersViewSource" Source="{Binding Importers}">
                 <CollectionViewSource.GroupDescriptions>
-                    <n:NamedGroupDescription GroupName="{x:Static my:Strings.Import}" />
+                    <n:NamedGroupDescription GroupName="{x:Static n:Strings.Import}" />
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
 
             <!-- CollectionViewSource for Recent Files -->
             <CollectionViewSource x:Key="RecentProjectsViewSource" Source="{Binding RecentProjects}">
                 <CollectionViewSource.GroupDescriptions>
-                    <n:NamedGroupDescription GroupName="{x:Static my:Strings.Recent}" />
+                    <n:NamedGroupDescription GroupName="{x:Static n:Strings.Recent}" />
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
         </StackPanel.Resources>
@@ -153,7 +153,7 @@
 
     <!--
         <StackPanel Grid.Row="3" Grid.Column="1" Width="300"  Margin="0,50,50,50">
-            <wpf:WatermarkTextBox Watermark="{x:Static my:Strings.SearchProperties}" n:HeaderBehavior.Header="FileName" Style="{DynamicResource WatermarkTextBox-Metro}"/>
+            <wpf:WatermarkTextBox Watermark="{x:Static n:Strings.SearchProperties}" n:HeaderBehavior.Header="FileName" Style="{DynamicResource WatermarkTextBox-Metro}"/>
             <Rectangle Height="10" />
             <wpf:ColorCanvas n:HeaderBehavior.Header="Diffuse Color" Style="{StaticResource ColorCanvas-Metro}"/>
             <Rectangle Height="10" />
@@ -176,6 +176,6 @@
     <!--
         
         
-        <wpf:WatermarkTextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,0,50,0" Watermark="{x:Static my:Strings.SearchProperties}" Style="{DynamicResource WatermarkTextBox-Metro}" />
+        <wpf:WatermarkTextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,0,50,0" Watermark="{x:Static n:Strings.SearchProperties}" Style="{DynamicResource WatermarkTextBox-Metro}" />
 -->
 </Grid>

@@ -4,8 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
-             xmlns:n="http://schemas.microsoft.com/nine/2011/xaml" x:Name="userControl"
-             mc:Ignorable="d" x:Class="Nine.Studio.Shell.Windows.Dialog"
+             xmlns:n="clr-namespace:Nine.Studio.Shell" x:Name="userControl"
+             mc:Ignorable="d" x:Class="Nine.Studio.Shell.Dialog"
              d:DesignHeight="300" d:DesignWidth="583">
 
     <DockPanel Background="{x:Null}">

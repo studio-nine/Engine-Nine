@@ -2,7 +2,7 @@
     Copyright Microsoft Corporation. All Rights Reserved.
 \**************************************************************************/
 
-namespace Nine.Studio.Shell.Behaviors
+namespace Nine.Studio.Shell
 {
 
     using System;

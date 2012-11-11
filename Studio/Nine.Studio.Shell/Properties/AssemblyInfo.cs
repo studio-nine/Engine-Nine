@@ -16,9 +16,9 @@ using System.Windows.Markup;
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
-[assembly: XmlnsPrefix("http://schemas.microsoft.com/nine/2011/xaml", "nine")]
+[assembly: XmlnsPrefix("clr-namespace:Nine.Studio.Shell", "nine")]
 
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio.Shell")]
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio.Shell.Converters")]
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio.Shell.Behaviors")]
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Studio.Shell.Views")]
+[assembly: XmlnsDefinition("clr-namespace:Nine.Studio.Shell", "Nine.Studio.Shell")]
+[assembly: XmlnsDefinition("clr-namespace:Nine.Studio.Shell", "Nine.Studio.Shell")]
+[assembly: XmlnsDefinition("clr-namespace:Nine.Studio.Shell", "Nine.Studio.Shell")]
+[assembly: XmlnsDefinition("clr-namespace:Nine.Studio.Shell", "Nine.Studio.Shell.Views")]
