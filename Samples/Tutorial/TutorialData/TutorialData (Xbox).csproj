@@ -52,8 +52,12 @@
     <Reference Include="Microsoft.Xna.Framework.GamerServices" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
     <Reference Include="mscorlib" />
-    <Reference Include="Nine" />
-    <Reference Include="Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
+    <Reference Include="Nine">
+      <HintPath>..\..\..\References\Xbox 360\Nine.dll</HintPath>
+    </Reference>
+    <Reference Include="Nine.Physics">
+      <HintPath>..\..\..\References\Xbox 360\Nine.Physics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />

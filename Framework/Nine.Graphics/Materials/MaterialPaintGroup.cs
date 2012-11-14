@@ -5,6 +5,7 @@ namespace Nine.Graphics.Materials
     using System.Reflection;
     using System.Windows.Markup;
     using System.Xaml;
+    using System.Linq;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
@@ -142,10 +143,10 @@ namespace Nine.Graphics.Materials
 #if WINDOWS
             if (!IsContentBuild)
                 throw new InvalidOperationException();
-            
-            BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
-            return (string)(Type.GetType("Nine.Content.Pipeline.Graphics.Materials.MaterialPaintGroupBuilder, Nine.Content.Pipeline", true)
-                                .InvokeMember("Build", flags, null, null, new object[] { this, usage }));
+
+            var flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
+            var pipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().Single(assembly => assembly.GetName().Name == "Nine.Content.Pipeline");
+            return (string)pipelineAssembly.GetTypes().Single(type => type.Name == "MaterialPaintGroupBuilder").InvokeMember("Build", flags, null, null, new object[] { this, usage });
 #else
             throw new NotSupportedException();
 #endif
