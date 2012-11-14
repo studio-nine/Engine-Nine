@@ -19,7 +19,7 @@
             You can define a range of values using the " ~ " syntax.
         -->
         <ParticleEffect.Emitter>
-            <PointEmitter Emission="50" Duration="1.5 ~ 3" Speed="4 ~ 5" Size="0.5 ~ 1" Spread="{Degrees 15}" />
+            <PointEmitter EmitCount="50" Duration="1.5 ~ 3" Speed="4 ~ 5" Size="0.5 ~ 1" Spread="{Degrees 15}" />
         </ParticleEffect.Emitter>
 
         <!--
