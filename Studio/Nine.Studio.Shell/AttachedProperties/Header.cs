@@ -2,12 +2,12 @@
 {
     using System.Windows;
 
-    public static class HeaderBehavior
+    public static class Header
     {
         public static readonly DependencyProperty HeaderProperty = DependencyProperty.RegisterAttached(
             "Header",
             typeof(string),
-            typeof(HeaderBehavior),
+            typeof(Header),
             new UIPropertyMetadata(""));
 
         public static string GetHeader(DependencyObject obj)
@@ -24,7 +24,7 @@
         public static readonly DependencyProperty WatermarkProperty = DependencyProperty.RegisterAttached(
             "Watermark",
             typeof(string),
-            typeof(HeaderBehavior),
+            typeof(Header),
             new UIPropertyMetadata(""));
 
         public static string GetWatermark(DependencyObject obj)

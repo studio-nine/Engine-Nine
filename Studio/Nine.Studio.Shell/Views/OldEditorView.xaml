@@ -153,11 +153,11 @@
 
     <!--
         <StackPanel Grid.Row="3" Grid.Column="1" Width="300"  Margin="0,50,50,50">
-            <wpf:WatermarkTextBox Watermark="{x:Static n:Strings.SearchProperties}" n:HeaderBehavior.Header="FileName" Style="{DynamicResource WatermarkTextBox-Metro}"/>
+            <wpf:WatermarkTextBox Watermark="{x:Static n:Strings.SearchProperties}" n:Header.Header="FileName" Style="{DynamicResource WatermarkTextBox-Metro}"/>
             <Rectangle Height="10" />
-            <wpf:ColorCanvas n:HeaderBehavior.Header="Diffuse Color" Style="{StaticResource ColorCanvas-Metro}"/>
+            <wpf:ColorCanvas n:Header.Header="Diffuse Color" Style="{StaticResource ColorCanvas-Metro}"/>
             <Rectangle Height="10" />
-            <Slider n:HeaderBehavior.Header="Intensity" Height="30" Style="{DynamicResource Slider-Metro}"/>
+            <Slider n:Header.Header="Intensity" Height="30" Style="{DynamicResource Slider-Metro}"/>
             <Rectangle Height="10" />
             <ProgressBar Style="{StaticResource ProgressBar-Metro}" Value="60" />
             <Rectangle Height="10" />

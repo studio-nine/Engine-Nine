@@ -56,12 +56,14 @@
                 {
                     if (e != null)
                     {
+                        /*
                         EditorView.Shell.Invoke((Action)delegate
                         {
                             ProjectItemView projectItemView = new ProjectItemView(this, (ProjectItem)e);
                             ProjectItems.Add(projectItemView);
                             //projectItemView.Show();
                         });
+                         */
                     }
                 }, fileName, Strings.Loading, fileName);
         }

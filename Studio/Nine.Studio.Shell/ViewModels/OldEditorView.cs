@@ -9,7 +9,6 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
-    using Nine.Studio.Shell.ViewModels.Data;
     using Nine.Studio.Shell;           
 
     public class OldEditorView : INotifyPropertyChanged
@@ -159,9 +158,11 @@
         {
             if (await EnsureProjectSavedAsync())
             {
+                /*
                 var creationParams = new ProjectCreationParameters();
                 if (await Shell.ShowDialogAsync(Strings.Create, null, creationParams, Strings.Create, Strings.Cancel) == Strings.Create)
                     ;// ActiveProject = new ProjectView(this, Editor.CreateProject(creationParams.ProjectFilename));
+                 */
             }
         }
 
@@ -267,15 +268,17 @@
         {
             if (Project == null || !Project.IsModified)
                 return true;
-
+            /*
             string description = string.Format(Strings.SaveChangesDescription, Editor.ActiveProject.Name);
             var dr = await Shell.ShowDialogAsync(Strings.SaveChanges, description, null, Strings.Yes, Strings.No, Strings.Cancel);
             if (dr == Strings.Yes)
             {
                 SaveProject(); 
                 return true; 
-            }             
+            } 
             return dr == Strings.No;
+             */
+            throw new NotImplementedException();
         }
 
         private void Editor_ProgressChanged(object sender, ProgressChangedEventArgs e)

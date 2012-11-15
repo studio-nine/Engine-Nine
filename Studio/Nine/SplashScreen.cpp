@@ -129,7 +129,7 @@ void CreateSplash(HINSTANCE hInstance, LPWSTR lpCmdLine)
     wchar_t* executable = (0xFFFFFFFF != GetFileAttributes(L"Bin/Nine.Studio.Shell.dll")) ? L"Bin/Nine.Studio.Shell.dll" : 
                          ((0xFFFFFFFF != GetFileAttributes(L"Bin/Nine.Studio.Shell.exe")) ? L"Bin/Nine.Studio.Shell.exe" : L"Nine.Studio.Shell.exe");
     
-    RuntimeHost(L"v4.0.30319", executable, L"Nine.Studio.Shell.BootStrapper", L"Run", commandLine);
+    RuntimeHost(L"v4.0.30319", executable, L"Nine.Studio.Shell.App", L"Run", commandLine);
 }
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)

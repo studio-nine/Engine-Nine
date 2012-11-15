@@ -9,12 +9,12 @@
     /// <summary>
     /// Modified from http://stackoverflow.com/questions/660554/how-to-automatically-select-all-text-on-focus-in-wpf-textbox
     /// </summary>
-    public static class ClickSelectBehavior
+    public static class ClickSelect
     {
         public static readonly DependencyProperty IsClickSelectProperty = DependencyProperty.RegisterAttached(
             "IsClickSelect",
             typeof(bool),
-            typeof(ClickSelectBehavior),
+            typeof(ClickSelect),
             new UIPropertyMetadata(false, OnIsClickSelectChanged));
 
         private static void OnIsClickSelectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

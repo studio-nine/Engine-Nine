@@ -1,4 +1,4 @@
-﻿namespace Nine.Studio.Shell.ViewModels.Data
+﻿namespace Nine.Studio.Shell
 {
     using System;
     using System.IO;

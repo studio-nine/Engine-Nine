@@ -1,7 +1,9 @@
 ﻿namespace Nine.Studio.Shell
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
+    using System.IO;
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Windows;
@@ -12,11 +14,34 @@
     {
         public static object ToView(this object viewModel)
         {
-            var viewLocator = string.Concat("/Nine.Studio.Shell;component/Views/" + viewModel.GetType().Name, "View.xaml");
-            var component = Application.LoadComponent(new Uri(viewLocator, UriKind.Relative));
+            return ToView(viewModel, null);
+        }
+
+        public static object ToView(this object viewModel, string viewName)
+        {
+            if (viewModel is UIElement)
+                return viewModel;
+
+            var viewLocator = string.IsNullOrEmpty(viewName) ?
+                string.Concat(typeof(App).Namespace, ".", viewModel.GetType().Name, "View") :
+                string.Concat(typeof(App).Namespace, ".", viewName);
+            
+            object component;
+            var type = Type.GetType(viewLocator);
+            if (type != null)
+            {
+                component = Activator.CreateInstance(type);
+            }
+            else
+            {
+                viewLocator = string.IsNullOrEmpty(viewName) ? viewModel.GetType().Name + "View" : viewName;
+                component = Application.LoadComponent(new Uri(@"/Nine.Studio.Shell;component/views/" + viewLocator + ".xaml", UriKind.Relative));
+            }
+
             var frameworkElement = component as FrameworkElement;
             if (frameworkElement != null)
                 frameworkElement.DataContext = viewModel;
+
             return component;
         }
 
@@ -58,7 +83,12 @@
 
         public static object TruncatePath(object value)
         {
-            return value != null ? TruncatePath(value.ToString(), 30) : null;
+            return value != null ? TruncatePath(value.ToString(), 32) : null;
+        }
+
+        public static object ToFileName(object value)
+        {
+            return Path.GetFileNameWithoutExtension(value.ToString());
         }
 
         /// <summary>

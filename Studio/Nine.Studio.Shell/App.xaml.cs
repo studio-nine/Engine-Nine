@@ -1,33 +1,35 @@
 ﻿namespace Nine.Studio.Shell
 {
     using System;
-    using System.Linq;
     using System.Globalization;
+    using System.Linq;
     using System.Reflection;
     using System.Threading;
     using System.Windows;
 
-    public static class BootStrapper
+    public partial class App : Application
     {
-        [STAThread]
-        public static void Main(string[] args)
-        {         
-            using (var editor = new Editor())
+        public Editor Editor { get; private set; }
+        public IEditorShell EditorShell { get; private set; }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            using (Editor = new Editor())
             {
-                editor.LoadExtensions();
+                Editor.LoadExtensions();
 
-                InitializeCulture(editor);
+                InitializeCulture(Editor);
 
-                var app = (Application)Application.LoadComponent(new Uri("/Nine.Studio.Shell;component/App.xaml", UriKind.Relative));
-                var mainWindow = (Window)editor.ToView();
-                var splashWindow = GetSplashWindow(args);
-                var settings = editor.FindSettings<GeneralSettings>();
+                var splashWindow = GetSplashWindow(e.Args);
+                var settings = Editor.FindSettings<GeneralSettings>();
+
+                var mainWindow = (Window)Editor.ToView();
 
                 // Walk-around glass flash problems
                 mainWindow.Left = SystemParameters.VirtualScreenWidth;
                 mainWindow.Top = SystemParameters.VirtualScreenHeight;
 
-                mainWindow.ContentRendered += (sender, e) =>
+                mainWindow.ContentRendered += (sender, args) =>
                 {
                     mainWindow.WindowState = settings.WindowMaximized ? WindowState.Maximized : WindowState.Normal;
                     mainWindow.Width = Math.Min(settings.WindowWidth, SystemParameters.VirtualScreenWidth);
@@ -39,12 +41,28 @@
                         NativeMethods.ShowWindow(splashWindow, SW.HIDE);
                 };
 
-                app.Run(app.MainWindow = mainWindow);
-                
-                settings.WindowWidth = mainWindow.Width;
-                settings.WindowHeight = mainWindow.Height;
-                settings.WindowMaximized = mainWindow.WindowState == WindowState.Maximized;
+                mainWindow.Closed += (sender, args) =>
+                {
+                    if (!(settings.WindowMaximized = mainWindow.WindowState == WindowState.Maximized))
+                    {
+                        settings.WindowWidth = mainWindow.Width;
+                        settings.WindowHeight = mainWindow.Height;
+                    }
+                };
+
+                EditorShell = (IEditorShell)mainWindow;
+                EditorShell.ShowDialogAsync(Editor.ToView("WelcomeView"));
+
+                mainWindow.Show();
             }
+        }
+        
+        private static void InitializeCulture(Editor editor)
+        {
+            var culture = new CultureInfo(editor.FindSettings<GeneralSettings>().Language);
+
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
         }
 
         private static IntPtr GetSplashWindow(string[] args)
@@ -72,17 +90,6 @@
                     parmChars[index] = '\n';
             }
             return (new string(parmChars)).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-        }
-        
-        private static void InitializeCulture(Editor editor)
-        {
-            var culture = new CultureInfo(editor.FindSettings<GeneralSettings>().Language);
-
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-
-            Nine.Studio.Strings.Culture = culture;
-            Nine.Studio.Shell.Strings.Culture = culture;
         }
     }
 }

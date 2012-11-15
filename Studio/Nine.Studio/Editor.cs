@@ -199,6 +199,7 @@
             catch (Exception e)
             {
                 Trace.TraceWarning("Error loading settings file " + fileName);
+                FileHelper.DeleteFile(fileName);
             }
         }
 

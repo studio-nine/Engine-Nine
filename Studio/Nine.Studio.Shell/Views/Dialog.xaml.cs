@@ -6,7 +6,7 @@
     using System.Windows;
     using System.Windows.Controls;
 
-    public partial class Dialog : UserControl
+    public partial class Dialog : Grid
     {
         public Dialog()
         {
@@ -45,6 +45,7 @@
         #region ShowMessage
         public Task<string> Show(string title, string description, object content, Dock dock, params string[] options)
         {
+            /*
             Style buttonStyle = (Style)FindResource("Button-Dialog");
             buttons.Children.Clear();
             foreach (var option in options)
@@ -62,6 +63,8 @@
             PropertyGrid.Visibility = content != null ? Visibility.Visible : Visibility.Collapsed;
 
             return Task<string>.Factory.StartNew(RunDialog, new CancellationToken(), TaskCreationOptions.LongRunning, TaskScheduler.Default);
+             */
+            return null;
         }
 
         private void OptionButton_Click(object sender, RoutedEventArgs e)

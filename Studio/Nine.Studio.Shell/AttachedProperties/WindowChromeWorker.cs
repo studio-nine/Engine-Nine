@@ -60,7 +60,6 @@ namespace Nine.Studio.Shell
                 new HANDLE_MESSAGE(WM.NCACTIVATE,            _HandleNCActivate),
                 new HANDLE_MESSAGE(WM.NCCALCSIZE,            _HandleNCCalcSize),
                 new HANDLE_MESSAGE(WM.NCHITTEST,             _HandleNCHitTest),
-                new HANDLE_MESSAGE(WM.NCRBUTTONUP,           _HandleNCRButtonUp),
                 new HANDLE_MESSAGE(WM.SIZE,                  _HandleSize),
                 new HANDLE_MESSAGE(WM.WINDOWPOSCHANGED,      _HandleWindowPosChanged),
                 new HANDLE_MESSAGE(WM.DWMCOMPOSITIONCHANGED, _HandleDwmCompositionChanged), 
@@ -581,18 +580,6 @@ namespace Nine.Studio.Shell
 
             handled = true;
             return new IntPtr((int)ht);
-        }
-
-        private IntPtr _HandleNCRButtonUp(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled)
-        {
-            // Emulate the system behavior of clicking the right mouse button over the caption area
-            // to bring up the system menu.
-            if (HT.CAPTION == (HT)wParam.ToInt32())
-            {
-                SystemCommands.ShowSystemMenuPhysicalCoordinates(_window, new Point(Utility.GET_X_LPARAM(lParam), Utility.GET_Y_LPARAM(lParam)));
-            }
-            handled = false;
-            return IntPtr.Zero;
         }
 
         private IntPtr _HandleSize(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled)

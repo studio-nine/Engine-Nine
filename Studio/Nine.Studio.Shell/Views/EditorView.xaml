@@ -4,9 +4,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:n="clr-namespace:Nine.Studio.Shell"
-    xmlns:my="clr-namespace:Nine.Studio.Shell"
-    xmlns:sys="clr-namespace:System.Collections;assembly=mscorlib"
     mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+    x:Class="Nine.Studio.Shell.EditorView"
     Title="{Binding Title}" Background="#FF2D2D30" AllowDrop="True"
     WindowStyle="None" Icon="/Images/Nine.ico" MinWidth="800" MinHeight="600"
     BorderThickness="1" BorderBrush="{StaticResource Brush-Accent}">
@@ -14,42 +13,44 @@
     <n:WindowChrome.WindowChrome>
         <n:WindowChrome GlassFrameThickness="-1" ResizeBorderThickness="4" CaptionHeight="36" />
     </n:WindowChrome.WindowChrome>
-    
+
     <DockPanel Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-        <StackPanel Name="InspectorFrame" Background="#FF1C1C1C" DockPanel.Dock="Left">
-            <Button Style="{StaticResource Button-Back}" />
-        </StackPanel>
+        <DockPanel Name="SideBar" Background="#FF1C1C1C" VerticalAlignment="Stretch" DockPanel.Dock="Left">
+            <Button DockPanel.Dock="Top" Style="{StaticResource Button-Back}" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" />
+            <ContentControl Name="DialogContent" />
+        </DockPanel>
 
-        <Grid Name="MainFrame" Background="#FF2D2D30" Visibility="{Binding ActiveProject, Converter={n:To IsNotNull}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="160"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="24"/>
-            </Grid.RowDefinitions>
+        <Grid Name="MainFrame" Background="#FF2D2D30">
+            <Grid Name="ContentFrame" Visibility="{Binding ActiveProject, Converter={n:To IsNotNull}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="160"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="24"/>
+                </Grid.RowDefinitions>
 
-            <StackPanel Name="TitleBar" Grid.ColumnSpan="2" Orientation="Horizontal">
-                <Button Name="Library" Margin="20,0" Padding="20,0" Style="{StaticResource Button-Title}" Content="{Binding Title}" />
-                <TextBox Width="200" n:WindowChrome.IsHitTestVisibleInChrome="True" n:HeaderBehavior.Watermark="Search objects in current scene..."></TextBox>
+                <StackPanel Name="TitleBar" Grid.ColumnSpan="2" Orientation="Horizontal">
+                    <Button Name="Library" Margin="20,0" Padding="20,0" Style="{StaticResource Button-Title}" Content="{Binding Title}" />
+                    <TextBox Width="200" n:WindowChrome.IsHitTestVisibleInChrome="True" n:Header.Watermark="Search objects in current scene..."></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <Button>what</Button>
+                    <TextBox n:Header.Header="Enter" n:Header.Watermark="what???"></TextBox>
+                    <TextBox n:Header.Header="Enter" n:Header.Watermark="Enter">what???</TextBox>
+                </StackPanel>
+                <Grid Name="StatusBar" Grid.Row="3" Background="{StaticResource Brush-Accent}" Grid.ColumnSpan="2" />
+            </Grid>
+
+            <StackPanel Name="WindowsButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Width="90">
+                <Button Style="{StaticResource Button-MediumIcon}" Width="30" Height="30" Margin="0" FontSize="9" Click="Minimize">&#x2581;</Button>
+                <Button Style="{StaticResource Button-MediumIcon}" Width="30" Height="30" Margin="0" Click="Maximize">&#x2750;</Button>
+                <Button Style="{StaticResource Button-MediumIcon}" Width="30" Height="30" Margin="0" Click="Exit">&#x2A09;</Button>
             </StackPanel>
-            <StackPanel Grid.Row="1">
-                <Button>what</Button>
-                <TextBox n:HeaderBehavior.Header="Enter" n:HeaderBehavior.Watermark="what???"></TextBox>
-                <TextBox n:HeaderBehavior.Header="Enter" n:HeaderBehavior.Watermark="Enter">what???</TextBox>
-            </StackPanel>
-            <Grid Name="StatusBar" Grid.Row="3" Background="{StaticResource Brush-Accent}" Grid.ColumnSpan="2" />
         </Grid>
-
-        <StackPanel Name="WindowsButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Width="90">
-            <Button Style="{StaticResource Button-MediumIcon}" FontSize="9" Command="{n:Do Minimize}">&#x2581;</Button>
-            <Button Style="{StaticResource Button-MediumIcon}" Command="{n:Do Maximize}">&#x2750;</Button>
-            <Button Style="{StaticResource Button-MediumIcon}" Command="{n:Do Exit}">&#x2A09;</Button>
-        </StackPanel>
-        
     </DockPanel>
 </Window>
