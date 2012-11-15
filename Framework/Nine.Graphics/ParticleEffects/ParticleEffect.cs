@@ -328,8 +328,10 @@
             var particleEmitter = emitter as ParticleEmitter;
             if (particleEmitter == null)
                 return 32;
-            return UtilityExtensions.UpperPowerOfTwo((int)(
-                particleEmitter.Emission * (particleEmitter.Duration.Max + particleEmitter.Duration.Min) * 0.8f));
+            if (particleEmitter.EmitCount > 0)
+                return particleEmitter.EmitCount;
+            return Math.Max(1, UtilityExtensions.UpperPowerOfTwo((int)(
+                particleEmitter.Emission * (particleEmitter.Duration.Max + particleEmitter.Duration.Min) * 0.8f)));
         }
 
         /// <summary>
