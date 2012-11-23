@@ -437,7 +437,7 @@
 
         private void UpdateEmitter(float elapsedSeconds)
         {
-            if (Emitter != null && Emitter.Update(this, elapsedSeconds))
+            if (toBeRemoved <= 0 && Emitter != null && Emitter.Update(this, elapsedSeconds))
                 Interlocked.Exchange(ref toBeRemoved, 1);
         }
 
@@ -556,7 +556,7 @@
         /// </summary>
         public void Update(float elapsedTime)
         {
-            if (toBeRemoved > 0)
+            if (toBeRemoved > 0 && ParticleCount <= 0)
             {
                 // Remove this particle system from the parent container
                 var container = Parent as Nine.IContainer;
