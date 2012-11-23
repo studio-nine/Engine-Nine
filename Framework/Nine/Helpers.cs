@@ -136,7 +136,7 @@ namespace Nine
                 return mxRotation;
             }
 
-            throw new InvalidOperationException(Strings.CannotDecomposeMatrix);
+            throw new InvalidOperationException("Target matrix cannot be decomposed.");
         }
 
         /// <summary>

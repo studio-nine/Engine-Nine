@@ -1,13 +1,12 @@
 ﻿namespace Nine.Studio.Shell.ViewModels
 {
-
-
     using System.Linq;
     using System.Text;
     using System.Windows.Input;
     using Microsoft.Win32;
     using Nine.Studio.Extensibility;
 
+    /*
     public class ImporterView
     {
         public ICommand ImportCommand { get; private set; }
@@ -55,4 +54,5 @@
             return result.ToString();
         }
     }
+     */
 }

@@ -872,7 +872,7 @@
             (
                 "technique Default " + Environment.NewLine +
                 "{" + Environment.NewLine +
-                "   pass Default " + Environment.NewLine +
+                "   pass" + Environment.NewLine +
                 "   {" + Environment.NewLine +
                 "       VertexShader = compile vs_" + profile + " VS();" + Environment.NewLine +
                 "       PixelShader = compile ps_" + profile + " PS();" + Environment.NewLine +

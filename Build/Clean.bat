@@ -32,7 +32,9 @@ for /f "delims=" %%i in ('dir /b /ad /s bin obj testresults') do (
 	rmdir /s /q "%%i"
 )
 
-rmdir /s /q "Documentation\Help"
+rmdir /s /q "Framework\ipch"
+rmdir /s /q "Studio\Nine\Debug"
+rmdir /s /q "Studio\Nine\Release"
 rmdir /s /q "References"
 
 popd

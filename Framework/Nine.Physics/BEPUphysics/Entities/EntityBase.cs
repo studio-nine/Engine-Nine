@@ -453,12 +453,20 @@ namespace BEPUphysics.Entities
         //    }
         //}
 
+#if WINRT
+        protected internal System.Threading.SpinLock locker = new System.Threading.SpinLock();
+#else
         protected internal SpinLock locker = new SpinLock();
+#endif
         ///<summary>
         /// Gets the synchronization object used by systems that need
         /// exclusive access to the entity's properties.
         ///</summary>
-        public SpinLock Locker
+#if WINRT
+        public System.Threading.SpinLock SpinLock
+#else
+        public SpinLock SpinLock
+#endif
         {
             get
             {

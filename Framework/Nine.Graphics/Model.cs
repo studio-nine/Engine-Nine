@@ -221,7 +221,7 @@ namespace Nine.Graphics
                 if (sharedSkeleton != value)
                 {
                     if (value != null && value.BoneTransforms.Length != skeleton.BoneTransforms.Length)
-                        throw new InvalidOperationException(Strings.SkeletonMismatch);
+                        throw new InvalidOperationException("The shared skeleton does not match the skeleton used by this model.");
                     sharedSkeleton = value;
                     UpdateBoneTransforms();
                 }
@@ -383,7 +383,7 @@ namespace Nine.Graphics
         /// Updates the internal state of the object based on game time.
         /// </summary>
         /// <param name="elapsedTime"></param>
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             if (source == null)
                 return;

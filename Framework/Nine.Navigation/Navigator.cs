@@ -226,12 +226,12 @@ namespace Nine.Navigation
 
         #region Events
         /// <summary>
-        /// Occures when this navigator has started to move.
+        /// Occurs when this navigator has started to move.
         /// </summary>
         public event EventHandler<EventArgs> Started;
 
         /// <summary>
-        /// Occures when this navigator has stopped moving when calling <c>Stop</c> 
+        /// Occurs when this navigator has stopped moving when calling <c>Stop</c> 
         /// or when the target is reached or when failed to reach the target.
         /// </summary>
         public event EventHandler<EventArgs> Stopped;
@@ -318,14 +318,13 @@ namespace Nine.Navigation
         /// <summary>
         /// Updates the specified game time.
         /// </summary>
-        public void Update(TimeSpan gameTime)
+        public void Update(float elapsedTime)
         {
-            float elapsedTime = (float)gameTime.TotalSeconds;
             if (elapsedTime <= 0)
                 return;
 
             Vector2 currentPosition = steerable.Position;
-            steerable.Update(gameTime);
+            steerable.Update(elapsedTime);
 
             if (steerable.Speed > 0 && steerable.Force != Vector2.Zero && State == NavigatorState.Stopped)
             {
@@ -381,7 +380,7 @@ namespace Nine.Navigation
                         Matrix.CreateTranslation(Position);
         }
 
-        private void UpdateRotation(float elapsedSeconds, Vector3 facing)
+        private void UpdateRotation(float elapsedTime, Vector3 facing)
         {
             // Adjust the facing of the entity.
             // Smooth entity rotation exponentially
@@ -395,7 +394,7 @@ namespace Nine.Navigation
 
             if (Math.Abs(rotationOffset) > float.Epsilon)
             {
-                float smoother = elapsedSeconds * 5;
+                float smoother = elapsedTime * 5;
                 if (smoother > 1) smoother = 1;
                 Rotation += rotationOffset * smoother;
             }

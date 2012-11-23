@@ -104,7 +104,6 @@
     <Compile Include="TriangleTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Navigation\HardToGet.astar" />
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>

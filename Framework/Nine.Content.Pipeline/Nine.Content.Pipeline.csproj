@@ -95,13 +95,13 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Writer.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Content.Writer.Generated.cs">
       <Link>Nine.Content.Writer.Generated.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Writer.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Graphics.Content.Writer.Generated.cs">
       <Link>Nine.Graphics.Content.Writer.Generated.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Writer.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Physics.Content.Writer.Generated.cs">
       <Link>Nine.Physics.Content.Writer.Generated.cs</Link>
     </Compile>
     <Compile Include="Animations\TweenAnimationWriter.cs" />

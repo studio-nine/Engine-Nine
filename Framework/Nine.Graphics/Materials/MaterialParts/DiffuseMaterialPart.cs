@@ -1,5 +1,6 @@
 ﻿namespace Nine.Graphics.Materials.MaterialParts
 {
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
@@ -39,6 +40,7 @@
     /// </summary>
     public class DiffuseMaterialPart : MaterialPart
     {
+        private int textureIndex;
         private EffectParameter textureParameter;
         private EffectParameter diffuseColorParameter;
         private EffectParameter overlayColorParameter;
@@ -121,11 +123,16 @@
         }
         private TextureAlphaUsage textureAlphaUsage;
 
+#if WINDOWS
+        [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
+#endif
+        public SamplerState SamplerState { get; set; }
+
         protected internal override void OnBind()
         {
-            textureParameter = GetParameter("Texture");
             diffuseColorParameter = GetParameter("DiffuseColor");
-            overlayColorParameter = GetParameter("OverlayColor");            
+            overlayColorParameter = GetParameter("OverlayColor");
+            GetTextureParameter("Texture", out textureParameter, out textureIndex);
         }
 
         /// <summary>
@@ -135,6 +142,9 @@
         {
             if (textureParameter != null)
                 textureParameter.SetValue(Texture ?? material.texture);
+
+            if (SamplerState != null)
+                context.graphics.SamplerStates[textureIndex] = SamplerState;
 
             if (overlayColorParameter != null && overlayColor.HasValue)
                 overlayColorParameter.SetValue(overlayColor.Value);
@@ -151,12 +161,15 @@
         }
 
         /// <summary>
-        /// Restores any local shader parameters changes after drawing the promitive.
+        /// Restores any local shader parameters changes after drawing the primitive.
         /// </summary>
         protected internal override void EndApplyLocalParameters(DrawingContext context)
         {
             if (overlayColorParameter != null && overlayColor.HasValue)
                 overlayColorParameter.SetValue(Constants.DiffuseColor);
+
+            if (SamplerState != null)
+                context.graphics.SamplerStates[textureIndex] = context.SamplerState;
         }
 
         /// <summary>

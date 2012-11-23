@@ -9,13 +9,10 @@
 
     static class Constants
     {
-        public const int MaxRecentFilesCount = 10;
         public const int MaxHeaderBytes = 128;
 
         public static readonly string Title = "Engine Nine";
         public static readonly string TraceFilename = "Nine.log";
-        public static readonly string ExtensionDirectory = ".";
-        public static readonly string ProjectExtension = ".nine";
 
         public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static readonly string VersionString = string.Format("v{0}.{1}", Version.Major, Version.Minor);

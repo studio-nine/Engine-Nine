@@ -31,7 +31,7 @@ namespace BEPUphysics.MathExtensions
         {
             if (IsInvalid(f))
             {
-                throw new NotFiniteNumberException("Invalid value.");
+                throw new ArithmeticException("Invalid value.");
             }
         }
 
@@ -44,7 +44,7 @@ namespace BEPUphysics.MathExtensions
         {
             if (IsInvalid(v.X) || IsInvalid(v.Y) || IsInvalid(v.Z))
             {
-                throw new NotFiniteNumberException("Invalid value.");
+                throw new ArithmeticException("Invalid value.");
             }
         }
 
@@ -58,7 +58,7 @@ namespace BEPUphysics.MathExtensions
             if (IsInvalid(m.M11) || IsInvalid(m.M12) ||
                 IsInvalid(m.M21) || IsInvalid(m.M22))
             {
-                throw new NotFiniteNumberException("Invalid value.");
+                throw new ArithmeticException("Invalid value.");
             }
         }
 
@@ -73,7 +73,7 @@ namespace BEPUphysics.MathExtensions
                 IsInvalid(m.M21) || IsInvalid(m.M22) ||
                 IsInvalid(m.M31) || IsInvalid(m.M32))
             {
-                throw new NotFiniteNumberException("Invalid value.");
+                throw new ArithmeticException("Invalid value.");
             }
         }
 
@@ -87,7 +87,7 @@ namespace BEPUphysics.MathExtensions
             if (IsInvalid(m.M11) || IsInvalid(m.M12) || IsInvalid(m.M13) ||
                 IsInvalid(m.M21) || IsInvalid(m.M22) || IsInvalid(m.M23))
             {
-                throw new NotFiniteNumberException("Invalid value.");
+                throw new ArithmeticException("Invalid value.");
             }
         }
 
@@ -102,7 +102,7 @@ namespace BEPUphysics.MathExtensions
                 IsInvalid(m.M21) || IsInvalid(m.M22) || IsInvalid(m.M23) ||
                 IsInvalid(m.M31) || IsInvalid(m.M32) || IsInvalid(m.M33))
             {
-                throw new NotFiniteNumberException("Invalid value.");
+                throw new ArithmeticException("Invalid value.");
             }
         }
 
@@ -118,7 +118,7 @@ namespace BEPUphysics.MathExtensions
                 IsInvalid(m.M31) || IsInvalid(m.M32) || IsInvalid(m.M33) || IsInvalid(m.M34) ||
                 IsInvalid(m.M41) || IsInvalid(m.M42) || IsInvalid(m.M43) || IsInvalid(m.M44))
             {
-                throw new NotFiniteNumberException("Invalid value.");
+                throw new ArithmeticException("Invalid value.");
             }
         }
 
@@ -131,7 +131,7 @@ namespace BEPUphysics.MathExtensions
         {
             if (IsInvalid(q.W) || IsInvalid(q.X) || IsInvalid(q.Y) || IsInvalid(q.Z))
             {
-                throw new NotFiniteNumberException("Invalid value.");
+                throw new ArithmeticException("Invalid value.");
             }
         }
 
@@ -177,7 +177,7 @@ namespace BEPUphysics.MathExtensions
         {
             b.Center.Validate();
             if(IsInvalid(b.Radius))
-                throw new NotFiniteNumberException("Invalid value.");
+                throw new ArithmeticException("Invalid value.");
         }
 
     }

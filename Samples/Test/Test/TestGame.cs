@@ -114,7 +114,7 @@ namespace Test
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
                 Exit();
 #endif
-            scene.Update(gameTime.ElapsedGameTime);
+            scene.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
 
@@ -123,9 +123,9 @@ namespace Test
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            scene.Draw(GraphicsDevice, gameTime.ElapsedGameTime);
+            scene.Draw(GraphicsDevice, (float)gameTime.ElapsedGameTime.TotalSeconds);
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                scene.DrawDiagnostics(GraphicsDevice, gameTime.ElapsedGameTime);
+                scene.DrawDiagnostics(GraphicsDevice, (float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Draw(gameTime);
         }
 

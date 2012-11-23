@@ -18,7 +18,7 @@ using namespace System::Text::RegularExpressions;
 using namespace msclr::interop; 
 
 
-namespace SilverlightShaderCompiler 
+BEGIN_NAMESPACE
 {
     public ref class Compiler
     {
@@ -287,3 +287,4 @@ namespace SilverlightShaderCompiler
         }
     };
 }
+END_NAMESPACE

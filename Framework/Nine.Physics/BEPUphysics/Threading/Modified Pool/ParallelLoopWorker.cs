@@ -15,7 +15,6 @@ namespace BEPUphysics.Threading
         private object initializationInformation;
 
         internal int iterationsPerSteal;
-        private Thread thread;
         private Action<object> threadStart;
 
         internal ParallelLoopWorker(ParallelLoopManager manager, Action<object> threadStart, object initializationInformation)
@@ -26,8 +25,14 @@ namespace BEPUphysics.Threading
 
             getToWork = new AutoResetEvent(false);
 
-            thread = new Thread(Work) {IsBackground = true};
+#if WINRT
+            Windows.System.Threading.ThreadPool.RunAsync(op => Work(), 
+                Windows.System.Threading.WorkItemPriority.Normal, 
+                Windows.System.Threading.WorkItemOptions.TimeSliced);
+#else
+            var thread = new Thread(Work) {IsBackground = true};
             thread.Start();
+#endif
         }
 
 
@@ -51,9 +56,8 @@ namespace BEPUphysics.Threading
                 if (!disposed)
                 {
                     disposed = true;
-                    getToWork.Close();
+                    getToWork.Dispose();
                     getToWork = null;
-                    thread = null;
                     GC.SuppressFinalize(this);
                 }
             }

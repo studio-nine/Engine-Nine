@@ -9,6 +9,12 @@ namespace Nine.Physics
     using Microsoft.Xna.Framework;
     using Nine.Physics.Colliders;
 
+    public enum RigidBodyType
+    {
+        Dynamic,
+        Kinematic,
+    }
+
     /// <summary>
     /// Defines a rigid body in the physics simulation.
     /// </summary>
@@ -33,14 +39,31 @@ namespace Nine.Physics
                     if (value.Entity == null)
                         throw new InvalidOperationException("collider.Entity");
 
+                    entity = value.entity;
                     collider = value;
-                    entity = collider.entity;
-                    entity.BecomeDynamic(1);
+                    UpdateBodyType(RigidBodyType.Dynamic);
                 }
             }
         }
         private Collider collider;
         private Entity entity;
+
+        /// <summary>
+        /// Gets or sets whether this rigid body is dynamic or kinematic.
+        /// </summary>
+        public RigidBodyType BodyType
+        {
+            get { return entity.isDynamic ? RigidBodyType.Dynamic : RigidBodyType.Kinematic; }
+            set { UpdateBodyType(value); }
+        }
+
+        private void UpdateBodyType(RigidBodyType bodyType)
+        {
+            if (bodyType == RigidBodyType.Kinematic)
+                entity.BecomeKinematic();
+            else
+                entity.BecomeDynamic(Mass <= 0 ? 1 : Mass);
+        }
 
         /// <summary>
         /// Gets the world transform of this rigid body.
@@ -52,8 +75,8 @@ namespace Nine.Physics
                 if (collider.Offset.HasValue)
                 {
                     var transform = Matrix.CreateTranslation(collider.Offset.Value);
-                    var orientation = Entity.Orientation;
-                    Matrix.Transform(ref transform, ref orientation, out transform);
+                    var orientation = Matrix.CreateFromQuaternion(Entity.orientation);
+                    Matrix.Multiply(ref transform, ref orientation, out transform);
 
                     var position = Entity.Position;
                     transform.M41 += position.X;
@@ -141,7 +164,13 @@ namespace Nine.Physics
         #endregion
 
         #region Methods
-        internal RigidBody() { }
+        internal RigidBody() 
+        {
+            if (Nine.Content.ContentProperties.IsContentBuild)
+            {
+                Collider = new SphereCollider();
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of Body.
@@ -156,7 +185,7 @@ namespace Nine.Physics
         ///</summary>
         public void ApplyImpulse(Vector3 impulse)
         {
-            entity.ApplyLinearImpulse(ref impulse);
+            entity.ApplyImpulse(ref entity.position, ref impulse);
         }
 
         ///<summary>
@@ -186,7 +215,7 @@ namespace Nine.Physics
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        protected override void Update(TimeSpan elapsedTime)
+        protected override void Update(float elapsedTime)
         {
             Parent.Transform = Transform;
         }

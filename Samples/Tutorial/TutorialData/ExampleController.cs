@@ -22,19 +22,19 @@ namespace TutorialData
     {
         public float Speed { get; set; }
 
-        protected override void Update(TimeSpan elapsedTime)
+        protected override void Update(float elapsedTime)
         {
             var transform = Parent.Transform;
 
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Left))
-                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.Left;
+                transform.Translation += Speed * elapsedTime * Vector3.Left;
             if (keyboardState.IsKeyDown(Keys.Right))
-                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.Right;
+                transform.Translation += Speed * elapsedTime * Vector3.Right;
             if (keyboardState.IsKeyDown(Keys.Down))
-                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.Backward;
+                transform.Translation += Speed * elapsedTime * Vector3.Backward;
             if (keyboardState.IsKeyDown(Keys.Up))
-                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.Forward;
+                transform.Translation += Speed * elapsedTime * Vector3.Forward;
 
             Parent.Transform = transform;
         }

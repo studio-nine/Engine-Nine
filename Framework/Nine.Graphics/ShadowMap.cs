@@ -117,7 +117,7 @@
         private void Begin()
         {
             if (hasBegin)
-                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
+                throw new InvalidOperationException("Begin cannot be called until End has been successfully called.");
 
             hasBegin = true;
             if (renderTarget == null || renderTarget.IsDisposed ||
@@ -141,7 +141,7 @@
         private Texture2D End(DrawingContext context)
         {
             if (!hasBegin)
-                throw new InvalidOperationException(Strings.NotInBeginEndPair);
+                throw new InvalidOperationException("Begin must be called successfully before End can be called.");
 
             hasBegin = false;
             Texture2D map = renderTarget.End();

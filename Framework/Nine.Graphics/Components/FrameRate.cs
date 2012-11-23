@@ -14,7 +14,7 @@ namespace Nine.Components
         private int updateCount = 0;
         private int currentFrame = 0;
         private int counter = 0;
-        private TimeSpan elapsedTimeSinceLastUpdate = TimeSpan.Zero;
+        private float elapsedTimeSinceLastUpdate = 0;
         private float fps = 0;
         private float overallFps = 0;
         private SpriteBatch spriteBatch;
@@ -92,7 +92,7 @@ namespace Nine.Components
             this.spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);
         }
         
-        public void Draw(TimeSpan elapsedTime)
+        public void Draw(float elapsedTime)
         {
             UpdateFPS(elapsedTime);
 
@@ -107,18 +107,18 @@ namespace Nine.Components
             }
         }
 
-        private void UpdateFPS(TimeSpan elapsedTime)
+        private void UpdateFPS(float elapsedTime)
         {
             counter++;
             currentFrame++;
 
             elapsedTimeSinceLastUpdate += elapsedTime;
 
-            if (elapsedTimeSinceLastUpdate >= UpdateFrequency)
+            if (elapsedTimeSinceLastUpdate >= UpdateFrequency.TotalSeconds)
             {
-                fps = (float)(1000 * counter / elapsedTimeSinceLastUpdate.TotalMilliseconds);
+                fps = (float)(counter / elapsedTimeSinceLastUpdate);
                 counter = 0;
-                elapsedTimeSinceLastUpdate -= UpdateFrequency;
+                elapsedTimeSinceLastUpdate -= (float)UpdateFrequency.TotalSeconds;
 
                 overallFps = (overallFps * updateCount + fps) / (updateCount + 1);
                 updateCount++;

@@ -173,7 +173,7 @@
             }
 
             // Refresh the pose immediately so the skin transform is correct even if update is never called.
-            UpdateBoneTransforms(TimeSpan.Zero);
+            UpdateBoneTransforms(0);
 
             base.OnStarted();
         }
@@ -184,7 +184,7 @@
             if (!(Skeleton.BoneTransforms != null && Skeleton.BoneTransforms.Length > 0 &&
                   Skeleton.BoneTransforms[Skeleton.SkeletonRoot].M44 != 0))
             {
-                throw new InvalidOperationException(Strings.InvalidateSkeleton);
+                throw new InvalidOperationException("The bone transforms of the input skeleton is not valid.");
             }
         }
 
@@ -236,7 +236,7 @@
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public override void Update(TimeSpan elapsedTime)
+        public override void Update(float elapsedTime)
         {
             if (State == AnimationState.Playing && Skeleton != null)
             {
@@ -245,7 +245,7 @@
             }
         }
 
-        private void UpdateControllers(TimeSpan elapsedTime)
+        private void UpdateControllers(float elapsedTime)
         {
             SychronizeSpeed();
 
@@ -311,14 +311,14 @@
         /// <summary>
         /// Updates the bone transforms.
         /// </summary>
-        private void UpdateBoneTransforms(TimeSpan elapsedTime)
+        private void UpdateBoneTransforms(float elapsedTime)
         {
             // Update default blend
             float blendLerp = 0;
 
             if (BlendEnabled)
             {
-                blendTimer += elapsedTime.TotalSeconds;
+                blendTimer += elapsedTime;
                 blendLerp = (float)(blendTimer / BlendDuration.TotalSeconds);
             }
 

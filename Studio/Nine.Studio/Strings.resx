@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FbxModel" xml:space="preserve">
-    <value>Fbx Model</value>
+  <data name="DirectoryNotEmpty" xml:space="preserve">
+    <value>The target path already contains a folder named {0}</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
@@ -135,9 +135,6 @@
   <data name="NoName" xml:space="preserve">
     <value>{No Name}</value>
   </data>
-  <data name="ParticleEffect" xml:space="preserve">
-    <value>Particle Effect</value>
-  </data>
   <data name="ShowWireframe" xml:space="preserve">
     <value>Show Wireframe</value>
   </data>
@@ -150,16 +147,10 @@
   <data name="Untitled" xml:space="preserve">
     <value>Untitled</value>
   </data>
+  <data name="VersionNotSupported" xml:space="preserve">
+    <value>Cannot open the game because it was created using a newer version of the editor.</value>
+  </data>
   <data name="ViewFormat" xml:space="preserve">
     <value>{0} View</value>
-  </data>
-  <data name="XModel" xml:space="preserve">
-    <value>XModel</value>
-  </data>
-  <data name="XnaXamlAsset" xml:space="preserve">
-    <value>Xna Xaml Asset</value>
-  </data>
-  <data name="XnaXmlAsset" xml:space="preserve">
-    <value>Xna Xml Asset</value>
   </data>
 </root>

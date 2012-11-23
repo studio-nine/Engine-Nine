@@ -57,7 +57,7 @@
             // so the build process won't fall if you happened to include
             // this in a Windows Phone project.
             if (targetPlatform == TargetPlatform.WindowsPhone)
-                return "Nine.Content.NullReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+                return "Nine.Content.NullReader, Nine, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
 
             return typeof(MaterialGroupReader).AssemblyQualifiedName;
         }

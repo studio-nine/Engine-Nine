@@ -110,8 +110,8 @@ namespace Tutorial
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
                 Exit();
 #endif
-            scene.UpdatePhysicsAsync(gameTime.ElapsedGameTime);
-            scene.Update(gameTime.ElapsedGameTime);
+            scene.UpdatePhysicsAsync((float)gameTime.ElapsedGameTime.TotalSeconds);
+            scene.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
         }
@@ -121,9 +121,9 @@ namespace Tutorial
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            scene.Draw(GraphicsDevice, gameTime.ElapsedGameTime);
+            scene.Draw(GraphicsDevice, (float)gameTime.ElapsedGameTime.TotalSeconds);
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                scene.DrawDiagnostics(GraphicsDevice, gameTime.ElapsedGameTime);
+                scene.DrawDiagnostics(GraphicsDevice, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Draw(gameTime);
         }

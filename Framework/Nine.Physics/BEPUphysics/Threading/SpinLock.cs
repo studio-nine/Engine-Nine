@@ -3,6 +3,23 @@ using System;
 
 namespace BEPUphysics.Threading
 {
+#if WINRT
+    static class SpinLockExtensions
+    {
+        public static void Enter(this SpinLock spinLock)
+        {
+            bool token = false;
+            spinLock.Enter(ref token);
+        }
+
+        public static bool TryEnter(this SpinLock spinLock)
+        {
+            bool token = false;
+            spinLock.Enter(ref token);
+            return token;
+        }
+    }
+#else
     /// <summary>
     /// Synchronizes using a busy wait.  Take care when using this; if the critical section is long or there's any doubt about the use of a busy wait, consider using Monitor locks or other approaches instead.
     /// Replaces the .NET SpinLock on PC and provides its functionality on the Xbox360.
@@ -69,4 +86,5 @@ namespace BEPUphysics.Threading
             }
         }
     }
+#endif
 }

@@ -36,7 +36,7 @@
         {
             if (context.TargetPlatform == TargetPlatform.WindowsPhone)
             {
-                context.Logger.LogWarning(null, null, Strings.MaterialGroupNotSupported);
+                context.Logger.LogWarning(null, null, "Material group is not supported on Windows Phone.");
                 return null;
             }
 

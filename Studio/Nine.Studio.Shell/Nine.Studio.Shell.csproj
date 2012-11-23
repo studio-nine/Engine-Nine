@@ -43,7 +43,7 @@
     <ApplicationIcon>Images\Nine.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
@@ -58,9 +58,12 @@
     <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
       <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net40\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="Nine, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\References\x86\Nine.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -82,218 +85,171 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Behaviors\ClickSelectBehavior.cs" />
-    <Compile Include="Behaviors\CommandBinding.cs" />
-    <Compile Include="Behaviors\CommandReference.cs" />
-    <Compile Include="Behaviors\HeaderBehavior.cs" />
-    <Compile Include="Behaviors\NamedGroupDescription.cs" />
-    <Compile Include="Behaviors\ResourceBehavior.cs" />
-    <Compile Include="Behaviors\GroupStyleBehavior.cs" />
-    <Compile Include="Behaviors\Standard\CornerRadiusAnimation.cs" />
-    <Compile Include="Behaviors\Standard\CornerRadiusAnimationBase.cs" />
-    <Compile Include="Behaviors\Standard\Debug.cs" />
-    <Compile Include="Behaviors\Standard\Enumerable2.cs" />
-    <Compile Include="Behaviors\Standard\FileWalker.cs" />
-    <Compile Include="Behaviors\Standard\GlassHelper.cs" />
-    <Compile Include="Behaviors\Standard\MergeableCollection.cs" />
-    <Compile Include="Behaviors\Standard\MshtmlProvider.cs" />
-    <Compile Include="Behaviors\Standard\NotifyingList.cs" />
-    <Compile Include="Behaviors\Standard\SmallString.cs" />
-    <Compile Include="Behaviors\Standard\SmallUri.cs" />
-    <Compile Include="Behaviors\Standard\Verify.cs" />
-    <Compile Include="Behaviors\Standard\WicProvider.cs" />
-    <Compile Include="Behaviors\Standard\WindowExtensions.cs" />
-    <Compile Include="Behaviors\SystemCommands.cs" />
-    <Compile Include="Behaviors\SystemParameters2.cs" />
-    <Compile Include="Converters\ProjectItemViewToControlConverter.cs" />
-    <Compile Include="Converters\InvertColorIntensityConverter.cs" />
-    <Compile Include="Converters\StringToVisibilityConverter.cs" />
-    <Compile Include="Converters\EnumTypeConverter.cs" />
-    <Compile Include="Converters\TruncatePathConverter.cs" />
-    <Compile Include="Converters\EqualtyToBooleanConverter.cs" />
-    <Compile Include="Converters\ToLowerConverter.cs" />
-    <Compile Include="Converters\ToUpperConverter.cs" />
-    <Compile Include="Behaviors\Standard\ComGuids.cs" />
-    <Compile Include="Behaviors\Standard\DoubleUtil.cs" />
-    <Compile Include="Behaviors\Standard\DpiHelper.cs" />
-    <Compile Include="Behaviors\Standard\ErrorCodes.cs" />
-    <Compile Include="Behaviors\Standard\MessageWindow.cs" />
-    <Compile Include="Behaviors\Standard\NativeMethods.cs" />
-    <Compile Include="Behaviors\Standard\ShellProvider.cs" />
-    <Compile Include="Behaviors\Standard\StreamHelper.cs" />
-    <Compile Include="Behaviors\Standard\Utilities.cs" />
-    <Compile Include="Behaviors\WindowChrome.cs" />
-    <Compile Include="Behaviors\WindowChromeWorker.cs" />
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="ViewModels\Data\ProjectCreationParameters.cs" />
-    <Compile Include="ViewModels\EditorShell.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AttachedProperties\ClickSelect.cs" />
+    <Compile Include="AttachedProperties\CommandBinding.cs" />
+    <Compile Include="AttachedProperties\CommandReference.cs" />
+    <Compile Include="AttachedProperties\GroupStyleBehavior.cs" />
+    <Compile Include="AttachedProperties\Header.cs" />
+    <Compile Include="AttachedProperties\NamedGroupDescription.cs" />
+    <Compile Include="AttachedProperties\ResourceBehavior.cs" />
+    <Compile Include="Utilities\ComGuids.cs" />
+    <Compile Include="Utilities\Awaitable.cs" />
+    <Compile Include="Utilities\Debug.cs" />
+    <Compile Include="Utilities\DoubleUtil.cs" />
+    <Compile Include="Utilities\DpiHelper.cs" />
+    <Compile Include="Utilities\ErrorCodes.cs" />
+    <Compile Include="Utilities\GlassHelper.cs" />
+    <Compile Include="Utilities\MessageWindow.cs" />
+    <Compile Include="Utilities\NativeMethods.cs" />
+    <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="Utilities\Verify.cs" />
+    <Compile Include="AttachedProperties\SystemParameters2.cs" />
+    <Compile Include="Utilities\DelegateCommand.cs" />
+    <Compile Include="MarkupExtensions\DoExtension.cs" />
+    <Compile Include="MarkupExtensions\TypeExtension.cs" />
+    <Compile Include="MarkupExtensions\ToExtension.cs" />
+    <Compile Include="AttachedProperties\WindowChrome.cs" />
+    <Compile Include="AttachedProperties\WindowChromeWorker.cs" />
+    <Compile Include="ViewModels\Converters.cs" />
     <Compile Include="Settings\GeneralSettings.cs" />
+    <Compile Include="IEditorShell.cs" />
+    <Compile Include="ViewModels\ProjectCreationParameters.cs" />
     <Compile Include="ViewModels\SettingsView.cs" />
     <Compile Include="ViewModels\VisualizerView.cs" />
     <Compile Include="ViewModels\PropertyView.cs" />
-    <Compile Include="Windows\Dialog.xaml.cs">
-      <DependentUpon>Dialog.xaml</DependentUpon>
+    <Compile Include="Views\ExceptionView.xaml.cs">
+      <DependentUpon>ExceptionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Views\DialogView.xaml.cs">
+      <DependentUpon>DialogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\VerticleSeperator.xaml.cs">
+    <Compile Include="Views\EditorView.xaml.cs">
+      <DependentUpon>EditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewProjectView.xaml.cs">
+      <DependentUpon>NewProjectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VerticleSeperator.xaml.cs">
       <DependentUpon>VerticleSeperator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\WaitWindow.xaml.cs">
+    <Compile Include="Views\WaitWindow.xaml.cs">
       <DependentUpon>WaitWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ProgressHelper.cs" />
-    <Compile Include="Windows\WindowHelper.cs" />
-    <Compile Include="Windows\StyleSelectors.cs" />
-    <Page Include="Converters\Converters.xaml">
+    <Compile Include="Views\ProgressHelper.cs" />
+    <Compile Include="Views\FilesView.xaml.cs">
+      <DependentUpon>FilesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowHelper.cs" />
+    <Compile Include="Views\StyleSelectors.cs" />
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="Views\ExceptionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\DataTemplates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Images\Images.xaml">
+    <Page Include="Views\EditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Metro.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\Dialog.xaml">
+    <Page Include="Views\NewProjectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MainWindow.xaml">
+    <Page Include="Views\Scratch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\VerticleSeperator.xaml">
+    <Page Include="Views\OldEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\WaitWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Scene.xaml">
+    <Page Include="Views\DataTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\Library.xaml">
+    <Page Include="Views\Images.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\NoDesignView.xaml">
+    <Page Include="Views\Theme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\OptionsWindow.xaml">
+    <Page Include="Views\VerticleSeperator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\WaitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Scene.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Library.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NoDesignView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\Nine.Studio\EditorHelper.cs">
-      <Link>EditorHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\Nine.Studio\Global.cs">
-      <Link>Global.cs</Link>
-    </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Converters\StringToBooleanConverter.cs" />
-    <Compile Include="Converters\NullToVisibilityConverter.cs" />
-    <Compile Include="Converters\IntToVisibilityConverter.cs" />
-    <Compile Include="Converters\IconConverter.cs" />
     <Compile Include="PropertyHelper.cs" />
-    <Compile Include="DelegateCommand.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ExporterView.cs" />
     <Compile Include="ViewModels\ProjectView.cs" />
     <Compile Include="ViewModels\ImporterView.cs" />
     <Compile Include="ViewModels\ProjectItemView.cs" />
-    <Compile Include="ViewModels\FactoryView.cs" />
-    <Compile Include="ViewModels\EditorView.cs" />
-    <Compile Include="Windows\Scene.xaml.cs">
+    <Compile Include="ViewModels\OldEditorView.cs" />
+    <Compile Include="Views\Scene.xaml.cs">
       <DependentUpon>Scene.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\WatermarkAdorner.cs" />
-    <Compile Include="Windows\WatermarkService.cs" />
-    <Compile Include="Windows\Library.xaml.cs">
+    <Compile Include="Views\WatermarkAdorner.cs" />
+    <Compile Include="Views\WatermarkService.cs" />
+    <Compile Include="Views\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\NoDesignView.xaml.cs">
+    <Compile Include="Views\NoDesignView.xaml.cs">
       <DependentUpon>NoDesignView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\OptionsWindow.xaml.cs">
+    <Compile Include="Views\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\FilesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <SplashScreen Include="Images\Splash.png" />
-    <Resource Include="Images\Outlook15_modern_1.png" />
-    <Resource Include="Images\Background.png" />
-    <None Include="App.config" />
-    <Content Include="Content\Terrain.fbx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Nine.snk" />
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Nine.ico" />
-    <Resource Include="Images\Grid.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\SaveAllHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\saveHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\DeleteHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\CopyHS.png" />
-    <Resource Include="Images\CutHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\PasteHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\OpenFile.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\TerrainTex.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.resx">
@@ -304,10 +260,6 @@
     <EmbeddedResource Include="Strings.zh.resx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nine.Studio.Controls\Nine.Studio.Controls.csproj">
-      <Project>{9E4B7153-EFF8-4E9F-BE67-2090EEFF469B}</Project>
-      <Name>Nine.Studio.Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Nine.Studio\Nine.Studio.csproj">
       <Project>{412AE201-B5E8-436E-9468-E6CC94739055}</Project>
       <Name>Nine.Studio</Name>

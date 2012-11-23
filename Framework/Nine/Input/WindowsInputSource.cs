@@ -150,7 +150,7 @@ namespace Nine
             return MouseButtons.Left;
         }
 
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             mouseStateNeedsUpdate = true;
             keyboardStateNeedsUpdate = true;

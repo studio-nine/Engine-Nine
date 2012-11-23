@@ -6,40 +6,21 @@
     using System.IO;
     using System.Linq;
     using Nine.Studio.Extensibility;
-    using Nine.Studio.Shell.Windows;
+    using Nine.Studio.Shell;
 
     public class ProjectView : INotifyPropertyChanged
     {
-        public string Name { get { return Path.GetFileName(FileName); } }
-        public string FileName { get; private set; }
         public Project Project { get; private set; }
         public Editor Editor { get { return EditorView.Editor; } }
-        public EditorView EditorView { get; private set; }
+        public OldEditorView EditorView { get; private set; }
         public ObservableCollection<ProjectItemView> ProjectItems { get; private set; }
 
-        public ProjectView(EditorView editorView, Project project)
+        public ProjectView(OldEditorView editorView, Project project)
         {
             this.Project = project;
             this.EditorView = editorView;
-            this.FileName = Project.FileName ?? Path.GetFullPath(Global.NextName(Strings.Untitled, Global.ProjectExtension));
-            this.ProjectItems = new ObservableCollection<ProjectItemView>(Project.ProjectItems.Select(pi => new ProjectItemView(this, pi)));
         }
 
-        public void CreateProjectItem(object objectModel)
-        {
-            ProjectItem projectItem = EditorView.Project.CreateProjectItem(objectModel);
-            ProjectItemView piView = new ProjectItemView(this, projectItem);
-            ProjectItems.Add(piView);
-            piView.Show();
-        }
-
-        public void CreateProjectItem(IFactory factory)
-        {
-            ProjectItem projectItem = EditorView.Project.CreateProjectItem(factory);
-            ProjectItemView piView = new ProjectItemView(this, projectItem);
-            ProjectItems.Add(piView);
-            piView.Show();
-        }
 
         public void OpenProjectItem(string fileName)
         {
@@ -75,12 +56,14 @@
                 {
                     if (e != null)
                     {
+                        /*
                         EditorView.Shell.Invoke((Action)delegate
                         {
                             ProjectItemView projectItemView = new ProjectItemView(this, (ProjectItem)e);
                             ProjectItems.Add(projectItemView);
                             //projectItemView.Show();
                         });
+                         */
                     }
                 }, fileName, Strings.Loading, fileName);
         }

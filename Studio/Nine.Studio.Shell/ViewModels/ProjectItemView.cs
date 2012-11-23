@@ -2,11 +2,8 @@
 {
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-
     using System.Linq;
     using System.Windows.Input;
-
-
 
     public class ProjectItemView : INotifyPropertyChanged
     {
@@ -19,7 +16,7 @@
         public Project Project { get { return ProjectView.Project; } }
         public ProjectView ProjectView { get; private set; }
         public Editor Editor { get { return EditorView.Editor; } }
-        public EditorView EditorView { get { return ProjectView.EditorView; } }
+        public OldEditorView EditorView { get { return ProjectView.EditorView; } }
         public VisualizerView DefaultVisualizer { get; private set; }
         public ObservableCollection<VisualizerView> Visualizers { get; private set; }
 

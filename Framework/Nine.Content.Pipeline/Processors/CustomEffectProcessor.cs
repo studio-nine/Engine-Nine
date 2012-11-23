@@ -41,7 +41,7 @@
         {
             if (context.TargetPlatform == TargetPlatform.WindowsPhone)
             {
-                context.Logger.LogWarning(null, null, Strings.CustomEffectNotSupported);
+                context.Logger.LogWarning(null, null, "Custom effect is not supported on Windows Phone.");
                 return new CustomEffectContent
                 {
                      EffectCode = new byte[0],

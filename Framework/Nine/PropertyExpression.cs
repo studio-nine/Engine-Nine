@@ -47,6 +47,9 @@ namespace Nine
         /// </summary>
         public PropertyExpression(object target, string property)
         {
+#if WINRT
+            throw new NotImplementedException();
+#else
             Parse(target, property, out invocationTarget, out invocationMember);
 
             // Getting a value by reflection without garbage
@@ -66,11 +69,15 @@ namespace Nine
                     getValue = (Func<T>)Delegate.CreateDelegate(typeof(Func<T>), invocationTarget, ((PropertyInfo)invocationMember).GetGetMethod());
                 }
                 catch { }
-            }            
+            }         
+#endif
         }
 
         private static void Parse(object target, string property, out object invocationTarget, out MemberInfo invocationMember)
         {
+#if WINRT
+            throw new NotImplementedException();
+#else
             if (target == null)
                 throw new ArgumentNullException("target");
             if (property == null)
@@ -150,13 +157,18 @@ namespace Nine
             {
                 Parse(invocationTarget, property.Substring(dot + 1, property.Length - dot - 1).Trim(), out invocationTarget, out invocationMember);
             }
+#endif
         }
 
         private static MemberInfo GetMember(Type targetType, string property)
         {
+#if WINRT
+            throw new NotImplementedException();
+#else
             return (MemberInfo)targetType.GetProperty(property) ?? targetType.GetField(property);
+#endif
         }
-                
+
         private static object GetValue(object target, MemberInfo member)
         {
             return (member is FieldInfo) ? ((FieldInfo)(member)).GetValue(target) : ((PropertyInfo)(member)).GetValue(target, null);

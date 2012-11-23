@@ -81,7 +81,7 @@ namespace Nine.Components
         public ScreenshotCapturer(GraphicsDevice graphics)
         {
             if (graphics.GraphicsProfile == GraphicsProfile.Reach)
-                throw new NotSupportedException(Strings.InvalidGraphicsProfile);
+                throw new NotSupportedException("The specified graphics profile is not supported.");
 
             GraphicsDevice = graphics;
             ScreenshotsDirectory = "Screenshots";
@@ -241,7 +241,7 @@ namespace Nine.Components
                 Captured(this, e);
         }
 
-        public void Draw(TimeSpan elapsedTime)
+        public void Draw(float elapsedTime)
         {
             bool pressed = Keyboard.GetState().IsKeyDown(CaptureKey) ||
                 (CaptureButton.HasValue && GamePad.GetState(PlayerIndex.One).IsButtonDown(CaptureButton.Value));

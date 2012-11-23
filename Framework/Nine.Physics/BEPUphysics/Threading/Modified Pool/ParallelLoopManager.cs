@@ -152,7 +152,7 @@ namespace BEPUphysics.Threading
                     {
                         RemoveThread();
                     }
-                    loopFinished.Close();
+                    loopFinished.Dispose();
                     GC.SuppressFinalize(this);
                 }
             }

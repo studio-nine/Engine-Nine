@@ -8,25 +8,29 @@
     using Nine.Content.Pipeline.Graphics;
 
 
-    static class PipelineConstants
+    class PipelineConstants
     {
-        public static string IntermediateDirectory { get; set; }
-        public static string OutputDirectory { get; set; }
-        public static string BuildConfiguration { get; set; }
-        public static TargetPlatform TargetPlatform { get; set; }
-        public static GraphicsProfile TargetProfile { get; set; }
-        public static GraphicsDevice GraphicsDevice { get { return PipelineGraphics.GraphicsDevice; } }
+        public string IntermediateDirectory;
+        public string OutputDirectory;
+        public string BuildConfiguration;
+        public GraphicsDevice GraphicsDevice;
+        public TargetPlatform TargetPlatform;
+        public GraphicsProfile TargetProfile { get { return GraphicsDevice.GraphicsProfile; } }
 
-        static PipelineConstants()
+        public PipelineConstants(string intermediateDirectory, string outputDirectory, TargetPlatform targetPlatform, GraphicsDevice graphics)
         {
-            string guid = Guid.NewGuid().ToString("B");
-            string baseDirectory = Path.Combine(Path.GetTempPath(), "Engine Nine", GetVersion(), "PipelineBuilder");
+            if (intermediateDirectory == null || outputDirectory == null)
+            {
+                var guid = Guid.NewGuid().ToString("B");
+                var baseDirectory = Path.Combine(Path.GetTempPath(), "Engine Nine", GetVersion(), "PipelineBuilder");
+                IntermediateDirectory = Path.Combine(baseDirectory, "Intermediate");
+                OutputDirectory = Path.Combine(baseDirectory, "Bin");
+            }
 
-            IntermediateDirectory = Path.Combine(baseDirectory, "Intermediate");
-            OutputDirectory = Path.Combine(baseDirectory, "Bin");
+            IntermediateDirectory = intermediateDirectory ?? IntermediateDirectory;
+            OutputDirectory = outputDirectory ?? OutputDirectory;
+            GraphicsDevice = graphics ?? PipelineGraphics.GraphicsDevice;            
             BuildConfiguration = "Release";
-            TargetProfile = GraphicsDevice.GraphicsProfile;
-            TargetPlatform = TargetPlatform.Windows;
         }
 
         private static string GetVersion()

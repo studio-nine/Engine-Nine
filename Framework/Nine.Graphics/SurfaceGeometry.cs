@@ -12,6 +12,7 @@
     {
         private int patchSegmentCount;
         private GraphicsDevice graphics;
+        private SurfaceTopology topology;
         private List<int> startIndices = new List<int>();
 
         /// <summary>
@@ -28,13 +29,13 @@
         /// Gets a value indicating whether level of detail is enabled.
         /// </summary>
         public bool LevelOfDetailEnabled { get; private set; }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SurfaceGeometry"/> class.
         /// </summary>
         /// <param name="graphics">The graphics.</param>
         /// <param name="patchSegmentCount">The patch segment count.</param>
-        public SurfaceGeometry(GraphicsDevice graphics, int patchSegmentCount)
+        public SurfaceGeometry(GraphicsDevice graphics, int patchSegmentCount, SurfaceTopology topology)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
@@ -46,6 +47,7 @@
                 throw new ArgumentOutOfRangeException("Patch segment count must be a power of two.");
 
             this.graphics = graphics;
+            this.topology = topology;
             this.patchSegmentCount = patchSegmentCount;
             this.MaxLevelOfDetail = LogBaseTowOf(patchSegmentCount);
         }
@@ -53,26 +55,25 @@
         /// <summary>
         /// Gets a static instance of SurfaceGeometry.
         /// </summary>
-        public static SurfaceGeometry GetInstance(GraphicsDevice graphics, int patchSegmentCount)
+        public static SurfaceGeometry GetInstance(GraphicsDevice graphics, int patchSegmentCount, SurfaceTopology topology)
         {
             SurfaceGeometry result = null;
             WeakReference<SurfaceGeometry> value;
 
-            if (resourceDictionary.TryGetValue(new KeyValuePair<GraphicsDevice, int>(graphics, patchSegmentCount), out value))
+            if (resourceDictionary.TryGetValue(new SurfaceGeometryKey(graphics, patchSegmentCount, topology), out value))
             {
-                result = value.Target;
-                if (result != null)
+                if (value.TryGetTarget(out result))
                     return result;
-                resourceDictionary.Remove(new KeyValuePair<GraphicsDevice, int>(graphics, patchSegmentCount));
+                resourceDictionary.Remove(new SurfaceGeometryKey(graphics, patchSegmentCount, topology));
             }
 
-            result = (SurfaceGeometry)Activator.CreateInstance(typeof(SurfaceGeometry), graphics, patchSegmentCount);
+            result = new SurfaceGeometry(graphics, patchSegmentCount, topology);
             value = new WeakReference<SurfaceGeometry>(result);
-            resourceDictionary.Add(new KeyValuePair<GraphicsDevice, int>(graphics, patchSegmentCount), value);
+            resourceDictionary.Add(new SurfaceGeometryKey(graphics, patchSegmentCount, topology), value);
 
             return result;
         }
-        static Dictionary<KeyValuePair<GraphicsDevice, int>, WeakReference<SurfaceGeometry>> resourceDictionary = new Dictionary<KeyValuePair<GraphicsDevice, int>, WeakReference<SurfaceGeometry>>();
+        static Dictionary<SurfaceGeometryKey, WeakReference<SurfaceGeometry>> resourceDictionary = new Dictionary<SurfaceGeometryKey, WeakReference<SurfaceGeometry>>();
 
         /// <summary>
         /// Enables the level of detail. By default it is not enabled.
@@ -104,7 +105,7 @@
 
             if (level > MaxLevelOfDetail)
                 throw new ArgumentOutOfRangeException("Max level of detail value allowed is " + MaxLevelOfDetail);
-                        
+
             // Resize index buffer
             if (IndexBuffer == null || IndexBuffer.IsDisposed)
             {
@@ -146,7 +147,7 @@
                 {
                     if (LevelOfDetailEnabled || (lod == 0 && i == 0))
                     {
-                        startIndices.Add(start = GetIndicesForLevel(patchSegmentCount, lod,
+                        startIndices.Add(start = GetIndicesForLevel(lod,
                             ((i >> 0) & 1) == 1, ((i >> 1) & 1) == 1,
                             ((i >> 2) & 1) == 1, ((i >> 3) & 1) == 1, indices, start));
                     }
@@ -166,7 +167,7 @@
             int level = 0;
             int step = 1;
             while (level <= maxLod)
-            { 
+            {
                 indexCount += step * step * 6 * 16;
                 step *= 2;
                 level++;
@@ -177,21 +178,21 @@
         /// <summary>
         /// Gets the indices for the specified detail level.
         /// </summary>
-        public static int GetIndicesForLevel(int patchSegmentCount, int level, bool left, bool right, bool bottom, bool top, ushort[] indices, int startIndex)
+        public int GetIndicesForLevel(int level, bool left, bool right, bool bottom, bool top, ushort[] indices, int startIndex)
         {
             int step = patchSegmentCount;
             for (int i = 0; i < level; ++i)
                 step >>= 1;
 
             int n = Math.Max(step / 2, 1);
-            int lengh = step == 1 ? 6 : Indices.Length;
+            int lengh = step == 1 ? 6 : GetIndices().Length;
             for (int y = 0; y < n; ++y)
             {
                 for (int x = 0; x < n; ++x)
                 {
                     for (int i = 0; i < lengh; ++i)
                     {
-                        Point point = Indices[i /*InvertWindingOrder(i)*/];
+                        Point point = Points[GetIndices()[i]];
                         if (left && x == 0 && point.Y == 1 && point.X == 0)
                             point.Y = 0;
                         if (right && x == n - 1 && point.Y == 1 && point.X == 2)
@@ -251,7 +252,7 @@
 
             return (ushort)(x + y * (patchSegmentCount + 1));
         }
-        
+
         private static int InvertWindingOrder(int i)
         {
             int mod = i % 3;
@@ -276,7 +277,7 @@
             int n = (x % 2) + (y % 2) * 2;
             for (int i = 0; i < 6; ++i)
             {
-                Point pt = Indices[i + n * 6];
+                Point pt = Points[GetIndices()[i + n * 6]];
 
                 triangles[i].X = pt.X + (x / 2) * 2;
                 triangles[i].Y = pt.Y + (y / 2) * 2;
@@ -284,7 +285,7 @@
             return triangles;
         }
         static Point[] triangles = new Point[6];
-        
+
         /// <summary>
         /// Gets the indices of points that takes the following 8 triangles to makes up a square block.
         ///  ____ ____
@@ -301,20 +302,49 @@
             new Point(0, 2), new Point(1, 2), new Point(2, 2),
         };
 
-        static Point[] Indices = new Point[] 
+        static int[] IndicesBottomLeftUpperRightCrossed = new int[] 
         {
-            Points[0], Points[4], Points[3], 
-            Points[0], Points[1], Points[4], 
-
-            Points[1], Points[2], Points[4], 
-            Points[4], Points[2], Points[5], 
-
-            Points[3], Points[4], Points[6], 
-            Points[6], Points[4], Points[7], 
-
-            Points[4], Points[8], Points[7], 
-            Points[5], Points[8], Points[4], 
+            0, 4, 3,  0, 1, 4,
+            1, 2, 4,  4, 2, 5,
+            3, 4, 6,  6, 4, 7,
+            4, 8, 7,  5, 8, 4,
         };
+
+        static int[] IndicesBottomRightUpperLeftCrossed = new int[] 
+        {
+            0, 1, 3,  3, 1, 4,
+            1, 2, 5,  4, 1, 5,
+            3, 4, 7,  6, 3, 7,
+            4, 5, 7,  5, 8, 7,
+        };
+
+        static int[] IndicesBottomLeftUpperRight = new int[] 
+        {
+            0, 1, 3,  3, 1, 4,
+            1, 2, 4,  4, 2, 5,
+            3, 4, 6,  6, 4, 7,
+            4, 5, 7,  5, 8, 7,
+        };
+
+        static int[] IndicesBottomRightUpperLeft = new int[] 
+        {
+            0, 4, 3,  0, 1, 4,
+            1, 2, 5,  4, 1, 5,
+            3, 4, 7,  6, 3, 7,
+            4, 8, 7,  5, 8, 4,
+        };
+
+        private int[] GetIndices()
+        {
+            switch (topology)
+            {
+                case SurfaceTopology.BottomLeftUpperRightCrossed: return IndicesBottomLeftUpperRightCrossed;
+                case SurfaceTopology.BottomRightUpperLeftCrossed: return IndicesBottomRightUpperLeftCrossed;
+                case SurfaceTopology.BottomLeftUpperRight: return IndicesBottomLeftUpperRight;
+                case SurfaceTopology.BottomRightUpperLeft: return IndicesBottomRightUpperLeft;
+                default: throw new NotSupportedException("Surface topology not supported");
+            }
+        }
 
         /// <summary>
         /// The input must be a power of two.
@@ -358,6 +388,37 @@
                 IndexBuffer.Dispose();
                 IndexBuffer = null;
             }
+        }
+    }
+
+    class SurfaceGeometryKey
+    {
+        public GraphicsDevice GraphicsDevice;
+        public int PatchSegmentCount;
+        public SurfaceTopology Topology;
+
+        public SurfaceGeometryKey(GraphicsDevice graphics, int patchSegmentCount, SurfaceTopology topology)
+        {
+            this.GraphicsDevice = graphics;
+            this.PatchSegmentCount = patchSegmentCount;
+            this.Topology = topology;
+        }
+    }
+
+    class SurfaceGeometryKeyEqualityComparer : IEqualityComparer<SurfaceGeometryKey>
+    {
+        public bool Equals(SurfaceGeometryKey x, SurfaceGeometryKey y)
+        {
+            return x.GraphicsDevice == y.GraphicsDevice &&
+                   x.PatchSegmentCount == y.PatchSegmentCount &&
+                   x.Topology == y.Topology;
+        }
+
+        public int GetHashCode(SurfaceGeometryKey obj)
+        {
+            return obj.GraphicsDevice.GetHashCode() ^
+                   obj.PatchSegmentCount.GetHashCode() ^
+                   obj.Topology.GetHashCode();
         }
     }
 }

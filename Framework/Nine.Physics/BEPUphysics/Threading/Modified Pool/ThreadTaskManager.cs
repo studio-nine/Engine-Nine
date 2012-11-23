@@ -172,7 +172,7 @@ namespace BEPUphysics.Threading
                     {
                         RemoveThread();
                     }
-                    allThreadsIdleNotifier.Close();
+                    allThreadsIdleNotifier.Dispose();
                     allThreadsIdleNotifier = null;
                 }
             }
@@ -254,7 +254,6 @@ namespace BEPUphysics.Threading
             private readonly object initializationInformation;
             private readonly ThreadTaskManager manager;
             private readonly ConcurrentDeque<TaskEntry> taskData;
-            private readonly Thread thread;
             private readonly Action<object> threadStart;
             private bool disposed;
             private int index;
@@ -263,16 +262,23 @@ namespace BEPUphysics.Threading
             internal WorkerThread(int index, ThreadTaskManager manager, Action<object> threadStart, object initializationInformation)
             {
                 this.manager = manager;
-                thread = new Thread(ThreadExecutionLoop);
-                thread.IsBackground = true;
                 taskData = new ConcurrentDeque<TaskEntry>();
                 this.threadStart = threadStart;
                 this.initializationInformation = initializationInformation;
                 UpdateIndex(index);
+
+#if WINRT
+                Windows.System.Threading.ThreadPool.RunAsync(op => ThreadExecutionLoop(), 
+                    Windows.System.Threading.WorkItemPriority.Normal, 
+                    Windows.System.Threading.WorkItemOptions.TimeSliced);
+#else
+                var thread = new Thread(ThreadExecutionLoop);
+                thread.IsBackground = true;
                 //#if WINDOWS
                 //                ResourcePool.addThreadID(thread.ManagedThreadId);
                 //#endif
                 thread.Start();
+#endif
             }
 
             ~WorkerThread()
@@ -289,7 +295,7 @@ namespace BEPUphysics.Threading
                     if (!disposed)
                     {
                         disposed = true;
-                        resetEvent.Close();
+                        resetEvent.Dispose();
                         resetEvent = null;
                         manager.workers.Remove(this);
                         GC.SuppressFinalize(this);

@@ -198,7 +198,11 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
         //Improving the cell set operations directly should improve that problem and the query times noticeably.
 
 
-        SpinLock cellSetLocker = new SpinLock();
+#if WINRT
+        System.Threading.SpinLock cellSetLocker = new System.Threading.SpinLock();
+#else
+        private readonly SpinLock cellSetLocker = new SpinLock();
+#endif
         void UpdateEntry(int i)
         {
 

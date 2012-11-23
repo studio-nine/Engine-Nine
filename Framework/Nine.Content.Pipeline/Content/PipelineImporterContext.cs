@@ -4,19 +4,21 @@
 
     class PipelineImporterContext : ContentImporterContext
     {
-        public PipelineImporterContext()
-        {
+        private PipelineBuilder pipelineBuilder;
 
+        public PipelineImporterContext(PipelineBuilder builder)
+        {
+            this.pipelineBuilder = builder;
         }
 
         public override void AddDependency(string filename)
         {
-
+            pipelineBuilder.ResolveExternalReference(filename);
         }
 
         public override string IntermediateDirectory
         {
-            get { return PipelineConstants.IntermediateDirectory; }
+            get { return pipelineBuilder.Constants.IntermediateDirectory; }
         }
 
         public override ContentBuildLogger Logger
@@ -26,7 +28,7 @@
 
         public override string OutputDirectory
         {
-            get { return PipelineConstants.OutputDirectory; }
+            get { return pipelineBuilder.Constants.OutputDirectory; }
         }
     }
 }

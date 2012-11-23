@@ -1,6 +1,7 @@
 ﻿using System;
 using BEPUphysics.DataStructures;
 using BEPUphysics.Entities;
+using BEPUphysics.Threading;
 
 namespace BEPUphysics.DeactivationManagement
 {
@@ -189,7 +190,12 @@ namespace BEPUphysics.DeactivationManagement
             }
         }
 
+#if WINRT        
+        internal System.Threading.SpinLock simulationIslandChangeLocker = new System.Threading.SpinLock();
+#else
         internal BEPUphysics.Threading.SpinLock simulationIslandChangeLocker = new BEPUphysics.Threading.SpinLock();
+#endif
+
         void TryToCompressIslandHierarchy()
         {
 

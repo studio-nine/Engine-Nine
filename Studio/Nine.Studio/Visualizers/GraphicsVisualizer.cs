@@ -38,7 +38,7 @@
                         Drawable = CreateRuntimeObject(e.GraphicsDevice, Editable);
                         LoadContent();
                     }
-                    Draw(e.DeltaTime);
+                    Draw((float)e.DeltaTime.TotalSeconds);
                 };
             }
             return sharedDrawingSurface;
@@ -53,6 +53,6 @@
         }
 
         protected virtual void LoadContent() { }
-        protected abstract void Draw(TimeSpan elapsedTime);
+        protected abstract void Draw(float elapsedTime);
     }
 }

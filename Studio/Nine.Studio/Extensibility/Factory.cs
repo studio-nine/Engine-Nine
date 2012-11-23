@@ -5,7 +5,7 @@
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    /// Represents a factory that can create a new document.
+    /// Represents a factory that can create a new project item.
     /// </summary>
     public interface IFactory
     {
@@ -17,13 +17,13 @@
         /// <summary>
         /// Creates a new object of this document type.
         /// </summary>
-        object Create(Editor editor, object parent);
+        object Create(Project project, object container);
     }
 
     /// <summary>
-    /// Generic base class implementing IDocumentType
+    /// Generic base class implementing IFactory
     /// </summary>
-    public abstract class Factory<T, TParent> : IFactory
+    public abstract class Factory<T, TContainer> : IFactory
     {
         public GraphicsDevice GraphicsDevice
         {
@@ -33,14 +33,15 @@
 
         static Factory()
         {
-            // Force graphics device service to be initialized upfront to walkaround a bug in Win8.
+            // Force graphics device service to be initialized upfront to walk around a bug in Win8.
             graphicsDevice = Nine.Graphics.GraphicsDeviceService.AddRef().GraphicsDevice;
         }
-        
+
         public Editor Editor { get; private set; }
+        public Project Project { get; private set; }
         public Type TargetType { get { return typeof(T); } }
 
-        public virtual object Create(TParent parent)
+        public virtual object Create(TContainer container)
         {
             var type = typeof(T);
             var graphicsDeviceConstructor = type.GetConstructor(
@@ -50,13 +51,15 @@
             return Activator.CreateInstance<T>();
         }
 
-        object IFactory.Create(Editor editor, object parent)
+        object IFactory.Create(Project project, object container)
         {
-            Verify.IsNotNull(editor, "editor");
-            Verify.IsAssignableFrom(parent, typeof(TParent), "parent");
+            Verify.IsNotNull(project, "project");
+            if (container != null)
+                Verify.IsAssignableFrom(container, typeof(TContainer), "container");
 
-            Editor = editor;
-            var createdObject = Create((TParent)parent);
+            Project = project;
+            Editor = project.Editor;
+            var createdObject = Create((TContainer)container);
 
             Verify.IsNotNull(createdObject, "createdObject");
             return createdObject;

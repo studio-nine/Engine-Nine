@@ -7,20 +7,21 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Nine.Studio;
     using Nine.Studio.Extensibility;
+    using Nine.Graphics.Design;
+    using Nine.Design;
 
     [TestClass]
     public class EditorTest
     {
         const string ProjectName = "TestProject";
-        const string WorldFactory = "WorldFactory";
 
         [TestMethod]
         public void TestNewProjectSaveLoad()
         {
-            Editor editor = Editor.Launch();
-            editor.Extensions.LoadDefault();
+            var editor = new Editor();
+            editor.LoadExtensions();
 
-            var project = editor.CreateProject(ProjectName);
+            var project = editor.CreateProject("Project", Path.GetRandomFileName());
             project.Save();
             editor.Close();
 
@@ -28,13 +29,13 @@
         }
 
         [TestMethod]
-        public void TestNewProjectNewWorldSaveLoad()
+        public void TestNewProjectNewSceneSaveLoad()
         {
-            Editor editor = Editor.Launch();
-            editor.Extensions.LoadDefault();
-            
-            var project = editor.CreateProject(ProjectName);
-            var projectItem = project.CreateProjectItem(WorldFactory);
+            var editor = new Editor();
+            editor.LoadExtensions();
+
+            var project = editor.CreateProject("Project", Path.GetRandomFileName());
+            var projectItem = project.Create(new SceneFactory());
 
             Assert.IsNotNull(projectItem.ObjectModel);
             
@@ -51,12 +52,12 @@
         [DeploymentItem(@"Content\TerrainTex.png")]
         public void TestNewProjectImportTextureSaveLoad()
         {
-            Editor editor = Editor.Launch();
-            editor.Extensions.LoadDefault();
+            var editor = new Editor();
+            editor.LoadExtensions();
 
-            var project = editor.CreateProject(ProjectName);
+            var project = editor.CreateProject("Project", Path.GetRandomFileName());
 
-            project.Import(@"TerrainTex.png");
+            project.Import(Path.GetFullPath(@"TerrainTex.png"));
             project.Save();
             editor.Close();
             
@@ -67,24 +68,30 @@
         }
 
         [TestMethod]
-        public void TestNewProjectNewDocumentAddReferenceSaveLoad()
+        public void TestNewProjectNewSceneAddReferenceSaveLoad()
         {
-            Editor editor = Editor.Launch();
-            editor.Extensions.LoadDefault();
-            Project p1 = editor.CreateProject("Proj1.xml");
-            Project p2 = editor.CreateProject("Proj2.xml");
-            ProjectItem d1 = p1.CreateProjectItem("Hi");
-            ProjectItem d2 = p2.CreateProjectItem("Bye");
+            var editor = new Editor();
+            editor.LoadExtensions();
+            
+            var p1 = editor.CreateProject("Proj1", Path.GetRandomFileName());
+            var p2 = editor.CreateProject("Proj2", Path.GetRandomFileName());
+
+            var d1 = p1.Create(new Scene());
+            var d2 = p2.Create(new Scene());
+
             d1.AddReference(d2);
+
             Assert.IsTrue(d1.References.Contains(d2));
             Assert.IsTrue(p1.References.Contains(p2));
-            d2.Save("Doc2.txt");
+
             p2.Save();
-            d1.Save("Doc1.txt");
             p1.Save();
             editor.Close();
+
             Assert.AreEqual(0, editor.Projects.Count);
-            p1 = editor.OpenProject("Proj1.xml");
+            
+            p1 = editor.OpenProject(editor.RecentFiles[0]);
+
             Assert.AreEqual(2, editor.Projects.Count);
             Assert.AreEqual(1, p1.ProjectItems.Count);
             Assert.AreEqual(1, p1.ProjectItems[0].References.Count);
@@ -94,10 +101,10 @@
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestNewProjectAddCircularReference()
         {
-            Editor editor = Editor.Launch();
-            Project p1 = editor.CreateProject("p1");
-            Project p2 = editor.CreateProject("p2");
-            Project p3 = editor.CreateProject("p3");
+            var editor = new Editor();
+            Project p1 = editor.CreateProject("p1", Path.GetRandomFileName());
+            Project p2 = editor.CreateProject("p2", Path.GetRandomFileName());
+            Project p3 = editor.CreateProject("p3", Path.GetRandomFileName());
             p1.AddReference(p2);
             p2.AddReference(p3);
             p3.AddReference(p1);
@@ -105,13 +112,14 @@
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void TestNewProjectNewDocumentAddCircularReference()
+        public void TestNewProjectNewSceneAddCircularReference()
         {
-            Editor editor = Editor.Launch();
-            Project p1 = editor.CreateProject("p1");
-            Project p2 = editor.CreateProject("p2");
-            ProjectItem d1 = p1.CreateProjectItem("Hi");
-            ProjectItem d2 = p2.CreateProjectItem("Bye");
+            var editor = new Editor();
+            editor.LoadExtensions();
+            Project p1 = editor.CreateProject("p1", Path.GetRandomFileName());
+            Project p2 = editor.CreateProject("p2", Path.GetRandomFileName());
+            ProjectItem d1 = p1.Create(new Scene());
+            ProjectItem d2 = p2.Create(new Scene());
             d1.AddReference(d2);
             d2.AddReference(d1);
         }
@@ -130,8 +138,8 @@
         [TestMethod]
         public void TestCustomAttributeProvider()
         {
-            Editor editor = Editor.Launch();
-            editor.Extensions.AttributeProviders = new IAttributeProvider[] { new TestAttributeProvider() };
+            var editor = new Editor();
+            editor.Extensions.AttributeProviders.Add(new TestAttributeProvider());
 
             var properties = TypeDescriptor.GetProperties(new TestAttributeProvider())
                                            .OfType<PropertyDescriptor>()

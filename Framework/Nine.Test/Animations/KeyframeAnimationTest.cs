@@ -45,7 +45,7 @@
             animation.Play();
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(TimeSpan.FromSeconds(5));
+            animation.Update(5);
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -56,7 +56,7 @@
             
             animation.StartupDirection = AnimationDirection.Backward;
             animation.Play();
-            animation.Update(TimeSpan.FromSeconds(2));
+            animation.Update(2);
 
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(3), animation.Position);
@@ -70,10 +70,10 @@
             animation.Repeat = 2.5f;
             animation.Play();
 
-            animation.Update(TimeSpan.FromSeconds(12.4));
+            animation.Update(12.4f);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(TimeSpan.FromSeconds(0.1));
+            animation.Update(0.1f);
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -86,15 +86,15 @@
             animation.AutoReverse = true;
             animation.Play();
 
-            animation.Update(TimeSpan.FromSeconds(6));
+            animation.Update(6);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(4), animation.Position);
 
-            animation.Update(TimeSpan.FromSeconds(5));
+            animation.Update(5);
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(1), animation.Position);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(TimeSpan.FromSeconds(1.5));
+            animation.Update(1.5f);
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -113,7 +113,7 @@
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(2), animation.Position);
 
-            animation.Update(TimeSpan.FromSeconds(3));
+            animation.Update(3);
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
 
             animation.StartupDirection = AnimationDirection.Backward;
@@ -121,7 +121,7 @@
             animation.Seek(1);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(TimeSpan.FromSeconds(1.001));
+            animation.Update(1.001f);
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -135,15 +135,15 @@
             animation.AutoReverse = true;
             animation.Play();
 
-            animation.Update(TimeSpan.FromSeconds(3));
+            animation.Update(3);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(4), animation.Position);
 
-            animation.Update(TimeSpan.FromSeconds(2.5));
+            animation.Update(2.5f);
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(1), animation.Position);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(TimeSpan.FromSeconds(0.75));
+            animation.Update(0.75f);
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -164,7 +164,7 @@
             animation.Play();
 
             for (int i = 0; i < 20; ++i)
-                animation.Update(TimeSpan.FromSeconds(0.25));
+                animation.Update(0.25f);
 
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
             Assert.AreEqual(6, index);
@@ -180,7 +180,7 @@
 
             for (int i = 0; i < 5; ++i)
             {
-                animation.Update(TimeSpan.FromSeconds(1));
+                animation.Update(1);
             }
             Assert.AreEqual(0, animation.CurrentFrame);
 
@@ -189,7 +189,7 @@
 
             for (int i = 0; i < 5; ++i)
             {
-                animation.Update(TimeSpan.FromSeconds(1));
+                animation.Update(1);
             }
             Assert.AreEqual(1, animation.CurrentFrame);
 
@@ -199,7 +199,7 @@
 
             for (int i = 0; i < 50; ++i)
             {
-                animation.Update(TimeSpan.FromSeconds(0.5));
+                animation.Update(0.5f);
                 System.Diagnostics.Trace.WriteLine(animation.CurrentFrame);
             }
             Assert.AreEqual(1, animation.CurrentFrame);
@@ -221,7 +221,7 @@
             animation.Play();
 
             for (int i = 0; i < 200; ++i)
-                animation.Update(TimeSpan.FromSeconds(0.25));
+                animation.Update(0.25f);
 
             Assert.AreEqual(AnimationState.Stopped, animation.State);
             Assert.AreEqual(3, frameCount);

@@ -1,23 +1,24 @@
-﻿namespace Nine.Graphics.ParticleEffects.Design
+﻿namespace Nine.Graphics.Design
 {
     using System;
     using System.ComponentModel;
-    using System.ComponentModel.Composition;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Studio;
     using Nine.Studio.Extensibility;
     using Nine.Studio.Visualizers;
+    using Nine.Graphics.ParticleEffects;
+
     [Export(typeof(IFactory))]
     [LocalizedCategory("Graphics")]
-    [LocalizedDisplayName("ParticleEffect")]
+    [LocalizedDisplayName("ParticleEffect", typeof(Nine.Design.Resources))]
     public class ParticleEffectFactory : Factory<ParticleEffect, object>
     {
 
     }
 
-    [Default]
     [Export(typeof(IVisualizer))]
+    [ExportMetadata(IsDefault=true)]
     public class ParticleEffectVisualizer : GraphicsVisualizer<ParticleEffect>
     {
         [EditorBrowsable()]
@@ -26,10 +27,10 @@
 
         public ParticleEffectVisualizer()
         {
-            DisplayName = string.Format(Strings.ViewFormat, Strings.ParticleEffect);
+            DisplayName = string.Format(Strings.ViewFormat, Nine.Design.Resources.ParticleEffect);
         }
 
-        protected override void Draw(TimeSpan elapsedTime)
+        protected override void Draw(float elapsedTime)
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
         }

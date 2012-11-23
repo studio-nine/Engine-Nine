@@ -391,7 +391,7 @@ namespace Nine.Graphics.Materials
 
             // Time
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.totalSeconds) },
-            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.elapsedSeconds) },
+            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.elapsedTime) },
 
             // Materials and textures
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },

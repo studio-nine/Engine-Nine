@@ -82,7 +82,7 @@ namespace Nine
         public bool Expand(TNode node)
         {
             if (node.Tree != this)
-                throw new InvalidOperationException(Strings.NodeMustBeAPartOfTheTree);
+                throw new InvalidOperationException("The node must be a child of this tree.");
 
             if (node.depth >= maxDepth)
                 return false;
@@ -176,7 +176,7 @@ namespace Nine
         public int Collapse(TNode target, Predicate<TNode> condition)
         {
             if (target.Tree != this)
-                throw new InvalidOperationException(Strings.NodeMustBeAPartOfTheTree);
+                throw new InvalidOperationException("The node must be a child of this tree.");
 
             int count = 1;
             bool collapsedThisNode = true;
@@ -222,7 +222,7 @@ namespace Nine
         public void Traverse(TNode target, Func<TNode, TraverseOptions> result)
         {
             if (target.Tree != this)
-                throw new InvalidOperationException(Strings.NodeMustBeAPartOfTheTree);
+                throw new InvalidOperationException("The node must be a child of this tree.");
 
             StackCount = 0;
             Stack[StackCount++] = target;

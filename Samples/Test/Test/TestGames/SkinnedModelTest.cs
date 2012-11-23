@@ -96,7 +96,7 @@ namespace Test
             model.Animations.Play(blended);
         }
 
-        protected override void Update(TimeSpan elapsedTime)
+        protected override void Update(float elapsedTime)
         {
             Matrix view, projection;
             if (camera.TryGetViewFrustum(out view, out projection))

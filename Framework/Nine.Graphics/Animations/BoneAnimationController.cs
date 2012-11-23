@@ -58,11 +58,11 @@ namespace Nine.Animations
         /// Determines whether animation should terminate or continue.
         /// Signals related events.
         /// </summary>
-        public override void Update(TimeSpan elapsedTime)
+        public override void Update(float elapsedTime)
         {
             if (State == Animations.AnimationState.Playing)
             {
-                shouldLerp = (elapsedTime.TotalSeconds * Speed) < (1.0 / FramesPerSecond);
+                shouldLerp = (elapsedTime * Speed) < (1.0 / FramesPerSecond);
             }
 
             base.Update(elapsedTime);

@@ -51,23 +51,15 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86"/>
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
-    <Reference Include="mscorlib">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="System.Xml" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
       <Private>False</Private>
@@ -77,7 +69,7 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Reader.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Content.Reader.Generated.cs">
       <Link>Nine.Content.Reader.Generated.cs</Link>
     </Compile>
     <Compile Include="Animations\AnimationReference.cs" />
@@ -87,6 +79,7 @@
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="Content\ContentProperties.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Design\RectangleConverter.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="SpatialQueryExtensions.cs" />
@@ -121,40 +114,32 @@
     <Compile Include="BoundingBoxExtensions.cs" />
     <Compile Include="ContentSerializableAttribute.cs" />
     <Compile Include="SpacePartitionTree.cs" />
-    <Compile Include="OctreeSceneManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="OctreeSceneManager.cs" />
     <Compile Include="UniformGrid.cs" />
     <Compile Include="NotificationCollection.cs" />
     <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
     <Compile Include="Xaml.cs" />
-    <None Include="..\..\Tools\TextTemplates\Content.Reader.tth">
+    <None Include="..\TextTemplates\Content.Reader.tth">
       <Link>TextTempates\Content.Reader.tth</Link>
     </None>
-    <None Include="..\..\Tools\TextTemplates\Content.tth">
+    <None Include="..\TextTemplates\Content.tth">
       <Link>TextTempates\Content.tth</Link>
     </None>
-    <None Include="..\..\Tools\TextTemplates\Content.Writer.tth">
+    <None Include="..\TextTemplates\Content.Writer.tth">
       <Link>TextTempates\Content.Writer.tth</Link>
     </None>
-    <None Include="..\..\Tools\TextTemplates\Document.tth">
+    <None Include="..\TextTemplates\Document.tth">
       <Link>TextTempates\Document.tth</Link>
     </None>
     <Compile Include="Input\InputEventArgs.cs" />
     <Compile Include="Input\IInputSource.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="SpatialQuery.cs" />
-    <Compile Include="Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Triangle.cs" />
     <Compile Include="Octree.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
-    <Compile Include="Input\Input.cs">
-    </Compile>
+    <Compile Include="Input\Input.cs" />
     <Compile Include="GridSceneManager.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="RayExtensions.cs" />
@@ -165,17 +150,7 @@
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>

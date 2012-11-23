@@ -178,14 +178,14 @@ namespace Nine.Graphics.Drawing
         private void Begin(DrawingContext context)
         {
             if (hasSceneBegin || hasLightBegin)
-                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
+                throw new InvalidOperationException("Begin cannot be called until End has been successfully called.");
 
             hasSceneBegin = true;
 
             CreateDepthNormalBuffers();
 
             // Maintain render target stack
-            GraphicsExtensions.PushRenderTarget(context.graphics, null);
+            Nine.Graphics.GraphicsExtensions.PushRenderTarget(context.graphics, null);
 
             renderTargetBinding[0] = new RenderTargetBinding(depthBuffer);
             renderTargetBinding[1] = new RenderTargetBinding(normalBuffer);
@@ -202,9 +202,9 @@ namespace Nine.Graphics.Drawing
         private void End(DrawingContext context)
         {
             if (!hasSceneBegin)
-                throw new InvalidOperationException(Strings.NotInBeginEndPair);
+                throw new InvalidOperationException("Begin must be called successfully before End can be called.");
 
-            GraphicsExtensions.PopRenderTarget(context.graphics);
+            Nine.Graphics.GraphicsExtensions.PopRenderTarget(context.graphics);
 
             context.textures[TextureUsage.DepthBuffer] = DepthBuffer;
             context.textures[TextureUsage.NormalBuffer] = NormalBuffer;
@@ -218,7 +218,7 @@ namespace Nine.Graphics.Drawing
         private void BeginLights(DrawingContext context)
         {
             if (hasLightBegin || hasSceneBegin)
-                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
+                throw new InvalidOperationException("Begin cannot be called until End has been successfully called.");
 
             hasLightBegin = true;
 
@@ -246,7 +246,7 @@ namespace Nine.Graphics.Drawing
         private void DrawLight(DrawingContext context, IDeferredLight light)
         {
             if (!hasLightBegin)
-                throw new InvalidOperationException(Strings.NotInBeginEndPair);
+                throw new InvalidOperationException("Begin must be called successfully before End can be called.");
 
             var lightGeometry = light.PrepareLightGeometry(context);
             if (lightGeometry == null || !lightGeometry.OnAddedToView(context))
@@ -276,7 +276,7 @@ namespace Nine.Graphics.Drawing
         private Texture2D EndLights(DrawingContext context)
         {
             if (!hasLightBegin)
-                throw new InvalidOperationException(Strings.NotInBeginEndPair);
+                throw new InvalidOperationException("Begin must be called successfully before End can be called.");
 
             lightBuffer.End();
             hasLightBegin = false;

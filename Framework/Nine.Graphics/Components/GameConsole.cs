@@ -169,7 +169,7 @@ namespace Nine.Components
             lastLine = "";
         }
 
-        public void Draw(TimeSpan elapsedTime)
+        public void Draw(float elapsedTime)
         {
             if (Font == null)
                 return;
@@ -204,7 +204,7 @@ namespace Nine.Components
             }
 
             // Update text cursor
-            currentBlinkTime += (float)elapsedTime.TotalMilliseconds;
+            currentBlinkTime += elapsedTime;
 
             if (currentBlinkTime > CursorBlinkInterval)
                 currentBlinkTime = -CursorBlinkInterval;
@@ -227,7 +227,7 @@ namespace Nine.Components
             spriteBatch.End();
         }
 
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             Input.CatchKeyboardInput(ref lastLine, 80);
         }

@@ -106,7 +106,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Draws the specified scene.
         /// </summary>
-        public static void Draw(this Scene scene, GraphicsDevice graphics, TimeSpan elapsedTime)
+        public static void Draw(this Scene scene, GraphicsDevice graphics, float elapsedTime)
         {
             GetDrawingContext(scene, graphics).Draw(elapsedTime);
         }
@@ -114,7 +114,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Draws diagnostic information of the target scene.
         /// </summary>
-        public static void DrawDiagnostics(this Scene scene, GraphicsDevice graphics, TimeSpan elapsedTime)
+        public static void DrawDiagnostics(this Scene scene, GraphicsDevice graphics, float elapsedTime)
         {
             GetDrawingContext(scene, graphics).DrawDiagnostics();
         }

@@ -1,9 +1,12 @@
 ﻿namespace Nine.Studio
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -11,196 +14,274 @@
     /// <summary>
     /// Represents an instance of editor object.
     /// </summary>
-    public class Editor : INotifyPropertyChanged, IDisposable
+    public class Editor : ObservableObject, IDependencyProvider<Project>, IDisposable
     {
+        #region Properties
         /// <summary>
         /// Gets the title of the editor.
         /// </summary>
         public string Title { get { return Strings.Title; } }
 
         /// <summary>
-        /// Gets the version of the editor
+        /// Gets the title of the editor independent of the current culture settings.
         /// </summary>
-        public Version Version { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
+        public string TitleInvarient
+        {
+            get { return Strings.ResourceManager.GetString("Title", CultureInfo.InvariantCulture); }
+        }
+
+        /// <summary>
+        /// Gets the version of the editor.
+        /// </summary>
+        public Version Version
+        {
+            get { return version ?? (version = Assembly.GetExecutingAssembly().GetName().Version); }
+        }
+        private Version version;
+
+        /// <summary>
+        /// Gets the string representation of the editor version.
+        /// </summary>
+        public string VersionString
+        {
+            get { return versionString ?? (versionString = string.Concat(Version.Major, ".", Version.Minor)); }
+        }
+        private string versionString;
+
+        /// <summary>
+        /// Gets or sets the current active project.
+        /// </summary>
+        public Project ActiveProject
+        {
+            get { return activeProject; }
+            set
+            {
+                if (!Projects.Contains(value))
+                    throw new InvalidOperationException();
+                activeProject = value;
+                NotifyPropertyChanged();
+            }
+        }
+        private Project activeProject;
 
         /// <summary>
         /// Gets all the projects currently opened by the editor.
         /// </summary>
-        public ReadOnlyObservableCollection<Project> Projects { get; private set; }
+        public IList<Project> Projects { get; private set; }
+        internal IList<Project> projects;
 
         /// <summary>
         /// Gets a list of recent files.
         /// </summary>
-        public ReadOnlyObservableCollection<string> RecentProjects { get; private set; }
+        public IList<string> RecentFiles { get; private set; }
+        private IList<string> recentFiles;
 
         /// <summary>
         /// Gets the extensions of this editor.
         /// </summary>
         public EditorExtensions Extensions { get; private set; }
 
-        /// <summary>
-        /// Gets or sets user data.
-        /// </summary>
-        public object Tag { get; set; }
+        internal readonly string AppDataDirectory;
+        internal readonly string SettingsDirectory;
+        #endregion
 
-        private ObservableCollection<string> recentFiles;
-        private ObservableCollection<Project> projects;
-
-        #region Initialize
+        #region Methods
         /// <summary>
         /// Creates a new instance of the editor.
         /// </summary>
-        public static Editor Launch()
+        public Editor()
         {
-            Assert.CheckThread();
-            Trace.TraceInformation("Launching editor {0}", DateTime.Now);
-            Trace.TraceInformation("Working directory {0}", Directory.GetCurrentDirectory());
-            return new Editor();
-        }
-
-        static Editor()
-        {
-            AppDomain.CurrentDomain.UnhandledException += (o, e) => 
+            AppDomain.CurrentDomain.UnhandledException += (o, e) =>
             {
-                Trace.TraceError("Unhandled Exception Occured");
+                Trace.TraceError("Unhandled Exception Occurred:");
                 Trace.WriteLine(e.ExceptionObject.ToString());
                 if (e.ExceptionObject is Exception && ((Exception)e.ExceptionObject).InnerException != null)
                 {
                     Trace.WriteLine("Inner Exception:");
                     Trace.WriteLine(((Exception)e.ExceptionObject).InnerException.ToString());
                 }
-                Trace.Flush(); 
+                Trace.Flush();
             };
 
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            AppDataDirectory = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.ApplicationData), TitleInvarient, VersionString);
+
+            if (!Directory.Exists(AppDataDirectory))
+                Directory.CreateDirectory(AppDataDirectory);
+            
+            SettingsDirectory = Path.Combine(AppDataDirectory, "Settings");
+            if (!Directory.Exists(SettingsDirectory))
+                Directory.CreateDirectory(SettingsDirectory);
+
             InitializeTrace();
+
+            Trace.TraceInformation("Launching Editor {0}", DateTime.Now);
+            Trace.TraceInformation("Working Directory {0}", Directory.GetCurrentDirectory());
+            Trace.TraceInformation("Application Data Directory {0}", AppDataDirectory);
+
+            Extensions = new EditorExtensions();
+            Projects = new ReadOnlyObservableCollection<Project>(projects = new ObservableCollection<Project>());
+            RecentFiles = new ReadOnlyObservableCollection<string>(recentFiles = new BindableCollection<string>(new ObservableCollection<string>()));
+
+            LoadRecentFiles();
         }
 
-        private static void InitializeTrace()
+        private void InitializeTrace()
         {
             try
             {
-                string appDataPath = Path.Combine(Environment.GetFolderPath(
-                    Environment.SpecialFolder.ApplicationData), Strings.Title, Global.VersionString);
+                var traceFile = Path.Combine(AppDataDirectory, "Editor.log");
+                if (File.Exists(traceFile))
+                    File.Delete(traceFile);
 
-                if (!Directory.Exists(appDataPath))
-                    Directory.CreateDirectory(appDataPath);
-
-                Stream traceOutput = new FileStream(Path.Combine(appDataPath, Global.TraceFilename), FileMode.Create);
-
-                Trace.AutoFlush = true;
-                Trace.Listeners.Add(new TextWriterTraceListener(traceOutput));
+                Trace.AutoFlush = true;                
+                Trace.Listeners.Add(new TextWriterTraceListener(File.OpenWrite(traceFile)));
             }
             catch { }
         }
 
-        private Editor()
-        {
-            Extensions = new EditorExtensions();
-            projects = new ObservableCollection<Project>();
-            Projects = new ReadOnlyObservableCollection<Project>(projects);
-            recentFiles = new ObservableCollection<string>();
-            RecentProjects = new ReadOnlyObservableCollection<string>(recentFiles);           
+        const string RecentFilesName = "RecentFiles";
+        const int MaxRecentFilesCount = 10;
 
-            LoadRecentFiles();
-        }
-        #endregion
-
-        #region Recent Files
         private void LoadRecentFiles()
         {
-            object value = null;
-            string keyName = Global.GetUserRegistry("Recent");
-            
             recentFiles.Clear();
-            for (int i = 0; i < Constants.MaxRecentFilesCount; i++)
-            {
-                if ((value = Microsoft.Win32.Registry.GetValue(keyName, i.ToString(), null)) == null)
-                    break;
-
-                if (File.Exists(value.ToString()) && !RecentProjects.Contains(value.ToString(), StringComparer.OrdinalIgnoreCase))
-                    recentFiles.Add(value.ToString());
-            }
+            var filename = Path.Combine(AppDataDirectory, RecentFilesName);
+            if (File.Exists(filename))
+                recentFiles.AddRange(File.ReadAllLines(filename).Take(MaxRecentFilesCount));
         }
 
         private void SaveRecentFiles()
         {
-            string keyName = Global.GetUserRegistry("Recent");
-            for (int i = 0; i < Constants.MaxRecentFilesCount; i++)
-            {
-                if (i < RecentProjects.Count)
-                    Microsoft.Win32.Registry.SetValue(keyName, i.ToString(), RecentProjects[i]);
-                else
-                    Microsoft.Win32.Registry.SetValue(keyName, i.ToString(), "");
-            }
+            File.WriteAllLines(Path.Combine(AppDataDirectory, RecentFilesName), recentFiles.Take(MaxRecentFilesCount));
         }
 
-        internal void RecentProject(string fileName)
+        internal void AddRecentProject(string fileName)
         {
-            if (!string.IsNullOrEmpty(fileName) && File.Exists(fileName))
+            if (!string.IsNullOrEmpty(fileName) && File.Exists(fileName) &&
+                !recentFiles.Any(file => FileHelper.FileNameEquals(file, fileName)))
             {
-                recentFiles.Remove(fileName);
                 recentFiles.Insert(0, fileName);
-                while (RecentProjects.Count > Constants.MaxRecentFilesCount)
-                    recentFiles.RemoveAt(RecentProjects.Count - 1);
-
+                if (recentFiles.Count > MaxRecentFilesCount)
+                    recentFiles.RemoveAt(recentFiles.Count - 1);
                 System.Windows.Shell.JumpList.AddToRecentCategory(fileName);
-
                 SaveRecentFiles();
             }
         }
-        #endregion
+
+        private void RemoveRecentProject(string fileName)
+        {
+            for (var i = 0; i < recentFiles.Count; ++i)
+            {
+                if (FileHelper.FileNameEquals(recentFiles[i], fileName))
+                {
+                    recentFiles.RemoveAt(i);
+                    --i;
+                }
+            }
+            SaveRecentFiles();
+        }
+
+        /// <summary>
+        /// Loads the editor extensions from the target path.
+        /// </summary>
+        public void LoadExtensions(string path = ".")
+        {
+            Extensions.Load(this, path);
+
+            LoadSettings();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+
+        /// <summary>
+        /// Returns the specified settings from editor extensions.
+        /// </summary>
+        public T FindSettings<T>() where T : Nine.Studio.Extensibility.ISettings
+        {
+            return Extensions.Settings.Select(x => x.Value).OfType<T>().FirstOrDefault();
+        }
+
+        private void LoadSettings()
+        {
+            Directory.GetFiles(SettingsDirectory).ForEach(fileName => LoadSettings(fileName));
+        }
+
+        private void LoadSettings(string fileName)
+        {
+            try
+            {
+                Trace.TraceInformation("Loading settings " + fileName);
+                var result = System.Xaml.XamlServices.Load(fileName);
+                Extensions.Settings.Where(x => x.Value.GetType() == result.GetType())
+                          .ForEach(x => x.Value = (Nine.Studio.Extensibility.ISettings)result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceWarning("Error loading settings file " + fileName);
+                FileHelper.DeleteFile(fileName);
+            }
+        }
+
+        private void SaveSettings()
+        {
+            Extensions.Settings.ForEach(x => System.Xaml.XamlServices.Save(
+                Path.Combine(SettingsDirectory, x.Value.GetType().FullName), x.Value));
+        }
+        
+        /// <summary>
+        /// Creates an empty project in the editor.
+        /// </summary>
+        public Project CreateProject(string name, string directory)
+        {
+            var result = new Project(this, name, directory);
+            projects.Add(result);
+            ActiveProject = result;
+            return result;
+        }
+        
+        /// <summary>
+        /// Creates a project from a existing file in the editor.
+        /// </summary>
+        public Project OpenProject(string fileName)
+        {
+            try
+            {
+                var result = new Project(this, fileName);
+                projects.Add(result);
+                ActiveProject = result;
+                return result;
+            }
+            catch
+            {
+                RemoveRecentProject(fileName);
+                throw;
+            }
+        }
 
         /// <summary>
         /// Closes the current project.
         /// </summary>
         public void Close()
         {
-            Assert.CheckThread();
-            Projects.ForEach(proj => proj.Close());
+            var order = new int[Projects.Count];
+            DependencyGraph.Sort(Projects, order, this);
+            order.Select(i => Projects[i]).ToArray().ForEach(proj => proj.Close());
+
+            SaveSettings();
+
+            Trace.TraceInformation("Editor closed.");
         }
-
-        /// <summary>
-        /// Creates a new project instance with a fileName.
-        /// </summary>
-        public Project CreateProject(string name)
+        
+        int IDependencyProvider<Project>.GetDependencies(IList<Project> elements, int index, int[] dependencies)
         {
-            Assert.CheckThread();
-            Verify.IsValidPath(name, "name");
-
-            var project = new Project(this, name);
-            projects.Add(project);
-            RecentProject(project.FileName);
-            Trace.TraceInformation("Project {0} created at {1}", project.Name, project.FileName);
-            return project;
-        }
-
-        /// <summary>
-        /// Opens a new project instance from file.
-        /// </summary>
-        public Project OpenProject(string fileName)
-        {
-            Assert.CheckThread();
-            Verify.FileExists(fileName, "fileName");
-
-            var project = projects.FirstOrDefault(p => Global.FilenameEquals(p.FileName, fileName));
-            if (project != null)
-                return project;
-
-            project = new Project(this, fileName);
-            projects.Add(project);
-            RecentProject(fileName);
-            Trace.TraceInformation("Project {0} opened at {1}", project.Name, project.FileName);
-            return project;
-        }
-
-        internal void CloseProject(Project project)
-        {
-            Assert.CheckThread();
-            Verify.IsNotNull(project, "project");
-            Verify.IsTrue(project.Editor == this, "");
-
-            projects.Remove(project);
-            Trace.TraceInformation("Project {0} closed at {1}", project.Name, project.FileName);
+            int i = 0;
+            foreach (var proj in Projects)
+                if (proj.References.Contains(elements[index]))
+                    dependencies[i++] = ((IList)elements).IndexOf(proj);
+            return i;
         }
 
         /// <summary>
@@ -213,28 +294,11 @@
             if (ProgressChanged != null)
                 ProgressChanged(this, new ProgressChangedEventArgs((int)(100 * percentage), text));
         }
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            Assert.CheckThread();
-
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
+                
+        void IDisposable.Dispose()
         {
             Close();
-            Extensions.Dispose();
-            Trace.TraceInformation("Editor disposed");
         }
+        #endregion
     }
 }

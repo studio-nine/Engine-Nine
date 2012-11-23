@@ -77,7 +77,7 @@
                 graphics.Textures[0] = adoptionMaterial.texture;
                 graphics.Textures[1] = lastFrame;
                 graphics.SamplerStates[0] = graphics.SamplerStates[1] = SamplerState.PointClamp;
-                adoptionMaterial.effect.Delta.SetValue((1 - (float)Math.Pow(0.98f, 30 * context.elapsedSeconds)) * Speed);
+                adoptionMaterial.effect.Delta.SetValue((1 - (float)Math.Pow(0.98f, 30 * context.elapsedTime)) * Speed);
 
                 base.Draw(context, drawables);
 

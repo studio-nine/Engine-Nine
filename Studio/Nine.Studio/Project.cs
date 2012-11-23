@@ -14,8 +14,12 @@
     /// <summary>
     /// Represents project that manages multiple documents.
     /// </summary>
-    public class Project : INotifyPropertyChanged, IDisposable
+    public class Project : ObservableObject, IDisposable
     {
+        #region Properties
+        public static readonly string SourceFileExtension = ".nine";
+        public static readonly string OutputFileExtension = ".n";
+
         /// <summary>
         /// Gets the fileName of this project.
         /// </summary>
@@ -41,22 +45,17 @@
         /// </summary>
         public bool IsModified
         {
-            get { return _IsModified; }
+            get { return isModified; }
             set
             {
-                if (value != _IsModified)
+                if (value != isModified)
                 {
-                    _IsModified = value;
-                    NotifyPropertyChanged("IsModified");
+                    isModified = value;
+                    NotifyPropertyChanged();
                 }
             }
         }
-        private bool _IsModified;
-        
-        /// <summary>
-        /// Gets a list of documents owned by this project.
-        /// </summary>
-        public ReadOnlyObservableCollection<ProjectItem> ProjectItems { get; private set; }
+        private bool isModified = true;
 
         /// <summary>
         /// Gets the containing editor instance.
@@ -64,45 +63,123 @@
         public Editor Editor { get; private set; }
 
         /// <summary>
+        /// Gets or sets the active project item.
+        /// </summary>
+        public ProjectItem ActiveProjectItem
+        {
+            get { return activeProjectItem; }
+            set 
+            {
+                if (activeProjectItem != value)
+                {
+                    if (value != null && (value.Project != this || !ProjectItems.Contains(value)))
+                        throw new InvalidOperationException();                 
+                    activeProjectItem = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        private ProjectItem activeProjectItem;
+        
+        /// <summary>
+        /// Gets a list of documents owned by this project.
+        /// </summary>
+        public ObservableCollection<ProjectItem> ProjectItems { get; private set; }
+
+        /// <summary>
         /// Gets a collection of projects that is referenced by this project.
         /// </summary>
-        public ReadOnlyObservableCollection<Project> References { get; private set; }
+        public ObservableCollection<Project> References { get; private set; }
+        #endregion
 
-        /// <summary>
-        /// Gets or sets any user data that will be saved with the project file.
-        /// </summary>
-        public object Tag { get; set; }
-
-        internal ObservableCollection<Project> InnerReferences;
-        internal ObservableCollection<ProjectItem> InnerProjectItems;
-
-        /// <summary>
-        /// Initializes a new project instance.
-        /// </summary>
-        internal Project(Editor editor, string fileName)
+        #region Methods
+        private Project(Editor editor)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(editor, "editor");
-            Verify.IsNeitherNullNorEmpty(fileName, "fileName");
 
             this.Editor = editor;
-            this.IsModified = true;
-            this.InnerProjectItems = new ObservableCollection<ProjectItem>();
-            this.InnerReferences = new ObservableCollection<Project>();
-            this.ProjectItems = new ReadOnlyObservableCollection<ProjectItem>(InnerProjectItems);
-            this.References = new ReadOnlyObservableCollection<Project>(InnerReferences);
+            this.ProjectItems = new ObservableCollection<ProjectItem>();
+            this.References = new ObservableCollection<Project>();
+            this.ProjectItems.CollectionChanged += (sender, e) => { isModified = true; };
+            this.References.CollectionChanged += (sender, e) => { isModified = true; };
+        }
 
-            if (!Path.HasExtension(fileName))
-                fileName = fileName + Global.ProjectExtension;
-            FileName = Path.GetFullPath(fileName);
-            Name =  Path.GetFileNameWithoutExtension(FileName);
-            Directory = Path.GetDirectoryName(FileName);
-            if (File.Exists(FileName))
+        internal Project(Editor editor, string name, string directory) : this(editor)
+        {
+            Verify.IsValidPath(directory, "directory");
+            Verify.IsValidFileName(name, "name");
+
+            Name = name;
+            Directory = Path.GetFullPath(Path.Combine(directory, name));
+            FileName = Path.Combine(Directory, name + SourceFileExtension);
+
+            if (System.IO.Directory.Exists(Directory) &&
+               (System.IO.Directory.GetFiles(Directory).Length > 0 || 
+                System.IO.Directory.GetDirectories(Directory).Length > 0))
             {
-                Load();
-                FileInfo info = new FileInfo(FileName);
-                IsReadOnly = info.Exists && info.IsReadOnly;
+                throw new ArgumentException(string.Format(Strings.DirectoryNotEmpty, name));
             }
+        }
+
+        internal Project(Editor editor, string fileName) : this(editor)
+        {
+            Verify.FileExists(fileName, "fileName");
+
+            FileName = Path.GetFullPath(fileName);
+            Name = Path.GetFileNameWithoutExtension(FileName);
+            Directory = Path.GetDirectoryName(FileName);
+
+            Load();
+            FileInfo info = new FileInfo(FileName);
+            IsReadOnly = info.Exists && info.IsReadOnly;
+        }
+
+        /// <summary>
+        /// Creates a new project item from a factory.
+        /// </summary>
+        public ProjectItem Create(IFactory factory)
+        {
+            Verify.IsNotNull(factory, "factory");
+
+            var result = new ProjectItem(this, factory.Create(this, null));
+            ProjectItems.Add(result);
+            return result;
+        }
+        
+        /// <summary>
+        /// Creates a new project item with the specified object model inside the target project.
+        /// </summary>
+        public ProjectItem Create(object objectModel)
+        {
+            var result = new ProjectItem(this, objectModel);
+            ProjectItems.Add(result);
+            return result;
+        }
+
+        /// <summary>
+        /// Imports a project item from a source file to this project.
+        /// </summary>
+        /// <param name="fileName">
+        /// The full path to the file to be imported, or a relative path relative to the project directory.
+        /// </param>
+        public ProjectItem Import(string fileName)
+        {
+            var fileExtension  = FileHelper.NormalizeExtension(Path.GetExtension(fileName));
+            var importer = Editor.Extensions.Importers.FirstOrDefault(
+                i => i.Value.GetSupportedFileExtensions().Any(
+                    ext => FileHelper.NormalizeExtension(ext) == fileExtension));
+
+            return importer != null ? Import(fileName, importer.Value) : null;
+        }
+
+        /// <summary>
+        /// Imports a project item from a source file to this project.
+        /// </summary>
+        public ProjectItem Import(string fileName, IImporter importer)
+        {
+            var result = new ProjectItem(this, fileName, importer);
+            ProjectItems.Add(result);
+            return result;
         }
 
         /// <summary>
@@ -110,14 +187,13 @@
         /// </summary>
         public void AddReference(Project project)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(project, "project");
 
             if (HasCircularDependency(project, this))
                 throw new InvalidOperationException("Target object has a circular dependency");
 
-            if (!InnerReferences.Contains(project))
-                InnerReferences.Add(project);
+            if (!References.Contains(project))
+                References.Add(project);
         }
 
         /// <summary>
@@ -125,15 +201,14 @@
         /// </summary>
         public void RemoveReference(Project project)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(project, "project");
 
-            InnerReferences.Remove(project);
+            References.Remove(project);
         }
 
         private static bool HasCircularDependency(Project subtree, Project root)
         {
-            return !subtree.InnerReferences.All(node => node != root && !HasCircularDependency(node, root));
+            return !subtree.References.All(node => node != root && !HasCircularDependency(node, root));
         }
 
         /// <summary>
@@ -141,292 +216,69 @@
         /// </summary>
         public void Close()
         {
-            Assert.CheckThread();
-
             // Can't close this when any project references this one
             if (Editor.Projects.Any(project => project.References.Contains(this)))
                 throw new InvalidOperationException("Cannot close project because it is referenced by other projects");
 
-            References.ForEach(project => project.Close());
             ProjectItems.ForEach(doc => doc.Close());
-            Editor.CloseProject(this);
+            Editor.projects.Remove(this);
+            References.ForEach(project => project.Close());
+            if (Editor.ActiveProject == this)
+                Editor.ActiveProject = null;
+
+            Trace.TraceInformation("Project {0} closed.", Name);
         }
 
-        #region Serialization
-        /// <summary>
-        /// Loads the project.
-        /// </summary>
         private void Load()
         {
-            Load(FileName);
-        }
-
-        /// <summary>
-        /// Loads the project from the input file.
-        /// </summary>
-        private void Load(string fileName)
-        {
-            Verify.IsNeitherNullNorEmpty(fileName, "fileName");
-
-            using (FileStream stream = new FileStream(fileName ?? FileName, FileMode.Open))
-            {
-                Load(stream);
-            }
-        }
-
-        /// <summary>
-        /// Loads the project from the input stream.
-        /// </summary>
-        private void Load(Stream stream)
-        {
-            var xDoc = XDocument.Load(stream);
-            var root = xDoc.Descendants("Project").First();
+            var project = (Nine.Studio.Xaml.Project)System.Xaml.XamlServices.Load(FileName);
             
-            if (Global.VersionString != root.Attribute("Version").Value)
-            {
-                throw new InvalidOperationException(
-                    string.Format("Invalid version. Expected {0}, got {1}",
-                    Global.VersionString, root.Attribute("Version").Value));
-            }
+            if (Version.Parse(project.Version) > Version.Parse(Editor.VersionString))
+                throw new InvalidOperationException(Strings.VersionNotSupported);
 
-            var documentsNode = root.Descendants("ProjectItems").Where(e => e.Parent == root).FirstOrDefault();
-            if (documentsNode != null)
-            {
-                var documents = documentsNode.Descendants("ProjectItem").Where(e => e.Parent == documentsNode).ToArray();
-                for (int i = 0; i < documents.Length; i++)
-                {
-                    var doc = documents[i];
-                    var fileName = doc.Attribute("FileName").Value;
-
-                    Editor.NotifyProgressChanged(fileName, 1.0f * (i + 1) / documents.Length);
-
-                    var document = Import(Path.Combine(Directory, fileName));
-                    var docReferences = doc.Descendants("References").Where(e => e.Parent == doc).FirstOrDefault();
-                    if (docReferences != null)
-                    {
-                        foreach (var docReference in docReferences.Descendants("Reference"))
-                        {
-                            var projectName = docReference.Attribute("Project").Value;
-                            var referenceProject = projectName == null ? this : Editor.OpenProject(projectName);
-                            document.AddReference(referenceProject.Import(docReference.Attribute("FileName").Value));
-                        }
-                    }
-                    document.Tag = LoadTag(doc);
-                }
-            }
-
-            var referencesNode = root.Descendants("References").Where(e => e.Parent == root).FirstOrDefault();
-            if (referencesNode != null)
-            {
-                foreach (var reference in referencesNode.Descendants("Reference"))
-                {
-                    AddReference(Editor.OpenProject(reference.Value));
-                }
-            }
-           
-            Tag = LoadTag(root);
-
-            IsModified = false;
+            project.References.ForEach(x => Editor.OpenProject(x.Source));
+            project.ProjectItems.ForEach(x => Import(x.Source, x.Importer));
         }
-
-        private object LoadTag(XElement node)
-        {
-            var tag = node.Descendants("Tag").Where(e => e.Parent == node).FirstOrDefault();
-            if (tag != null)
-            {
-                Type type = Type.GetType(tag.Attribute("Type").Value);
-                return new XmlSerializer(type).Deserialize(tag.Descendants().First().CreateReader());
-            }
-            return null;
-        }
-
+        
         /// <summary>
         /// Saves the project.
         /// </summary>
         public void Save()
         {
-            Assert.CheckThread();
-            Assert.IsNeitherNullNorEmpty(FileName);
-
             if (IsModified)
-                FileOperation.BackupAndSave(FileName, Save);
-            
-            Editor.RecentProject(FileName);
-        }
-
-        /// <summary>
-        /// Saves the project to the output stream.
-        /// </summary>
-        private void Save(Stream stream)
-        {
-            Assert.CheckThread();
-
-            SaveProject(stream);
+                FileHelper.BackupAndSave(FileName, SaveProject);
 
             foreach (ProjectItem projectItem in ProjectItems)
             {
-                try
-                {
-                    if (projectItem.IsModified && projectItem.CanSave)
-                        projectItem.Save();
-                }
-                catch (Exception e)
-                {
-                    Trace.TraceError("Failed saving {0}", projectItem.FileName);
-                    Trace.WriteLine(e.ToString());
-                    throw;
-                }
+                if (projectItem.IsModified && projectItem.CanSave)
+                    projectItem.Save();
             }
 
             IsModified = false;
+            Editor.AddRecentProject(FileName);
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         private void SaveProject(Stream stream)
         {
-            new XDocument(
-                new XElement("Project", new XAttribute("Version", Global.VersionString),
-                    new XElement("ProjectItems", from doc in ProjectItems select 
-                        new XElement("ProjectItem",
-                            new XAttribute("FileName", doc.RelativeFilename),
-                            new XElement("References", from reference in doc.References select
-                                new XElement("Reference", new XAttribute("FileName", reference.FileName)
-                                                        , new XAttribute("Project", reference.Project.FileName))))))).Save(stream);
-
+            var project = new Nine.Studio.Xaml.Project() { Version = Editor.VersionString };
+            project.References.AddRange(References.Select(x => new Nine.Studio.Xaml.ProjectReference() { Source = x.FileName }));
+            project.ProjectItems.AddRange(ProjectItems.Select(x => new Nine.Studio.Xaml.ProjectItem() { Source = x.RelativeFilename, Importer = x.Importer != null ? x.Importer.Value : null }));
+            System.Xaml.XamlServices.Save(stream, project);
         }
-        #endregion
 
-        #region ProjectItems
-        /// <summary>
-        /// Creates a new document with the specified factory type name.
-        /// </summary>
-        public ProjectItem CreateProjectItem(string factoryTypeName)
+        protected override void NotifyPropertyChanged(string propertyName = null)
         {
-            Assert.CheckThread();
-            Verify.IsNeitherNullNorEmpty(factoryTypeName, "factoryTypeName");
-            return CreateProjectItem(Editor.Extensions.Factories.Single(x => x.Value.GetType().Name == factoryTypeName).Value);
+            isModified = true;
+            base.NotifyPropertyChanged(propertyName);
         }
-
-        /// <summary>
-        /// Creates a new document with the specified factory.
-        /// </summary>
-        public ProjectItem CreateProjectItem(IFactory factory)
-        {
-            Assert.CheckThread();
-            Verify.IsNotNull(factory, "factory");
-            return CreateProjectItem(factory.Create(Editor, this));
-        }
-
-        /// <summary>
-        /// Creates a new document with the specified object.
-        /// </summary>
-        public ProjectItem CreateProjectItem(object objectModel)
-        {
-            Assert.CheckThread();
-            Verify.IsNotNull(objectModel, "objectModel");
-            
-            ProjectItem document = new ProjectItem(this, objectModel, null);
-            InnerProjectItems.Add(document);
-            IsModified = true;
-            Trace.TraceInformation("ProjectItem {0} of type {1} created at {2}", document.Name, document.Metadata.DisplayName, document.FileName);            
-            return document;
-        }
-
-        /// <summary>
-        /// Opens a document from file with the specified serializer
-        /// </summary>
-        public ProjectItem Import(string fileName, IImporter importer)
-        {
-            Verify.IsNotNull(importer, "importer");
-            Verify.IsValidPath(fileName, "fileName");
-
-            //ImporterParameters = ReflectionHelper.SaveProperties(importer);
-
-            using (FileStream stream = File.OpenRead(fileName))
-            {
-                List<string> dependencies = new List<string>();
-                var objectModel = importer.Import(stream, dependencies);
-                Verify.IsNotNull(objectModel, "objectModel");
-
-                ProjectItem document = new ProjectItem(this, objectModel, fileName);
-                dependencies.ForEach(d => document.AddReference(Import(d)));
-                InnerProjectItems.Add(document);
-                IsModified = true;
-                return document;
-            }
-        }
-
-        /// <summary>
-        /// Imports a document from file
-        /// </summary>
-        public ProjectItem Import(string fileName)
-        {
-            Verify.FileExists(fileName, "fileName");
-
-            List<string> dependencies = new List<string>();
-            using (FileStream stream = File.OpenRead(fileName))
-            {
-                object documentObject = null;
-                string ext = Path.GetExtension(fileName).ToLowerInvariant();
-
-                byte[] tempHeader = new byte[Constants.MaxHeaderBytes];                
-                int count = stream.Read(tempHeader, 0, tempHeader.Length);
-                stream.Seek(0, SeekOrigin.Begin);
-                byte[] header = new byte[count];
-                Array.Copy(tempHeader, header, count);
-
-                var importers = Editor.Extensions.Importers.Where(i => i.Value.MatchFileExtension(ext)).Concat(
-                                Editor.Extensions.Importers.Where(i => (i.Value.FileExtensions == null || i.Value.FileExtensions.Count() == 0)))
-                                                 .Select(i => i.Value).ToList();
-
-                foreach (IImporter documentSerializer in importers)
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    if (documentSerializer.CheckSupported(tempHeader))
-                    {
-                        try
-                        {
-                            dependencies.Clear();
-                            documentObject = documentSerializer.Import(stream, dependencies);
-                            break;
-                        }
-                        catch (Exception e)
-                        {
-                            Trace.TraceInformation("Failed loading {0} using {1}", fileName, documentSerializer.GetType());
-
-                            Trace.WriteLine(e);
-                        }
-                    }
-                }
-
-                if (documentObject == null)
-                    throw new InvalidOperationException(string.Format("Failed loading {0}", fileName));
-
-                ProjectItem document = new ProjectItem(this, documentObject, fileName);
-                dependencies.ForEach(d => document.AddReference(Import(d)));
-                InnerProjectItems.Add(document);
-                IsModified = true;
-                return document;
-            }
-        }
-        #endregion
         
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             Close();
         }
+        #endregion
     }
 }

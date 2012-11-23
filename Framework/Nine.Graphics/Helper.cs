@@ -59,7 +59,7 @@
                 case PrimitiveType.TriangleStrip:
                     return indexCount - 2;
                 default:
-                    throw new InvalidOperationException(Strings.InvalidPrimitive);
+                    throw new InvalidOperationException("The input primitive is invalid.");
             }
         }
     }

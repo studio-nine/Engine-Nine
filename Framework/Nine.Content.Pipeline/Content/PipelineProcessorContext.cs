@@ -13,35 +13,35 @@
             this.pipelineBuilder = pipelineBuilder;
         }
 
-        public override void AddDependency(string filename) { }
+        public override void AddDependency(string filename) { pipelineBuilder.ResolveExternalReference(filename); }
         public override void AddOutputFile(string filename) { }
 
         public override TOutput BuildAndLoadAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName)
         {
-            var builder = new PipelineBuilder();
-            return builder.BuildAndLoad<TOutput>(sourceAsset.Filename, processorName, processorParameters, importerName);
+            var builder = pipelineBuilder.Clone();
+            return builder.BuildAndLoad<TOutput>(pipelineBuilder.ResolveExternalReference(sourceAsset.Filename), processorName, processorParameters, importerName);
         }
 
         public override ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName, string assetName)
         {
-            var builder = new PipelineBuilder();
-            return new ExternalReference<TOutput>(builder.Build(sourceAsset.Filename, processorName, processorParameters, importerName, assetName));
+            var builder = pipelineBuilder.Clone();
+            return new ExternalReference<TOutput>(builder.Build(pipelineBuilder.ResolveExternalReference(sourceAsset.Filename), processorName, processorParameters, importerName, assetName));
         }
 
         public override TOutput Convert<TInput, TOutput>(TInput input, string processorName, OpaqueDataDictionary processorParameters)
         {
-            var builder = new PipelineBuilder();
+            var builder = pipelineBuilder.Clone();
             return builder.Convert<TInput, TOutput>(input, processorName, processorParameters);
         }
         
         public override string BuildConfiguration
         {
-            get { return PipelineConstants.BuildConfiguration; }
+            get { return pipelineBuilder.Constants.BuildConfiguration; }
         }
 
         public override string IntermediateDirectory
         {
-            get { return PipelineConstants.IntermediateDirectory; }
+            get { return pipelineBuilder.Constants.IntermediateDirectory; }
         }
 
         public override ContentBuildLogger Logger
@@ -51,7 +51,7 @@
 
         public override string OutputDirectory
         {
-            get { return PipelineConstants.OutputDirectory; }
+            get { return pipelineBuilder.Constants.OutputDirectory; }
         }
 
         public override string OutputFilename
@@ -66,12 +66,12 @@
 
         public override TargetPlatform TargetPlatform
         {
-            get { return TargetPlatform.Windows; }
+            get { return pipelineBuilder.Constants.TargetPlatform; }
         }
 
         public override GraphicsProfile TargetProfile
         {
-            get { return PipelineConstants.TargetProfile; }
+            get { return pipelineBuilder.Constants.TargetProfile; }
         }
     }
 }

@@ -581,15 +581,16 @@
             int indexCount = part.PrimitiveCount * 3;
             int indexBytes = part.IndexBuffer.IndexElementSize == IndexElementSize.SixteenBits ? 2 : 4;
 
-            var Vertices = WeakVertices.Target;
-            var Indices = WeakIndices.Target;
-            if (Vertices == null || Vertices.Length < elementCount)
-                WeakVertices.Target = Vertices = new Vector3[elementCount];
-            if (Indices == null || Indices.Length < indexCount)
-                WeakIndices.Target = Indices = new ushort[indexCount];
+            Vector3[] vertices;
+            if (!WeakVertices.TryGetTarget(out vertices) || vertices == null || vertices.Length < elementCount)
+                WeakVertices.SetTarget(vertices = new Vector3[elementCount]);
+
+            ushort[] indices;
+            if (!WeakIndices.TryGetTarget(out indices) || indices == null || indices.Length < indexCount)
+                WeakIndices.SetTarget(indices = new ushort[indexCount]);
             
-            part.VertexBuffer.GetData<Vector3>(part.VertexOffset * stride, Vertices, 0, elementCount, stride);
-            part.IndexBuffer.GetData<ushort>(part.StartIndex * indexBytes, Indices, 0, indexCount);
+            part.VertexBuffer.GetData<Vector3>(part.VertexOffset * stride, vertices, 0, elementCount, stride);
+            part.IndexBuffer.GetData<ushort>(part.StartIndex * indexBytes, indices, 0, indexCount);
 
             Matrix mx = new Matrix();
             if (transform != null)
@@ -597,7 +598,7 @@
 
             for (int i = 0; i < indexCount; ++i)
             {
-                Vector3 v = Vertices[Indices[i]];
+                Vector3 v = vertices[indices[i]];
                 if (transform != null)
                 {
                     Vector3.Transform(ref v, ref mx, out v);

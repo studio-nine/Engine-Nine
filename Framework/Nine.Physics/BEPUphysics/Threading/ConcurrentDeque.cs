@@ -5,8 +5,11 @@ namespace BEPUphysics.Threading
     internal class ConcurrentDeque<T>
     {
         //public readonly object locker = new object();
-        //System.Threading.SpinLock locker = new System.Threading.SpinLock();
+#if WINRT
+        System.Threading.SpinLock locker = new System.Threading.SpinLock();
+#else
         private readonly SpinLock locker = new SpinLock();
+#endif
         internal T[] array;
 
         private int count;

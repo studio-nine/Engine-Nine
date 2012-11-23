@@ -315,7 +315,24 @@ namespace Nine
 
         #region Find
         /// <summary>
-        /// Performs a depth first search and finds the first descendant transformable with the specified name.
+        /// Performs a depth first search and finds the first descendant object with the specified type.
+        /// </summary>
+        public T Find<T>() where T : class
+        {
+            T result = null;
+            ContainerTraverser.Traverse<Object>(this, desendant =>
+            {
+                result = desendant as T;
+                if (result != null)
+                    return TraverseOptions.Stop;
+                result = null;
+                return TraverseOptions.Continue;
+            });
+            return result;
+        }
+
+        /// <summary>
+        /// Performs a depth first search and finds the first descendant object with the specified name.
         /// </summary>
         public T FindName<T>(string name) where T : class
         {
@@ -335,20 +352,6 @@ namespace Nine
                 return TraverseOptions.Continue;
             });
             return result;
-        }
-
-        /// <summary>
-        /// Finds the first direct child with the specified type
-        /// </summary>
-        public T Find<T>() where T : class
-        {
-            for (int i = 0; i < children.Count; ++i)
-            {
-                var child = children[i] as T;
-                if (child != null)
-                    return child;
-            }
-            return null;
         }
 
         /// <summary>
@@ -418,7 +421,7 @@ namespace Nine
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public virtual void Update(TimeSpan elapsedTime)
+        public virtual void Update(float elapsedTime)
         {
             foreach (var child in children)
             {

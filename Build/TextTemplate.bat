@@ -2,7 +2,7 @@
 
 setlocal
 
-pushd ..\Tools\TextTemplates
+pushd ..\Framework\TextTemplates
 
 for /f "delims=" %%i in ('dir /b /a-d "*.Reader.Generated.cs"') do (echo. > "%%i")
 for /f "delims=" %%i in ('dir /b /a-d "*.Writer.Generated.cs"') do (echo. > "%%i")

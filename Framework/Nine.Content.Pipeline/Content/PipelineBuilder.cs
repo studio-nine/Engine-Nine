@@ -12,26 +12,34 @@
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
     using Microsoft.Xna.Framework.Graphics;
-
-
+    
     /// <summary>
     /// Enables Xna framework content build without using MSBuild
     /// </summary>
     public class PipelineBuilder
     {
         internal string OutputFilename { get; private set; }
+        internal PipelineConstants Constants;
 
         private PipelineImporterContext importerContext;
         private PipelineProcessorContext processorContext;
 
         public ContentImporterContext ImporterContext
         {
-            get { return importerContext ?? (importerContext = new PipelineImporterContext()); }
+            get { return importerContext ?? (importerContext = new PipelineImporterContext(this)); }
         }
 
         public ContentProcessorContext ProcessorContext
         {
             get { return processorContext ?? (processorContext = new PipelineProcessorContext(this)); }
+        }
+
+        public PipelineBuilder(GraphicsDevice graphics = null,
+                               TargetPlatform targetPlatform = TargetPlatform.Windows,
+                               string intermediateDirectory = null,
+                               string outputDirectory = null)
+        {
+            Constants = new PipelineConstants(intermediateDirectory, outputDirectory, targetPlatform, graphics);
         }
 
         public string Build(string sourceAssetFile, string processorName, OpaqueDataDictionary processorParameters, string importerName, string assetName)
@@ -79,6 +87,9 @@
             {
                 OutputFilename = FindNextValidAssetName(assetName ?? Path.GetFileNameWithoutExtension(sourceAssetFile), ".xnb");
 
+                // Create a dummy file in case a nested build uses the same name
+                File.WriteAllText(OutputFilename, "");
+
                 contentImporter = contentImporter ?? FindImporter(null, sourceAssetFile);
                 if (contentImporter == null)
                     throw new InvalidOperationException(string.Format("Cannot find content importer for {0}", sourceAssetFile));
@@ -106,18 +117,74 @@
             }
         }
 
+        public TOutput Convert<TInput, TOutput>(TInput input, string processorName, OpaqueDataDictionary processorParameters)
+        {
+            try
+            {
+                var processor = ContentProcessors.FirstOrDefault(p => p.GetType().Name == processorName);
+                if (processor == null)
+                    throw new InvalidOperationException(string.Format("Cannot find processor {0}", processorName));
 
+                ApplyParameters(processor, processorParameters);
+                processorContext = processorContext ?? new PipelineProcessorContext(this);
+                return (TOutput)processor.Process(input, processorContext);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError("Error converting {0} with processor {1}", input.GetType().Name, processorName);
+                Trace.WriteLine(e);
+                throw new InvalidContentException("", e);
+            }
+        }
+
+        public ContentManager Content
+        {
+            get { return contentManager ?? (contentManager = new PipelineContentManager(Constants.GraphicsDevice)); }
+        }
+        private PipelineContentManager contentManager;
+
+        public TRuntime Load<TRuntime>(string sourceAssetFile)
+        {
+            return Load<TRuntime>(sourceAssetFile, null, null);
+        }
+
+        public TRuntime Load<TRuntime>(string sourceAssetFile, IContentImporter importer, IContentProcessor processor)
+        {
+            var content = BuildAndLoad<object>(sourceAssetFile, importer, processor, null);
+            if (content == null)
+                return default(TRuntime);
+            Compile(OutputFilename, content);
+            return Content.Load<TRuntime>(OutputFilename);
+        }
+
+        public event Func<string, string> ExternalReferenceResolve;
+
+        internal string ResolveExternalReference(string reference)
+        {
+            string result = reference;
+            if (ExternalReferenceResolve != null)
+            {
+                foreach (Func<string, string> resolve in ExternalReferenceResolve.GetInvocationList())
+                {
+                    var current = resolve(reference);
+                    if (!string.IsNullOrEmpty(current))
+                        result = current;
+                }
+            }
+            return result;
+        }
+
+        public PipelineBuilder Clone()
+        {
+            var result = new PipelineBuilder(Constants.GraphicsDevice, Constants.TargetPlatform, Constants.IntermediateDirectory, Constants.OutputDirectory);
+            result.ExternalReferenceResolve = this.ExternalReferenceResolve;
+            return result;
+        }
 
         public static ICollection<IContentImporter> ContentImporters { get; private set; }
         public static ICollection<IContentProcessor> ContentProcessors { get; private set; }
         public static ICollection<ContentTypeWriter> ContentWriters { get; private set; }
-        
-        public static ContentManager Content
-        {
-            get { return contentManager ?? (contentManager = new PipelineContentManager(PipelineConstants.GraphicsDevice)); }
-        }
-        private static PipelineContentManager contentManager;
-                
+                        
         static PipelineBuilder()
         {
             ContentImporters = new HashSet<IContentImporter>();
@@ -139,30 +206,13 @@
                 return ".";
             }
         }
-        
-        public static TRuntime Load<TRuntime>(string sourceAssetFile)
-        {
-            return Load<TRuntime>(sourceAssetFile, null, null);
-        }
 
-        public static TRuntime Load<TRuntime>(string sourceAssetFile, IContentImporter importer, IContentProcessor processor)
-        {
-            var builder = new PipelineBuilder();
-            var content = builder.BuildAndLoad<object>(sourceAssetFile, importer, processor, null);
-            if (content == null)
-                return default(TRuntime);
-            //if (FindRuntimeType(content) == content.GetType().AssemblyQualifiedName)
-            //    return (TRuntime)content;
-            Compile(builder.OutputFilename, content);
-            return Content.Load<TRuntime>(builder.OutputFilename);
-        }
-
-        private static string FindRuntimeType(object content)
+        private string FindRuntimeType(object content)
         {
             if (content == null)
                 return null;
             var contentWriter = ContentWriters.FirstOrDefault(writer => writer.TargetType == content.GetType());
-            return contentWriter != null ? contentWriter.GetRuntimeType(PipelineConstants.TargetPlatform) : content.GetType().AssemblyQualifiedName;
+            return contentWriter != null ? contentWriter.GetRuntimeType(Constants.TargetPlatform) : content.GetType().AssemblyQualifiedName;
         }
 
         private static IContentProcessor FindDefaultProcessor(IContentImporter importer)
@@ -203,7 +253,7 @@
             return StringComparer.OrdinalIgnoreCase.Equals(ext1, ext2);
         }
 
-        private static string FindNextValidAssetName(string assetName, string extension)
+        private string FindNextValidAssetName(string assetName, string extension)
         {
             int i = 0;
             string assetFilename;
@@ -211,37 +261,17 @@
             return assetFilename;
         }
 
-        private static string GetAssetFilename(string assetName, int i, string extension)
+        private string GetAssetFilename(string assetName, int i, string extension)
         {
             if (!Path.IsPathRooted(assetName))
-                assetName = Path.Combine(PipelineConstants.OutputDirectory, assetName);
+                assetName = Path.Combine(Constants.OutputDirectory, assetName);
 
             if (i > 0)
                 return assetName + i.ToString() + extension;
             return assetName + extension;
         }
 
-        public TOutput Convert<TInput, TOutput>(TInput input, string processorName, OpaqueDataDictionary processorParameters)
-        {
-            try
-            {
-                var processor = ContentProcessors.FirstOrDefault(p => p.GetType().Name == processorName);
-                if (processor == null)
-                    throw new InvalidOperationException(string.Format("Cannot find processor {0}", processorName));
-
-                ApplyParameters(processor, processorParameters);
-                processorContext = processorContext ?? new PipelineProcessorContext(this);
-                return (TOutput)processor.Process(input, processorContext);
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError("Error converting {0} with processor {1}", input.GetType().Name, processorName);
-                Trace.WriteLine(e);
-                throw new InvalidContentException("", e);
-            }
-        }
-
-        public static void Compile<T>(string outputFilename, T content)
+        public void Compile<T>(string outputFilename, T content)
         {
             if (!Directory.Exists(Path.GetDirectoryName(outputFilename)))
                 Directory.CreateDirectory(Path.GetDirectoryName(outputFilename));
@@ -252,7 +282,7 @@
             }
         }
 
-        public static void Compile<T>(Stream output, T content)
+        public void Compile<T>(Stream output, T content)
         {
             try
             {
@@ -262,7 +292,7 @@
                 var method = contentCompiler.GetType().GetMethod("Compile", BindingFlags.NonPublic | BindingFlags.Instance);
                 method.Invoke(contentCompiler, new object[] 
                 {
-                    output, content, TargetPlatform.Windows, GraphicsProfile.Reach, false, PipelineConstants.OutputDirectory, ".",
+                    output, content, TargetPlatform.Windows, GraphicsProfile.Reach, false, Constants.OutputDirectory, ".",
                 });
             }
             catch (Exception e)

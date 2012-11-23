@@ -54,13 +54,13 @@ namespace Nine.Components
         public void Update(GameTime gameTime)
         {
             if (Enabled && InnerComponent is Nine.IUpdateable)
-                ((Nine.IUpdateable)InnerComponent).Update(gameTime.ElapsedGameTime);
+                ((Nine.IUpdateable)InnerComponent).Update((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         public void Draw(GameTime gameTime)
         {
             if (Visible && InnerComponent is Nine.IDrawable)
-                ((Nine.IDrawable)InnerComponent).Draw(gameTime.ElapsedGameTime);
+                ((Nine.IDrawable)InnerComponent).Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
 

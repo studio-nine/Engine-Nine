@@ -16,8 +16,6 @@
         /// Controls the scale of the terrain. This will be the distance between
         /// vertices in the finished terrain mesh.
         /// </summary>
-        [DefaultValue(1.0f)]
-        [Description("The distance between vertices in the finished terrain mesh.")]
         public float Step { get; set; }
 
 
@@ -25,9 +23,17 @@
         /// Controls the height of the terrain. The heights of the vertices in the
         /// finished mesh will vary between 0 and -Bumpiness.
         /// </summary>
-        [DefaultValue(20.0f)]
-        [Description("Controls the height of the terrain.")]
         public float Height { get; set; }
+
+        /// <summary>
+        /// Determines whether the positions will be flipped on X axis.
+        /// </summary>
+        public bool FlipX { get; set; }
+
+        /// <summary>
+        /// Determines whether the positions will be flipped on X axis.
+        /// </summary>
+        public bool FlipY { get; set; }
 
 
         /// <summary>
@@ -66,13 +72,17 @@
 
             for (int y = 0; y < height; ++y)
             {
+                var yy = FlipY ? (height - y - 1) : y;
+
                 for (int x = 0; x < width; ++x)
                 {
-                    if (x < heightfield.Width && y < heightfield.Height)
-                        heightmap[i++] = heightfield.GetPixel(x, y) * Height;
+                    var xx = FlipX ? (width - x - 1) : x;
+
+                    if (xx < heightfield.Width && yy < heightfield.Height)
+                        heightmap[i++] = heightfield.GetPixel(xx, yy) * Height;
                     else
-                        heightmap[i++] = heightfield.GetPixel(Math.Min(x, heightfield.Width - 1),
-                                                              Math.Min(y, heightfield.Height - 1)) * Height;
+                        heightmap[i++] = heightfield.GetPixel(Math.Min(xx, heightfield.Width - 1),
+                                                              Math.Min(yy, heightfield.Height - 1)) * Height;
                 }
             }
 

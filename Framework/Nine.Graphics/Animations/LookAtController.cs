@@ -91,7 +91,7 @@ namespace Nine.Animations
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             bool hasTarget = Target.HasValue;
 
@@ -127,7 +127,7 @@ namespace Nine.Animations
                     desiredLookAt = Forward;
                 }
 
-                float maxRotation = (float)(RotationSpeed * elapsedTime.TotalSeconds);
+                float maxRotation = RotationSpeed * elapsedTime;
                 float currentRotation = (float)Math.Acos(Vector3.Dot(desiredLookAt, currentLookAt));
                 if (currentRotation > maxRotation)
                 {
@@ -142,9 +142,9 @@ namespace Nine.Animations
             }
 
             if (hasTarget)
-                desiredBlendWeight += (float)elapsedTime.TotalSeconds;
+                desiredBlendWeight += elapsedTime;
             else
-                desiredBlendWeight -= (float)elapsedTime.TotalSeconds;
+                desiredBlendWeight -= elapsedTime;
 
             if (desiredBlendWeight < 0)
                 desiredBlendWeight = 0;

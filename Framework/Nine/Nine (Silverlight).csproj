@@ -73,7 +73,7 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Reader.Generated.cs">
+    <Compile Include="..\TextTemplates\Nine.Content.Reader.Generated.cs">
       <Link>Nine.Content.Reader.Generated.cs</Link>
     </Compile>
     <Compile Include="AddHelper.cs" />
@@ -102,6 +102,7 @@
     <Compile Include="Components\IGameComponent.cs" />
     <Compile Include="Components\IUpdateable.cs" />
     <Compile Include="Components\ZipContentmanager.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContentLoader.cs" />
     <Compile Include="ContentSerializableAttribute.cs" />
@@ -148,7 +149,6 @@
     <Compile Include="Range.cs" />
     <Compile Include="SpacePartitionTree.cs" />
     <Compile Include="SpatialQuery.cs" />
-    <Compile Include="Strings.Designer.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="UniformGrid.cs" />
@@ -158,9 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Nine.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Strings.resx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

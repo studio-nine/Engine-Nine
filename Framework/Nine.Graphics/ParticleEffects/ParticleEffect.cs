@@ -189,6 +189,16 @@
         private BoundingBox boundingBox;
 
         /// <summary>
+        /// Gets or sets a value that is appended to the computed bounding box.
+        /// </summary>
+        public Vector3 BoundingBoxPadding
+        {
+            get { return boundingBoxPadding; }
+            set { boundingBoxPadding = value; OnTransformChanged(); }
+        }
+        private Vector3 boundingBoxPadding;
+
+        /// <summary>
         /// Gets or sets the data used for spatial query.
         /// </summary>
         object ISpatialQueryable.SpatialData { get; set; }
@@ -345,6 +355,8 @@
                 transformable.Transform = absoluteTransform;
 
             boundingBox = emitter.BoundingBox;
+            boundingBox.Min -= boundingBoxPadding;
+            boundingBox.Max += boundingBoxPadding;
 
             if (boundingBoxChanged != null)
                 boundingBoxChanged(this, EventArgs.Empty);
@@ -542,7 +554,7 @@
         /// <summary>
         /// Updates the particle system.
         /// </summary>
-        public void Update(TimeSpan elapsedTime)
+        public void Update(float elapsedTime)
         {
             if (toBeRemoved > 0 && ParticleCount <= 0)
             {
@@ -554,7 +566,7 @@
             }
             EnsureParticlesInitialized();
 
-            elapsedSeconds = (float)elapsedTime.TotalSeconds;
+            elapsedSeconds = elapsedTime;
 
             numFramesBehind++;
 
@@ -632,7 +644,7 @@
                 eyePosition = context.CameraPosition;
                 viewInverse = context.matrices.viewInverse;
                 primitive.Draw(context, material);
-
+                
                 if (isAsync == 1)
                 {
                     // Once this particle effect is drawed, we start the update
@@ -665,19 +677,24 @@
         private static int maxFramesBehind = 1;
 
         static AutoResetEvent ParticleQueueSyncEvent;
-        static Thread ParticleThread;        
         static ConcurrentQueue<ParticleEffect> ActiveUpdates;
-        
+                
         static void UpdateAsync(ParticleEffect particleEffect)
         {
-            if (ParticleThread == null)
+            if (ActiveUpdates == null)
             {
                 ParticleQueueSyncEvent = new AutoResetEvent(false);
                 ActiveUpdates = new ConcurrentQueue<ParticleEffect>();
-                ParticleThread = new Thread((ThreadStart)ParticleUpdateWorker);
+#if WINRT
+                Windows.System.Threading.ThreadPool.RunAsync(op => ParticleUpdateWorker(), 
+                    Windows.System.Threading.WorkItemPriority.Normal, 
+                    Windows.System.Threading.WorkItemOptions.TimeSliced);
+#else
+                var ParticleThread = new Thread((ThreadStart)ParticleUpdateWorker);
                 ParticleThread.IsBackground = true;
                 ParticleThread.Name = "ParticleEffect";
                 ParticleThread.Start();
+#endif
             }
             ActiveUpdates.Enqueue(particleEffect);
             ParticleQueueSyncEvent.Set();
