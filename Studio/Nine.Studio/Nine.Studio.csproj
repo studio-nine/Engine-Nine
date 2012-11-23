@@ -83,6 +83,8 @@
     <Compile Include="Extensibility\ExportAttribute.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Extensibility\Extension.cs" />
+    <Compile Include="Utility\BindableCollection.cs" />
+    <Compile Include="Utility\ReadOnlyObservableCollection.cs" />
     <Compile Include="Utility\TypeDescriptorHelper.cs" />
     <Compile Include="Extensibility\Attributes.cs" />
     <Compile Include="Extensibility\AttributeProvider.cs" />

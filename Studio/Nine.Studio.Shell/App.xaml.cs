@@ -5,12 +5,13 @@
     using System.Linq;
     using System.Reflection;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows;
 
     public partial class App : Application
     {
-        public Editor Editor { get; private set; }
-        public IEditorShell EditorShell { get; private set; }
+        public static Editor Editor { get; private set; }
+        public static IEditorShell Shell { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -38,7 +39,7 @@
                     mainWindow.Top = (SystemParameters.VirtualScreenHeight - mainWindow.Height) / 2;
 
                     if (splashWindow != IntPtr.Zero)
-                        NativeMethods.ShowWindow(splashWindow, SW.HIDE);
+                        ;// NativeMethods.ShowWindow(splashWindow, SW.HIDE);
                 };
 
                 mainWindow.Closed += (sender, args) =>
@@ -50,13 +51,14 @@
                     }
                 };
 
-                EditorShell = (IEditorShell)mainWindow;
-                EditorShell.ShowDialogAsync(Editor.ToView("WelcomeView"));
-
+                Shell = (IEditorShell)mainWindow;
+                Shell.ShowDialogAsync(new FilesView { DataContext = App.Editor });
+                Shell.ShowDialogAsync(Editor.ToView("Scratch"));
+                
                 mainWindow.Show();
             }
         }
-        
+
         private static void InitializeCulture(Editor editor)
         {
             var culture = new CultureInfo(editor.FindSettings<GeneralSettings>().Language);
@@ -90,6 +92,32 @@
                     parmChars[index] = '\n';
             }
             return (new string(parmChars)).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+        
+        public static async Task<bool> EnsureSavedAsync()
+        {
+            var project = App.Editor.ActiveProject;
+            if (project == null || !project.IsModified)
+                return true;
+
+            var description = string.Format(Strings.SaveChangesDescription, project.Name);
+            var saveResule = await App.Shell.ShowDialogAsync(Strings.SaveChanges, description, null, Strings.Yes, Strings.No);
+            if (saveResule == Strings.Yes)
+            {
+                await SaveAsync();
+                return true;
+            }
+            return saveResule == Strings.No;
+        }
+
+        public static Task SaveAsync()
+        {
+            return App.Shell.RunAsync(() =>
+            {
+                App.Editor.ActiveProject.Save();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            });
         }
     }
 }

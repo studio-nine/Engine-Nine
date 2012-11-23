@@ -2,16 +2,27 @@
 {
     using System;
     using System.Threading.Tasks;
+    using System.Windows;
 
     public interface IEditorShell
     {
-        Task ShowDialogAsync(object content);
+        DialogResult ShowDialogAsync(object content);
+
+        DialogResult ShowDialogAsync(string title, string text, object content, params string[] options);
+
+        void EndDialog(FrameworkElement dialog, string dialogResult);
+
+        Task RunAsync(Action action);
+
                 /*
-        Task<string> ShowDialogAsync(string title, string description, object content, params string[] options);
-                
         Task QueueWorkItem(string title, string description, Task task);
 
         object Invoke(Delegate method, params object[] args);
                  */
+    }
+    
+    public class DialogResult : Awaitable<string>
+    {
+        public FrameworkElement Dialog { get; set; }
     }
 }

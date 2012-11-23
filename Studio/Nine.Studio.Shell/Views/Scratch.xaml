@@ -1,0 +1,24 @@
+﻿<StackPanel
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:n="clr-namespace:Nine.Studio.Shell"
+    xmlns:my="clr-namespace:Nine.Studio.Shell"
+    xmlns:sys="clr-namespace:System.Collections;assembly=mscorlib"
+    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+    mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="720"
+    x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    
+    <Button Background="{StaticResource Brush-Accent}" HorizontalContentAlignment="Left" Content="This is a button" />
+    <Button Background="{StaticResource Brush-Accent}" HorizontalContentAlignment="Left" Content="This is a button with a background color" />
+    <Button IsEnabled="False" HorizontalContentAlignment="Left" Content="This is a diabled button" />
+    <TextBlock Style="{StaticResource TextBlock-Large}">This is a text block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</TextBlock>
+    <TextBox>This is a text box</TextBox>
+    <TextBox n:Header.Header="Header Tag">This is a text box with a header</TextBox>
+    <TextBox IsEnabled="False" n:Header.Header="Header Tag">This is a disabled text box with a header</TextBox>
+    <TextBox n:Header.Watermark="This is a watermark text box" />
+    <ProgressBar Margin="10,5" Height="40" IsIndeterminate="True"/>
+    
+
+</StackPanel>

@@ -6,15 +6,22 @@
     <!--
         Common
     -->
-    <SolidColorBrush x:Key="Brush-NormalText" Color="Gray"/>
-    <SolidColorBrush x:Key="Brush-HighlightText" Color="#FFEEEEEE"/>
     <SolidColorBrush x:Key="Brush-Accent" Color="#FF5F789D"/>
     <SolidColorBrush x:Key="Brush-AccentHover" Color="#FF4D5E78"/>
-    <SolidColorBrush x:Key="Brush-HighlightAccent" Color="#FF0084DC"/>
     <SolidColorBrush x:Key="Brush-Foreground" Color="White"/>
     <SolidColorBrush x:Key="Brush-ForegroundDisabled" Color="#FF646464"/>
-    <SolidColorBrush x:Key="Brush-ForegroundBorder" Color="#FF6E6E6E"/>
+    <SolidColorBrush x:Key="Brush-Border" Color="#FF6E6E6E"/>
     <SolidColorBrush x:Key="Brush-Hover" Color="#FF646464"/>
+
+    <LinearGradientBrush x:Key="Brush-AccentChecker" StartPoint="0, 0" EndPoint="0,40" MappingMode="Absolute" SpreadMethod="Repeat">
+        <LinearGradientBrush.Transform>
+            <SkewTransform AngleX="0" CenterX="0" AngleY="-45"/>
+        </LinearGradientBrush.Transform>
+        <GradientStop Color="#FF5F789D"/>
+        <GradientStop Color="#FF4D5E78" Offset="0.5"/>
+        <GradientStop Color="#FF5F789D" Offset="0.5"/>
+        <GradientStop Color="#FF4D5E78"/>
+    </LinearGradientBrush>
 
     <sys:Double x:Key="Size-SmallIcon">10</sys:Double>
     <sys:Double x:Key="Size-ControlHeight">40</sys:Double>
@@ -34,7 +41,7 @@
         <Setter Property="Margin" Value="10,5" />
         <Setter Property="Padding" Value="20,0" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="BorderBrush" Value="{StaticResource Brush-ForegroundBorder}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Brush-Border}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -114,7 +121,7 @@
                                     <ScaleTransform/>
                                     <SkewTransform/>
                                     <RotateTransform Angle="0"/>
-                                    <TranslateTransform X="10"/>
+                                    <TranslateTransform X="10" Y="-3"/>
                                 </TransformGroup>
                             </TextBlock.RenderTransform>
                         </TextBlock>
@@ -147,7 +154,7 @@
         RepeatButton
     -->
     <Style TargetType="{x:Type RepeatButton}">
-        <Setter Property="Background" Value="{StaticResource Brush-ForegroundBorder}" />
+        <Setter Property="Background" Value="{StaticResource Brush-Border}" />
         <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="0" />
@@ -200,30 +207,36 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
     </Style>
+    
+    <Style x:Key="TextBlock-Large" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="Margin" Value="10,5" />
+        <Setter Property="Padding" Value="20,10" />
+        <Setter Property="Height" Value="40" />
+    </Style>
 
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
         <Setter Property="AllowDrop" Value="true"/>
-        <Setter Property="Margin" Value="2" />
-        <Setter Property="Padding" Value="10,2" />
+        <Setter Property="Margin" Value="10,5" />
+        <Setter Property="Padding" Value="20,0" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{StaticResource Brush-ForegroundBorder}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Brush-Border}" />
         <Setter Property="CaretBrush" Value="{StaticResource Brush-Foreground}" />
+        <Setter Property="SelectionBrush" Value="{StaticResource Brush-Accent}" />
         <Setter Property="n:ClickSelect.IsClickSelect" Value="True" />
-        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
         <Setter Property="Height" Value="{StaticResource Size-ControlHeight}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Grid Background="{TemplateBinding Background}" VerticalAlignment="{TemplateBinding VerticalAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Name="Header" Margin="{TemplateBinding Padding}" FontWeight="Bold" Text="{Binding (n:Header.Header), RelativeSource={RelativeSource TemplatedParent}}" 
-                                       Foreground="{StaticResource Brush-ForegroundBorder}" VerticalAlignment="Center"
+                        <StackPanel Margin="{TemplateBinding Padding}" Orientation="Horizontal">
+                            <TextBlock Name="Header" Text="{Binding (n:Header.Header), RelativeSource={RelativeSource TemplatedParent}}" 
+                                       Margin="0,0,10,0" Foreground="{StaticResource Brush-Border}" VerticalAlignment="Center"
                                        Visibility="{Binding Text, Converter={n:To IsNeitherNullNorEmpty}, RelativeSource={RelativeSource Self}}"/>
                             <Grid>
-                                <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                                <TextBlock Margin="{TemplateBinding Padding}" Visibility="Collapsed" Name="Watermark" FontStyle="Italic" Text="{Binding (n:Header.Watermark), RelativeSource={RelativeSource TemplatedParent}}" Foreground="{StaticResource Brush-ForegroundBorder}" VerticalAlignment="Center"/>
+                                <Decorator x:Name="PART_ContentHost" VerticalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <TextBlock Name="Watermark" Visibility="Collapsed" FontStyle="Italic" Text="{Binding (n:Header.Watermark), RelativeSource={RelativeSource TemplatedParent}}" Foreground="{StaticResource Brush-Border}" VerticalAlignment="Center"/>
                             </Grid>
                         </StackPanel>
                         <Rectangle Name="Chrome" StrokeThickness="{TemplateBinding BorderThickness}" Stroke="{TemplateBinding BorderBrush}"/>
@@ -295,6 +308,24 @@
         </Setter>
     </Style>
 
+    <Style x:Key="TextBox-ReadOnly" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource Brush-Foreground}"/>
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="10,2" />
+        <Setter Property="CaretBrush" Value="{StaticResource Brush-Foreground}" />
+        <Setter Property="n:ClickSelect.IsClickSelect" Value="True" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Decorator Width="{TemplateBinding Width}" x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>                    
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     
     <!--
         ScrollBar
@@ -305,7 +336,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Border BorderThickness="0" Background="{StaticResource Brush-ForegroundBorder}" SnapsToDevicePixels="True">
+                    <Border BorderThickness="0" Background="{StaticResource Brush-Border}" SnapsToDevicePixels="True">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>
@@ -391,7 +422,7 @@
     </Style>
 
     <Style TargetType="{x:Type ScrollViewer}">
-        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -414,6 +445,43 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Visibility" TargetName="PART_VerticalScrollBar" Value="{Binding ComputedVerticalScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    
+    <!--
+        ProgressBar
+    -->
+    <Style TargetType="{x:Type ProgressBar}">
+        <Setter Property="IsIndeterminate" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid x:Name="TemplateRoot" SnapsToDevicePixels="true" ClipToBounds="True">
+                        <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" Margin="0">
+                            <Grid x:Name="Foreground">
+                                <Rectangle x:Name="Overlay" Fill="{StaticResource Brush-Accent}"/>
+                            </Grid>
+                        </Decorator>
+                        <Rectangle x:Name="Background" Fill="{StaticResource Brush-AccentChecker}" RenderTransformOrigin="0.5,0.5" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsIndeterminate" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <ThicknessAnimation Storyboard.TargetName="Background" Storyboard.TargetProperty="Margin"
+                                                            Duration="0:0:0.5" From="-40, 0, 0, 0" To="0, 0, 0, 0" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <!--
+                            <Setter Property="Visibility" TargetName="Background" Value="Hidden"/>
+                            -->
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

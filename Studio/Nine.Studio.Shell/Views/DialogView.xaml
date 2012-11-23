@@ -1,0 +1,21 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:n="clr-namespace:Nine.Studio.Shell"
+             x:Class="Nine.Studio.Shell.DialogView">
+    
+    <DockPanel LastChildFill="True" Width="340">
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="{Binding Title, Converter={n:To ToUpper}}" FontSize="24" FontWeight="SemiBold" Margin="20,10" Visibility="{Binding Title, Converter={n:To IsNotNull}}" />
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="{Binding Text}" FontSize="12" Margin="20,10" Visibility="{Binding Text, Converter={n:To IsNotNull}}"/>
+
+        <ItemsControl DockPanel.Dock="Bottom" Margin="0,10" VerticalAlignment="Bottom" ItemsSource="{Binding Buttons}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button IsDefault="True" Background="{StaticResource Brush-Accent}" Content="{Binding}" Click="DialogButton_Click" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <ContentControl Content="{Binding DialogContent}" />
+    </DockPanel>
+    
+</UserControl>

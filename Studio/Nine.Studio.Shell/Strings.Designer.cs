@@ -187,38 +187,11 @@ namespace Nine.Studio.Shell {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occured while closing the project..
+        ///   Looks up a localized string similar to We ran into a problem.
         /// </summary>
-        public static string ErrorCloseProject {
+        public static string Error {
             get {
-                return ResourceManager.GetString("ErrorCloseProject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An error occured while creating the project..
-        /// </summary>
-        public static string ErrorCreateProject {
-            get {
-                return ResourceManager.GetString("ErrorCreateProject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An error occured while opening the project..
-        /// </summary>
-        public static string ErrorOpenProject {
-            get {
-                return ResourceManager.GetString("ErrorOpenProject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An error occured while saving the project..
-        /// </summary>
-        public static string ErrorSaveProject {
-            get {
-                return ResourceManager.GetString("ErrorSaveProject", resourceCulture);
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
@@ -304,6 +277,24 @@ namespace Nine.Studio.Shell {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a New Game.
         /// </summary>
         public static string New {
@@ -363,6 +354,15 @@ namespace Nine.Studio.Shell {
         public static string NoDesignViewHint {
             get {
                 return ResourceManager.GetString("NoDesignViewHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
         

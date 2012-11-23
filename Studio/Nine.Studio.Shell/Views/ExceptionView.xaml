@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="Nine.Studio.Shell.ExceptionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:n="clr-namespace:Nine.Studio.Shell" mc:Ignorable="d" 
+             d:DesignHeight="416.4" d:DesignWidth="300" Width="340" >    
+    <StackPanel Margin="10,10">
+        <TextBlock Margin="20,0" FontFamily="Segoe UI Light" FontSize="128" Text=":(" />
+        <TextBlock Margin="20,10" FontFamily="Segoe UI Light" FontSize="24" Text="{x:Static n:Strings.Error}" />
+        <!--
+        <TextBox Style="{StaticResource TextBox-ReadOnly}" Margin="20,10" Width="260" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Mode=OneTime}" />
+        <Button Margin="0,10" HorizontalContentAlignment="Left" Content="Show Details" />
+        -->
+    </StackPanel>
+</UserControl>

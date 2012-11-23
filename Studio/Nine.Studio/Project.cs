@@ -109,7 +109,7 @@
             Verify.IsValidPath(directory, "directory");
             Verify.IsValidFileName(name, "name");
 
-            Name =  Name;
+            Name = name;
             Directory = Path.GetFullPath(Path.Combine(directory, name));
             FileName = Path.Combine(Directory, name + SourceFileExtension);
 
@@ -223,6 +223,8 @@
             ProjectItems.ForEach(doc => doc.Close());
             Editor.projects.Remove(this);
             References.ForEach(project => project.Close());
+            if (Editor.ActiveProject == this)
+                Editor.ActiveProject = null;
 
             Trace.TraceInformation("Project {0} closed.", Name);
         }

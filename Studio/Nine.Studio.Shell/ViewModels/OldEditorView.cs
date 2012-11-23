@@ -119,8 +119,6 @@
             this.Editor = editor;
             this.Editor.ProgressChanged += new ProgressChangedEventHandler(Editor_ProgressChanged);
 
-            NewCommand = new DelegateCommand(NewProject);
-            OpenCommand = new DelegateCommand(OpenProject);
             SaveCommand = new DelegateCommand(SaveProject, HasProject);
             CloseCommand = new DelegateCommand(CloseProject, HasProject);
             ExitCommand = new DelegateCommand(Exit);
@@ -138,53 +136,11 @@
         public ICommand ExitCommand { get; private set; }
         public ICommand HelpCommand { get; private set; }
         
-        public async Task<bool> Closing()
-        {
-            if (await EnsureProjectSavedAsync())
-            {
-                shouldClose = true;
-                Application.Current.Shutdown();
-            }
-            return !shouldClose;
-        }
-        private bool shouldClose = false;
 
         private bool HasProject()
         {
             return Project != null;
         }
-
-        private async void NewProject()
-        {
-            if (await EnsureProjectSavedAsync())
-            {
-                /*
-                var creationParams = new ProjectCreationParameters();
-                if (await Shell.ShowDialogAsync(Strings.Create, null, creationParams, Strings.Create, Strings.Cancel) == Strings.Create)
-                    ;// ActiveProject = new ProjectView(this, Editor.CreateProject(creationParams.ProjectFilename));
-                 */
-            }
-        }
-
-        private async void OpenProject(object commandParameter)
-        {
-            if (await EnsureProjectSavedAsync())
-            {
-                var fileName = commandParameter as string;
-                if (string.IsNullOrEmpty(fileName))
-                {
-                    var open = new Microsoft.Win32.OpenFileDialog();
-                    open.Title = Editor.Title;
-                    open.Filter = string.Format(@"{0}|*.nine|{1}|*.*", Strings.NineProject, Strings.AllFiles);
-
-                    bool? result = open.ShowDialog();
-                    if (result.HasValue && result.Value)
-                        ActiveProject = new ProjectView(this, Editor.OpenProject(open.FileName));
-                    return;
-                }
-                ActiveProject = new ProjectView(this, Editor.OpenProject(fileName));
-            }
-
             /*
             try
             {
@@ -208,8 +164,7 @@
                 MessageBox.Show(Strings.ErrorOpenProject, Editor.Title, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
              */
-        }
-        
+
         private void ImportProjectItem()
         {
 
@@ -228,6 +183,7 @@
 
         private async void CloseProject()
         {
+            /*
             if (await EnsureProjectSavedAsync() && Project != null)
             {
                 SelectedObject = null;
@@ -235,6 +191,7 @@
                 ActiveProject = null;
                 ActiveProjectItem = null;
             }
+             */
         }
 
         private void Exit()
@@ -262,23 +219,6 @@
             {
                 Trace.TraceError("Error opening url {0}", url);
             }
-        }
-
-        private async Task<bool> EnsureProjectSavedAsync()
-        {
-            if (Project == null || !Project.IsModified)
-                return true;
-            /*
-            string description = string.Format(Strings.SaveChangesDescription, Editor.ActiveProject.Name);
-            var dr = await Shell.ShowDialogAsync(Strings.SaveChanges, description, null, Strings.Yes, Strings.No, Strings.Cancel);
-            if (dr == Strings.Yes)
-            {
-                SaveProject(); 
-                return true; 
-            } 
-            return dr == Strings.No;
-             */
-            throw new NotImplementedException();
         }
 
         private void Editor_ProgressChanged(object sender, ProgressChangedEventArgs e)

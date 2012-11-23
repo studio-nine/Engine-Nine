@@ -19,6 +19,9 @@
 
         public static object ToView(this object viewModel, string viewName)
         {
+            if (viewModel == null)
+                return null;
+
             if (viewModel is UIElement)
                 return viewModel;
 
@@ -63,8 +66,15 @@
         public static object HasAny(object value, Type targetType)
         {
             if (targetType == typeof(bool))
-                return System.Convert.ToInt32(value) > 1;
-            return System.Convert.ToInt32(value) > 1 ? Visibility.Visible : Visibility.Collapsed;
+                return System.Convert.ToInt32(value) > 0;
+            return System.Convert.ToInt32(value) > 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public static object IsNull(object value, Type targetType)
+        {
+            if (targetType == typeof(bool))
+                return value == null;
+            return value == null ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public static object IsNotNull(object value, Type targetType)
@@ -88,7 +98,7 @@
 
         public static object ToFileName(object value)
         {
-            return Path.GetFileNameWithoutExtension(value.ToString());
+            return value != null ? Path.GetFileNameWithoutExtension(value.ToString()) : "";
         }
 
         /// <summary>

@@ -16,12 +16,16 @@
 
     <DockPanel Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-        <DockPanel Name="SideBar" Background="#FF1C1C1C" VerticalAlignment="Stretch" DockPanel.Dock="Left">
-            <Button DockPanel.Dock="Top" Style="{StaticResource Button-Back}" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" />
+        <DockPanel Name="DialogPanel" Background="#FF1C1C1C" VerticalAlignment="Stretch" DockPanel.Dock="Left">
+            <Button Name="DialogBack" DockPanel.Dock="Top" Style="{StaticResource Button-Back}" HorizontalAlignment="Left" VerticalAlignment="Top" Click="PopDialog" />
             <ContentControl Name="DialogContent" />
         </DockPanel>
 
         <Grid Name="MainFrame" Background="#FF2D2D30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="24"/>
+            </Grid.RowDefinitions>
             <Grid Name="ContentFrame" Visibility="{Binding ActiveProject, Converter={n:To IsNotNull}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -31,11 +35,10 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="160"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="24"/>
                 </Grid.RowDefinitions>
 
                 <StackPanel Name="TitleBar" Grid.ColumnSpan="2" Orientation="Horizontal">
-                    <Button Name="Library" Margin="20,0" Padding="20,0" Style="{StaticResource Button-Title}" Content="{Binding Title}" />
+                    <Button Name="Library" Margin="20,0" Padding="20,0" Style="{StaticResource Button-Title}" Content="{Binding ActiveProject.Name}" />
                     <TextBox Width="200" n:WindowChrome.IsHitTestVisibleInChrome="True" n:Header.Watermark="Search objects in current scene..."></TextBox>
                 </StackPanel>
                 <StackPanel Grid.Row="1">
@@ -43,11 +46,13 @@
                     <TextBox n:Header.Header="Enter" n:Header.Watermark="what???"></TextBox>
                     <TextBox n:Header.Header="Enter" n:Header.Watermark="Enter">what???</TextBox>
                 </StackPanel>
-                <Grid Name="StatusBar" Grid.Row="3" Background="{StaticResource Brush-Accent}" Grid.ColumnSpan="2" />
             </Grid>
 
+            <Grid Name="StatusBar" Grid.Row="1" Background="{StaticResource Brush-Accent}" Grid.ColumnSpan="2" />
+            <ProgressBar Name="ProgressBar" Grid.Row="1" Visibility="Collapsed" />
+            <Rectangle Name="DialogMask" Fill="#FF2D2D30" Grid.RowSpan="2" d:IsHidden="True" Visibility="{Binding Content, ElementName=DialogContent, Converter={n:To IsNotNull}}" />
             <StackPanel Name="WindowsButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Width="90">
-                <Button Style="{StaticResource Button-MediumIcon}" Width="30" Height="30" Margin="0" FontSize="9" Click="Minimize">&#x2581;</Button>
+                <Button FontSize="9" Style="{StaticResource Button-MediumIcon}" Width="30" Height="30" Margin="0" Click="Minimize">&#x2581;</Button>
                 <Button Style="{StaticResource Button-MediumIcon}" Width="30" Height="30" Margin="0" Click="Maximize">&#x2750;</Button>
                 <Button Style="{StaticResource Button-MediumIcon}" Width="30" Height="30" Margin="0" Click="Exit">&#x2A09;</Button>
             </StackPanel>

@@ -6,6 +6,7 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -20,6 +21,14 @@
         /// Gets the title of the editor.
         /// </summary>
         public string Title { get { return Strings.Title; } }
+
+        /// <summary>
+        /// Gets the title of the editor independent of the current culture settings.
+        /// </summary>
+        public string TitleInvarient
+        {
+            get { return Strings.ResourceManager.GetString("Title", CultureInfo.InvariantCulture); }
+        }
 
         /// <summary>
         /// Gets the version of the editor.
@@ -58,14 +67,14 @@
         /// <summary>
         /// Gets all the projects currently opened by the editor.
         /// </summary>
-        public ReadOnlyObservableCollection<Project> Projects { get; private set; }
-        internal ObservableCollection<Project> projects;
+        public IList<Project> Projects { get; private set; }
+        internal IList<Project> projects;
 
         /// <summary>
         /// Gets a list of recent files.
         /// </summary>
-        public ReadOnlyObservableCollection<string> RecentFiles { get; private set; }
-        private ObservableCollection<string> recentFiles;
+        public IList<string> RecentFiles { get; private set; }
+        private IList<string> recentFiles;
 
         /// <summary>
         /// Gets the extensions of this editor.
@@ -96,7 +105,7 @@
 
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             AppDataDirectory = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.ApplicationData), Strings.Title, VersionString);
+                Environment.SpecialFolder.ApplicationData), TitleInvarient, VersionString);
 
             if (!Directory.Exists(AppDataDirectory))
                 Directory.CreateDirectory(AppDataDirectory);
@@ -113,7 +122,7 @@
 
             Extensions = new EditorExtensions();
             Projects = new ReadOnlyObservableCollection<Project>(projects = new ObservableCollection<Project>());
-            RecentFiles = new ReadOnlyObservableCollection<string>(recentFiles = new ObservableCollection<string>());
+            RecentFiles = new ReadOnlyObservableCollection<string>(recentFiles = new BindableCollection<string>(new ObservableCollection<string>()));
 
             LoadRecentFiles();
         }
@@ -159,6 +168,19 @@
                 System.Windows.Shell.JumpList.AddToRecentCategory(fileName);
                 SaveRecentFiles();
             }
+        }
+
+        private void RemoveRecentProject(string fileName)
+        {
+            for (var i = 0; i < recentFiles.Count; ++i)
+            {
+                if (FileHelper.FileNameEquals(recentFiles[i], fileName))
+                {
+                    recentFiles.RemoveAt(i);
+                    --i;
+                }
+            }
+            SaveRecentFiles();
         }
 
         /// <summary>
@@ -216,6 +238,7 @@
         {
             var result = new Project(this, name, directory);
             projects.Add(result);
+            ActiveProject = result;
             return result;
         }
         
@@ -224,9 +247,18 @@
         /// </summary>
         public Project OpenProject(string fileName)
         {
-            var result = new Project(this, fileName);
-            projects.Add(result);
-            return result;
+            try
+            {
+                var result = new Project(this, fileName);
+                projects.Add(result);
+                ActiveProject = result;
+                return result;
+            }
+            catch
+            {
+                RemoveRecentProject(fileName);
+                throw;
+            }
         }
 
         /// <summary>

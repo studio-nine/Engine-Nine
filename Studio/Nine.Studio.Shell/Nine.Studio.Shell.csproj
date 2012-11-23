@@ -96,6 +96,7 @@
     <Compile Include="AttachedProperties\NamedGroupDescription.cs" />
     <Compile Include="AttachedProperties\ResourceBehavior.cs" />
     <Compile Include="Utilities\ComGuids.cs" />
+    <Compile Include="Utilities\Awaitable.cs" />
     <Compile Include="Utilities\Debug.cs" />
     <Compile Include="Utilities\DoubleUtil.cs" />
     <Compile Include="Utilities\DpiHelper.cs" />
@@ -106,7 +107,7 @@
     <Compile Include="Utilities\Utilities.cs" />
     <Compile Include="Utilities\Verify.cs" />
     <Compile Include="AttachedProperties\SystemParameters2.cs" />
-    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Utilities\DelegateCommand.cs" />
     <Compile Include="MarkupExtensions\DoExtension.cs" />
     <Compile Include="MarkupExtensions\TypeExtension.cs" />
     <Compile Include="MarkupExtensions\ToExtension.cs" />
@@ -119,11 +120,17 @@
     <Compile Include="ViewModels\SettingsView.cs" />
     <Compile Include="ViewModels\VisualizerView.cs" />
     <Compile Include="ViewModels\PropertyView.cs" />
-    <Compile Include="Views\Dialog.xaml.cs">
-      <DependentUpon>Dialog.xaml</DependentUpon>
+    <Compile Include="Views\ExceptionView.xaml.cs">
+      <DependentUpon>ExceptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DialogView.xaml.cs">
+      <DependentUpon>DialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewProjectView.xaml.cs">
+      <DependentUpon>NewProjectView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VerticleSeperator.xaml.cs">
       <DependentUpon>VerticleSeperator.xaml</DependentUpon>
@@ -132,21 +139,28 @@
       <DependentUpon>WaitWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProgressHelper.cs" />
-    <Compile Include="Views\WindowHelper.cs" />
+    <Compile Include="Views\FilesView.xaml.cs">
+      <DependentUpon>FilesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowHelper.cs" />
     <Compile Include="Views\StyleSelectors.cs" />
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Views\ExceptionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\EditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WelcomeView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Views\NewProjectView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Stratch.xaml">
+    <Page Include="Views\Scratch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -166,7 +180,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Dialog.xaml">
+    <Page Include="Views\DialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -221,6 +235,10 @@
     <Compile Include="Views\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\FilesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
