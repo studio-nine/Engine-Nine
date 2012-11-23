@@ -1,0 +1,34 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine (Xbox)", "Nine\Nine (Xbox).csproj", "{77BBD780-087F-4F5F-9375-7A6D5C9D9BE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Graphics (Xbox)", "Nine.Graphics\Nine.Graphics (Xbox).csproj", "{5E237603-F35B-4CBB-AC75-21F58A2B4D65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Physics (Xbox)", "Nine.Physics\Nine.Physics (Xbox).csproj", "{BB595B01-B8ED-4382-A433-7DC04D663456}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Xbox 360 = Debug|Xbox 360
+		Release|Xbox 360 = Release|Xbox 360
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77BBD780-087F-4F5F-9375-7A6D5C9D9BE8}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{77BBD780-087F-4F5F-9375-7A6D5C9D9BE8}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{77BBD780-087F-4F5F-9375-7A6D5C9D9BE8}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{77BBD780-087F-4F5F-9375-7A6D5C9D9BE8}.Release|Xbox 360.Build.0 = Release|Xbox 360
+		{5E237603-F35B-4CBB-AC75-21F58A2B4D65}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{5E237603-F35B-4CBB-AC75-21F58A2B4D65}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{5E237603-F35B-4CBB-AC75-21F58A2B4D65}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{5E237603-F35B-4CBB-AC75-21F58A2B4D65}.Release|Xbox 360.Build.0 = Release|Xbox 360
+		{BB595B01-B8ED-4382-A433-7DC04D663456}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{BB595B01-B8ED-4382-A433-7DC04D663456}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{BB595B01-B8ED-4382-A433-7DC04D663456}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{BB595B01-B8ED-4382-A433-7DC04D663456}.Release|Xbox 360.Build.0 = Release|Xbox 360
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SharpSetup) = preSolution
+		Version = 1.2
+	EndGlobalSection
+EndGlobal
