@@ -14,6 +14,8 @@
         
         <!-- Write your own component to extend the behavior of the parent group. -->
         <my:ExampleController Speed="10" />
+        
+        <my:ExampleShooter BulletTemplate="Templates/Bullet" Trigger="Enter" />
     </Group>
     
     <!--

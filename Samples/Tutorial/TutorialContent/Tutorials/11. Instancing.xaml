@@ -3,13 +3,12 @@
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
-    <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" CastShadow="True" />
+    <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
 
     <Surface Heightmap.Width="128" Heightmap.Height="128" Heightmap.Step="1" PatchSegmentCount="8"
              Transform.Position="-64, 0, -64" TextureTransform.Scale="0.2, 0.2">
         <MaterialGroup>
             <DiffuseMaterialPart Texture="{ContentReference ../Textures/grass}" />
-            <ShadowMapMaterialPart />
         </MaterialGroup>
     </Surface>
 
@@ -57,7 +56,7 @@
         </Cross>
     </InstancedModel>
 
-    <InstancedModel CastShadow="True" Transform.Position="-64, 0, -64">
+    <InstancedModel Transform.Position="-64, 0, -64">
         <DistributionMap.DistributionMap>
             <DistributionMap Step="0.25" Density="20" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
         </DistributionMap.DistributionMap>
@@ -71,9 +70,9 @@
             </Model.Material>
         </Model>
     </InstancedModel>
-    <!--
+    
     <AntiAliasEffect />    
     <DepthOfFieldEffect BlurAmount="5"/>
     <HighDynamicRangeEffect Name="Hdr" Exposure="0.5" BloomIntensity="0.25" />
-    -->
+    
 </Scene>

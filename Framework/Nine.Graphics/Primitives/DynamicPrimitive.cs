@@ -14,7 +14,7 @@
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Primitives")]    
-    public class DynamicPrimitive : Nine.Object, IDrawableObject, IDisposable
+    public class DynamicPrimitive : Nine.Transformable, IDrawableObject, IDisposable
     {
         /// <summary>
         /// Gets the underlying graphics device.
@@ -510,7 +510,7 @@
                 return;
 
             material.texture = entry.Texture;
-            material.world = entry.World.HasValue ? entry.World.Value : Matrix.Identity;
+            material.world = entry.World.HasValue ? entry.World.Value * AbsoluteTransform : AbsoluteTransform;
             material.BeginApply(context);
 
 #if !WINDOWS_PHONE

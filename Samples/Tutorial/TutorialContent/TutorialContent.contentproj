@@ -336,18 +336,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\13. Components.xaml">
+    <Compile Include="Tutorials\12. Components.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <Name>13. Components</Name>
+      <Name>12. Components</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\12. Physics.xaml">
+    <Compile Include="Tutorials\13. Physics.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <Name>12. Physics</Name>
+      <Name>13. Physics</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
@@ -382,6 +382,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>Player</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Templates\Bullet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Name>Bullet</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>

@@ -7,12 +7,14 @@ set flags=/nologo /p:Configuration=Release /p:Optimize=true /p:DebugSymbols=fals
 
 pushd ..
 
-call %msbuild% %flags% Framework\Nine.Windows.sln
-call %msbuild% %flags% Framework\Nine.WindowsRT.sln
-call %msbuild% %flags% Framework\Nine.WindowsPhone.sln
-call %msbuild% %flags% Framework\Nine.Xbox.sln
-call %msbuild% %flags% Framework\Nine.Silverlight.sln
+call %msbuild% %flags% Framework\Nine.Windows.2012.sln
+call %msbuild% %flags% Framework\Nine.WindowsRT.2012.sln
+call %msbuild% %flags% Framework\Nine.WindowsPhone.2012.sln
+call %msbuild% %flags% Framework\Nine.Xbox.2012.sln
+call %msbuild% %flags% Framework\Nine.Silverlight.2012.sln
 
 popd
 
 endlocal
+
+pause
