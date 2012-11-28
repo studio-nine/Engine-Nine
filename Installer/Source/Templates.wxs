@@ -14,8 +14,8 @@
                 <Directory Id="Common7_2010" Name="Common7">
                     <Directory Id="IDE_2010" Name="IDE">
                         <Directory Id="Extensions_2010" Name="Extensions">
-                            <Directory Id="Microsoft_2010" Name="$(var.ProductName)">
-                                <Directory Id="XNA_2010" Name="v$(var.ProductVersion)">
+                            <Directory Id="Microsoft_2010" Name="Microsoft">
+                                <Directory Id="XNA_2010" Name="Xna Game Studio 4.0">
                                     <Directory Id="ProjectTemplates_VS_2010" Name="ProjectTemplates">
                                         <Directory Id="CSharpProjectTemplates_VS_2010" Name="CSharp">
                                             <Directory Id="XNA1_2010" Name="Xna Game Studio 4.0">
