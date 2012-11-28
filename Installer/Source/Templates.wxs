@@ -1,0 +1,40 @@
+﻿<?xml version="1.0"?>
+<?include "Config.wxi"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+
+        <!-- Visual Studio 2010 folder properties and custom actions -->
+        <PropertyRef Id="VS2010_ROOT_FOLDER" />
+        <PropertyRef Id="VS2010_IDE_VCSHARP_PROJECTSYSTEM_INSTALLED" />
+        <PropertyRef Id="VS2010_IDE_VB_PROJECTSYSTEM_INSTALLED" />
+
+        <DirectoryRef Id="ProgramFilesFolder">
+            <Directory Id="VS2010_ROOT_FOLDER" Name="Visual Studio 10">
+                <Directory Id="Common7_2010" Name="Common7">
+                    <Directory Id="IDE_2010" Name="IDE">
+                        <Directory Id="Extensions_2010" Name="Extensions">
+                            <Directory Id="Microsoft_2010" Name="$(var.ProductName)">
+                                <Directory Id="XNA_2010" Name="v$(var.ProductVersion)">
+                                    <Directory Id="ProjectTemplates_VS_2010" Name="ProjectTemplates">
+                                        <Directory Id="CSharpProjectTemplates_VS_2010" Name="CSharp">
+                                            <Directory Id="XNA1_2010" Name="Xna Game Studio 4.0">
+                                                <Directory Id="NineProjectTemplates_2010" Name="Engine Nine" />
+                                            </Directory>
+                                        </Directory>
+                                    </Directory>
+                                </Directory>
+                            </Directory>
+                        </Directory>
+                    </Directory>
+                </Directory>
+            </Directory>
+        </DirectoryRef>
+
+        <DirectoryRef Id="NineProjectTemplates_2010">
+            <Component Id="ProjectTemplates" Guid="{6A93719F-2641-4A6B-ACDA-6C289245816B}" DiskId="1" Transitive="yes">
+                <File Id="CSNineWindowsGamev1.4.zip" Name="CSNineWindowsGame-v1.4.zip" KeyPath="yes" Source="$(sys.SOURCEFILEDIR)../ProjectTemplates/CSNineWindowsGame-v1.4.zip"/>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+</Wix>
