@@ -6,6 +6,7 @@ namespace Nine
     using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
     using FormMouseButtons = System.Windows.Forms.MouseButtons;
     using Keys = Microsoft.Xna.Framework.Input.Keys;
+    using System.Runtime.InteropServices;
     
     class WindowsInputSource : IInputSource, IUpdateable
     {
@@ -125,20 +126,46 @@ namespace Nine
 
         void control_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            // FIXME: This is not correct. Avoid using it!!!
-
             if (KeyDown != null)
-                KeyDown(this, new KeyboardEventArgs((Keys)e.KeyValue));
+                KeyDown(this, new KeyboardEventArgs(ConvertKeys(e.KeyCode)));
         }
 
         void control_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            // FIXME: This is not correct. Avoid using it!!!
-
             if (KeyUp != null)
-                KeyUp(this, new KeyboardEventArgs((Keys)e.KeyValue));
+                KeyUp(this, new KeyboardEventArgs(ConvertKeys(e.KeyCode)));
         }
 
+        [DllImport("user32.dll")]
+        static extern short GetAsyncKeyState(System.Windows.Forms.Keys vKey); 
+
+        Keys ConvertKeys(System.Windows.Forms.Keys key)
+        {
+            // NOTE: this will not work when both Left & Right control keys are pressed.
+            if (key == System.Windows.Forms.Keys.ControlKey)
+            {
+                if (GetAsyncKeyState(System.Windows.Forms.Keys.LControlKey) < 0)
+                    return Keys.LeftControl;
+                return Keys.RightControl;
+            }
+
+            if (key == System.Windows.Forms.Keys.ShiftKey)
+            {
+                if (GetAsyncKeyState(System.Windows.Forms.Keys.LShiftKey) < 0)
+                    return Keys.LeftShift;
+                return Keys.RightShift;
+            }
+
+            if (key == System.Windows.Forms.Keys.Menu)
+            {
+                if (GetAsyncKeyState(System.Windows.Forms.Keys.LMenu) < 0)
+                    return Keys.LeftAlt;
+                return Keys.RightAlt;
+            }
+
+            return (Keys)key;
+        }
+        
         MouseButtons ConvertButton(System.Windows.Forms.MouseButtons button)
         {
             if (button == System.Windows.Forms.MouseButtons.Right)
