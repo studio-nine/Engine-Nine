@@ -20,7 +20,7 @@ namespace Nine.Animations
         /// <summary>
         /// Gets the current animation clip been played
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public IAnimation Source
         {
             get { return source; }
@@ -42,7 +42,7 @@ namespace Nine.Animations
         /// Gets or sets the target object that this tweening will affect.
         /// This property is not required.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public object Target
         {
             get { return target; }

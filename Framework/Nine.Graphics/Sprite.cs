@@ -117,7 +117,7 @@
                 animations.Animations.Clear();
                 if (value != null && value.Animations != null)
                 {
-                    UtilityExtensions.ForEachRecursive<ISupportTarget>(value.Animations.Values, supportTarget => supportTarget.Target = this);
+                    Extensions.ForEachRecursive<ISupportTarget>(value.Animations.Values, supportTarget => supportTarget.Target = this);
                     animations.Animations.AddRange(value.Animations);
                 }
                 animations.Play();

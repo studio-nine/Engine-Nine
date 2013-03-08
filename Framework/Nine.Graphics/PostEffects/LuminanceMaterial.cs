@@ -6,7 +6,7 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [NotContentSerializable]
+    [Nine.Serialization.NotBinarySerializable]
     partial class LuminanceMaterial
     {
         public bool IsDownScale;

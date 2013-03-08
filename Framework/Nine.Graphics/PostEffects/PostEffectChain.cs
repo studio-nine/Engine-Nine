@@ -11,7 +11,7 @@
     /// <summary>
     /// Represents post processing effects.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     [ContentProperty("Effects")]
     public class PostEffectChain : Pass, IGraphicsObject
     {

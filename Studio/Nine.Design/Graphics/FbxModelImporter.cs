@@ -3,7 +3,7 @@
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Processors;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Content.Pipeline.Processors;
+    using Nine.Content.Processors;
     using Nine.Studio.Extensibility;
     using System.Collections.Generic;
 

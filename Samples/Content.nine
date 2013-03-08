@@ -1,0 +1,14 @@
+﻿<Package Name="Content" Version="1.6" xmlns="http://schemas.microsoft.com/nine/2011/xaml">
+    <PackageItem Source="Terrain/RF1.bmp">
+        <HeightmapImporter />
+    </PackageItem>
+    <PackageItem Source="Models/Palm/AlphaPalm.x">
+        <XModelImporter />
+    </PackageItem>
+    <PackageItem Source="Models/Dude/Dude.fbx">
+        <FbxModelImporter Scale="0.1" />
+    </PackageItem>
+    <PackageItem Source="Models/Tank/Tank.fbx">
+        <FbxModelImporter Scale="0.02" PremultiplyTextureAlpha="False" />
+    </PackageItem>
+</Package>

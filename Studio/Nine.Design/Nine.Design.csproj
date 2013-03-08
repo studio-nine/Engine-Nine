@@ -36,7 +36,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Build\Nine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
@@ -52,8 +52,8 @@
     <Reference Include="Nine">
       <HintPath>..\..\References\x86\Nine.dll</HintPath>
     </Reference>
-    <Reference Include="Nine.Content.Pipeline">
-      <HintPath>..\..\References\x86\Nine.Content.Pipeline.dll</HintPath>
+    <Reference Include="Nine.Content">
+      <HintPath>..\..\References\x86\Nine.Content.dll</HintPath>
     </Reference>
     <Reference Include="Nine.Graphics">
       <HintPath>..\..\References\x86\Nine.Graphics.dll</HintPath>
@@ -99,7 +99,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Nine.snk" />
+    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nine.Studio\Nine.Studio.csproj">

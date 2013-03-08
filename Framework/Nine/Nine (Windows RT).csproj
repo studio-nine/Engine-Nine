@@ -169,7 +169,7 @@
     <Compile Include="Xaml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Nine.snk" />
+    
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework.Windows8">
@@ -183,7 +183,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Build\Nine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

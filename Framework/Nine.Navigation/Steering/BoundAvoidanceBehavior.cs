@@ -21,8 +21,7 @@ namespace Nine.Navigation.Steering
         {
             Skin = 2;
             Elasticity = MathHelper.E;
-            Bounds = new BoundingRectangle(Vector2.One * float.MinValue,
-                                           Vector2.One * float.MaxValue);
+            Bounds = new BoundingRectangle(float.MinValue, float.MinValue, float.MaxValue, float.MaxValue);
         }
 
         protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
@@ -30,24 +29,24 @@ namespace Nine.Navigation.Steering
             Vector2 result = Vector2.Zero;
 
             // Min X
-            if (movingEntity.Position.X < Bounds.Min.X + Skin)
+            if (movingEntity.Position.X < Bounds.X + Skin)
             {
-                result.X = movingEntity.MaxSpeed * Evaluate((Bounds.Min.X + Skin - movingEntity.Position.X) / Skin);
+                result.X = movingEntity.MaxSpeed * Evaluate((Bounds.X + Skin - movingEntity.Position.X) / Skin);
             }
             // Min Y
-            if (movingEntity.Position.Y < Bounds.Min.Y + Skin)
+            if (movingEntity.Position.Y < Bounds.Y + Skin)
             {
-                result.Y = movingEntity.MaxSpeed * Evaluate((Bounds.Min.Y + Skin - movingEntity.Position.Y) / Skin);
+                result.Y = movingEntity.MaxSpeed * Evaluate((Bounds.Y + Skin - movingEntity.Position.Y) / Skin);
             }
             // Max X
-            if (movingEntity.Position.X > Bounds.Max.X - Skin)
+            if (movingEntity.Position.X > Bounds.X + Bounds.Width - Skin)
             {
-                result.X = -movingEntity.MaxSpeed * Evaluate((movingEntity.Position.X - Bounds.Max.X + Skin) / Skin);
+                result.X = -movingEntity.MaxSpeed * Evaluate((movingEntity.Position.X - Bounds.X - Bounds.Width + Skin) / Skin);
             }
             // Max Y
-            if (movingEntity.Position.Y > Bounds.Max.Y - Skin)
+            if (movingEntity.Position.Y > Bounds.Y + Bounds.Height - Skin)
             {
-                result.Y = -movingEntity.MaxSpeed * Evaluate((movingEntity.Position.Y - Bounds.Max.Y + Skin) / Skin);
+                result.Y = -movingEntity.MaxSpeed * Evaluate((movingEntity.Position.Y - Bounds.Y - Bounds.Height + Skin) / Skin);
             }
 
             return result;

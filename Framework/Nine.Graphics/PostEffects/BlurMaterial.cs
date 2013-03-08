@@ -10,7 +10,7 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// A post processing screen effect that blurs the whole screen.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public partial class BlurMaterial
     {
         public const float MaxBlurAmount = 10;

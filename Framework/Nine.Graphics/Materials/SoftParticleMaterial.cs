@@ -6,7 +6,7 @@
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework;
 
-    [NotContentSerializable]
+    [Nine.Serialization.NotBinarySerializable]
     partial class SoftParticleMaterial
     {
         public float DepthFade
@@ -18,7 +18,8 @@
 
         public override void GetDependentPasses(ICollection<Type> passTypes)
         {
-            passTypes.Add(typeof(DepthPrePass));
+            // TODO:
+            //passTypes.Add(typeof(DepthPrePass));
         }
 
         partial void ApplyGlobalParameters(DrawingContext context)

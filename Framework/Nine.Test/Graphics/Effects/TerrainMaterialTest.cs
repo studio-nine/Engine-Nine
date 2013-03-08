@@ -8,7 +8,7 @@
 
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nine.Content.Pipeline.Graphics.Effects;
+using Nine.Content.Graphics.Effects;
 
 namespace Nine.Graphics.Effects.Test
 {

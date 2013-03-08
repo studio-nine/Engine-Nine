@@ -7,15 +7,12 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
-#if SILVERLIGHT
-    using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
-#endif
 
     #region CustomMaterial
     /// <summary>
     /// Represents a type of material that are build from custom shader files.
     /// </summary>
-    [NotContentSerializable]
+    [Nine.Serialization.NotBinarySerializable]
     [ContentProperty("ShaderCode")]
     public class CustomMaterial : Material, IEffectParameterProvider
     {
@@ -39,7 +36,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets or sets the shader code for this custom material.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string ShaderCode { get; set; }
 
@@ -125,12 +122,9 @@ namespace Nine.Graphics.Materials
 
         protected override object Read(ContentReader input, object existingInstance)
         {
-#if SILVERLIGHT
-            var effect = new Effect(input.ReadBytes(input.ReadInt32()));
-#else
             var graphicsDevice = input.ContentManager.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
             var effect = new Effect(graphicsDevice, input.ReadBytes(input.ReadInt32()));
-#endif
+
             var parameters = input.ReadObject<Dictionary<string, object>>();
             if (parameters != null)
                 foreach (var pair in parameters)
@@ -145,6 +139,8 @@ namespace Nine.Graphics.Materials
     {
         protected override CustomMaterial Read(ContentReader input, CustomMaterial existingInstance)
         {
+            return null;
+            /*
             if (existingInstance == null)
                 existingInstance = new CustomMaterial();
             existingInstance.AttachedProperties = input.ReadObject<AttachableMemberIdentifierCollection>();
@@ -158,6 +154,7 @@ namespace Nine.Graphics.Materials
             if (dictionary != null)
                 existingInstance.Parameters.AddRange(dictionary);
             return existingInstance;
+             */
         }
     }
     #endregion

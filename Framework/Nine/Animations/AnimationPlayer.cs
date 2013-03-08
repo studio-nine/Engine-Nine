@@ -11,7 +11,7 @@ namespace Nine.Animations
     /// Represents a basic animation player that can play multiple animation
     /// sequences using different channels.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public class AnimationPlayer : AnimationPlayerChannel
     {
         private Dictionary<object, AnimationPlayerChannel> channels;
@@ -73,7 +73,7 @@ namespace Nine.Animations
     /// </summary>
     public class AnimationPlayerChannel : IUpdateable, IDisposable, IDictionary<string, IAnimation>
     {
-        [ContentSerializer]
+        [Nine.Serialization.BinarySerializable]
         internal IDictionary<string, IAnimation> Animations;
 
         /// <summary>
@@ -162,11 +162,6 @@ namespace Nine.Animations
                         disposable.Dispose();
                 }
             }
-        }
-
-        ~AnimationPlayerChannel()
-        {
-            Dispose(false);
         }
         #endregion
 

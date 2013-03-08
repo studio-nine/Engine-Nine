@@ -166,7 +166,7 @@ namespace Nine.Physics
         #region Methods
         internal RigidBody() 
         {
-            if (Nine.Content.ContentProperties.IsContentBuild)
+            if (Nine.Serialization.ContentProperties.IsContentBuild)
             {
                 Collider = new SphereCollider();
             }

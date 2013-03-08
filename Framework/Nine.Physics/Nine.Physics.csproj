@@ -42,7 +42,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Build\Nine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
@@ -63,9 +63,6 @@
   <ItemGroup>
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
-    </Compile>
-    <Compile Include="..\TextTemplates\Nine.Physics.Content.Reader.Generated.cs">
-      <Link>Nine.Physics.Content.Reader.Generated.cs</Link>
     </Compile>
     <Compile Include="BEPUphysics\BroadPhaseSystems\BroadPhase.cs" />
     <Compile Include="BEPUphysics\BroadPhaseEntries\BroadPhaseEntry.cs" />
@@ -444,6 +441,10 @@
     <Compile Include="SceneExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics.3D\Nine.Graphics.3D.csproj">
+      <Project>{88e70c7b-eddf-4415-b817-f7742e749a34}</Project>
+      <Name>Nine.Graphics.3D</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
       <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
       <Name>Nine.Graphics</Name>
@@ -454,7 +455,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="BepuPhysics\License.txt" />
@@ -463,8 +463,5 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+  <Import Project="..\..\Bin\Nine.Serialization.targets" />
 </Project>

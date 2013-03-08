@@ -8,7 +8,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Content.Pipeline.Graphics.Effects;
+using Nine.Content.Graphics.Effects;
 using Nine.Graphics.Effects;
 
 namespace Nine.Graphics.ObjectModel.Test

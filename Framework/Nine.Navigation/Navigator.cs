@@ -362,7 +362,7 @@ namespace Nine.Navigation
 
             // We don't want to make the entity moving too physically
             // Moves the agent towards the target.
-            Vector3 facing = new Vector3(steerable.Forward, 0);
+            Vector3 facing = new Vector3(steerable.forward.X, 0, -steerable.forward.Y);
 
             // Imagine we are climbing a hill
             Vector3 right = Vector3.Cross(facing, normal);
@@ -385,7 +385,7 @@ namespace Nine.Navigation
             // Adjust the facing of the entity.
             // Smooth entity rotation exponentially
             const float PiPi = 2 * MathHelper.Pi;
-            float rotationOffset = (float)Math.Atan2(facing.Y, facing.X) - Rotation;
+            float rotationOffset = (float)Math.Atan2(facing.Z, facing.X) - Rotation;
 
             while (rotationOffset > MathHelper.Pi)
                 rotationOffset -= PiPi;

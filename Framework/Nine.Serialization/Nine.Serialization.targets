@@ -1,0 +1,28 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- These tasks are specific to the build process defined in this file, and are not considered general-purpose build tasks. -->
+    <UsingTask
+        TaskName="CreateBinaryReadersAndWritersTask"
+        AssemblyFile="Nine.Serialization.Tasks.dll" />
+
+    <!-- Have our package build run after the user builds the project. -->
+    <PropertyGroup>
+        <MergeSerializationAssembly Condition=" '$(MergeSerializationAssembly)'=='' ">true</MergeSerializationAssembly>
+        <BuildDependsOn>$(BuildDependsOn);BinarySerialization;</BuildDependsOn>
+    </PropertyGroup>
+
+    <!-- Generate BinaryWriters and BinaryReaders. -->
+    <Target
+        Name="BinarySerialization"
+        DependsOnTargets="$(BinarySerializationDependsOn)">
+        
+        <CreateBinaryReadersAndWritersTask
+            Target="$(OutputPath)$(AssemblyName).dll"
+            WorkingDirectory="$(IntermediateOutputPath)"
+            Merge="$(MergeSerializationAssembly)"
+            DelaySign="$(DelaySign)"
+            KeyFile="$(AssemblyOriginatorKeyFile)"
+            References="@(_ResolveAssemblyReferenceResolvedFiles)" />
+        
+    </Target>
+</Project>

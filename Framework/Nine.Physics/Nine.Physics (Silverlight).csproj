@@ -51,7 +51,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Build\Nine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework" />
@@ -459,7 +459,7 @@
     <Compile Include="SceneExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Nine.snk" />
+    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28Silverlight%29.csproj">

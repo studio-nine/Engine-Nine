@@ -11,14 +11,14 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Represents a basic building block of a material group.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     [ContentProperty("ShaderCode")]    
     public class CustomMaterialPart : MaterialPart, IEffectParameterProvider
     {
         /// <summary>
         /// Gets or sets the usages of the default shader code.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public string ShaderUsages
         {
             get { return usages; }
@@ -34,13 +34,13 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets or sets the shader code when material usage is default.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public string ShaderCode { get; set; }
 
         /// <summary>
         /// Gets a dictionary containing all the HLSL shader code with different material usage.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public IDictionary<MaterialUsage, string> ShaderCodes
         {
             get { return shaderCodes ?? (shaderCodes = new Dictionary<MaterialUsage, string>()); }

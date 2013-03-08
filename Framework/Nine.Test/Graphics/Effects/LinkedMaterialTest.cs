@@ -8,8 +8,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework;
-using Nine.Content.Pipeline.Graphics.Effects;
-using Nine.Content.Pipeline.Graphics.Effects.EffectParts;
+using Nine.Content.Graphics.Effects;
+using Nine.Content.Graphics.Effects.EffectParts;
 
 namespace Nine.Graphics.Effects.Test
 {

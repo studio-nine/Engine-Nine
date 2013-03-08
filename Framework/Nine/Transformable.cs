@@ -6,19 +6,19 @@ namespace Nine
     using System.Xaml;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
-    using Nine.Content;
+    using Nine.Serialization;
 
     /// <summary>
     /// Base class for all objects that has a transform and a bounds.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public abstract class Transformable : Nine.Object, IComponent
     {
         #region Properties
         /// <summary>
         /// Gets the parent of this object.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public Transformable Parent
         {
             get { return parent; }

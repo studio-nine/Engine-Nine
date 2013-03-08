@@ -55,7 +55,7 @@ namespace Nine
     }
 
     #region Curve Implementations
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     class LinearCurve : ICurve
     {
         public float Evaluate(float position)
@@ -64,7 +64,7 @@ namespace Nine
         }
     }
 
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     class ExponentialCurve : ICurve
     {
         public float Power { get; set; }
@@ -77,7 +77,7 @@ namespace Nine
         }
     }
 
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     class SinCurve : ICurve
     {
         public float Evaluate(float position)
@@ -86,7 +86,7 @@ namespace Nine
         }
     }
 
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     class SmoothCurve : ICurve
     {
         public float Evaluate(float position)
@@ -95,7 +95,7 @@ namespace Nine
         }
     }
 
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     class ElasticCurve : ICurve
     {
         public float Strength { get; set; }
@@ -111,7 +111,7 @@ namespace Nine
         }
     }
 
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     class BounceCurve : ICurve
     {
         public float Strength { get; set; }
@@ -129,7 +129,7 @@ namespace Nine
         }
     }
 
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     class CustomCurve : ICurve
     {
         private float minPosition;
@@ -145,7 +145,7 @@ namespace Nine
             set
             {
                 curve = value;
-
+                
                 if (curve.Keys.Count > 0)
                 {
                     minPosition = float.MaxValue;
@@ -164,6 +164,8 @@ namespace Nine
             }
         }
 
+        public CustomCurve() { }
+
         public CustomCurve(Curve curve)
         {
             Curve = curve;
@@ -171,8 +173,8 @@ namespace Nine
 
         public float Evaluate(float position)
         {
-            return Curve != null ? 
-                (Curve.Evaluate(minPosition + position * (maxPosition - minPosition)) - minValue) / (maxValue - minValue) : 0;
+            return curve != null ? 
+                (curve.Evaluate(minPosition + position * (maxPosition - minPosition)) - minValue) / (maxValue - minValue) : 0;
         }
     }
     #endregion

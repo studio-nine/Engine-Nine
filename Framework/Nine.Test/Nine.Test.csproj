@@ -36,7 +36,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Build\Nine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
@@ -79,8 +79,6 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="Content\XamlSerializerTest.cs" />
-    <Compile Include="Content\DefaultContentProcessorTest.cs" />
     <Compile Include="ContentBuilder.cs" />
     <Compile Include="Content\PipelineBuilderTest.cs" />
     <Compile Include="ErrorLogger.cs" />
@@ -104,12 +102,11 @@
     <Compile Include="TriangleTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nine.Content.Pipeline\Nine.Content.Pipeline.csproj">
+    <ProjectReference Include="..\Nine.Content\Nine.Content.csproj">
       <Project>{926CE988-9E75-40DD-80F1-1709A91F8C35}</Project>
-      <Name>Nine.Content.Pipeline</Name>
+      <Name>Nine.Content</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
       <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>

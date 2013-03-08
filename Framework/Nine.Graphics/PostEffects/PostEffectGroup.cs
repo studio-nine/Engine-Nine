@@ -12,7 +12,7 @@
     /// <summary>
     /// Represents post processing effects.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     [ContentProperty("Passes")]
     public class PostEffectGroup : Pass, IGraphicsObject, IPostEffect
     {
@@ -28,7 +28,7 @@
         /// <summary>
         /// Gets or sets the input texture to be processed.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public Texture2D InputTexture { get; set; }
 
         /// <summary>
@@ -204,7 +204,7 @@
                     if (basicPostEffect == null)
                     {
                         basicPostEffect = new PostEffect();
-                        basicPostEffect.Material = new BasicMaterial(context.graphics);
+                        basicPostEffect.Material = new TextureMaterial(context.graphics);
                     }
                     lastEffect = basicPostEffect;
                 }

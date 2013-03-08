@@ -51,7 +51,7 @@ namespace Nine.Physics.Colliders
         
         private void RebuildCollider()
         {
-            if (Nine.Content.ContentProperties.IsContentBuild)
+            if (Nine.Serialization.ContentProperties.IsContentBuild)
             {
                 // Fake an entity when we are compiling the model collider.
                 NotifyColliderChanged(new Sphere(Vector3.Zero, 1));

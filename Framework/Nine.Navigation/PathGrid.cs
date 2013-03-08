@@ -10,7 +10,7 @@ namespace Nine.Navigation
     /// </summary>
     public class PathGrid : UniformGrid, IGraph, IPathGraph
     {
-        [ContentSerializer(Optional=true, ElementName="Data")]
+        [Nine.Serialization.BinarySerializable]
         private byte[] data;
 
         /// <summary>

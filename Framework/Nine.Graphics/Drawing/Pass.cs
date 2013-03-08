@@ -8,7 +8,7 @@ namespace Nine.Graphics.Drawing
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Content;
+    using Nine.Serialization;
     using Nine.Graphics;
 
     [Flags]

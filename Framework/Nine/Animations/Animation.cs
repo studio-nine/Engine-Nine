@@ -5,7 +5,7 @@ namespace Nine.Animations
     /// <summary>
     /// Base class for all playable animations.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public abstract class Animation : Nine.Object, IUpdateable, IAnimation
     {
         /// <summary>

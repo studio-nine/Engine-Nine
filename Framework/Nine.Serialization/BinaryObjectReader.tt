@@ -1,0 +1,40 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" visibility="internal" linePragmas="false" #>
+<#@ import namespace="System.Linq" #>
+<# foreach (var namespaceGroup in g.Types.GroupBy(x => x.Namespace).OrderBy(x => x.Key)) { #>
+namespace <#= namespaceGroup.Key #>
+{
+<# foreach (var type in namespaceGroup.OrderBy(x => x.Name)) { #>
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("<#= g.GeneratorName #>", "<#= g.GeneratorVersion #>")]
+    class <#= type.Name #>Reader : Nine.Serialization.IBinaryObjectReader
+    {
+        public object Read(System.IO.BinaryReader input, object existingInstance, System.IServiceProvider serviceProvider)
+        {
+            var result = existingInstance as <#= PropertyTypeData.GetClassFullName(type.Type) #>;
+            if (result == null)
+            {
+<# if (type.ConstructorParameters != null) { #>
+                result = new <#= PropertyTypeData.GetClassFullName(type.Type) #>(
+<# for (var i = 0; i < type.ConstructorParameters.Length; i++) { #>
+<# if (i != 0) { #>,<# }#> <#= PropertyTypeData.GetClassFullName(type.ConstructorParameters[i].DeclaringType) #>.<#= type.ConstructorParameters[i].Name #>(serviceProvider)
+<# } #>);
+<# } else if (type.HasServiceProviderConstructor) { #>
+                result = new <#= PropertyTypeData.GetClassFullName(type.Type) #>(serviceProvider);
+<# } else { #>
+                result = new <#= PropertyTypeData.GetClassFullName(type.Type) #>();
+<# } #>
+            }
+<# if (type.SupportsInitialize) { #>
+            ((System.ComponentModel.ISupportInitialize)result).BeginInit();
+<# } #>
+<# foreach (var property in type.Properties) { 
+    WriteLine(property.Type.ToReadString("input", "result." + property.Name, 0));
+} #>
+<# if (type.SupportsInitialize) { #>
+            ((System.ComponentModel.ISupportInitialize)result).EndInit();
+<# } #>
+            return result;
+        }
+    }
+<# } #>
+}
+<# } #>

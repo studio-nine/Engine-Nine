@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using Microsoft.Xna.Framework.Content.Pipeline;
-    using Nine.Content.Pipeline.Importers;
+    using Nine.Content.Importers;
     using Nine.Studio.Extensibility;
     using System.Collections.Generic;
 
@@ -49,7 +49,7 @@
 
         protected override void Export(Stream output, Scene value)
         {
-            new Nine.Content.Pipeline.Xaml.XamlSerializer().Save(output, value);
+            new Nine.Content.XamlSerializer().Save(output, value);
         }
     }
 }

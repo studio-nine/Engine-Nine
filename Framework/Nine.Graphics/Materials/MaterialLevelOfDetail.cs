@@ -9,7 +9,7 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Defines a list of materials that are sorted from lowest quality to highest quality.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     [ContentProperty("MaterialLevels")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class MaterialLevelOfDetail

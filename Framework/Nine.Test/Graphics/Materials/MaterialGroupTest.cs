@@ -2,8 +2,8 @@ namespace Nine.Graphics.Materials.Test
 {
     using System.IO;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Nine.Content.Pipeline;
-    using Nine.Content.Pipeline.Graphics.Materials;
+    using Nine.Content;
+    using Nine.Graphics.Materials;
     using Nine.Graphics.Materials.MaterialParts;
 
     [TestClass]

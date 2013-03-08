@@ -84,10 +84,10 @@ namespace Nine
 
                 BoundingRectangle bounds = GetSegmentBounds(grid.X, grid.Y);
 
-                entry.Bounds.Min.X = bounds.Min.X;
-                entry.Bounds.Min.Z = bounds.Min.Y;
-                entry.Bounds.Max.X = bounds.Max.X;
-                entry.Bounds.Max.Z = bounds.Max.Y;
+                entry.Bounds.Min.X = bounds.X;
+                entry.Bounds.Min.Z = bounds.Y;
+                entry.Bounds.Max.X = bounds.X + bounds.Width;
+                entry.Bounds.Max.Z = bounds.Y + bounds.Height;
             }
 
             entry.Objects.Add(obj);
@@ -99,12 +99,12 @@ namespace Nine
                 entry.Bounds.Max.Y = box.Max.Y;
 
             BoundingRectangle rectangle = new BoundingRectangle();
-            rectangle.Min.X = box.Min.X;
-            rectangle.Min.Y = box.Min.Z;
-            rectangle.Max.X = box.Max.X;
-            rectangle.Max.Y = box.Max.Z;
+            rectangle.X = box.Min.X;
+            rectangle.Y = box.Min.Z;
+            rectangle.Width = box.Max.X - box.Min.X;
+            rectangle.Height = box.Max.Z - box.Min.Z;
 
-            float precision = Vector2.Subtract(rectangle.Max, rectangle.Min).Length() * 0.25f;
+            float precision = (float)Math.Sqrt(rectangle.Width * rectangle.Width + rectangle.Height * rectangle.Height) * 0.25f;
             if (precision < rayPickPrecision)
                 rayPickPrecision = precision;
             return true;

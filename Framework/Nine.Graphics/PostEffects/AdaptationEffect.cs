@@ -18,7 +18,7 @@
         private RenderTarget2D lastFrame;
         private RenderTarget2D currentFrame;
         private AdaptionMaterial adoptionMaterial;
-        private BasicMaterial basicMaterial;
+        private TextureMaterial textureMaterial;
 
         /// <summary>
         /// Get or sets the speed of the adaptation.
@@ -99,9 +99,9 @@
 
         private void CopyToScreen(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            if (basicMaterial == null)
-                basicMaterial = new BasicMaterial(context.graphics) { SamplerState = SamplerState.PointClamp };
-            Material = basicMaterial;
+            if (textureMaterial == null)
+                textureMaterial = new TextureMaterial(context.graphics) { SamplerState = SamplerState.PointClamp };
+            Material = textureMaterial;
             base.Draw(context, drawables);
             Material = adoptionMaterial;
         }

@@ -13,22 +13,94 @@ namespace Nine
     public struct BoundingRectangle : IEquatable<BoundingRectangle>
     {
         /// <summary>
-        /// Gets or sets the min value.
+        /// Gets or sets the x value.
         /// </summary>
-        public Vector2 Min;
+        public float X;
 
         /// <summary>
-        /// Gets or sets the max value.
+        /// Gets or sets the y value.
         /// </summary>
-        public Vector2 Max;
+        public float Y;
+
+        /// <summary>
+        /// Gets or sets the width.
+        /// </summary>
+        public float Width;
+
+        /// <summary>
+        /// Gets or sets the height.
+        /// </summary>
+        public float Height;
+
+        /// <summary>
+        /// Returns the x-coordinate of the left side of the rectangle.
+        /// </summary>
+        public float Left { get { return X; } }
+
+        /// <summary>
+        /// Returns the x-coordinate of the right side of the rectangle.
+        /// </summary>
+        public float Right { get { return X + Width; } }
+
+        /// <summary>
+        /// Returns the y-coordinate of the top of the rectangle.
+        /// </summary>
+        public float Top { get { return Y; } }
+
+        /// <summary>
+        /// Returns the y-coordinate of the bottom of the rectangle.
+        /// </summary>
+        public float Bottom { get { return Y + Height; } }
+
+        /// <summary>
+        /// Returns the center point of the bottom of the rectangle.
+        /// </summary>
+        public Vector2 Center
+        {
+            get { return new Vector2(X + Width * 0.5f, Y + Height * 0.5f); }
+        }
+
+        /// <summary>
+        /// Returns the top left corner of the rectangle.
+        /// </summary>
+        public Vector2 Location
+        {
+            get { return new Vector2(X, Y); }
+        }
+
+        /// <summary>
+        /// Returns the size of the rectangle.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return new Vector2(Width, Height); }
+        }
+
+        /// <summary>
+        /// Returns a Rectangle with all of its values set to zero.
+        /// </summary>
+        public static BoundingRectangle Empty { get; private set; }
 
         /// <summary>
         /// Create a new instance of BoundingRectangle object.
         /// </summary>
-        public BoundingRectangle(Vector2 min, Vector2 max)
+        public BoundingRectangle(float width, float height)
         {
-            Min = min;
-            Max = max;
+            this.X = 0;
+            this.Y = 0;
+            this.Width = width;
+            this.Height = height;
+        }
+
+        /// <summary>
+        /// Create a new instance of BoundingRectangle object.
+        /// </summary>
+        public BoundingRectangle(float x, float y, float width, float height)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Width = width;
+            this.Height = height;
         }
 
         /// <summary>
@@ -36,8 +108,10 @@ namespace Nine
         /// </summary>
         public BoundingRectangle(Rectangle rectangle)
         {
-            Min = new Vector2(rectangle.X, rectangle.Y);
-            Max = new Vector2(rectangle.Right, rectangle.Bottom);
+            this.X = rectangle.X;
+            this.Y = rectangle.Y;
+            this.Width = rectangle.Width;
+            this.Height = rectangle.Height;
         }
 
         /// <summary>
@@ -45,7 +119,7 @@ namespace Nine
         /// </summary>
         public ContainmentType Contains(float x, float y)
         {
-            return (x >= Min.X && x <= Max.X && y >= Min.Y && y <= Max.Y) ? ContainmentType.Contains : ContainmentType.Disjoint;
+            return (x >= this.X && x <= this.X + this.Width && y >= this.Y && y <= this.Y + this.Height) ? ContainmentType.Contains : ContainmentType.Disjoint;
         }
 
         /// <summary>
@@ -53,7 +127,7 @@ namespace Nine
         /// </summary>
         public ContainmentType Contains(Vector2 point)
         {
-            return (point.X >= Min.X && point.X <= Max.X && point.Y >= Min.Y && point.Y <= Max.Y) ? ContainmentType.Contains : ContainmentType.Disjoint;
+            return (point.X >= this.X && point.X <= this.X + this.Width && point.Y >= this.Y && point.Y <= this.Y + this.Height) ? ContainmentType.Contains : ContainmentType.Disjoint;
         }
         
         /// <summary>
@@ -61,18 +135,18 @@ namespace Nine
         /// </summary>
         public ContainmentType Contains(BoundingRectangle rectangle)
         {
-            if (this.Min.X > rectangle.Max.X ||
-                this.Min.Y > rectangle.Max.Y ||
-                this.Max.X < rectangle.Min.X ||
-                this.Max.Y < rectangle.Min.Y)
+            if (this.X > rectangle.X + rectangle.Width ||
+                this.Y > rectangle.Y + rectangle.Height ||
+                this.X + this.Width < rectangle.X ||
+                this.Y + this.Height < rectangle.Y)
             {
                 return ContainmentType.Disjoint;
             }
             else if (
-                this.Min.X <= rectangle.Min.X &&
-                this.Min.Y <= rectangle.Min.Y &&
-                this.Max.X >= rectangle.Max.X &&
-                this.Max.Y >= rectangle.Max.Y)
+                this.X <= rectangle.X &&
+                this.Y <= rectangle.Y &&
+                this.X + this.Width >= rectangle.X + rectangle.Width &&
+                this.Y + this.Height >= rectangle.Y + rectangle.Height)
             {
                 return ContainmentType.Contains;
             }
@@ -87,19 +161,19 @@ namespace Nine
         /// </summary>
         public void Contains(ref BoundingRectangle rectangle, out ContainmentType containmentType)
         {
-            if (this.Min.X > rectangle.Max.X ||
-                this.Min.Y > rectangle.Max.Y ||
-                this.Max.X < rectangle.Min.X ||
-                this.Max.Y < rectangle.Min.Y)
+            if (this.X > rectangle.X + rectangle.Width ||
+                this.Y > rectangle.Y + rectangle.Height ||
+                this.X + this.Width < rectangle.X ||
+                this.Y + this.Height < rectangle.Y)
             {
                 containmentType = ContainmentType.Disjoint;
                 return;
             }
             
-            if (this.Min.X <= rectangle.Min.X &&
-                this.Min.Y <= rectangle.Min.Y &&
-                this.Max.X >= rectangle.Max.X &&
-                this.Max.Y >= rectangle.Max.Y)
+            if (this.X <= rectangle.X &&
+                this.Y <= rectangle.Y &&
+                this.X + this.Width >= rectangle.X + rectangle.Width &&
+                this.Y + this.Height >= rectangle.Y + rectangle.Height)
             {
                 containmentType = ContainmentType.Contains;
                 return;
@@ -109,7 +183,7 @@ namespace Nine
 
         public bool Equals(BoundingRectangle other)
         {
-            return Min == other.Min && Max == other.Max;
+            return X == other.X && Y == other.Y && Width == other.Width && Height == other.Height;
         }
 
         public override bool Equals(object obj)
@@ -122,22 +196,24 @@ namespace Nine
 
         public static bool operator ==(BoundingRectangle value1, BoundingRectangle value2)
         {
-            return ((value1.Min == value2.Min) && (value1.Max == value2.Max));
+            return (value1.X == value2.X) && (value1.Y == value2.Y) &&
+                   (value1.Width == value2.Width) && (value1.Height == value2.Height);
         }
 
         public static bool operator !=(BoundingRectangle value1, BoundingRectangle value2)
         {
-            return !(value1.Min == value2.Min && value1.Max == value2.Max);
+            return !(value1 == value2);
         }
 
         public override int GetHashCode()
         {
-            return Min.GetHashCode() ^ Max.GetHashCode();
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Width.GetHashCode() ^ Height.GetHashCode();
         }
 
         public override string ToString()
         {
-            return Min.ToString() + " ~ " + Max.ToString();
+            return X.ToString() + ", " + Y.ToString() + ", " +
+                   Width.ToString() + ", " + Height.ToString();
         }
 
         /// <summary>
@@ -145,22 +221,22 @@ namespace Nine
         /// </summary>
         public static BoundingRectangle CreateFromPoints(IEnumerable<Vector2> points)
         {
-            BoundingRectangle rect = new BoundingRectangle();
-            rect.Min = Vector2.One * float.MaxValue;
-            rect.Max = Vector2.One * float.MinValue;
+            var min = Vector2.One * float.MaxValue;
+            var max = Vector2.One * float.MinValue;
             
             foreach (Vector2 pt in points)
             {
-                if (pt.X < rect.Min.X)
-                    rect.Min.X = pt.X;
-                if (pt.X > rect.Max.X)
-                    rect.Max.X = pt.X;
-                if (pt.Y < rect.Min.Y)
-                    rect.Min.Y = pt.Y;
-                if (pt.Y > rect.Max.Y)
-                    rect.Max.Y = pt.Y;
+                if (pt.X < min.X)
+                    min.X = pt.X;
+                if (pt.X > max.X)
+                    max.X = pt.X;
+                if (pt.Y < min.Y)
+                    min.Y = pt.Y;
+                if (pt.Y > max.Y)
+                    max.Y = pt.Y;
             }
-            return rect;
+
+            return new BoundingRectangle(min.X, min.Y, max.X - min.X, max.Y - min.Y);
         }
 
         /// <summary>
@@ -169,10 +245,12 @@ namespace Nine
         public static void CreateMerged(ref BoundingRectangle original, ref BoundingRectangle additional, out BoundingRectangle result)
         {
             result = new BoundingRectangle();
-            result.Min.X = (original.Min.X > additional.Min.X) ? additional.Min.X : original.Min.X;
-            result.Min.Y = (original.Min.Y > additional.Min.Y) ? additional.Min.Y : original.Min.Y;
-            result.Max.X = (original.Max.X < additional.Max.X) ? additional.Max.X : original.Max.X;
-            result.Max.Y = (original.Max.Y < additional.Max.Y) ? additional.Max.Y : original.Max.Y;
+            result.X = (original.X > additional.X) ? additional.X : original.X;
+            result.Y = (original.Y > additional.Y) ? additional.Y : original.Y;
+            result.Width = (original.X + original.Width < additional.X + additional.Width) ? additional.X + additional.Width : original.X + original.Width;
+            result.Height = (original.Y + original.Height < additional.Y + additional.Height) ? additional.Y + additional.Height : original.Y + original.Height;
+            result.Width -= result.X;
+            result.Height -= result.Y;
         }
 
         /// <summary>
@@ -180,16 +258,9 @@ namespace Nine
         /// </summary>
         public static BoundingRectangle CreateMerged(BoundingRectangle original, BoundingRectangle additional)
         {
-            if (original.Min.X > additional.Min.X)
-                original.Min.X = additional.Min.X;
-            if (original.Min.Y > additional.Min.Y)
-                original.Min.Y = additional.Min.Y;
-            if (original.Max.X < additional.Max.X)
-                original.Max.X = additional.Max.X;
-            if (original.Max.Y < additional.Max.Y)
-                original.Max.Y = additional.Max.Y;
-            
-            return original;
+            BoundingRectangle result = new BoundingRectangle();
+            CreateMerged(ref original, ref additional, out result);
+            return result;
         }
     }
 }

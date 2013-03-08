@@ -12,7 +12,7 @@
     /// <summary>
     /// Enables a group of dynamic primitives to be drawn.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     [ContentProperty("Primitives")]    
     public class DynamicPrimitive : Nine.Transformable, IDrawableObject, IDisposable
     {
@@ -118,12 +118,7 @@
             this.initialBufferCapacity = initialBufferCapacity;
             this.maxBufferSizePerPrimitive = maxBufferSizePerPrimitive;
             this.rasterizerState = new RasterizerState() { CullMode = CullMode.None };
-            this.material = new BasicMaterial(graphics) 
-            {
-                LightingEnabled = false, 
-                VertexColorEnabled = true, 
-                TwoSided = true,
-            };
+            this.material = new TextureMaterial(graphics) { TwoSided = true };
 
             this.vertexData = new VertexPositionColorNormalTexture[512];
             this.indexData = new ushort[6];
@@ -592,11 +587,6 @@
                 if (indexBuffer != null)
                     indexBuffer.Dispose();
             }
-        }
-
-        ~DynamicPrimitive()
-        {
-            Dispose(false);
         }
 
         bool IDrawableObject.OnAddedToView(DrawingContext context) { return Visible; }

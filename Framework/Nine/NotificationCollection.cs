@@ -356,25 +356,4 @@ namespace Nine
             CurrentIndex = -1;
         }
     }
-
-    class NotificationCollectionReader<T> : ContentTypeReader<NotificationCollection<T>> where T : class
-    {
-        ContentTypeReader elementReader;
-
-        protected override void Initialize(ContentTypeReaderManager manager)
-        {
-            elementReader = manager.GetTypeReader(typeof(T));
-        }
-
-        protected override NotificationCollection<T> Read(ContentReader input, NotificationCollection<T> existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new NotificationCollection<T>();
-
-            var count = input.ReadInt32();
-            for (int i = 0; i < count; ++i)
-                existingInstance.Add(input.ReadObject<T>(elementReader));
-            return existingInstance;
-        }
-    }
 }

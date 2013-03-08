@@ -2269,7 +2269,7 @@
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal class WINDOWPLACEMENT
+    internal struct WINDOWPLACEMENT
     {
         public int length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
         public int flags;
@@ -3091,18 +3091,23 @@
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetWindowPlacement(IntPtr hwnd, WINDOWPLACEMENT lpwndpl);
-
+        private static extern bool GetWindowPlacement(IntPtr hwnd, out WINDOWPLACEMENT lpwndpl);
+        
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static WINDOWPLACEMENT GetWindowPlacement(IntPtr hwnd)
         {
-            WINDOWPLACEMENT wndpl = new WINDOWPLACEMENT();
-            if (GetWindowPlacement(hwnd, wndpl))
+            WINDOWPLACEMENT wndpl;
+            if (GetWindowPlacement(hwnd, out wndpl))
             {
                 return wndpl;
             }
             throw new Win32Exception();
         }
+
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetWindowPlacement(IntPtr hwnd, [In] ref WINDOWPLACEMENT lpwndpl);
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]

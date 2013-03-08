@@ -216,7 +216,6 @@ namespace Nine.Graphics
         #endregion
 
         #region GetValue
-#if !SILVERLIGHT
         public static object GetValue(this EffectParameter parameter)
         {
             if (parameter.ParameterClass == EffectParameterClass.Object)
@@ -248,7 +247,6 @@ namespace Nine.Graphics
 
             throw new NotSupportedException();
         }
-#endif
         #endregion
     }
 }

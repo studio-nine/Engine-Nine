@@ -1,0 +1,101 @@
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:xna="clr-namespace:Microsoft.Xna.Framework;assembly=Microsoft.Xna.Framework">
+
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
+    
+    <!--
+        By default specular color is set to black so there is no specular color at all. To give the objects a
+        shiny look, you have to adjust the specular settings for both the light and the object.
+    -->
+    <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
+
+    <!--
+        Use the Model element to add a model to the scene. The model asset has to be specified.
+        The model can be processed using the default Xna model processor, but processing the model using
+        "Model - Engine Nine" will enable animation, normal mapping, collision detection, etc.
+    -->
+    <Model Source="{ContentReference ../Models/Tank/Tank}" />
+
+    <!--
+        There are 5 materials that corresponds to the built in effects provided by Xna,
+        BasicMaterial, SkinnedMaterial, EnvironmentMapMaterial, AlphaTestMaterial and DualTextureMaterial.
+        Unlike model material, these materials can be used for Windows Phone games.  
+    -->
+    <Model Source="{ContentReference ../Models/Dude/Dude}" Transform.Position="-20,0,20">
+        <Model.Material>
+            <BasicMaterial DiffuseColor="1,0,0"/>
+        </Model.Material>
+    </Model>
+
+    <Model Source="{ContentReference ../Models/Dude/Dude}" Transform.Position="-10,0,20">
+        <Model.Material>
+            <SkinnedMaterial SpecularColor="0,0,0" />
+        </Model.Material>
+    </Model>
+
+    <Model Source="{ContentReference ../Models/Dude/Dude}" Transform.Position="0,0,20">
+        <Model.Material>
+            <EnvironmentMapMaterial EnvironmentMap="{ContentReference ../Textures/SkyCubeMap}" 
+                                    EnvironmentMapAmount="1" EnvironmentMapSpecular="0, 0, 0" FresnelFactor="1"/>
+        </Model.Material>
+    </Model>
+
+    <Model Source="{ContentReference ../Models/Dude/Dude}" Transform.Position="10,0,20" Material="{AlphaTestMaterial}" />
+
+    <Model Source="{ContentReference ../Models/Dude/Dude}" Transform.Position="20,0,20">
+        <Model.Material>
+            <DualTextureMaterial Texture2="{ContentReference ../Textures/Checker}" />
+        </Model.Material>
+    </Model>  
+    
+    <!--    
+        You can apply different materials to each part of the model and toggle their visibility seperately.
+    -->
+    <Model Source="{ContentReference ../Models/Palm/AlphaPalm}" Transform.Position="10,0,20">
+        <Model.Meshes>
+            <!-- Hide the trunk -->       
+            <ModelMesh Visible="False" />     
+            <!-- 
+                You can write your own .fx shaders and apply them to the models. 
+                The shader should use the standard annotations to bind to the current graphics settings.
+                You should not modify any render states in the shader.
+               
+                Process your shader using "Effect - Engine Nine".
+            -->
+            <ModelMesh>
+                <ModelMesh.Material>
+                    <CustomMaterial IsTransparent="true" TwoSided="true" Source="{ContentReference ../Materials/Cage}">
+                        <CustomMaterial.Parameters>
+                            <xna:Vector4 x:Key="BrightColor">1,1,1,1</xna:Vector4>
+                        </CustomMaterial.Parameters>
+                    </CustomMaterial>
+                </ModelMesh.Material>
+            </ModelMesh>
+        </Model.Meshes>
+    </Model>
+    
+    <!--
+        Leveled material provides the ability to adjust the material quality base on the distance between
+        the object and the camera. You can also control the overall material quality of the scene by
+        adjusting the Scene.Settings.MaterialQuality property.          
+    -->  
+    <Model Source="{ContentReference ../Models/Tank/Tank}">
+        <Model.Transform>
+            <Transform Position="30,0,20" />
+        </Model.Transform>
+
+        <Model.MaterialLevels>
+            <!--
+                Materials are order from the lowest quanlity to the highest quanlity.
+            -->
+            <MaterialLevelOfDetail LevelOfDetailStart="0" LevelOfDetailEnd="100">
+                <BasicMaterial LightingEnabled="False"/>
+                <BasicMaterial LightingEnabled="True" />
+            </MaterialLevelOfDetail>
+        </Model.MaterialLevels>
+    </Model>
+
+</Scene>

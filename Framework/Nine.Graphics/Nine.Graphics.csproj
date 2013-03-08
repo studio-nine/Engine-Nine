@@ -42,7 +42,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Build\Nine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
@@ -53,12 +53,6 @@
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Avatar, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
     <Reference Include="mscorlib">
@@ -88,37 +82,26 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\TextTemplates\Nine.Graphics.Content.Reader.Generated.cs">
-      <Link>Nine.Graphics.Content.Reader.Generated.cs</Link>
-    </Compile>
     <Compile Include="..\TextTemplates\Nine.Graphics.Materials.Generated.cs">
       <Link>Nine.Graphics.Materials.Generated.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Graphics.Materials.tt</DependentUpon>
     </Compile>
-    <Compile Include="Animations\AvatarAnimation.cs" />
-    <Compile Include="Animations\BoneAnimation.cs" />
-    <Compile Include="Animations\BoneAnimationController.cs" />
-    <Compile Include="Animations\BoneAnimationClip.cs" />
-    <Compile Include="Animations\LookAtController.cs" />
     <Compile Include="Animations\SpriteAnimation.cs" />
-    <Compile Include="Cameras\ChaseCamera.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="Materials\TextureMaterial.cs" />
     <Compile Include="PostEffects\BloomMaterial.cs" />
     <Compile Include="TextSprite.cs" />
     <Compile Include="Drawing\SpritePass.cs" />
     <Compile Include="FastList.cs" />
     <Compile Include="Materials\ThickLineMaterial.cs" />
-    <Compile Include="ModelAttachment.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SceneExtensions.cs" />
     <Compile Include="Design\SamplerStateReader.cs" />
     <Compile Include="Design\BlendStateConverter.cs" />
     <Compile Include="Design\SamplerStateConverter.cs" />
-    <Compile Include="Drawing\DepthPrePass.cs" />
-    <Compile Include="Drawing\LightPrePass.cs" />
     <Compile Include="Drawing\PassGroup.cs" />
     <Compile Include="TextureCollection.cs" />
     <Compile Include="MatrixCollection.cs" />
@@ -126,139 +109,62 @@
     <Compile Include="Drawing\DrawingQueue.cs" />
     <Compile Include="GraphicsDeviceService.cs" />
     <Compile Include="Materials\DebugMaterial.cs" />
-    <Compile Include="Materials\DepthAndNormalMaterial.cs" />
-    <Compile Include="Materials\DepthMaterial.cs" />
-    <Compile Include="Materials\MaterialParts\AlphaTestMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\DepthAndNormalMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\DepthMaterialPart.cs" />
-    <Compile Include="ShadowMap.cs" />
     <Compile Include="PostEffects\AdaptationEffect.cs" />
     <Compile Include="PostEffects\BlurEffect.cs" />
-    <Compile Include="PostEffects\AntiAliasMaterial.cs" />
-    <Compile Include="PostEffects\AntiAliasEffect.cs" />
     <Compile Include="PostEffects\RestoreDepthBufferMaterial.cs" />
     <Compile Include="PostEffects\LuminanceMaterial.cs" />
     <Compile Include="PostEffects\ToneMappingMaterial.cs" />
     <Compile Include="Materials\VertexPassThroughMaterial.cs" />
     <Compile Include="PostEffects\LuminanceChain.cs" />
-    <Compile Include="PostEffects\DepthOfFieldMaterial.cs" />
-    <Compile Include="Materials\MaterialPaintGroup.cs" />
     <Compile Include="Materials\CustomMaterialSemantics.cs" />
-    <Compile Include="Materials\CustomMaterialPart.cs" />
     <Compile Include="Materials\MaterialLevelOfDetail.cs" />
-    <Compile Include="Materials\MaterialParts\BeginPaintGroupMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\InstancedMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\TangentTransformMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\EndPaintGroupMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\EndLightMaterialPart.cs" />
     <Compile Include="Materials\MaterialUsage.cs" />
-    <Compile Include="Materials\SkyBoxMaterial.cs" />
     <Compile Include="Interface.cs" />
-    <Compile Include="Materials\BasicMaterial.cs" />
-    <Compile Include="Materials\AlphaTestMaterial.cs" />
-    <Compile Include="Materials\EnvironmentMapMaterial.cs" />
-    <Compile Include="Materials\DualTextureMaterial.cs" />
-    <Compile Include="Materials\SkinnedMaterial.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="InstancedModel.cs" />
-    <Compile Include="DirectionalLightCollection.cs" />
     <Compile Include="Materials\SoftParticleMaterial.cs" />
-    <Compile Include="Drawing\DrawingPass.cs" />
     <Compile Include="PostEffects\BlurMaterial.cs" />
     <Compile Include="PostEffects\BloomEffect.cs" />
     <Compile Include="PostEffects\ScaleMaterial.cs" />
     <Compile Include="PostEffects\HighDynamicRangeEffect.cs" />
-    <Compile Include="PostEffects\DepthOfFieldEffect.cs" />
     <Compile Include="PostEffects\PostEffectChain.cs" />
     <Compile Include="PostEffects\PostEffectGroup.cs" />
     <Compile Include="PostEffects\ThresholdMaterial.cs" />
-    <Compile Include="Primitives\Cross.cs" />
     <Compile Include="Primitives\DynamicPrimitive.cs" />
     <Compile Include="Drawing\PassCollection.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="Decal.cs" />
-    <Compile Include="Model.cs" />
-    <Compile Include="Surface.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
     <Compile Include="Materials\CustomMaterial.cs" />
-    <Compile Include="Materials\MaterialParts\DetailMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\DeferredLightsMaterialPart.cs" />
-    <Compile Include="Materials\MaterialGroup.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="Cameras\Camera.cs" />
-    <Compile Include="Fog.cs" />
-    <Compile Include="SurfaceGeometry.cs" />
     <Compile Include="TextureUsage.cs" />
-    <Compile Include="Materials\MaterialParts\EmissiveMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\SpecularMaterialPart.cs" />
     <Compile Include="Materials\Material.cs" />
-    <Compile Include="AmbientLight.cs" />
-    <Compile Include="ModelMesh.cs" />
-    <Compile Include="DirectionalLight.cs" />
-    <Compile Include="PointLight.cs" />
-    <Compile Include="SpotLight.cs" />
     <Compile Include="DrawingContext.cs" />
-    <Compile Include="Light.cs" />
-    <Compile Include="SkyBox.cs" />
     <Compile Include="Design\BlendStateReader.cs" />
-    <Compile Include="Primitives\Cone.cs" />
-    <Compile Include="Primitives\Bezier.cs" />
-    <Compile Include="Primitives\Box.cs" />
-    <Compile Include="Primitives\Plane.cs" />
-    <Compile Include="Primitives\Dome.cs" />
-    <Compile Include="Primitives\Torus.cs" />
-    <Compile Include="Primitives\Teapot.cs" />
-    <Compile Include="Primitives\Cylinder.cs" />
-    <Compile Include="Primitives\Sphere.cs" />
     <Compile Include="FullScreenQuad.cs" />
-    <Compile Include="Primitives\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VertexTypes\VertexPositionNormal.cs" />
     <Compile Include="Drawing\RenderTargetPool.cs" />
     <Compile Include="Materials\Interfaces.cs" />
-    <Compile Include="Materials\MaterialParts\ColorMatrixMaterialPart.cs" />
     <Compile Include="ParticleEffects\ParticleControllers.cs" />
     <Compile Include="ParticleEffects\Particle.cs" />
     <Compile Include="ParticleEffects\ParticleController.cs" />
     <Compile Include="VertexTypes\VertexPositionNormalTangentBinormalTexture.cs" />
-    <Compile Include="Materials\MaterialParts\SpotLightEffectPart.cs" />
-    <Compile Include="Materials\MaterialParts\PointLightEffectPart.cs" />
     <Compile Include="Primitives\DynamicPrimitiveExtensions.cs" />
     <Compile Include="GraphicsResources.cs" />
-    <Compile Include="Materials\MaterialParts\DiffuseMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\NormalMapMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\ShadowMapMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\TextureTransformMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\FogMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\DualTextureMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\SkinnedMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\VertexTransformMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\DirectionalLightMaterialPart.cs" />
-    <Compile Include="Materials\MaterialParts\BeginLightMaterialPart.cs" />
-    <Compile Include="Materials\MaterialPart.cs" />
     <Compile Include="PostEffects\PostEffect.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Cameras\Camera2D.cs" />
     <Compile Include="VertexTypes\VertexPositionColorNormalTexture.cs" />
-    <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
     <Compile Include="TextureTransform.cs" />
     <Compile Include="TextureAtlas.cs" />
     <Compile Include="EffectExtensions.cs" />
     <Compile Include="ParticleEffects\ParticleEmitter.cs" />
-    <Compile Include="Cameras\FreeCamera.cs" />
-    <Compile Include="Cameras\ModelViewerCamera.cs" />
-    <Compile Include="Cameras\BirdEyeCamera.cs" />
     <Compile Include="Geometry.cs" />
-    <Compile Include="Heightmap.cs" />
-    <Compile Include="ModelExtensions.cs" />
-    <Compile Include="ModelSkeleton.cs" />
     <Compile Include="ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="ParticleEffects\ParticleEffect.cs" />
     <Compile Include="VertexTypes\VertexPositionNormalDualTexture.cs" />
-    <Compile Include="SurfacePatchCollection.cs" />
-    <Compile Include="SurfacePatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nine\Nine.csproj">
@@ -272,23 +178,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
     </None>
+    <None Include="..\TextTemplates\Nine.Graphics.Materials.tth">
+      <Link>Nine.Graphics.Materials.tth</Link>
+    </None>
     <None Include="Shaders\RestoreDepthBuffer.fx" />
     <None Include="Shaders\VertexPassThrough2.fx" />
     <None Include="Shaders\Decal.fx" />
     <None Include="Shaders\Clear.fx" />
-    <None Include="Shaders\DeferredDirectionalLight.fx" />
-    <None Include="Shaders\DeferredLighting.fxh" />
-    <None Include="Shaders\DeferredPointLight.fx" />
-    <None Include="Shaders\DeferredSpotLight.fx" />
-    <None Include="Shaders\DepthAndNormal.fx" />
-    <None Include="Shaders\Depth.fx" />
-    <None Include="Shaders\SkyBox.fx" />
-    <None Include="Nine.snk" />
     <None Include="Shaders\SoftParticle.fx" />
     <None Include="Shaders\Adaption.fx" />
-    <None Include="Shaders\AntiAlias.fx" />
     <None Include="Shaders\Blur.fx" />
-    <None Include="Shaders\DepthOfField.fx" />
     <None Include="Shaders\Luminance.fx" />
     <None Include="Shaders\Scale.fx" />
     <None Include="Shaders\Threshold.fx" />
@@ -296,9 +195,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\Fxaa3_11.fxh" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\VertexPassThrough3.fx" />
@@ -310,8 +206,5 @@
     <None Include="Shaders\Bloom.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+  <Import Project="..\..\Bin\Nine.Serialization.targets" />
 </Project>

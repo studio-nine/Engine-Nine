@@ -11,7 +11,7 @@
     /// up and Z axis pointing outside the screen. The origin
     /// of the coordinate system is the center of the screen.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public class Camera2D : Nine.Transformable, ICamera, IGraphicsObject
     {
         #region View

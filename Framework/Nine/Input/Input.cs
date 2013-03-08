@@ -4,12 +4,8 @@ namespace Nine
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
-#if SILVERLIGHT
-    using Keys = System.Windows.Input.Key;
-#else
-    using Keys = Microsoft.Xna.Framework.Input.Keys;
     using Microsoft.Xna.Framework.Input.Touch;
-#endif
+    using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 
     /// <summary>
@@ -87,7 +83,7 @@ namespace Nine
         /// </summary>
         public Input(InputComponent component)
         {
-            if (Nine.Content.ContentProperties.IsContentBuild)
+            if (Nine.Serialization.ContentProperties.IsContentBuild)
                 return;
 
             if (component == null)
@@ -109,9 +105,8 @@ namespace Nine
             set 
             {
                 enabled = value; 
-#if !SILVERLIGHT
                 Component.PlayerIndexChanged = true;
-#elif WINDOWS_PHONE
+#if WINDOWS_PHONE
                 if (EnabledGestures != GestureType.None)
                     Component.EnabledGesturesChanged = true; 
 #endif
@@ -141,7 +136,6 @@ namespace Nine
         private GestureType enabledGestures = GestureType.None;
 #endif
         
-#if !SILVERLIGHT
         /// <summary>
         /// Gets or sets the player index to which this <c>Input</c> class will respond to.
         /// A value of null represents this instance will respond to all player inputs.
@@ -158,7 +152,6 @@ namespace Nine
         /// Gets the current gamePad state.
         /// </summary>
         public GamePadState GamePadState { get { return PlayerIndex != null ? Component.gamePadStates[(int)PlayerIndex] : new GamePadState(); } }
-#endif
 
         /// <summary>
         /// Gets the current keyboard state.
@@ -206,7 +199,6 @@ namespace Nine
         /// </summary>
         public event EventHandler<EventArgs> Update;
         
-#if !SILVERLIGHT
         /// <summary>
         /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been pressed.
         /// </summary>
@@ -241,7 +233,6 @@ namespace Nine
             if (GestureSampled != null)
                 GestureSampled(this, e);
         }
-#endif
 
         internal protected virtual void OnKeyUp(KeyboardEventArgs e)
         {
@@ -287,7 +278,6 @@ namespace Nine
         #endregion
 
         #region Extras
-#if !SILVERLIGHT
         /// <summary>
         /// All keys except A-Z, 0-9 and `-\[];',./= (and space) are special keys.
         /// With shift pressed this also results in this keys:
@@ -437,7 +427,6 @@ namespace Nine
             keysPressedLastFrame.Clear();
             keysPressedLastFrame.AddRange(pressedKeys);
         }
-#endif
         #endregion
     }
 }

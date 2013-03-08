@@ -13,7 +13,7 @@
     /// <summary>
     /// Represents a post processing effect.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     [ContentProperty("Material")]
     public class PostEffect : Pass, IGraphicsObject, IPostEffect
     {
@@ -26,7 +26,7 @@
         /// <summary>
         /// Gets or sets the input texture to be processed.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public Texture2D InputTexture { get; set; }
 
         /// <summary>

@@ -12,7 +12,7 @@
     /// <summary>
     /// Represents luminance chain used in high dynamic range (HDR) post processing effect.
     /// </summary>
-    [NotContentSerializable]
+    [Nine.Serialization.NotBinarySerializable]
     class LuminanceChain : PostEffectChain
     {
         /// <summary>
@@ -42,7 +42,7 @@
         {
             int scale = 2;
             int size = (int)Math.Max(graphics.Viewport.Width / scale, graphics.Viewport.Height / scale);
-            size = Math.Max(1, UtilityExtensions.UpperPowerOfTwo(size));
+            size = Math.Max(1, Extensions.UpperPowerOfTwo(size));
 
             scale = 4;
 #if SILVERLIGHT

@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{A8519D9A-C5F0-41E1-89D8-5AC6A5F4C351}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nine.Graphics.UI</RootNamespace>
+    <AssemblyName>Nine.Graphics.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\References\x86\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <DocumentationFile>..\..\References\x86\Nine.Graphics.UI.xml</DocumentationFile>
+    <NoWarn>1591,1572,1571,1573,1587,1570</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\References\x86\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <DocumentationFile>..\..\References\x86\Nine.Graphics.UI.xml</DocumentationFile>
+    <NoWarn>1591,1572,1571,1573,1587,1570</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\Build\Nine.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
+      <Project>{9436af22-6937-4bee-887e-c93a4692bdd7}</Project>
+      <Name>Nine.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine\Nine.csproj">
+      <Project>{E4F84943-5258-4F67-9C6C-739C18A47120}</Project>
+      <Name>Nine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Primitives\ToggleButton.cs" />
+    <Compile Include="Internal\Controls\ScrollData.cs" />
+    <Compile Include="Internal\PropertyStore.cs" />
+    <Compile Include="Controls\Canvas.cs" />
+    <Compile Include="Extensions\IElementExtensions.cs" />
+    <Compile Include="ReactivePropertyChangeEventArgs.cs" />
+    <Compile Include="Thickness.cs" />
+    <Compile Include="GridUnitType.cs" />
+    <Compile Include="GridLength.cs" />
+    <Compile Include="VerticalAlignment.cs" />
+    <Compile Include="HorizontalAlignment.cs" />
+    <Compile Include="Controls\ItemsControl.cs" />
+    <Compile Include="Controls\Primitives\IScrollInfo.cs" />
+    <Compile Include="ReactiveObject.cs" />
+    <Compile Include="ITemplatedList.cs" />
+    <Compile Include="Controls\ScrollContentPresenter.cs" />
+    <Compile Include="Controls\ScrollViewer.cs" />
+    <Compile Include="Controls\VirtualizingStackPanel.cs" />
+    <Compile Include="Input\IInputElement.cs" />
+    <Compile Include="Input\IInputManager.cs" />
+    <Compile Include="Internal\FloatExtensions.cs" />
+    <Compile Include="Internal\MinMax.cs" />
+    <Compile Include="Internal\RectExtensions.cs" />
+    <Compile Include="Internal\SizeExtensions.cs" />
+    <Compile Include="Internal\ThicknessExtensions.cs" />
+    <Compile Include="ReactivePropertyChangedCallbacks.cs" />
+    <Compile Include="Internal\Vector2Extensions.cs" />
+    <Compile Include="Controls\Button.cs" />
+    <Compile Include="Controls\Primitives\ButtonBase.cs" />
+    <Compile Include="Controls\Control.cs" />
+    <Compile Include="Controls\StretchDirection.cs" />
+    <Compile Include="Internal\Controls\Viewbox.cs" />
+    <Compile Include="Controls\Orientation.cs" />
+    <Compile Include="Input\GestureType.cs" />
+    <Compile Include="Input\Gesture.cs" />
+    <Compile Include="Media\Stretch.cs" />
+    <Compile Include="Media\Brush.cs" />
+    <Compile Include="Graphics\IRenderer.cs" />
+    <Compile Include="Graphics\IDrawingContext.cs" />
+    <Compile Include="Media\ImageSource.cs" />
+    <Compile Include="Media\Imaging\BitmapSource.cs" />
+    <Compile Include="Media\Imaging\TextureImage.cs" />
+    <Compile Include="Media\SolidColorBrush.cs" />
+    <Compile Include="Controls\ColumnDefinition.cs" />
+    <Compile Include="Controls\Border.cs" />
+    <Compile Include="Controls\ContentControl.cs" />
+    <Compile Include="Controls\DefinitionBase.cs" />
+    <Compile Include="Controls\Grid.cs" />
+    <Compile Include="Controls\Image.cs" />
+    <Compile Include="Controls\Panel.cs" />
+    <Compile Include="Window.cs" />
+    <Compile Include="Controls\RowDefinition.cs" />
+    <Compile Include="Controls\StackPanel.cs" />
+    <Compile Include="Controls\TextBlock.cs" />
+    <Compile Include="VirtualizingElementCollection.cs" />
+    <Compile Include="ReactiveProperty.cs" />
+    <Compile Include="TextWrapping.cs" />
+    <Compile Include="UIElement.cs" />
+    <Compile Include="ElementCollection.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\Bin\Nine.Serialization.targets" />
+</Project>

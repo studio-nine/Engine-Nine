@@ -172,10 +172,5 @@ namespace Nine.Graphics.Drawing
                 }
             }
         }
-
-        ~SpritePass()
-        {
-            Dispose(false);
-        }
     }
 }

@@ -48,7 +48,7 @@
             ));
         }
 
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new IList<PostEffectChain> Passes
         {
@@ -56,7 +56,7 @@
             get { return base.Passes; }
         }
 
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Material Material
         {

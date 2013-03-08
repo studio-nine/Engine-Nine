@@ -29,7 +29,7 @@
     /// <summary>
     /// Defines the base class for all particle emitters.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public abstract class ParticleEmitter : Transformable, IParticleEmitter
     {
         /// <summary>

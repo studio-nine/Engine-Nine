@@ -22,8 +22,9 @@ namespace Nine
         {
             get 
             {
-                return new BoundingBox(new Vector3(Tree.Bounds.Min, Tree.root.value.MinHeight),
-                                       new Vector3(Tree.Bounds.Max, Tree.root.value.MaxHeight)); 
+                var bounds = Tree.Bounds;
+                return new BoundingBox(new Vector3(bounds.X, bounds.X + bounds.Width, 0),
+                                       new Vector3(bounds.Y, bounds.Y + bounds.Height, 0));
             } 
         }
 
@@ -35,8 +36,7 @@ namespace Nine
         /// <summary>
         /// Creates a new instance of QuadTreeSceneManager.
         /// </summary>
-        public QuadTreeSceneManager() : this(new BoundingRectangle(new Vector2(-100f, -100f),
-                                                                   new Vector2(100f, 100f)), 5)
+        public QuadTreeSceneManager() : this(new BoundingRectangle(-100f, -100f, 200f, 200f), 5)
         {
 
         }
@@ -98,17 +98,22 @@ namespace Nine
             {
                 needResize = false;
 
+                BoundingBox itemBounds = item.BoundingBox;
                 BoundingRectangle newBounds = new BoundingRectangle();
-                newBounds.Min.X = item.BoundingBox.Min.X;
-                newBounds.Min.Y = item.BoundingBox.Min.Z;
-                newBounds.Max.X = item.BoundingBox.Max.X;
-                newBounds.Max.Y = item.BoundingBox.Max.Z;
+                newBounds.X = itemBounds.Min.X;
+                newBounds.Y = itemBounds.Min.Z;
+                newBounds.Width = itemBounds.Max.X - itemBounds.Min.X;
+                newBounds.Height = itemBounds.Max.Z - itemBounds.Min.Z;
 
                 BoundingRectangle.CreateMerged(ref Tree.root.bounds, ref newBounds, out newBounds);
-                var extends = 0.5f * ((newBounds.Max - newBounds.Min) - (Tree.Bounds.Max - Tree.Bounds.Min));
 
-                newBounds.Min -= extends;
-                newBounds.Max += extends;
+                float extendX = 0.5f * (newBounds.Width - Tree.root.bounds.Width);
+                float extendY = 0.5f * (newBounds.Height - Tree.root.bounds.Height);
+
+                newBounds.X -= extendX;
+                newBounds.Width += extendX * 2;
+                newBounds.Y -= extendY;
+                newBounds.Height += extendY * 2;
 
                 Resize(ref newBounds);
 
@@ -142,10 +147,10 @@ namespace Nine
             ContainmentType containment;
             BoundingRectangle itemRectangle = new BoundingRectangle();
             BoundingBox itemBounds = item.BoundingBox;
-            itemRectangle.Min.X = itemBounds.Min.X;
-            itemRectangle.Min.Y = itemBounds.Min.Z;
-            itemRectangle.Max.X = itemBounds.Max.X;
-            itemRectangle.Max.Y = itemBounds.Max.Z;
+            itemRectangle.X = itemBounds.Min.X;
+            itemRectangle.Y = itemBounds.Min.Z;
+            itemRectangle.Width = itemBounds.Max.X - itemBounds.Min.X;
+            itemRectangle.Height = itemBounds.Max.Z - itemBounds.Min.Z;
             node.bounds.Contains(ref itemRectangle, out containment);
 
             // Expand the tree to root if the object is too large
@@ -248,10 +253,10 @@ namespace Nine
                 ContainmentType containment;
                 BoundingRectangle itemRectangle = new BoundingRectangle();
                 BoundingBox itemBounds = item.BoundingBox;
-                itemRectangle.Min.X = itemBounds.Min.X;
-                itemRectangle.Min.Y = itemBounds.Min.Z;
-                itemRectangle.Max.X = itemBounds.Max.X;
-                itemRectangle.Max.Y = itemBounds.Max.Z;
+                itemRectangle.X = itemBounds.Min.X;
+                itemRectangle.Y = itemBounds.Min.Z;
+                itemRectangle.Width = itemBounds.Max.X - itemBounds.Min.X;
+                itemRectangle.Height = itemBounds.Max.Z - itemBounds.Min.Z;
                 node.bounds.Contains(ref itemRectangle, out containment);
 
                 if (containment == ContainmentType.Contains || node.parent == null)
@@ -357,8 +362,8 @@ namespace Nine
             bool skip = (node != Tree.root);
             if (skip)
             {
-                var nodeBounds = new BoundingBox(new Vector3(node.Bounds.Min, node.value.MinHeight),
-                                                 new Vector3(node.Bounds.Max, node.value.MaxHeight));
+                var nodeBounds = new BoundingBox(new Vector3(node.bounds.X, node.bounds.Y, node.value.MinHeight),
+                                                 new Vector3(node.bounds.X + node.bounds.Width, node.bounds.Y + node.bounds.Height, node.value.MaxHeight));
 
                 nodeBounds.Intersects(ref ray, out intersection);
                 if (intersection.HasValue)
@@ -399,10 +404,10 @@ namespace Nine
             if (!node.value.Initialized)
                 return TraverseOptions.Skip;
 
-            var nodeContainment = ContainmentType.Intersects;
-            var nodeBounds = new BoundingBox(new Vector3(node.Bounds.Min, node.value.MinHeight),
-                                             new Vector3(node.Bounds.Max, node.value.MaxHeight));
-
+            var nodeContainment = ContainmentType.Intersects; 
+            var nodeBounds = new BoundingBox(new Vector3(node.bounds.X, node.bounds.Y, node.value.MinHeight),
+                                             new Vector3(node.bounds.X + node.bounds.Width, node.bounds.Y + node.bounds.Height, node.value.MaxHeight));
+            
             boundingBox.Contains(ref nodeBounds, out nodeContainment);
 
             if (nodeContainment == ContainmentType.Disjoint)
@@ -443,8 +448,8 @@ namespace Nine
                 return TraverseOptions.Skip;
 
             var nodeContainment = ContainmentType.Intersects;
-            var boundingBox = new BoundingBox(new Vector3(node.Bounds.Min, node.value.MinHeight),
-                                              new Vector3(node.Bounds.Max, node.value.MaxHeight));
+            var nodeBounds = new BoundingBox(new Vector3(node.bounds.X, node.bounds.Y, node.value.MinHeight),
+                                             new Vector3(node.bounds.X + node.bounds.Width, node.bounds.Y + node.bounds.Height, node.value.MaxHeight));
 
             boundingSphere.Contains(ref boundingBox, out nodeContainment);
 
@@ -486,8 +491,8 @@ namespace Nine
                 return TraverseOptions.Skip;
 
             var nodeContainment = ContainmentType.Intersects;
-            var boundingBox = new BoundingBox(new Vector3(node.Bounds.Min, node.value.MinHeight),
-                                              new Vector3(node.Bounds.Max, node.value.MaxHeight));
+            var nodeBounds = new BoundingBox(new Vector3(node.bounds.X, node.bounds.Y, node.value.MinHeight),
+                                             new Vector3(node.bounds.X + node.bounds.Width, node.bounds.Y + node.bounds.Height, node.value.MaxHeight));
 
             boundingFrustum.Contains(ref boundingBox, out nodeContainment);
 

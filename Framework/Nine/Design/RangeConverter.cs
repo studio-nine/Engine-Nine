@@ -31,9 +31,6 @@
             if (value is string)
             {
                 var destinationTypeProvider = context.GetService<IDestinationTypeProvider>();
-                if (destinationTypeProvider == null)
-                    throw new NotSupportedException("IDestinationTypeProvider not found");
-
                 var destinationType = destinationTypeProvider.GetDestinationType();
                 if (!destinationType.IsGenericType || destinationType.GetGenericTypeDefinition() != typeof(Range<>))
                     throw new InvalidOperationException("RangeConverter must be applied to Range<T>");

@@ -30,7 +30,7 @@ namespace Nine.Animations
     /// Implements a basic primitive animation that changes its value over time.
     /// Can also update the value of a named target property on an target object.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public class TweenAnimation<T> : TimelineAnimation, ISupportTarget where T : struct
     {
         enum PropertyState 
@@ -101,7 +101,7 @@ namespace Nine.Animations
         /// Gets or sets the target object that this tweening will affect.
         /// This property is not required.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public object Target
         {
             get { return target; }
@@ -313,8 +313,4 @@ namespace Nine.Animations
                 field.SetValue(this, (Operator<Ray>)AddHelper.Add);
         }
     }
-
-#if !TEXT_TEMPLATE
-    partial class TweenAnimationReader<T> where T : struct { }
-#endif
 }

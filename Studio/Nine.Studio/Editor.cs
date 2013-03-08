@@ -56,10 +56,13 @@
             get { return activeProject; }
             set
             {
-                if (!Projects.Contains(value))
-                    throw new InvalidOperationException();
-                activeProject = value;
-                NotifyPropertyChanged();
+                if (activeProject != value)
+                {
+                    if (value != null && !Projects.Contains(value))
+                        throw new InvalidOperationException();
+                    activeProject = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
         private Project activeProject;

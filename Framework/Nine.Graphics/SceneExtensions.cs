@@ -16,6 +16,19 @@ namespace Nine.Graphics
     public static class SceneExtensions
     {
         /// <summary>
+        /// Tried to get the graphics device owned by the service provider.
+        /// </summary>
+        public static GraphicsDevice GetGraphicsDevice(this IServiceProvider serviceProvider)
+        {
+            if (serviceProvider == null)
+                return null;
+            var graphicsDeviceService = serviceProvider.TryGetService<IGraphicsDeviceService>();
+            if (graphicsDeviceService != null)
+                return graphicsDeviceService.GraphicsDevice;
+            return null;
+        }
+
+        /// <summary>
         /// Gets the graphics device associated with the target group.
         /// </summary>
         public static GraphicsDevice GetGraphicsDevice(this Group group)
@@ -77,7 +90,7 @@ namespace Nine.Graphics
                 throw new ArgumentException("graphics");
 
             if (context.camera == null)
-                scene.Add(new FreeCamera(graphics, new Vector3(0, 10, 40)));
+                ;//scene.Add(new FreeCamera(graphics, new Vector3(0, 10, 40)));
 
             return context;
         }

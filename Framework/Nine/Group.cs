@@ -64,7 +64,7 @@ namespace Nine
         {
             CheckIntegrity(value);
 
-            if (!Nine.Content.ContentProperties.IsContentBuild)
+            if (!Nine.Serialization.ContentProperties.IsContentBuild)
             {
                 object createdInstance = null;
                 if (TryGetObjectFactoryInstance(value as IObjectFactory, out createdInstance))
@@ -199,7 +199,7 @@ namespace Nine
             {
                 defaultServiceProvider = contentManager.ServiceProvider;
                 var gameServiceContainer = defaultServiceProvider as GameServiceContainer;
-                if (gameServiceContainer != null && gameServiceContainer.GetService<ContentManager>() == null)
+                if (gameServiceContainer != null && gameServiceContainer.TryGetService<ContentManager>() == null)
                     gameServiceContainer.AddService(typeof(ContentManager), contentManager);
             }
         }
@@ -304,7 +304,7 @@ namespace Nine
                 animations.Animations.Clear();
                 if (value != null && value.Animations != null)
                 {
-                    UtilityExtensions.ForEachRecursive<ISupportTarget>(value.Animations.Values, supportTarget => supportTarget.Target = this);
+                    Extensions.ForEachRecursive<ISupportTarget>(value.Animations.Values, supportTarget => supportTarget.Target = this);
                     animations.Animations.AddRange(value.Animations);
                 }
                 animations.Play();
@@ -459,11 +459,6 @@ namespace Nine
                         disposable.Dispose();
                 }
             }
-        }
-
-        ~Group()
-        {
-            Dispose(false);
         }
         #endregion
     }

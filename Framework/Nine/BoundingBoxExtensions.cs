@@ -5,7 +5,6 @@ namespace Nine
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
 
-
     /// <summary>
     /// Contains extension methods for BoundingBox.
     /// </summary>
@@ -232,32 +231,6 @@ namespace Nine
             result.X = (box.Min.X + box.Max.X) / 2;
             result.Y = (box.Min.Y + box.Max.Y) / 2;
             result.Z = (box.Min.Z + box.Max.Z) / 2;
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the center of this Rectangle.
-        /// </summary>
-        public static Point GetCenter(this Rectangle rectangle)
-        {
-            Point result = new Point();
-
-            result.X = (rectangle.X + rectangle.Width) / 2;
-            result.Y = (rectangle.Y + rectangle.Height) / 2;
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the center of this Rectangle.
-        /// </summary>
-        public static Vector2 GetCenter(this BoundingRectangle rectangle)
-        {
-            Vector2 result = new Vector2();
-
-            result.X = (rectangle.Min.X + rectangle.Max.X) / 2;
-            result.Y = (rectangle.Min.Y + rectangle.Max.Y) / 2;
 
             return result;
         }

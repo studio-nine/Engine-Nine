@@ -10,7 +10,7 @@
     /// <summary>
     /// An animation player that plays TextureList based sprite animations.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public class SpriteAnimation : KeyframeAnimation, ISupportTarget
     {
         private object target;
@@ -47,7 +47,7 @@
         /// <summary>
         /// Gets or sets the target that this sprite animation should affect.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public object Target
         {
             get { return target; }

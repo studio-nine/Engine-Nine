@@ -117,21 +117,12 @@
 
         public static void Begin(this RenderTarget2D renderTarget)
         {
-#if SILVERLIGHT
-            var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-            var graphicsDevice = renderTarget.GraphicsDevice;
-#endif
-            PushRenderTarget(graphicsDevice, renderTarget);
+            PushRenderTarget(renderTarget.GraphicsDevice, renderTarget);
         }
 
         public static Texture2D End(this RenderTarget2D renderTarget)
         {
-#if SILVERLIGHT
-            PopRenderTarget(System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice);
-#else
             PopRenderTarget(renderTarget.GraphicsDevice);
-#endif
             return renderTarget;
         }
         #endregion

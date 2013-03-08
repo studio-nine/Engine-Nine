@@ -1,0 +1,46 @@
+﻿namespace Nine.Graphics.Materials
+{
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+
+    /// <summary>
+    /// Content model for CustomEffect.
+    /// </summary>
+    public class CustomEffectContent
+    {
+        /// <summary>
+        /// Gets or sets the effect byte code.
+        /// </summary>
+        [Nine.Serialization.BinarySerializable]
+        public byte[] EffectCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets all the parameters of this custom effect.
+        /// </summary>
+        [Nine.Serialization.BinarySerializable]
+        public Dictionary<string, object> Parameters { get; set; }
+    }
+    
+    [ContentTypeWriter]
+    class CustomEffectContentWriter : ContentTypeWriter<CustomEffectContent>
+    {
+        protected override void Write(ContentWriter output, CustomEffectContent value)
+        {
+            output.Write(value.EffectCode.Length);
+            output.Write(value.EffectCode);
+            output.WriteObject(value.Parameters);
+        }
+
+        public override string GetRuntimeType(TargetPlatform targetPlatform)
+        {
+            return typeof(Microsoft.Xna.Framework.Graphics.Effect).AssemblyQualifiedName;
+        }
+
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
+        {
+            return typeof(Nine.Graphics.Materials.CustomEffectReader).AssemblyQualifiedName;
+        }
+    }
+}

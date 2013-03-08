@@ -28,7 +28,7 @@ namespace Nine.Animations
         /// A LayeredAnimation ends either when the last contained 
         /// animation stops or when the specifed KeyAnimation ends.
         /// </summary>
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         public IAnimation KeyAnimation
         {
             get { return keyAnimation; }

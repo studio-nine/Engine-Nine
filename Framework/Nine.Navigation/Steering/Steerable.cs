@@ -115,7 +115,7 @@ namespace Nine.Navigation.Steering
         private float acceleration = float.MaxValue;
         private float currentAcceleration = float.MaxValue;
         private Vector2 force;
-        private Vector2 forward;
+        internal Vector2 forward;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Steerable"/> class.

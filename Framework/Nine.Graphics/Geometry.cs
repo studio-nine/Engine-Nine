@@ -9,13 +9,13 @@
     /// <summary>
     /// Geometric representation of a model.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public class Geometry : Transformable, IGeometry, ISurface
     {
         /// <summary>
         /// Gets the bounding box.
         /// </summary>
-        [ContentSerializer]
+        [Nine.Serialization.BinarySerializable]
         public BoundingBox BoundingBox
         {
             get
@@ -35,7 +35,7 @@
         {
             get { return positionsCollection; } 
         }
-        [ContentSerializer]
+        [Nine.Serialization.BinarySerializable]
         internal Vector3[] positions;
         private ReadOnlyCollection<Vector3> positionsCollection;
 
@@ -46,7 +46,7 @@
         {
             get { return indicesCollection; }
         }
-        [ContentSerializer]
+        [Nine.Serialization.BinarySerializable]
         internal ushort[] indices;
         private ReadOnlyCollection<ushort> indicesCollection;
         

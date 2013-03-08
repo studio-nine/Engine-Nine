@@ -44,7 +44,7 @@
     /// <summary>
     /// Defines a special visual effect made up of particles.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     [ContentProperty("Controllers")]
     public class ParticleEffect : Transformable, ISpatialQueryable, IDrawableObject, Nine.IUpdateable, IDisposable
     {
@@ -322,12 +322,13 @@
 
         private void UpdateMaterial()
         {
+            // TODO: Make material a property
 #if !WINDOWS_PHONE
             if (softParticleEnabled)
                 material = new SoftParticleMaterial(GraphicsDevice) { texture = Texture, DepthFade = softParticleFade, IsTransparent = true, IsAdditive = isAdditive };
             else
 #endif
-                material = new BasicMaterial(GraphicsDevice) { texture = Texture, LightingEnabled = false, VertexColorEnabled = true, IsTransparent = true, IsAdditive = isAdditive };
+                material = new TextureMaterial(GraphicsDevice) { texture = Texture, VertexColorEnabled = true, IsTransparent = true, IsAdditive = isAdditive };
         }
 
         /// <summary>
@@ -340,7 +341,7 @@
                 return 32;
             if (particleEmitter.EmitCount > 0)
                 return particleEmitter.EmitCount;
-            return Math.Max(1, UtilityExtensions.UpperPowerOfTwo((int)(
+            return Math.Max(1, Extensions.UpperPowerOfTwo((int)(
                 particleEmitter.Emission * (particleEmitter.Duration.Max + particleEmitter.Duration.Min) * 0.8f)));
         }
 
@@ -569,8 +570,8 @@
             elapsedSeconds = elapsedTime;
 
             numFramesBehind++;
-
-            if (isAsync == 0)
+            
+            if (Thread.VolatileRead(ref isAsync) == 0)
             {
                 Update();
             }
@@ -645,7 +646,7 @@
                 viewInverse = context.matrices.viewInverse;
                 primitive.Draw(context, material);
                 
-                if (isAsync == 1)
+                if (Thread.VolatileRead(ref isAsync) == 1)
                 {
                     // Once this particle effect is drawed, we start the update
                     // asynchronously to maximize parallelism.
@@ -731,11 +732,6 @@
                     canDraw.Dispose();
             }
             isDisposed = true;
-        }
-
-        ~ParticleEffect()
-        {
-            Dispose(false);
         }
         #endregion
     }

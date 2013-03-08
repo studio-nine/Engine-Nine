@@ -54,10 +54,10 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Build\Nine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Nine.snk" />
+    
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BEPUphysics\DataStructures\HashSet.cs" />

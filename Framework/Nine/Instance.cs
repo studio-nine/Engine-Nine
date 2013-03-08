@@ -10,11 +10,12 @@ namespace Nine
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Nine.Animations;
+    using Nine.Serialization;
 
     /// <summary>
     /// Defines a instance that is created from a template.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     [ContentProperty("Properties")]
     public class Instance : Transformable, IObjectFactory
     {
@@ -54,11 +55,8 @@ namespace Nine
             if (string.IsNullOrEmpty(Template))
                 return default(T);
 
-            var contentManager = serviceProvider.GetService<ContentManager>();
-            if (contentManager == null)
-                throw new InvalidOperationException("Cannot find content manager in the service provider");
-
-            var createdInstance = ApplyProperties(contentManager.Create<T>(Template));
+            var contentLoader = serviceProvider.GetService<ContentLoader>();
+            var createdInstance = ApplyProperties(contentLoader.Create<T>(Template));
 
             // Replace the name of the created instance
             var instanceName = createdInstance as Nine.Object;

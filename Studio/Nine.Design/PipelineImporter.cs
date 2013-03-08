@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using Microsoft.Xna.Framework.Content.Pipeline;
-    using Nine.Content.Pipeline;
+    using Nine.Content;
     using Nine.Studio.Extensibility;
 
     public abstract class PipelineImporter<T> : Importer<T>

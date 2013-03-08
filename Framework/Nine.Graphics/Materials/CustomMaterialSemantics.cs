@@ -112,10 +112,6 @@ namespace Nine.Graphics.Materials
                 semantic = CustomEffectSemantics.World;
                 return false;
             }
-#elif SILVERLIGHT
-            // TODO: Support semantics for silverlight effects.
-            semantic = CustomEffectSemantics.World;
-            return false;
 #else
             return Enum.TryParse<CustomEffectSemantics>(sematics, true, out semantic);
 #endif
@@ -193,10 +189,8 @@ namespace Nine.Graphics.Materials
                 Entry entry = new Entry();
                 if ((entry.Parameter = parameter) != null)
                 {
-#if !SILVERLIGHT
                     // TODO:
                     entry.DefaultValue = parameter.GetValue();
-#endif
                 }
                 entry.Value = value;
                 values.Add(entry);
@@ -377,12 +371,12 @@ namespace Nine.Graphics.Materials
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(Matrix.Invert(context.Matrices.ViewProjection)) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValueTranspose(context.Matrices.ViewProjection) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValueTranspose(Matrix.Invert(context.Matrices.ViewProjection)) },                        
-
+            /*
             // Global Directional Light
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.DirectionalLight.Direction) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.DirectionalLight.DiffuseColor) },
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.DirectionalLight.SpecularColor) },
-
+            */
             // Half Pixel
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => { var viewport = context.graphics.Viewport; parameter.SetValue(new Vector2(0.5f / viewport.Width, 0.5f / viewport.Height)); } },
             
@@ -396,11 +390,7 @@ namespace Nine.Graphics.Materials
             // Materials and textures
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
-#if SILVERLIGHT
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.texture); } },
-#else
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { if (parameter.ParameterType == EffectParameterType.Texture || parameter.ParameterType == EffectParameterType.Texture2D) parameter.SetValue(material.texture); } },
-#endif
         };
     }
     #endregion

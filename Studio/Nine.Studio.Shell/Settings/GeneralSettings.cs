@@ -15,19 +15,11 @@
         public string Language { get; set; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public double WindowWidth { get; set; }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public double WindowHeight { get; set; }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool WindowMaximized { get; set; }
+        public WINDOWPLACEMENT WindowPlacement { get; set; }
 
         public GeneralSettings()
         {
             Language = "en-US";
-            WindowWidth = 1280;
-            WindowHeight = 720;
         }
     }
 }

@@ -5,19 +5,23 @@ namespace Nine
     using System.Collections.Generic;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
+    using System.Reflection;
+    using System.Linq;
     
-    static class UtilityExtensions
+    static class Extensions
     {
-        public static T GetService<T>(this IServiceProvider provider)
+        public static T GetService<T>(this IServiceProvider provider) where T : class
         {
-            var result = provider.GetService(typeof(T));
-            return result is T ? (T)result : default(T);
+            var result = provider.GetService(typeof(T)) as T;
+            if (result == null)
+                throw new InvalidOperationException(
+                    "Cannot find service " + typeof(T).ToString());
+            return result;
         }
 
-        public static K GetService<T, K>(this IServiceProvider provider)
+        public static T TryGetService<T>(this IServiceProvider provider) where T : class
         {
-            var result = provider.GetService(typeof(T));
-            return result is K ? (K)result : default(K);
+            return provider.GetService(typeof(T)) as T;
         }
 
         public static Vector2 ToVector2(this Point point)
@@ -109,26 +113,63 @@ namespace Nine
             v++;
             return v;
         }
-    }
 
-
-#if !WINDOWS    
-    /// <summary>
-    /// Mimic the System.ComponentModel.DisplayNameAttribute for .NET Compact Framework.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event)]
-    public class DisplayNameAttribute : Attribute
-    {
-        public DisplayNameAttribute()
+        public static IEnumerable<Type> FindImplementations(Type baseType)
         {
+            Type[] types;
+            Assembly[] assemblies;
+
+            try { assemblies = AppDomain.CurrentDomain.GetAssemblies(); }
+            catch { yield break; }
+
+            foreach (var assembly in assemblies)
+            {
+                try { types = assembly.GetTypes(); }
+                catch { continue; }
+
+                foreach (var type in types)
+                {
+                    if (!type.IsAbstract && !type.IsInterface &&
+                        !type.IsGenericType && !type.IsGenericTypeDefinition &&
+                        baseType.IsAssignableFrom(type))
+                    {
+                        yield return type;
+                    }
+                }
+            }
         }
 
-        public DisplayNameAttribute(string displayName)
+        public static IEnumerable<T> FindImplementations<T>()
         {
-            DisplayName = displayName;
+            foreach (var type in FindImplementations(typeof(T)))
+            {
+                var constructor = type.GetConstructor(BindingFlags, null, Type.EmptyTypes, null);
+                if (constructor != null)
+                    yield return (T)constructor.Invoke((object[])null);
+            }
         }
 
-        public string DisplayName { get; set; }
+        public static IEnumerable<T> FindImplementations<T>(IServiceProvider serviceProvider)
+        {
+            foreach (var type in FindImplementations(typeof(T)))
+            {
+                var result = CreateInstance<T>(type, serviceProvider);
+                if (result != null)
+                    yield return result;
+            }
+        }
+
+        public static T CreateInstance<T>(Type type, IServiceProvider serviceProvider)
+        {
+            var constructor = type.GetConstructor(BindingFlags, null, ServiceProviderTypes, null);
+            if (constructor != null)
+                return (T)constructor.Invoke(new object[] { serviceProvider });
+            if ((constructor = type.GetConstructor(BindingFlags, null, Type.EmptyTypes, null)) != null)
+                return (T)constructor.Invoke((object[])null);
+            return default(T);
+        }
+
+        private static BindingFlags BindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.Instance;
+        public static Type[] ServiceProviderTypes = new Type[] { typeof(IServiceProvider) };
     }
-#endif
 }

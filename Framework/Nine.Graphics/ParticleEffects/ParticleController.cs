@@ -25,7 +25,7 @@
     /// <summary>
     /// Defines the base class for all particle controllers.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public abstract class ParticleController : IParticleController
     {
         /// <summary>
@@ -36,7 +36,6 @@
         /// <summary>
         /// Gets or sets whether this emitter is enabled.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public bool Enabled { get; set; }
 
         /// <summary>

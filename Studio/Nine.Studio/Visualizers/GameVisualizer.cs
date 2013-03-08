@@ -3,7 +3,7 @@
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Content.Pipeline;
+    using Nine.Content;
     using Nine.Studio.Controls;
     using Nine.Studio.Extensibility;
 

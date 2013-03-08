@@ -30,8 +30,12 @@
                 mainWindow.Left = SystemParameters.VirtualScreenWidth;
                 mainWindow.Top = SystemParameters.VirtualScreenHeight;
 
-                mainWindow.ContentRendered += (sender, args) =>
+                mainWindow.SourceInitialized += (sender, args) =>
                 {
+                    if (settings.WindowPlacement != null)
+                    {
+                        
+                    }
                     mainWindow.WindowState = settings.WindowMaximized ? WindowState.Maximized : WindowState.Normal;
                     mainWindow.Width = Math.Min(settings.WindowWidth, SystemParameters.VirtualScreenWidth);
                     mainWindow.Height = Math.Min(settings.WindowHeight, SystemParameters.VirtualScreenHeight);
@@ -44,18 +48,39 @@
 
                 mainWindow.Closed += (sender, args) =>
                 {
-                    if (!(settings.WindowMaximized = mainWindow.WindowState == WindowState.Maximized))
-                    {
-                        settings.WindowWidth = mainWindow.Width;
-                        settings.WindowHeight = mainWindow.Height;
-                    }
+                    settings.WindowPlacement = GetWindowPlacement(mainWindow);
                 };
 
                 Shell = (IEditorShell)mainWindow;
                 Shell.ShowDialogAsync(new FilesView { DataContext = App.Editor });
-                Shell.ShowDialogAsync(Editor.ToView("Scratch"));
                 
                 mainWindow.Show();
+            }
+        }
+
+        private static void SetWindowPlacement(Window mainWindow, WINDOWPLACEMENT placement)
+        {
+            try
+            {
+                return NativeMethods.SetWindowPlacement(
+                    new System.Windows.Interop.WindowInteropHelper(mainWindow).Handle, ref placement);
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                return null;
+            }
+        }
+
+        private static WINDOWPLACEMENT GetWindowPlacement(Window mainWindow)
+        {
+            try
+            {
+                return NativeMethods.GetWindowPlacement(
+                    new System.Windows.Interop.WindowInteropHelper(mainWindow).Handle);
+            }
+            catch (System.ComponentModel.Win32Exception) 
+            {
+                return null; 
             }
         }
 

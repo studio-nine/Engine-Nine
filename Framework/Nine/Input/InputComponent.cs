@@ -4,12 +4,8 @@ namespace Nine
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
-#if SILVERLIGHT
-    using Keys = System.Windows.Input.Key;
-#else
-    using Keys = Microsoft.Xna.Framework.Input.Keys;
     using Microsoft.Xna.Framework.Input.Touch;
-#endif
+    using Keys = Microsoft.Xna.Framework.Input.Keys;
 
     /// <summary>
     /// An input component that manages a set of <c>Input</c> instances based on push model.
@@ -26,7 +22,6 @@ namespace Nine
 
         internal IInputSource InputSource;
 
-#if !SILVERLIGHT
         internal GamePadState[] gamePadStates = new GamePadState[4];
         GamePadState[] gamePadStatesLastFrame = new GamePadState[4];
         bool[] playerIndexEnabled = new bool[4] { true, true, true, true, };
@@ -52,7 +47,6 @@ namespace Nine
             Buttons.RightTrigger, Buttons.Start, Buttons.X, Buttons.Y,
 #endif
         };
-#endif
         #endregion
 
         #region Method

@@ -98,11 +98,11 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the main pass that is used to render the scene.
         /// </summary>
-        public DrawingPass MainPass
+        public Pass MainPass
         {
             get { return mainPass; }
         }
-        private DrawingPass mainPass;
+        private Pass mainPass;
 
         /// <summary>
         /// Gets the passes that is used to render the scene.
@@ -238,68 +238,6 @@ namespace Nine.Graphics
         internal MatrixCollection matrices;
         #endregion
 
-        #region Lights
-        /// <summary>
-        /// Gets the global ambient light color of this <see cref="DrawingContext"/>.
-        /// </summary>
-        public Vector3 AmbientLightColor
-        {
-            get { return ambientLightColor; }
-            set { ambientLightColor = value; }
-        }
-        internal Vector3 ambientLightColor;
-
-        /// <summary>
-        /// Gets a global sorted collection of directional lights of this <see cref="DrawingContext"/>.
-        /// </summary>
-        public DirectionalLightCollection DirectionalLights
-        {
-            get { return directionalLights; }
-        }
-        internal DirectionalLightCollection directionalLights;
-
-        /// <summary>
-        /// Gets the default or main directional light of this <see cref="DrawingContext"/>.
-        /// </summary>
-        public DirectionalLight DirectionalLight
-        {
-            get { return directionalLights[0] ?? defaultLight; }
-        }
-        private DirectionalLight defaultLight;
-        #endregion
-
-        #region Fog
-        /// <summary>
-        /// Gets the global fog color.
-        /// </summary>
-        public Vector3 FogColor
-        {
-            get { return fogColor; }
-            set { fogColor = value; }
-        }
-        internal Vector3 fogColor = Constants.FogColor;
-
-        /// <summary>
-        /// Gets or sets the fog end.
-        /// </summary>
-        public float FogEnd
-        {
-            get { return fogEnd; }
-            set { fogEnd = value; }
-        }
-        internal float fogEnd = Constants.FogEnd;
-
-        /// <summary>
-        /// Gets or sets the fog start.
-        /// </summary>
-        public float FogStart
-        {
-            get { return fogStart; }
-            set { fogStart = value; }
-        }
-        internal float fogStart = Constants.FogStart;
-        #endregion
-
         #region Fields
         private bool isDrawing = false;
         private ISpatialQuery spatialQuery;
@@ -338,23 +276,16 @@ namespace Nine.Graphics
             if (spatialQuery == null)
                 throw new ArgumentNullException("spatialQuery");
 
+            this.graphics = graphics;
             this.spatialQuery = spatialQuery;
             this.BackgroundColor = new Color(95, 120, 157);
             this.drawables = spatialQuery.CreateSpatialQuery<IDrawableObject>(drawable => drawable.OnAddedToView(this)); 
-            this.graphics = graphics;
-            this.defaultLight = new DirectionalLight(graphics)
-            {
-                DiffuseColor = Vector3.Zero,
-                SpecularColor = Vector3.Zero,
-                Direction = Vector3.Down,
-                Enabled = false
-            };
-            this.directionalLights = new DirectionalLightCollection(defaultLight);
+
             this.matrices = new MatrixCollection();
             this.textures = new TextureCollection();
             this.rootPass = new PassGroup();
-            this.rootPass.Passes.Add(mainPass = new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
-            this.rootPass.Passes.Add(new SpritePass());
+            //this.rootPass.Passes.Add(mainPass = new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
+            //this.rootPass.Passes.Add(new SpritePass());
         }
 
         /// <summary>
@@ -663,11 +594,12 @@ namespace Nine.Graphics
             debugDrawables.FindAll(viewFrustum, debugDrawablesInViewFrustum);
             debugBounds.FindAll(viewFrustum, debugBoundsInViewFrustum);
 
-            debugPrimitive.AddBox(BoundingBox, null, Constants.SceneBoundsColor, 4);
+            // TODO:
+            //debugPrimitive.AddBox(BoundingBox, null, Constants.SceneBoundsColor, 4);
 
             for (int i = 0; i < debugBoundsInViewFrustum.Count; ++i)
             {
-                debugPrimitive.AddBox(debugBoundsInViewFrustum[i].BoundingBox, null, Constants.BoundingBoxColor, Constants.MiddleLineWidth);
+                //debugPrimitive.AddBox(debugBoundsInViewFrustum[i].BoundingBox, null, Constants.BoundingBoxColor, Constants.MiddleLineWidth);
             }
             
             for (int i = 0; i < debugDrawablesInViewFrustum.Count; ++i)
@@ -697,11 +629,6 @@ namespace Nine.Graphics
                 if (samplerState != null)
                     samplerState.Dispose();
             }
-        }
-
-        ~DrawingContext()
-        {
-            Dispose(false);
         }
         #endregion
     }

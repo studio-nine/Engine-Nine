@@ -20,7 +20,7 @@ using Nine.Studio.Controls;
 using Nine.Studio.Visualizers;
 using Nine.Studio.Extensibility;
 using Nine.Components;
-using Nine.Content.Pipeline.Graphics.ParticleEffects;
+using Nine.Content.Graphics.ParticleEffects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion

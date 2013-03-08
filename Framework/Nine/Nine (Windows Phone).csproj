@@ -56,7 +56,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Build\Nine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
@@ -78,7 +78,6 @@
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="ContentLoader.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
     <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
     <Compile Include="Content\ContentProperties.cs" />
@@ -115,7 +114,6 @@
     <Compile Include="BoundingCircle.cs" />
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="BoundingBoxExtensions.cs" />
-    <Compile Include="ContentSerializableAttribute.cs" />
     <Compile Include="SpacePartitionTree.cs" />
     <Compile Include="OctreeSceneManager.cs">
       <SubType>Code</SubType>
@@ -134,7 +132,6 @@
     <Compile Include="Animations\TweenAnimation.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="Interface.cs" />
-    <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

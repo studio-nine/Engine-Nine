@@ -14,7 +14,7 @@ using System.ComponentModel;
 using System.IO;
 using Nine.Studio;
 using System.ComponentModel.Composition;
-using Nine.Content.Pipeline.Graphics.ParticleEffects;
+using Nine.Content.Graphics.ParticleEffects;
 using System.Text;
 using Nine.Studio.Extensibility;
 #endregion

@@ -1,0 +1,4 @@
+﻿<#
+    var shaderFolder = @"..\..\Framework\Nine.Graphics.3D\Shaders";
+#>
+<#@ include file="Nine.Graphics.Materials.tth" #>

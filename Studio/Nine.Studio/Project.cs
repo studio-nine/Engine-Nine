@@ -231,7 +231,7 @@
 
         private void Load()
         {
-            var project = (Nine.Studio.Xaml.Project)System.Xaml.XamlServices.Load(FileName);
+            var project = (Nine.Studio.Serialization.Project)System.Xaml.XamlServices.Load(FileName);
             
             if (Version.Parse(project.Version) > Version.Parse(Editor.VersionString))
                 throw new InvalidOperationException(Strings.VersionNotSupported);
@@ -263,9 +263,9 @@
 
         private void SaveProject(Stream stream)
         {
-            var project = new Nine.Studio.Xaml.Project() { Version = Editor.VersionString };
-            project.References.AddRange(References.Select(x => new Nine.Studio.Xaml.ProjectReference() { Source = x.FileName }));
-            project.ProjectItems.AddRange(ProjectItems.Select(x => new Nine.Studio.Xaml.ProjectItem() { Source = x.RelativeFilename, Importer = x.Importer != null ? x.Importer.Value : null }));
+            var project = new Nine.Studio.Serialization.Project() { Version = Editor.VersionString };
+            project.References.AddRange(References.Select(x => new Nine.Studio.Serialization.ProjectReference() { Source = x.FileName }));
+            project.ProjectItems.AddRange(ProjectItems.Select(x => new Nine.Studio.Serialization.ProjectItem() { Source = x.RelativeFilename, Importer = x.Importer != null ? x.Importer.Value : null }));
             System.Xaml.XamlServices.Save(stream, project);
         }
 

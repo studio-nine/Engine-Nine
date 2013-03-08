@@ -90,7 +90,7 @@
             }
         }
 
-        [ContentSerializerIgnore]
+        [Nine.Serialization.NotBinarySerializable]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new IList<Pass> Effects
         {

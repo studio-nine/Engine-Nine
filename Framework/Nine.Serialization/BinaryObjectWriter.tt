@@ -1,0 +1,21 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" visibility="internal" linePragmas="false" #>
+<#@ import namespace="System.Linq" #>
+<# foreach (var namespaceGroup in g.Types.GroupBy(x => x.Namespace).OrderBy(x => x.Key)) { #>
+namespace <#= namespaceGroup.Key #>
+{
+<# foreach (var type in namespaceGroup.OrderBy(x => x.Name)) { #>
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("<#= g.GeneratorName #>", "<#= g.GeneratorVersion #>")]
+    class <#= type.Name #>Writer : Nine.Serialization.IBinaryObjectWriter
+    {
+        public System.Type ReaderType { get { return typeof(<#= type.Namespace #>.<#= type.Name #>Reader); } }
+        public System.Type TargetType { get { return typeof(<#= PropertyTypeData.GetClassFullName(type.Type) #>); } }
+                
+        public void Write(System.IO.BinaryWriter output, object obj, System.IServiceProvider serviceProvider)
+        {
+            var value = (<#= PropertyTypeData.GetClassFullName(type.Type) #>)obj;
+<# foreach (var property in type.Properties) { WriteLine(property.Type.ToWriteString("output", "value." + property.Name, 0)); } #>
+        }
+    }
+<# } #>
+}
+<# } #>

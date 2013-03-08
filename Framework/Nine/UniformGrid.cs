@@ -8,32 +8,32 @@ namespace Nine
     /// <summary>
     /// Basic 2D Space partition using uniform grids.
     /// </summary>
-    [NotContentSerializable]
+    [Nine.Serialization.NotBinarySerializable]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class UniformGrid
     {
         /// <summary>
         /// Gets or sets the number of columns (x) of the grid.
         /// </summary>
-        [ContentSerializer(Optional = true)]
+        [Nine.Serialization.BinarySerializable]
         public int SegmentCountX { get; internal protected set; }
 
         /// <summary>
         /// Gets or sets the number of rows (y) of the grid.
         /// </summary>
-        [ContentSerializer(Optional = true)]
+        [Nine.Serialization.BinarySerializable]
         public int SegmentCountY { get; internal protected set; }
 
         /// <summary>
         /// Gets or sets the top left position of the grid.
         /// </summary>
-        [ContentSerializer(Optional = true)]
+        [Nine.Serialization.BinarySerializable]
         public Vector2 Position { get; internal protected set; }
 
         /// <summary>
         /// Gets the width and height of the grid.
         /// </summary>
-        [ContentSerializer(Optional = true)]
+        [Nine.Serialization.BinarySerializable]
         public Vector2 Size { get; internal protected set; }
 
         int scaleX, scaleY;
@@ -99,11 +99,8 @@ namespace Nine
             SegmentCountX = countX;
             SegmentCountY = countY;
 
-            Position = new Vector2(Math.Min(bounds.Max.X, bounds.Min.X),
-                                   Math.Min(bounds.Max.Y, bounds.Min.Y));
-
-            Size = new Vector2(Math.Abs(bounds.Max.X - bounds.Min.X),
-                               Math.Abs(bounds.Max.Y - bounds.Min.Y));
+            Position = new Vector2(bounds.X, bounds.Y);
+            Size = new Vector2(bounds.Width, bounds.Height);
 
             if (Size.X <= 0 || Size.Y <= 0)
                 throw new ArgumentOutOfRangeException("bounds");
@@ -225,15 +222,15 @@ namespace Nine
             if (!Contains(x, y))
                 throw new ArgumentOutOfRangeException();
 
-            Vector2 min = new Vector2();
-            Vector2 max = new Vector2();
+            Vector2 position = Position;
+            BoundingRectangle result = new BoundingRectangle();
 
-            min.X = (x) * Size.X / SegmentCountX;
-            min.Y = (y) * Size.Y / SegmentCountY;
-            max.X = (x + 1) * Size.X / SegmentCountX;
-            max.Y = (y + 1) * Size.Y / SegmentCountY;
+            result.Width = Size.X / SegmentCountX;
+            result.Height = Size.Y / SegmentCountY;
+            result.X = x * result.Width;
+            result.Y = y + result.Height;
 
-            return new BoundingRectangle(min + Position, max + Position);
+            return result;
         }
 
         /// <summary>

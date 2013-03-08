@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine", "Nine\Nine.csproj", "{E4F84943-5258-4F67-9C6C-739C18A47120}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Content.Pipeline", "Nine.Content.Pipeline\Nine.Content.Pipeline.csproj", "{926CE988-9E75-40DD-80F1-1709A91F8C35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Content", "Nine.Content\Nine.Content.csproj", "{926CE988-9E75-40DD-80F1-1709A91F8C35}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Graphics", "Nine.Graphics\Nine.Graphics.csproj", "{9436AF22-6937-4BEE-887E-C93A4692BDD7}"
 EndProject
@@ -12,9 +12,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Test", "Nine.Test\Nine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Physics", "Nine.Physics\Nine.Physics.csproj", "{5E8A4935-1FA4-4BEB-8E9C-6003C0C296B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Content.Pipeline.Silverlight", "Nine.Content.Pipeline.Silverlight\Nine.Content.Pipeline.Silverlight.csproj", "{AC6F35A9-124E-447E-99DD-21F68A0C226B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Content.Silverlight", "Nine.Content.Silverlight\Nine.Content.Silverlight.csproj", "{AC6F35A9-124E-447E-99DD-21F68A0C226B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nine.Content.Pipeline.Silverlight.ShaderCompiler", "Nine.Content.Pipeline.Silverlight.ShaderCompiler\SilverlightShaderCompiler.vcxproj", "{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nine.Content.Silverlight.ShaderCompiler", "Nine.Content.Silverlight.ShaderCompiler\SilverlightShaderCompiler.vcxproj", "{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Content", "Nine.Content\Nine.Content.csproj", "{C34BCF4E-2865-4538-83FF-63B19C96DB9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,6 +173,22 @@ Global
 		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|x86.ActiveCfg = Release|Win32
 		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|x86.Build.0 = Release|Win32
 		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|Xbox 360.ActiveCfg = Release|Win32
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Debug|Win32.ActiveCfg = Debug|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Debug|Windows Phone.ActiveCfg = Debug|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Debug|x86.ActiveCfg = Debug|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Debug|x86.Build.0 = Debug|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Debug|Xbox 360.ActiveCfg = Debug|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Release|Any CPU.ActiveCfg = Release|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Release|Win32.ActiveCfg = Release|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Release|Windows Phone.ActiveCfg = Release|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Release|x86.ActiveCfg = Release|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Release|x86.Build.0 = Release|x86
+		{C34BCF4E-2865-4538-83FF-63B19C96DB9B}.Release|Xbox 360.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

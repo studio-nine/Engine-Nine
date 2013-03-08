@@ -19,7 +19,7 @@ namespace Nine
     /// <summary>
     /// Defines a basic component that can be added to a parent game object.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     public abstract class Component : Nine.Object, IUpdateable, IComponent
     {
         #region Properties

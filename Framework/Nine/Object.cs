@@ -6,7 +6,7 @@ namespace Nine
     using System.Windows.Markup;
     using System.Xaml;
     using Microsoft.Xna.Framework.Content;
-    using Nine.Content;
+    using Nine.Serialization;
 
     /// <summary>
     /// Defines a basic named object that can be extended using attached properties.
@@ -25,6 +25,22 @@ namespace Nine
             set { name = value; }
         }
         internal string name = string.Empty;
+
+        /// <summary>
+        /// Gets a dictionary of all the attached properties.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public IDictionary<AttachableMemberIdentifier, object> AttachedProperties
+        {
+            get { return attachedProperties ?? (attachedProperties = new AttachableMemberIdentifierCollection()); }
+            private set
+            {
+                if (value != null)
+                    foreach (var pair in value)
+                        pair.Key.Apply(this, pair.Value);
+            }
+        }
+        private AttachableMemberIdentifierCollection attachedProperties;
         #endregion
 
         #region IAttachedPropertyStore
@@ -83,20 +99,7 @@ namespace Nine
             value = null;
             return attachedProperties != null && attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
         }
-
-        [ContentSerializer]
-        internal AttachableMemberIdentifierCollection AttachedProperties
-        {
-            get { return attachedProperties; }
-            set
-            {
-                if (value != null)
-                    foreach (var pair in value)
-                        pair.Key.Apply(this, pair.Value);
-            }
-        }
-        private AttachableMemberIdentifierCollection attachedProperties;
-
+        
         /// <summary>
         /// Reusing this same event args.
         /// </summary>

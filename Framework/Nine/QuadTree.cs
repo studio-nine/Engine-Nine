@@ -19,7 +19,7 @@ namespace Nine
         /// <summary>
         /// Gets the bounds of the QuadTree node.
         /// </summary>
-        public BoundingRectangle Bounds { get { return root.Bounds; } }
+        public BoundingRectangle Bounds { get { return root.bounds; } }
 
         /// <summary>
         /// For serialization.
@@ -38,30 +38,23 @@ namespace Nine
         protected override QuadTreeNode<T>[] ExpandNode(QuadTreeNode<T> node)
         {
             var childNodes = new QuadTreeNode<T>[ChildCount];
-            QuadTreeNode<T> quadTreeNode = (QuadTreeNode<T>)node;
+            var quadTreeNode = (QuadTreeNode<T>)node;
+            
+            var halfBounds = quadTreeNode.bounds;
+            halfBounds.Width *= 0.5f;
+            halfBounds.Height *= 0.5f;
 
-            Vector2 center;
-            Vector2 min = quadTreeNode.Bounds.Min;
-            Vector2 max = quadTreeNode.Bounds.Max;
-            Vector2.Add(ref min, ref max, out center);
-            Vector2.Multiply(ref center, 0.5f, out center);
+            var center = new Vector2(halfBounds.X + halfBounds.Width, halfBounds.Y + halfBounds.Height);
 
             for (int i = 0; i < ChildCount; ++i)
             {
                 var child = new QuadTreeNode<T>();
-                child.bounds = new BoundingRectangle
-                {
-                    Min = new Vector2()
-                    {
-                        X = (i % 2 == 0 ? min.X : center.X),
-                        Y = (i < 2 ? min.Y : center.Y),
-                    },
-                    Max = new Vector2()
-                    {
-                        X = (i % 2 == 0 ? center.X : max.X),
-                        Y = (i < 2 ? center.Y : max.Y),
-                    },
-                };
+                child.bounds = new BoundingRectangle(
+                    (i % 2 == 0 ? halfBounds.X : center.X),
+                    (i < 2 ? halfBounds.Y : center.Y),
+                    halfBounds.Width,
+                    halfBounds.Height);
+
                 childNodes[i] = child;
             }
             return childNodes;

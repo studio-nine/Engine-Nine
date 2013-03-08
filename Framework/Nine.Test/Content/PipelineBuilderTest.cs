@@ -1,4 +1,4 @@
-﻿namespace Nine.Content.Pipeline.Test
+﻿namespace Nine.Content.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.Xna.Framework.Graphics;

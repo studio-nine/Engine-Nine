@@ -11,7 +11,7 @@
     /// <summary>
     /// Represents a full screen quad.
     /// </summary>
-    [ContentSerializable]
+    [Nine.Serialization.BinarySerializable]
     [ContentProperty("Material")]
     public class FullScreenQuad : Nine.Object, IDrawableObject
     {
@@ -32,7 +32,7 @@
         {
             // The default material will enable lighting, so we need to
             // explicitly create a material without lighting.
-            get { return material ?? (material = new BasicMaterial(GraphicsDevice) { LightingEnabled = false }); }
+            get { return material ?? (material = new TextureMaterial(GraphicsDevice)); }
             set { material = value; }
         }
         private Material material;
@@ -121,11 +121,7 @@
             context.SetVertexBuffer(vertexBuffer, 0);
             GraphicsDevice.Indices = indexBuffer;
 
-#if SILVERLIGHT
-            vertexPassThrough2.BeginApply(context);
-            GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
-
-#elif WINDOWS_PHONE
+#if WINDOWS_PHONE
             GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
 
             context.matrices.view = view;
