@@ -4,11 +4,11 @@ namespace Samples
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
     using Nine;
-    using Nine.Content;
     using Nine.Graphics;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
     using System.Linq;
+    using Nine.Serialization;
 
     public class TriangleTest : ISample
     {

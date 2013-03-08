@@ -9,8 +9,8 @@ namespace Samples
     using Microsoft.Xna.Framework.Input;
     using Nine;
     using Nine.Components;
-    using Nine.Content;
     using Nine.Graphics;
+    using Nine.Serialization;
 
     public interface ISample
     {
@@ -51,8 +51,8 @@ namespace Samples
 #endif
 
             Package.Build(
-                "D:/Nine/Samples/Content.nine",
-                "D:/Nine/Samples/Content.n");
+                "../Content.nine",
+                "../Content.n");
 
             
             Components.Add(new FrameRate(GraphicsDevice, loader.Load<SpriteFont>("Fonts/Consolas")));

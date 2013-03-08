@@ -10,7 +10,7 @@ namespace Samples
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
     using Nine.Animations;
-    using Nine.Content;
+    using Nine.Serialization;
 
     public class SkinnedModelTest : ISample
     {

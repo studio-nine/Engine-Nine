@@ -9,7 +9,7 @@ namespace Samples
     using Nine.Graphics;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
-    using Nine.Content;
+    using Nine.Serialization;
 
     public class ReallyHugePrimitive : Primitive<VertexPositionNormal>
     {

@@ -10,7 +10,7 @@ namespace Samples
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
     using Nine.Graphics.PostEffects;
-    using Nine.Content;
+    using Nine.Serialization;
 
     public class PixelPerfectTest : ISample
     {

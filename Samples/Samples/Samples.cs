@@ -3,9 +3,9 @@ namespace Samples
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine;
-    using Nine.Content;
     using Nine.Graphics.Materials;
     using System.Threading.Tasks;
+    using Nine.Serialization;
 
     public class __1_HelloWorld : ISample
     {
