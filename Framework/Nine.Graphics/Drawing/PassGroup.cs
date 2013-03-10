@@ -42,7 +42,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Prepares a render target to hold the result of this pass.
         /// </summary>
-        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
+        public override RenderTarget2D PrepareRenderTarget(GraphicsDevice graphics, Texture2D input, SurfaceFormat? preferredFormat)
         {
             throw new InvalidOperationException();
         }

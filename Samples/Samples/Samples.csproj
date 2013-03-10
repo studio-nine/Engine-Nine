@@ -93,19 +93,31 @@
     <Compile Include="Components\ExampleController.cs" />
     <Compile Include="Components\ExamplePhysicsController.cs" />
     <Compile Include="Components\ExampleShooter.cs" />
+    <Compile Include="SampleScene.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleGame.cs" />
+    <Compile Include="Tests\CubeStressTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\DynamicPrimitiveTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\PixelPerfectTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\PrimitiveStressTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\ShadowMapTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\SkinnedModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tests\UITest.cs" />
-    <Compile Include="Tests\PrimitiveStressTest.cs" />
-    <Compile Include="Tests\SkinnedModelTest.cs" />
-    <Compile Include="Tests\PixelPerfectTest.cs" />
     <Compile Include="Tests\SpriteTest.cs" />
     <Compile Include="Tests\TransparencyTest.cs" />
-    <Compile Include="Tests\DynamicPrimitiveTest.cs" />
     <Compile Include="Tests\TriangleTest.cs" />
-    <Compile Include="Tests\ShadowMapTest.cs" />
-    <Compile Include="Tests\CubeStressTest.cs" />
-    <Compile Include="Samples.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

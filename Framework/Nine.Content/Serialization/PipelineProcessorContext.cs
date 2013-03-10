@@ -22,10 +22,10 @@
             return builder.BuildAndLoad<TOutput>(pipelineBuilder.ResolveExternalReference(sourceAsset.Filename), processorName, processorParameters, importerName);
         }
 
-        public override ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName, string assetName)
+        public override ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName, string fileName)
         {
             var builder = pipelineBuilder.Clone();
-            return new ExternalReference<TOutput>(builder.Build(pipelineBuilder.ResolveExternalReference(sourceAsset.Filename), processorName, processorParameters, importerName, assetName));
+            return new ExternalReference<TOutput>(builder.Build(pipelineBuilder.ResolveExternalReference(sourceAsset.Filename), processorName, processorParameters, importerName, fileName));
         }
 
         public override TOutput Convert<TInput, TOutput>(TInput input, string processorName, OpaqueDataDictionary processorParameters)

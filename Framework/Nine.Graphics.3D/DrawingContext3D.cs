@@ -112,8 +112,7 @@ namespace Nine.Graphics
             };
             this.directionalLights = new DirectionalLightCollection(defaultLight);
             
-            //this.rootPass.Passes.Add(mainPass = new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
-            //this.rootPass.Passes.Add(new SpritePass());
+            this.rootPass.Passes.Insert(0, mainPass = new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
         }
         #endregion
     }

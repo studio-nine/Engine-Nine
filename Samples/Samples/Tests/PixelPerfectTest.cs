@@ -12,12 +12,12 @@ namespace Samples
     using Nine.Graphics.PostEffects;
     using Nine.Serialization;
 
-    public class PixelPerfectTest : ISample
+    public class PixelPerfectTest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
-            var bits = content.Load<Texture2D>("Textures/Bits");
+            var bits = content.Load<Texture2D>("Textures/Bits.bmp");
             scene.Add(new Camera2D(graphics));
             scene.Add(new FullScreenQuad(graphics) { Texture = bits, Material = new BasicMaterial(graphics) { SamplerState = SamplerState.PointClamp } });
             //scene.Add(new Sprite(graphics) { Texture = bits, Size = new Vector2(graphics.Viewport.Width / 2, graphics.Viewport.Height / 2), Material = new BasicMaterial(graphics) { SamplerState = SamplerState.PointClamp }, Anchor = Vector2.Zero });

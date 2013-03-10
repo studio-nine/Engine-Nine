@@ -108,10 +108,10 @@ namespace Nine.Graphics.Drawing
         }
 
         /// <summary>
-        /// Gets all the pass types that are required by this pass.
+        /// Gets all the pass types that are required before this pass is rendered.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected internal virtual void GetDependentPasses(ICollection<Type> passTypes) { }
+        protected internal virtual void GetDependentPassTypes(ICollection<Type> passTypes) { }
 
         /// <summary>
         /// Gets all the passes that are going to be rendered.
@@ -127,10 +127,8 @@ namespace Nine.Graphics.Drawing
         /// Prepares a render target to hold the result of this pass.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
+        public virtual RenderTarget2D PrepareRenderTarget(GraphicsDevice graphics, Texture2D input, SurfaceFormat? preferredFormat)
         {
-            GraphicsDevice graphics = context.graphics;
-
             if (input != null)
             {
                 // Create a render target similar to the input texture and draw the scene onto it.

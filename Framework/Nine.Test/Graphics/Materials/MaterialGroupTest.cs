@@ -5,6 +5,7 @@ namespace Nine.Graphics.Materials.Test
     using Nine.Content;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Materials.MaterialParts;
+    using Nine.Serialization;
 
     [TestClass]
     public class MaterialGroupTest

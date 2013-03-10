@@ -20,12 +20,12 @@ namespace Nine.Serialization
 
         private Dictionary<string, ZipArchive> cachedPackages = new Dictionary<string, ZipArchive>(StringComparer.OrdinalIgnoreCase);
 
-        public bool TryResolveContent(string assetName, IServiceProvider serviceProvider, out Stream stream, out IContentImporter contentLoader)
+        public bool TryResolveContent(string fileName, IServiceProvider serviceProvider, out Stream stream, out IContentImporter contentLoader)
         {
             ZipArchive package;
             ZipArchiveEntry entry;
             string packageFilename;
-            string packageDirectory = assetName;
+            string packageDirectory = fileName;
 
             while (!string.IsNullOrEmpty(packageDirectory = Path.GetDirectoryName(packageDirectory)))
             {
@@ -38,7 +38,7 @@ namespace Nine.Serialization
                     cachedPackages[packageDirectory] = package = new ZipArchive(File.OpenRead(packageFilename));
                 }
 
-                if ((entry = package.GetEntry(assetName)) != null)
+                if ((entry = package.GetEntry(fileName)) != null)
                 {
                     stream = entry.Open();
                     contentLoader = binaryLoader;

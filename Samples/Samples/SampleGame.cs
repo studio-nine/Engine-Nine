@@ -1,9 +1,5 @@
 namespace Samples
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
@@ -11,10 +7,15 @@ namespace Samples
     using Nine.Components;
     using Nine.Graphics;
     using Nine.Serialization;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
-    public interface ISample
+    public abstract class Sample
     {
-        Scene CreateScene(GraphicsDevice graphics, ContentLoader content);
+        public virtual string Title { get { return GetType().Name; } }
+        public abstract Scene CreateScene(GraphicsDevice graphics, ContentLoader content);
     }
     
     public class SampleGame : Microsoft.Xna.Framework.Game
@@ -22,10 +23,10 @@ namespace Samples
         Input input;
         ContentLoader loader;
 
-        Scene currentScene;
-        Scene[] scenes;
-        ISample[] samples;
         int nextScene;
+        Scene currentScene;
+        List<Scene> scenes = new List<Scene>();
+        List<Sample> samples = new List<Sample>();
 
         public SampleGame()
         {
@@ -47,39 +48,41 @@ namespace Samples
             loader.SearchDirectories.Add("../Content");
 #if WINDOWS
             loader.Resolvers.Add(new FileSystemResolver());
-            loader.Resolvers.Add(new PackageResolver());
 #endif
 
-            Package.Build(
-                "../Content.nine",
-                "../Content.n");
-
-            
-            Components.Add(new FrameRate(GraphicsDevice, loader.Load<SpriteFont>("Fonts/Consolas")));
+            Components.Add(new FrameRate(GraphicsDevice, loader.Load<SpriteFont>("Fonts/Consolas.spritefont")));
             Components.Add(new InputComponent(Window.Handle));  
 
-            // Find all test games
-            samples = (
-                from type in Assembly.GetExecutingAssembly().GetTypes().OrderBy(x => x.Name)
-                where type.IsClass && typeof(ISample).IsAssignableFrom(type)
-                select (ISample)Activator.CreateInstance(type)).ToArray();
-
+            InitializeSamples();
             InitializeInput();
             LoadNextScene();
 
             base.LoadContent();
         }
 
+        private void InitializeSamples()
+        {
+            samples.AddRange(
+                from type in Assembly.GetExecutingAssembly().GetTypes().OrderBy(x => x.Name)
+                where type.IsSubclassOf(typeof(Sample)) && type != typeof(SampleScene)
+                select (Sample)Activator.CreateInstance(type));
+
+            //samples = new List<Sample> { new CubeStressTest(); };
+        }
+
         private void LoadNextScene()
         {
-            if (scenes == null)
-                scenes = new Scene[samples.Length];
-            if (scenes[nextScene] == null)
-                scenes[nextScene] = samples[nextScene].CreateScene(GraphicsDevice, loader);
-            currentScene = scenes[nextScene];
+            if (nextScene <= scenes.Count)
+            {
+                scenes.Add(currentScene = samples[nextScene].CreateScene(GraphicsDevice, loader));
 
-            Window.Title = samples[nextScene].GetType().Name.Replace("_", " ");
-            nextScene = (nextScene + 1) % samples.Length;
+                // TODO: rework on this design
+                currentScene.Add(new FreeCamera(GraphicsDevice));
+                SceneExtensions.SetDrawingContext(currentScene, new DrawingContext3D(GraphicsDevice, currentScene));
+            }
+
+            Window.Title = samples[nextScene].Title;
+            nextScene = (nextScene + 1) % samples.Count;
         }
 
         private void InitializeInput()

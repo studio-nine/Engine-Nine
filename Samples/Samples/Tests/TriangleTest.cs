@@ -10,17 +10,17 @@ namespace Samples
     using System.Linq;
     using Nine.Serialization;
 
-    public class TriangleTest : ISample
+    public class TriangleTest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
-            var tank = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/Palm/AlphaPalm");
+            var tank = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/Palm/AlphaPalm.x");
 
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = -Vector3.One });
             scene.Add(new Nine.Graphics.Model(tank) { Transform = Matrix.CreateTranslation(8, 0, 1) });
             scene.Add(new Sphere(graphics) { Transform = Matrix.CreateTranslation(1, 1, 1) });
-            scene.Add(new Surface(graphics, content.Load<Heightmap>("Terrain/RF1")) { Position = new Vector3(10, -1, -10) });
+            scene.Add(new Surface(graphics, content.Load<Heightmap>("Terrain/RF1.bmp")) { Position = new Vector3(10, -1, -10) });
             scene.Add(new TrianglePicker());
 
             return scene;

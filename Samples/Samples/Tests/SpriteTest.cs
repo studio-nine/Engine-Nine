@@ -11,17 +11,17 @@ namespace Samples
     using Nine.Graphics.Primitives;
     using Nine.Serialization;
 
-    public class SpriteTest : ISample
+    public class SpriteTest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             scene.Add(new Camera2D(graphics));
 
-            var texture = content.Load<Texture2D>("Textures/Butterfly");
+            var texture = content.Load<Texture2D>("Textures/Butterfly.png");
             var link = new Group();
             scene.Add(link);
-            scene.Add(new TextSprite(graphics) { Text = "Engine Nine", Font = content.Load<SpriteFont>("Fonts/Consolas") });
+            scene.Add(new TextSprite(graphics) { Text = "Engine Nine", Font = content.Load<SpriteFont>("Fonts/Consolas.spritefont") });
 
             var size = 8;
             var step = 50;

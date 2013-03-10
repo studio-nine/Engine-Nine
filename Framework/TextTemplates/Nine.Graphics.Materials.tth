@@ -424,7 +424,7 @@ namespace Nine.Graphics.Materials
             throw new NotImplementedException(); 
         }
 
-        public override ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName, string assetName)
+        public override ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName, string fileName)
         {
             throw new NotImplementedException(); 
         }

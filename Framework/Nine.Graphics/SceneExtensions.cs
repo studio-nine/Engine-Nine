@@ -88,10 +88,6 @@ namespace Nine.Graphics
                 SetDrawingContext(scene, context = new DrawingContext(graphics, (ISpatialQuery)scene));
             else if (context.graphics != graphics)
                 throw new ArgumentException("graphics");
-
-            if (context.camera == null)
-                ;//scene.Add(new FreeCamera(graphics, new Vector3(0, 10, 40)));
-
             return context;
         }
 

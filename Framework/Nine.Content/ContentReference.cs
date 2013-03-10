@@ -26,8 +26,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentReference"/> class.
         /// </summary>
-        /// <param name="assetName">The name of the asset.</param>
-        public ContentReference(string assetName) { AssetName = assetName; }
+        /// <param name="fileName">The name of the asset.</param>
+        public ContentReference(string fileName) { AssetName = fileName; }
 
         /// <summary>
         /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.

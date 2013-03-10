@@ -11,15 +11,15 @@ namespace Samples
     using Nine.Graphics.Primitives;
     using Nine.Serialization;
 
-    public class ShadowMapTest : ISample
+    public class ShadowMapTest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
 
             // NOTE: If you are targeting silverlight, make sure to set the TargetPlatform property
             //       of the content processor to Silverlight.
-            var shadowMaterial = content.Load<Material>("Materials/Shadow");
+            var shadowMaterial = content.Load<Material>("Materials/Shadow.xaml");
 
             //scene.GetDrawingContext(graphics).MainPass.MaterialUsage = MaterialUsage.Depth;
 

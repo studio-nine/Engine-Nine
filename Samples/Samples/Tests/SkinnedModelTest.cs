@@ -12,9 +12,9 @@ namespace Samples
     using Nine.Animations;
     using Nine.Serialization;
 
-    public class SkinnedModelTest : ISample
+    public class SkinnedModelTest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
 
@@ -22,7 +22,7 @@ namespace Samples
             scene.Add(new AmbientLight(graphics) { AmbientLightColor = new Vector3(0.5f, 0.5f, 0.5f) });
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = new Vector3(-1, -1, -1) });
 
-            var model = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/Peon/Peon");
+            var model = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/Peon/Peon.x");
             scene.Add(new Group(new Nine.Graphics.Model(model) { Material = new SkinnedMaterial(graphics), Transform = Matrix.CreateTranslation(-5, 0, 0) }, new AttackAndRun()));
             scene.Add(new Group(new Nine.Graphics.Model(model) { Material = new SkinnedMaterial(graphics), Transform = Matrix.CreateTranslation(5, 0, 0) }, new IdleRunCarryBlended()));
             

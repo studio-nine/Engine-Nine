@@ -11,9 +11,9 @@ namespace Samples
     using Nine.Graphics.Primitives;
     using Nine.Serialization;
 
-    public class DynamicPrimitiveTest : ISample
+    public class DynamicPrimitiveTest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             var solidPrimitive = new DynamicPrimitive(graphics) { DepthBias = 0 };

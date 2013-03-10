@@ -11,9 +11,9 @@ namespace Samples
     using Nine.Graphics.Primitives;
     using Nine.Serialization;
 
-    public class TransparencyTest : ISample
+    public class TransparencyTest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             scene.Add(new Nine.Graphics.ModelViewerCamera(graphics) { Center = new Vector3(10, 10, 10) });

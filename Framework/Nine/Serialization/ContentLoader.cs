@@ -32,10 +32,10 @@ namespace Nine.Serialization
         /// <summary>
         /// Gets the stream and loader of the specified asset.
         /// </summary>
-        /// <param name="assetName">
-        /// The normalized name of the asset without file extension.
+        /// <param name="fileName">
+        /// The normalized name of the asset including file extension.
         /// </param>
-        bool TryResolveContent(string assetName, IServiceProvider serviceProvider, out Stream stream, out IContentImporter contentLoader);
+        bool TryResolveContent(string fileName, IServiceProvider serviceProvider, out Stream stream, out IContentImporter contentLoader);
     }
 
     /// <summary>
@@ -96,50 +96,50 @@ namespace Nine.Serialization
         /// Loads an object with the asset name. 
         /// A cached instance will be returned if that asset has already been loaded.
         /// </summary>
-        /// <param name="assetName">
-        /// Name of the asset usually without file extension.
+        /// <param name="fileName">
+        /// Name of the asset usually including file extension.
         /// </param>
-        public virtual T Load<T>(string assetName)
+        public virtual T Load<T>(string fileName)
         {
             if (workingPath.Count > 0)
-                assetName = Path.Combine(workingPath.Peek(), assetName);
-            assetName = NormalizePath(assetName);
+                fileName = Path.Combine(workingPath.Peek(), fileName);
+            fileName = NormalizePath(fileName);
 
             object result;
             if (cachedContents == null)
                 cachedContents = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            if (!cachedContents.TryGetValue(assetName, out result))
-                cachedContents[assetName] = result = Create<object>(assetName);
+            if (!cachedContents.TryGetValue(fileName, out result))
+                cachedContents[fileName] = result = Create<object>(fileName);
             return (T)result;
         }
 
         /// <summary>
         /// Asynchronously loads an object with the asset name.
         /// </summary>
-        public Task<T> LoadAsync<T>(string assetName)
+        public Task<T> LoadAsync<T>(string fileName)
         {
             // TODO: Lock
-            return Task.Factory.StartNew(() => Load<T>(assetName));
+            return Task.Factory.StartNew(() => Load<T>(fileName));
         }
 
         /// <summary>
         /// Creates a new object from the target asset. 
         /// The life cycle of the created instance has to be managed by caller code.
         /// </summary>
-        /// <param name="assetName">
-        /// Name of the asset usually without file extension.
+        /// <param name="fileName">
+        /// Name of the asset usually including file extension.
         /// </param>
-        public virtual T Create<T>(string assetName)
+        public virtual T Create<T>(string fileName)
         {
             try
             {
                 Stream stream;
                 IContentImporter importer;
 
-                workingPath.Push(Path.GetDirectoryName(assetName));
+                workingPath.Push(Path.GetDirectoryName(fileName));
 
-                if (!FindStream(assetName, out stream, out importer))
-                    throw new FileNotFoundException("Cannot find file: " + assetName);
+                if (!FindStream(fileName, out stream, out importer))
+                    throw new FileNotFoundException("Cannot find file: " + fileName);
 
                 return (T)importer.Import(stream, this);
             }
@@ -152,19 +152,19 @@ namespace Nine.Serialization
         /// <summary>
         /// Asynchronously creates an object from the target asset.
         /// </summary>
-        public Task<T> CreateAsync<T>(string assetName)
+        public Task<T> CreateAsync<T>(string fileName)
         {
             // TODO: Lock
-            return Task.Factory.StartNew(() => Create<T>(assetName));
+            return Task.Factory.StartNew(() => Create<T>(fileName));
         }
 
-        internal static string NormalizePath(string assetName)
+        internal static string NormalizePath(string fileName)
         {
-            if (assetName == null)
+            if (fileName == null)
                 return null;
-            if (Path.IsPathRooted(assetName))
-                return Path.GetFullPath(assetName);
-            return Path.GetFullPath(Path.Combine("N:\\", assetName)).Substring(3);
+            if (Path.IsPathRooted(fileName))
+                return Path.GetFullPath(fileName);
+            return Path.GetFullPath(Path.Combine("N:\\", fileName)).Substring(3);
         }
 
         /// <summary>
@@ -181,17 +181,13 @@ namespace Nine.Serialization
             cachedContents = null;
         }
 
-        private bool FindStream(string assetName, out Stream stream, out IContentImporter loader)
+        private bool FindStream(string fileName, out Stream stream, out IContentImporter loader)
         {
             var searchDirectoryCount = searchDirectories.Count;
-            if (searchDirectoryCount <= 0 || workingPath.Count > 1)
-                return FindStreamInternal(assetName, out stream, out loader);
-
             for (int i = 0; i < searchDirectoryCount; i++)
             {
-                var probe = Path.GetFullPath(
-                    string.IsNullOrEmpty(searchDirectories[i]) ? assetName :
-                        Path.Combine(Path.GetFullPath(searchDirectories[i]), assetName));
+                var probe = Path.GetFullPath(string.IsNullOrEmpty(searchDirectories[i]) 
+                    ? fileName : Path.Combine(Path.GetFullPath(searchDirectories[i]), fileName));
                 if (FindStreamInternal(probe, out stream, out loader))
                     return true;
             }
@@ -200,12 +196,12 @@ namespace Nine.Serialization
             return false;
         }
 
-        private bool FindStreamInternal(string assetName, out Stream stream, out IContentImporter loader)
+        private bool FindStreamInternal(string fileName, out Stream stream, out IContentImporter loader)
         {
             var resolverCount = resolvers.Count;
             for (int i = 0; i < resolverCount; i++)
             {
-                if (resolvers[i].TryResolveContent(assetName, this, out stream, out loader))
+                if (resolvers[i].TryResolveContent(fileName, this, out stream, out loader))
                     return true;
             }
             stream = null;

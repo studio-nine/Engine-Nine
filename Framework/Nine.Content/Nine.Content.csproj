@@ -106,8 +106,8 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="Content\FileSystemResolver.cs" />
-    <Compile Include="Content\SerializationOverride.cs" />
+    <Compile Include="Serialization\FileSystemResolver.cs" />
+    <Compile Include="Serialization\SerializationOverride.cs" />
     <Compile Include="EmbeddedAssemblies.cs" />
     <Compile Include="EmbeddedAssemblies.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -126,17 +126,16 @@
     <Compile Include="Importers\EffectImporter.cs" />
     <Compile Include="Importers\SpriteFontImporter.cs" />
     <Compile Include="Importers\HeightmapImporter.cs" />
-    <Compile Include="Content\PipelineBuilder.cs" />
-    <Compile Include="Content\PipelineBuildLogger.cs" />
-    <Compile Include="Content\PipelineConstants.cs" />
-    <Compile Include="Content\PipelineContentManager.cs" />
-    <Compile Include="Content\PipelineImporterContext.cs" />
-    <Compile Include="Content\PipelineProcessorContext.cs" />
-    <Compile Include="Content\XamlSerializer.cs" />
+    <Compile Include="Serialization\PipelineBuilder.cs" />
+    <Compile Include="Serialization\PipelineBuildLogger.cs" />
+    <Compile Include="Serialization\PipelineConstants.cs" />
+    <Compile Include="Serialization\PipelineContentManager.cs" />
+    <Compile Include="Serialization\PipelineImporterContext.cs" />
+    <Compile Include="Serialization\PipelineProcessorContext.cs" />
+    <Compile Include="Serialization\XamlSerializer.cs" />
     <Compile Include="Design\TransformConverter.cs" />
     <Compile Include="Graphics\MaterialPaintGroupBuilder.cs" />
-    <Compile Include="Content\PackageResolver.cs" />
-    <Compile Include="Content\Package.cs" />
+    <Compile Include="Serialization\Package.cs" />
     <Compile Include="Processors\InstancedModelProcessor.cs" />
     <Compile Include="Transform2D.cs" />
     <Compile Include="Graphics\DistributionMap.cs" />
@@ -160,7 +159,7 @@
     <Compile Include="ExternalReference.cs" />
     <Compile Include="TextureTransform.cs" />
     <Compile Include="Transform.cs" />
-    <Compile Include="Content\TreeWriter.cs" />
+    <Compile Include="Serialization\TreeWriter.cs" />
     <Compile Include="Graphics\TextureAtlasContent.cs" />
     <Compile Include="Processors\ModelAnimationProcessor.cs" />
     <Compile Include="Processors\ModelSkeletonProcessor.cs" />

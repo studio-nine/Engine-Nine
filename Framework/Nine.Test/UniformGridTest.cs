@@ -14,8 +14,10 @@
 
             Assert.AreEqual<Point>(new Point(9, 9), grid.PositionToSegment(11.5f, 11.5f));
             Assert.AreEqual<Vector2>(new Vector2(2, 2), grid.SegmentToPosition(0, 0));
-            Assert.AreEqual<Vector2>(new Vector2(1.5f, 1.5f), grid.GetSegmentBounds(0, 0).Min);
-            Assert.AreEqual<Vector2>(new Vector2(11.5f, 11.5f), grid.GetSegmentBounds(9, 9).Max);
+            Assert.AreEqual(1.5f, grid.GetSegmentBounds(0, 0).X);
+            Assert.AreEqual(1.5f, grid.GetSegmentBounds(0, 0).Y);
+            Assert.AreEqual(11.5f, grid.GetSegmentBounds(9, 9).X);
+            Assert.AreEqual(11.5f, grid.GetSegmentBounds(9, 9).Y);
         }
 
         [TestMethod()]

@@ -164,7 +164,7 @@ namespace Nine
             {
                 buildProject.AddItem("Reference", pipelineAssembly);
             }
-            buildProject.AddItem("Reference", typeof(Nine.Content.Processors.ExtendedModelProcessor).Assembly.FullName);
+            buildProject.AddItem("Reference", typeof(Nine.Serialization.Processors.ExtendedModelProcessor).Assembly.FullName);
             buildProject.AddItem("Reference", Path.Combine(Directory.GetCurrentDirectory(), "Nine.Test.dll"));
 
             // Hook up our custom error logger.

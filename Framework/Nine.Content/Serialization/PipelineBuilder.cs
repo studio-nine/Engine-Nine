@@ -47,7 +47,7 @@
             Constants = new PipelineConstants(intermediateDirectory, outputDirectory, targetPlatform, graphics);
         }
 
-        public string Build(string sourceAssetFile, string processorName, OpaqueDataDictionary processorParameters, string importerName, string assetName)
+        public string Build(string sourceAssetFile, string processorName, OpaqueDataDictionary processorParameters, string importerName, string fileName)
         {
             var importer = FindImporter(importerName, sourceAssetFile);
             if (importer == null)
@@ -55,7 +55,7 @@
 
             var processor = PipelineBuilder.ContentProcessors.FirstOrDefault(p => p.GetType().Name == processorName);
             ApplyParameters(processor, processorParameters);
-            return Build(sourceAssetFile, importer, processor, assetName);
+            return Build(sourceAssetFile, importer, processor, fileName);
         }
 
         public string Build(string sourceAssetFile, IImporter contentImporter, IProcessor contentProcessor)
@@ -63,9 +63,9 @@
             return Build(sourceAssetFile, contentImporter, contentProcessor, null);
         }
 
-        public string Build(string sourceAssetFile, IImporter contentImporter, IProcessor contentProcessor, string assetName)
+        public string Build(string sourceAssetFile, IImporter contentImporter, IProcessor contentProcessor, string fileName)
         {
-            var content = BuildAndLoad<object>(sourceAssetFile, contentImporter, contentProcessor, assetName);
+            var content = BuildAndLoad<object>(sourceAssetFile, contentImporter, contentProcessor, fileName);
             Compile(OutputFilename, content);
             return OutputFilename;
         }
@@ -86,11 +86,11 @@
             return BuildAndLoad<TContent>(sourceAssetFile, contentImporter, contentProcessor, null);
         }
 
-        public TContent BuildAndLoad<TContent>(string sourceAssetFile, IImporter contentImporter, IProcessor contentProcessor, string assetName)
+        public TContent BuildAndLoad<TContent>(string sourceAssetFile, IImporter contentImporter, IProcessor contentProcessor, string fileName)
         {
             try
             {
-                OutputFilename = FindNextValidAssetName(assetName ?? Path.GetFileNameWithoutExtension(sourceAssetFile), ".xnb");
+                OutputFilename = FindNextValidAssetName(fileName ?? Path.GetFileNameWithoutExtension(sourceAssetFile), ".xnb");
                 
                 var outputDirectory = Path.GetDirectoryName(OutputFilename);
                 if (!Directory.Exists(outputDirectory))
@@ -120,7 +120,7 @@
             }
             catch (Exception e)
             {
-                Trace.TraceError("Error importing {0} with asset name {1}", sourceAssetFile, assetName ?? "[Unspecified]");
+                Trace.TraceError("Error importing {0} with asset name {1}", sourceAssetFile, fileName ?? "[Unspecified]");
                 Trace.WriteLine(e);
                 throw;
             }
@@ -231,12 +231,12 @@
             return FindProcessor(importer.GetType().GetCustomAttributes(false).OfType<ContentImporterAttribute>().First().DefaultProcessor);
         }
 
-        private static IImporter FindImporter(string importerName, string assetName)
+        private static IImporter FindImporter(string importerName, string fileName)
         {
             if (!string.IsNullOrEmpty(importerName))
                 return PipelineBuilder.ContentImporters.FirstOrDefault(i => i.GetType().Name == importerName);
 
-            return ContentImporters.FirstOrDefault(i => ImporterCompatibleWithFile(i, assetName));
+            return ContentImporters.FirstOrDefault(i => ImporterCompatibleWithFile(i, fileName));
         }
 
         private static IProcessor FindProcessor(string processorName)
@@ -262,22 +262,22 @@
             return StringComparer.OrdinalIgnoreCase.Equals(ext1, ext2);
         }
 
-        private string FindNextValidAssetName(string assetName, string extension)
+        private string FindNextValidAssetName(string fileName, string extension)
         {
             int i = 0;
             string assetFilename;
-            while (File.Exists(assetFilename = GetAssetFilename(assetName, i++, extension))) ;
+            while (File.Exists(assetFilename = GetAssetFilename(fileName, i++, extension))) ;
             return assetFilename;
         }
 
-        private string GetAssetFilename(string assetName, int i, string extension)
+        private string GetAssetFilename(string fileName, int i, string extension)
         {
-            if (!Path.IsPathRooted(assetName))
-                assetName = Path.Combine(Constants.OutputDirectory, assetName);
+            if (!Path.IsPathRooted(fileName))
+                fileName = Path.Combine(Constants.OutputDirectory, fileName);
 
             if (i > 0)
-                return assetName + i.ToString() + extension;
-            return assetName + extension;
+                return fileName + i.ToString() + extension;
+            return fileName + extension;
         }
 
         public void Compile<T>(string outputFilename, T content)

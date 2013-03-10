@@ -16,9 +16,7 @@
             object a = new object();
             object b = new object();
 
-            QuadTree<object> tree = new QuadTree<object>(
-                            new BoundingRectangle(
-                            new Vector2(0, 0), new Vector2(4, 4)), 2);
+            QuadTree<object> tree = new QuadTree<object>(new BoundingRectangle(4, 4), 2);
         }
 
         [TestMethod()]
@@ -27,8 +25,7 @@
             Assert.AreEqual(ContainmentType.Contains,
                 new BoundingBox(Vector3.Zero, Vector3.One).Contains(Vector3.One));
 
-            BoundingRectangle bounds = new BoundingRectangle(
-                new Vector2(0, 0), new Vector2(4, 4));
+            BoundingRectangle bounds = new BoundingRectangle(4, 4);
 
             QuadTree<object> tree = new QuadTree<object>(bounds, 2);
 

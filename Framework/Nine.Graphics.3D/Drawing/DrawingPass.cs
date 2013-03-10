@@ -99,7 +99,6 @@ namespace Nine.Graphics.Drawing
             for (int i = 0; i < count; ++i)
             {
                 var drawable = drawables[i];
-
                 var material = dominantMaterial ?? drawable.Material ?? defaultMaterial;
                 if (MaterialUsage != MaterialUsage.Default)
                     material = material.GetMaterialByUsage(MaterialUsage);

@@ -11,14 +11,14 @@ namespace Samples
     using Nine.Graphics.Primitives;
     using Nine.Serialization;
 
-    public class ___CubeStressTest : ISample
+    public class CubeStressTest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
-            //scene = new Scene(new PassThroughSceneManager());
+            scene = new Scene(new PassThroughSceneManager(), null);
             //scene = new Scene(new BruteForceSceneManager());
-            var cube = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/cube/cube");
+            var cube = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/Cube/Cube.fbx");
 
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Vector3.UnitX, Direction = -Vector3.UnitX });
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Vector3.UnitY, Direction = -Vector3.UnitY });

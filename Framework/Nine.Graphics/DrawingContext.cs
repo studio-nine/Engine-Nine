@@ -102,7 +102,7 @@ namespace Nine.Graphics
         {
             get { return mainPass; }
         }
-        private Pass mainPass;
+        internal Pass mainPass;
 
         /// <summary>
         /// Gets the passes that is used to render the scene.
@@ -111,7 +111,7 @@ namespace Nine.Graphics
         {
             get { return rootPass.Passes; }
         }
-        private PassGroup rootPass;
+        internal PassGroup rootPass;
 
         #endregion
 
@@ -284,8 +284,7 @@ namespace Nine.Graphics
             this.matrices = new MatrixCollection();
             this.textures = new TextureCollection();
             this.rootPass = new PassGroup();
-            //this.rootPass.Passes.Add(mainPass = new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
-            //this.rootPass.Passes.Add(new SpritePass());
+            this.rootPass.Passes.Add(new SpritePass());
         }
 
         /// <summary>
@@ -443,7 +442,7 @@ namespace Nine.Graphics
 
                 if ((pass.PassOperation & PassOperation.BeginRenderTarget) != 0)
                 {
-                    intermediate = pass.PrepareRenderTarget(this, intermediate, pass.PassFormat);
+                    intermediate = pass.PrepareRenderTarget(graphics, intermediate, pass.PassFormat);
                     intermediate.Begin();
                     RenderTargetPool.Lock(intermediate);
                 }
@@ -502,7 +501,7 @@ namespace Nine.Graphics
             {
                 var pass = passes[i];
                 if (pass.Enabled)
-                    pass.GetDependentPasses(dependentPassTypes);
+                    pass.GetDependentPassTypes(dependentPassTypes);
             }
 
             foreach (var pass in dependentPassMapping.Values)

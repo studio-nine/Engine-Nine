@@ -108,6 +108,10 @@
       <Project>{926CE988-9E75-40DD-80F1-1709A91F8C35}</Project>
       <Name>Nine.Content</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Nine.Graphics.3D\Nine.Graphics.3D.csproj">
+      <Project>{88e70c7b-eddf-4415-b817-f7742e749a34}</Project>
+      <Name>Nine.Graphics.3D</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
       <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
       <Name>Nine.Graphics</Name>

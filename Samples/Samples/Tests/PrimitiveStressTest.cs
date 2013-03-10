@@ -43,9 +43,9 @@ namespace Samples
         }
     }
 
-    public class PrimitiveStressTest : ISample
+    public class PrimitiveStressTest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) 

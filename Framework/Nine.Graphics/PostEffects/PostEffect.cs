@@ -95,7 +95,7 @@
         /// <summary>
         /// Gets all the pass types that are required by this pass.
         /// </summary>
-        protected internal override void GetDependentPasses(ICollection<Type> passTypes)
+        protected internal override void GetDependentPassTypes(ICollection<Type> passTypes)
         {
             if (Material != null)
                 Material.GetDependentPasses(passTypes);
@@ -113,7 +113,7 @@
         /// <summary>
         /// Prepares a render target to hold the result of this pass.
         /// </summary>
-        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
+        public override RenderTarget2D PrepareRenderTarget(GraphicsDevice graphics, Texture2D input, SurfaceFormat? preferredFormat)
         {
             int w, h;
             if (renderTargetSize.HasValue)
@@ -130,14 +130,14 @@
                 }
                 else
                 {
-                    w = context.graphics.Viewport.Width;
-                    h = context.graphics.Viewport.Height;
+                    w = graphics.Viewport.Width;
+                    h = graphics.Viewport.Height;
                 }
             }
 
-            var format = surfaceFormat ?? preferredFormat ?? (input != null ? input.Format : context.graphics.PresentationParameters.BackBufferFormat);
+            var format = surfaceFormat ?? preferredFormat ?? (input != null ? input.Format : graphics.PresentationParameters.BackBufferFormat);
 
-            return RenderTargetPool.GetRenderTarget(context.graphics
+            return RenderTargetPool.GetRenderTarget(graphics
                                                  , (int)(w * renderTargetScale)
                                                  , (int)(h * renderTargetScale)
                                                  , format

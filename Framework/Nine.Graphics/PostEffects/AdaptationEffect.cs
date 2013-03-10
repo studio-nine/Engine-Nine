@@ -40,9 +40,9 @@
                 result.Add(this);
         }
 
-        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
+        public override RenderTarget2D PrepareRenderTarget(GraphicsDevice graphics, Texture2D input, SurfaceFormat? preferredFormat)
         {
-            currentFrame = base.PrepareRenderTarget(context, input, preferredFormat);
+            currentFrame = base.PrepareRenderTarget(graphics, input, preferredFormat);
             RenderTargetPool.Lock(currentFrame);
             return currentFrame;
         }
@@ -57,7 +57,7 @@
             bool needLocalTexture = false;
             if (needLocalTexture = (currentFrame == null))
             {
-                PrepareRenderTarget(context, InputTexture, null);
+                PrepareRenderTarget(context.graphics, InputTexture, null);
                 currentFrame.Begin();
             }
 

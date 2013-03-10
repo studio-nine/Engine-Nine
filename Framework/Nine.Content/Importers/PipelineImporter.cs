@@ -33,7 +33,7 @@ namespace Nine.Serialization.Importers
 
             var file = stream as FileStream;
             if (file == null)
-                throw new NotSupportedException();
+                throw new NotSupportedException("Pipeline importer only support FileStream.");
             
             file.Close();
 

@@ -67,14 +67,14 @@
         /// <summary>
         /// Gets all the pass types that are required by this pass.
         /// </summary>
-        protected internal override void GetDependentPasses(ICollection<Type> passTypes)
+        protected internal override void GetDependentPassTypes(ICollection<Type> passTypes)
         {
             var count = effects.Count;
             for (int i = 0; i < count; ++i)
             {
                 var effect = effects[i];
                 if (effect.Enabled)
-                    effect.GetDependentPasses(passTypes);
+                    effect.GetDependentPassTypes(passTypes);
             }
         }
 

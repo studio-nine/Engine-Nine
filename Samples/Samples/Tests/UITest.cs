@@ -12,14 +12,12 @@ namespace Samples
     using Nine.Graphics.UI;
     using Nine.Serialization;
 
-    public class _____UITest : ISample
+    public class UITest : Sample
     {
-        public Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
-
-            var window = new Window(graphics.Viewport.Bounds, );
-
+            //var window = new Window(graphics.Viewport.Bounds, );
             return scene;
         }
     }

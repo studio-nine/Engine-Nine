@@ -22,20 +22,20 @@
             MemoryStreams = new Dictionary<string, Stream>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public override T Load<T>(string assetName)
+        public override T Load<T>(string fileName)
         {
-            return base.Load<T>(assetName);
+            return base.Load<T>(fileName);
         }
 
-        protected override Stream OpenStream(string assetName)
+        protected override Stream OpenStream(string fileName)
         {
             Stream memoryStream;
-            if (MemoryStreams.TryGetValue(assetName, out memoryStream))
+            if (MemoryStreams.TryGetValue(fileName, out memoryStream))
                 return memoryStream;
 
-            if (!assetName.EndsWith(".xnb", StringComparison.OrdinalIgnoreCase))
-                assetName = assetName + ".xnb";
-            return File.OpenRead(assetName);
+            if (!fileName.EndsWith(".xnb", StringComparison.OrdinalIgnoreCase))
+                fileName = fileName + ".xnb";
+            return File.OpenRead(fileName);
         }
     }
 

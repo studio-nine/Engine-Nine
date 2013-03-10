@@ -63,14 +63,14 @@
         /// <summary>
         /// Gets all the pass types that are required by this pass.
         /// </summary>
-        protected internal override void GetDependentPasses(ICollection<Type> passTypes)
+        protected internal override void GetDependentPassTypes(ICollection<Type> passTypes)
         {
             var count = passes.Count;
             for (int i = 0; i < count; ++i)
             {
                 var pass = passes[i];
                 if (pass.Enabled)
-                    pass.GetDependentPasses(passTypes);
+                    pass.GetDependentPassTypes(passTypes);
             }
             if (Material != null)
                 Material.GetDependentPasses(passTypes);
@@ -129,7 +129,7 @@
 
                     RenderTarget2D previous = intermediate;
                     RenderTargetPool.Lock(previous);
-                    intermediate = workingPass.PrepareRenderTarget(context, intermediate, null);
+                    intermediate = workingPass.PrepareRenderTarget(context.graphics, intermediate, null);
                     intermediate.Begin();
 
                     workingPass.InputTexture = previous;
@@ -182,7 +182,7 @@
 
                     RenderTarget2D previous = intermediate;
                     RenderTargetPool.Lock(previous);
-                    intermediate = workingPass.PrepareRenderTarget(context, intermediate, null);
+                    intermediate = workingPass.PrepareRenderTarget(context.graphics, intermediate, null);
                     intermediate.Begin();
 
                     workingPass.InputTexture = previous;

@@ -15,7 +15,7 @@ namespace Nine.Serialization
 
         }
 
-        protected override Stream OpenStream(string assetName)
+        protected override Stream OpenStream(string fileName)
         {
             if (currentStream != null)
             {
@@ -23,7 +23,7 @@ namespace Nine.Serialization
                 currentStream = null;
                 return result;
             }
-            return base.OpenStream(assetName);
+            return base.OpenStream(fileName);
         }
 
         object IContentImporter.Import(Stream stream, IServiceProvider serviceProvider)
