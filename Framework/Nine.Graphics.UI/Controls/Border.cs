@@ -27,64 +27,23 @@ namespace Nine.Graphics.UI.Controls
 {
     using System.Collections.Generic;
 
-    using Nine.Graphics.UI.Graphics;
     using Nine.Graphics.UI.Internal;
     using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     public class Border : UIElement
     {
-        public static readonly ReactiveProperty<Brush> BackgroundProperty =
-            ReactiveProperty<Brush>.Register(
-                "Background", typeof(Border), ReactivePropertyChangedCallbacks.InvalidateArrange);
-
-        public static readonly ReactiveProperty<Brush> BorderBrushProperty =
-            ReactiveProperty<Brush>.Register(
-                "BorderBrush", typeof(Border), null, ReactivePropertyChangedCallbacks.InvalidateArrange);
-
-        public static readonly ReactiveProperty<Thickness> BorderThicknessProperty =
-            ReactiveProperty<Thickness>.Register(
-                "BorderThickness", typeof(Border), new Thickness(), ReactivePropertyChangedCallbacks.InvalidateMeasure);
-
-        public static readonly ReactiveProperty<UIElement> ChildProperty = ReactiveProperty<UIElement>.Register(
-            "Child", typeof(Border), null, ChildPropertyChangedCallback);
-
-        public static readonly ReactiveProperty<Thickness> PaddingProperty =
-            ReactiveProperty<Thickness>.Register(
-                "Padding", typeof(Border), new Thickness(), ReactivePropertyChangedCallbacks.InvalidateMeasure);
-
         private readonly IList<BoundingRectangle> borders = new List<BoundingRectangle>();
 
-        public Brush Background
-        {
-            get { return this.GetValue(BackgroundProperty); }
-            set { this.SetValue(BackgroundProperty, value); }
-        }
-
-        public Brush BorderBrush
-        {
-            get { return this.GetValue(BorderBrushProperty); }
-            set { this.SetValue(BorderBrushProperty, value); }
-        }
-
-        public Thickness BorderThickness
-        {
-            get { return this.GetValue(BorderThicknessProperty); }
-            set { this.SetValue(BorderThicknessProperty, value); }
-        }
-
-        public UIElement Child
-        {
-            get { return this.GetValue(ChildProperty); }
-            set { this.SetValue(ChildProperty, value); }
-        }
-
-        public Thickness Padding
-        {
-            get { return this.GetValue(PaddingProperty); }
-            set { this.SetValue(PaddingProperty, value); }
-        }
+        // TODO?: SolidColorBrush to Brush
+        public SolidColorBrush Background { get; set; }
+        public SolidColorBrush BorderBrush { get; set; }
+        public Thickness BorderThickness { get; set; }
+        public UIElement Child { get; set; }
+        public Thickness Padding { get; set; }
         
+        // TODO: Only Can/need have one Child
         public override IList<UIElement> GetChildren()
         {
             var child = Child;
@@ -96,6 +55,29 @@ namespace Nine.Graphics.UI.Controls
             return null;
         }
         private UIElement[] children = new UIElement[1];
+
+        #region Methods
+
+        public override void OnRender(SpriteBatch spriteBatch)
+        {
+            // TODO: Opt
+            if (BorderThickness != Thickness.Empty && BorderBrush != null)
+            {
+                GenerateBorders();
+
+                foreach (BoundingRectangle border in this.borders)
+                {
+                    spriteBatch.Draw((Rectangle)border, BorderBrush.Color);
+                }
+            }
+
+            if (this.Background != null)
+            {
+                spriteBatch.Draw(
+                    (Rectangle)new BoundingRectangle(VisualOffset.X, VisualOffset.Y, this.ActualWidth, this.ActualHeight)
+                        .Deflate(this.BorderThickness), Background.Color);
+            }
+        }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
@@ -126,45 +108,6 @@ namespace Nine.Graphics.UI.Controls
             }
 
             return borderThicknessAndPadding.Collapse();
-        }
-
-        protected override void OnRender(IDrawingContext drawingContext)
-        {
-            // TODO: Opt
-            if (this.BorderThickness != new Thickness() && this.BorderBrush != null)
-            {
-                this.GenerateBorders();
-
-                foreach (BoundingRectangle border in this.borders)
-                {
-                    drawingContext.DrawRectangle(border, this.BorderBrush);
-                }
-            }
-
-            if (this.Background != null)
-            {
-                drawingContext.DrawRectangle(
-                    new BoundingRectangle(0, 0, this.ActualWidth, this.ActualHeight).Deflate(this.BorderThickness), this.Background);
-            }
-        }
-
-        private static void ChildPropertyChangedCallback(
-            ReactiveObject source, ReactivePropertyChangeEventArgs<UIElement> change)
-        {
-            var border = (Border)source;
-            border.InvalidateMeasure();
-
-            UIElement oldChild = change.OldValue;
-            if (oldChild != null)
-            {
-                oldChild.Parent = null;
-            }
-
-            UIElement newChild = change.NewValue;
-            if (newChild != null)
-            {
-                newChild.Parent = border;
-            }
         }
 
         private void GenerateBorders()
@@ -206,5 +149,29 @@ namespace Nine.Graphics.UI.Controls
                         this.BorderThickness.Bottom));
             }
         }
+
+        #endregion
+
+        /*
+        private static void ChildPropertyChangedCallback(
+            ReactiveObject source, ReactivePropertyChangeEventArgs<UIElement> change)
+        {
+            var border = (Border)source;
+            border.InvalidateMeasure();
+
+            UIElement oldChild = change.OldValue;
+            if (oldChild != null)
+            {
+                oldChild.Parent = null;
+            }
+
+            UIElement newChild = change.NewValue;
+            if (newChild != null)
+            {
+                newChild.Parent = border;
+            }
+        }
+        */
+
     }
 }

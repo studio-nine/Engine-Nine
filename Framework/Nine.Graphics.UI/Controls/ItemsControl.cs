@@ -36,26 +36,7 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class ItemsControl : Control
     {
-        /// <summary>
-        ///     <see cref = "ItemTemplate">ItemTemplate</see> Reactive Property.
-        /// </summary>
-        public static readonly ReactiveProperty<Func<object, UIElement>> ItemTemplateProperty =
-            ReactiveProperty<Func<object, UIElement>>.Register("ItemTemplate", typeof(ItemsControl));
-
-        /// <summary>
-        ///     <see cref = "ItemsPanel">ItemsPanel</see> Reactive Property.
-        /// </summary>
-        public static readonly ReactiveProperty<Panel> ItemsPanelProperty =
-            ReactiveProperty<Panel>.Register("ItemsPanel", typeof(ItemsControl), ItemsPanelChanged);
-
-        /// <summary>
-        ///     <see cref = "ItemsSource">ItemsSource</see> Reactive Property.
-        /// </summary>
-        public static readonly ReactiveProperty<IEnumerable> ItemsSourceProperty =
-            ReactiveProperty<IEnumerable>.Register("ItemsSource", typeof(ItemsControl), ItemsSourceChanged);
-
         private IDisposable changingItems;
-
         private bool isItemsSourceNew;
 
         /// <summary>
@@ -70,29 +51,17 @@ namespace Nine.Graphics.UI.Controls
         ///     Gets or sets a function that is used to generate the <see cref = "UIElement">UIElement</see> for each item in the <see cref = "ItemsSource">ItemsSource</see>.
         ///     The function takes one argument of type <see cref = "object">object</see> that represents the item's <see cref = "UIElement.DataContext">DataContext</see>.
         /// </summary>
-        public Func<object, UIElement> ItemTemplate
-        {
-            get { return this.GetValue(ItemTemplateProperty); }
-            set { this.SetValue(ItemTemplateProperty, value); }
-        }
+        public Func<object, UIElement> ItemTemplate { get; set; }
 
         /// <summary>
         ///     Gets of sets the <see cref = "Panel">Panel</see> used to control the layout of items.
         /// </summary>
-        public Panel ItemsPanel
-        {
-            get { return this.GetValue(ItemsPanelProperty); }
-            set { this.SetValue(ItemsPanelProperty, value); }
-        }
+        public Panel ItemsPanel { get; set; }
 
         /// <summary>
         ///     Gets or sets the collection of items to be displayed.
         /// </summary>
-        public IEnumerable ItemsSource
-        {
-            get { return this.GetValue(ItemsSourceProperty); }
-            set { this.SetValue(ItemsSourceProperty, value); }
-        }
+        public IEnumerable ItemsSource { get; set; }
 
         public override IList<UIElement> GetChildren()
         {
@@ -119,9 +88,7 @@ namespace Nine.Graphics.UI.Controls
         {
             Panel child = this.ItemsPanel;
             if (child != null)
-            {
                 child.Arrange(new BoundingRectangle(finalSize.X, finalSize.Y));
-            }
 
             return finalSize;
         }
@@ -130,14 +97,12 @@ namespace Nine.Graphics.UI.Controls
         {
             Panel child = this.ItemsPanel;
             if (child == null)
-            {
                 return Vector2.Zero;
-            }
 
             child.Measure(availableSize);
             return child.DesiredSize;
         }
-
+/*
         private static void ItemsPanelChanged(ReactiveObject source, ReactivePropertyChangeEventArgs<Panel> change)
         {
             var itemsControl = (ItemsControl)source;
@@ -182,7 +147,7 @@ namespace Nine.Graphics.UI.Controls
             itemsControl.InvalidateMeasure();
         }
 
-        /*
+        
         private void OnNextItemChange(EventPattern<NotifyCollectionChangedEventArgs> eventData)
         {
             var children = (ITemplatedList<UIElement>)this.ItemsPanel.Children;

@@ -31,25 +31,11 @@ namespace Nine.Graphics.UI.Controls.Primitives
 
     public abstract class ButtonBase : ContentControl, IInputElement
     {
-        public static readonly ReactiveProperty<bool> IsPressedProperty = ReactiveProperty<bool>.Register(
-            "IsPressed", typeof(ButtonBase), false);
-
         private bool isLeftButtonDown;
 
         public event EventHandler<EventArgs> Click;
 
-        public bool IsPressed
-        {
-            get
-            {
-                return this.GetValue(IsPressedProperty);
-            }
-
-            protected internal set
-            {
-                this.SetValue(IsPressedProperty, value);
-            }
-        }
+        public bool IsPressed { get; set; }
 
         protected virtual void OnClick()
         {

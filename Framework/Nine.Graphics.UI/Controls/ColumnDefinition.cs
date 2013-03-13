@@ -27,58 +27,16 @@ namespace Nine.Graphics.UI.Controls
 {
     public class ColumnDefinition : DefinitionBase
     {
-        public static readonly ReactiveProperty<float> MaxWidthProperty = ReactiveProperty<float>.Register(
-            "MaxWidth", typeof(ColumnDefinition), float.PositiveInfinity);
-
-        public static readonly ReactiveProperty<float> MinWidthProperty = ReactiveProperty<float>.Register(
-            "MinWidth", typeof(ColumnDefinition), 0f);
-
-        public static readonly ReactiveProperty<GridLength> WidthProperty =
-            ReactiveProperty<GridLength>.Register(
-                "X", typeof(ColumnDefinition), new GridLength(1, GridUnitType.Star));
-
         public ColumnDefinition()
             : base(DefinitionType.Column)
         {
+            Width = new GridLength(1, GridUnitType.Star);
+            MaxWidth = float.PositiveInfinity;
+            MinWidth = 0;
         }
 
-        public float MaxWidth
-        {
-            get
-            {
-                return this.GetValue(MaxWidthProperty);
-            }
-
-            set
-            {
-                this.SetValue(MaxWidthProperty, value);
-            }
-        }
-
-        public float MinWidth
-        {
-            get
-            {
-                return this.GetValue(MinWidthProperty);
-            }
-
-            set
-            {
-                this.SetValue(MinWidthProperty, value);
-            }
-        }
-
-        public GridLength X
-        {
-            get
-            {
-                return this.GetValue(WidthProperty);
-            }
-
-            set
-            {
-                this.SetValue(WidthProperty, value);
-            }
-        }
+        public GridLength Width { get; set; }
+        public float MaxWidth { get; set; }
+        public float MinWidth { get; set; }
     }
 }

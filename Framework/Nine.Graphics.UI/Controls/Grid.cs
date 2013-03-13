@@ -31,57 +31,28 @@ namespace Nine.Graphics.UI.Controls
 
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework;
+    using Nine.Graphics.UI.Media;
 
     /// <summary>
     ///     A Grid layout panel consisting of columns and rows.
     /// </summary>
     public class Grid : Panel
     {
-        /// <summary>
-        ///     Column attached property.
-        /// </summary>
-        public static readonly ReactiveProperty<int> ColumnProperty = ReactiveProperty<int>.Register(
-            "Column", typeof(Grid));
-
-        /// <summary>
-        ///     Row attached property.
-        /// </summary>
-        public static readonly ReactiveProperty<int> RowProperty = ReactiveProperty<int>.Register("Row", typeof(Grid));
+        private enum Dimension { X, Y }
+        private enum UpdateMinLengths { SkipHeights, SkipWidths, WidthsAndHeights }
 
         private readonly LinkedList<Cell> allStars = new LinkedList<Cell>();
-
         private readonly LinkedList<Cell> autoPixelHeightStarWidth = new LinkedList<Cell>();
-
         private readonly IList<ColumnDefinition> columnDefinitions = new List<ColumnDefinition>();
 
         private readonly bool[] hasAuto = new bool[2];
-
         private readonly bool[] hasStar = new bool[2];
 
         private readonly LinkedList<Cell> noStars = new LinkedList<Cell>();
-
         private readonly IList<RowDefinition> rowDefinitions = new List<RowDefinition>();
-
         private readonly LinkedList<Cell> starHeightAutoPixelWidth = new LinkedList<Cell>();
 
-        private Cell[] cells;
-
-        private DefinitionBase[] columns;
-
-        private DefinitionBase[] rows;
-
-        private enum Dimension
-        {
-            X, 
-            Y
-        }
-
-        private enum UpdateMinLengths
-        {
-            SkipHeights, 
-            SkipWidths, 
-            WidthsAndHeights
-        }
+        #region Properties
 
         /// <summary>
         ///     Gets the collection of column definitions.
@@ -89,10 +60,7 @@ namespace Nine.Graphics.UI.Controls
         /// <value>The column definitions collection.</value>
         public IList<ColumnDefinition> ColumnDefinitions
         {
-            get
-            {
-                return this.columnDefinitions;
-            }
+            get { return this.columnDefinitions; }
         }
 
         /// <summary>
@@ -101,76 +69,33 @@ namespace Nine.Graphics.UI.Controls
         /// <value>The row definitions collection.</value>
         public IList<RowDefinition> RowDefinitions
         {
-            get
-            {
-                return this.rowDefinitions;
-            }
+            get { return this.rowDefinitions; }
         }
 
-        /// <summary>
-        ///     Gets the value of the Column attached property for the specified element.
-        /// </summary>
-        /// <param name = "element">The element for which to read the proerty value.</param>
-        /// <returns>The value of the Column attached property.</returns>
-        public static int GetColumn(UIElement element)
+        #endregion
+
+        #region Fields
+
+        private Cell[] cells;
+        private DefinitionBase[] columns;
+        private DefinitionBase[] rows;
+
+        #endregion
+
+        #region Methods
+
+        public override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            return element.GetValue(ColumnProperty);
-        }
-
-        /// <summary>
-        ///     Gets the value of the Row attached property for the specified element.
-        /// </summary>
-        /// <param name = "element">The element for which to read the proerty value.</param>
-        /// <returns>The value of the Row attached property.</returns>
-        public static int GetRow(UIElement element)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            return element.GetValue(RowProperty);
-        }
-
-        /// <summary>
-        ///     Sets the value of the Column attached property for the specified element.
-        /// </summary>
-        /// <param name = "element">The element for which to write the proerty value.</param>
-        /// <param name = "value">The value of the Column attached property.</param>
-        public static void SetColumn(UIElement element, int value)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            element.SetValue(ColumnProperty, value);
-        }
-
-        /// <summary>
-        ///     Sets the value of the Row attached property for the specified element.
-        /// </summary>
-        /// <param name = "element">The element for which to write the proerty value.</param>
-        /// <param name = "value">The value of the Row attached property.</param>
-        public static void SetRow(UIElement element, int value)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            element.SetValue(RowProperty, value);
+            base.OnRender(spriteBatch);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
             SetFinalLength(this.columns, finalSize.X);
             SetFinalLength(this.rows, finalSize.Y);
+
+            if (this.cells == null)
+                return finalSize;
 
             for (int i = 0; i < this.cells.Length; i++)
             {
@@ -181,9 +106,9 @@ namespace Nine.Graphics.UI.Controls
                     int rowIndex = this.cells[i].RowIndex;
 
                     var finalRect = new BoundingRectangle(
-                        this.columns[columnIndex].FinalOffset, 
-                        this.rows[rowIndex].FinalOffset, 
-                        this.columns[columnIndex].FinalLength, 
+                        this.columns[columnIndex].FinalOffset,
+                        this.rows[rowIndex].FinalOffset,
+                        this.columns[columnIndex].FinalLength,
                         this.rows[rowIndex].FinalLength);
 
                     child.Arrange(finalRect);
@@ -216,176 +141,6 @@ namespace Nine.Graphics.UI.Controls
                 this.columns.Sum(definition => definition.MinLength), this.rows.Sum(definition => definition.MinLength));
         }
 
-        private static void AllocateProportionalSpace(IEnumerable<DefinitionBase> definitions, float availableLength)
-        {
-            float occupiedLength = 0f;
-
-            var stars = new LinkedList<DefinitionBase>();
-
-            foreach (DefinitionBase definition in definitions)
-            {
-                switch (definition.LengthType)
-                {
-                    case GridUnitType.Auto:
-                        occupiedLength += definition.MinLength;
-                        break;
-                    case GridUnitType.Pixel:
-                        occupiedLength += definition.AvailableLength;
-                        break;
-                    case GridUnitType.Star:
-                        float numerator = definition.UserLength.Value;
-                        if (numerator.IsCloseTo(0f))
-                        {
-                            definition.Numerator = 0f;
-                            definition.StarAllocationOrder = 0f;
-                        }
-                        else
-                        {
-                            definition.Numerator = numerator;
-                            definition.StarAllocationOrder = Math.Max(definition.MinLength, definition.UserMaxLength) /
-                                                             numerator;
-                        }
-
-                        stars.AddLast(definition);
-                        break;
-                }
-            }
-
-            if (stars.Count > 0)
-            {
-                DefinitionBase[] sortedStars = stars.OrderBy(o => o.StarAllocationOrder).ToArray();
-
-                float denominator = 0f;
-                foreach (DefinitionBase definition in sortedStars.Reverse())
-                {
-                    denominator += definition.Numerator;
-                    definition.Denominator = denominator;
-                }
-
-                foreach (DefinitionBase definition in sortedStars)
-                {
-                    float length;
-                    if (definition.Numerator.IsCloseTo(0f))
-                    {
-                        length = definition.MinLength;
-                    }
-                    else
-                    {
-                        float remainingLength = (availableLength - occupiedLength).EnsurePositive();
-                        length = remainingLength * (definition.Numerator / definition.Denominator);
-                        length = MathHelper.Clamp(length, definition.MinLength, definition.UserMaxLength);
-                    }
-
-                    occupiedLength += length;
-                    definition.AvailableLength = length;
-                }
-            }
-        }
-
-        private static void SetFinalLength(DefinitionBase[] definitions, float gridFinalLength)
-        {
-            float occupiedLength = 0f;
-
-            var stars = new LinkedList<DefinitionBase>();
-            var nonStarDefinitions = new LinkedList<DefinitionBase>();
-
-            foreach (DefinitionBase definition in definitions)
-            {
-                float minLength;
-
-                switch (definition.UserLength.GridUnitType)
-                {
-                    case GridUnitType.Auto:
-                        minLength = definition.MinLength;
-
-                        definition.FinalLength = MathHelper.Clamp(minLength, definition.MinLength, definition.UserMaxLength);
-
-                        occupiedLength += definition.FinalLength;
-                        nonStarDefinitions.AddFirst(definition);
-                        break;
-                    case GridUnitType.Pixel:
-                        minLength = definition.UserLength.Value;
-
-                        definition.FinalLength = MathHelper.Clamp(minLength, definition.MinLength, definition.UserMaxLength);
-
-                        occupiedLength += definition.FinalLength;
-                        nonStarDefinitions.AddFirst(definition);
-                        break;
-                    case GridUnitType.Star:
-                        float numerator = definition.UserLength.Value;
-                        if (numerator.IsCloseTo(0f))
-                        {
-                            definition.Numerator = 0f;
-                            definition.StarAllocationOrder = 0f;
-                        }
-                        else
-                        {
-                            definition.Numerator = numerator;
-                            definition.StarAllocationOrder = Math.Max(definition.MinLength, definition.UserMaxLength) /
-                                                             numerator;
-                        }
-
-                        stars.AddLast(definition);
-                        break;
-                }
-            }
-
-            if (stars.Count > 0)
-            {
-                DefinitionBase[] sortedStars = stars.OrderBy(o => o.StarAllocationOrder).ToArray();
-
-                float denominator = 0f;
-                foreach (DefinitionBase definitionBase in sortedStars.Reverse())
-                {
-                    denominator += definitionBase.Numerator;
-                    definitionBase.Denominator = denominator;
-                }
-
-                foreach (DefinitionBase definition in sortedStars)
-                {
-                    float length;
-                    if (definition.Numerator.IsCloseTo(0f))
-                    {
-                        length = definition.MinLength;
-                    }
-                    else
-                    {
-                        float remainingLength = (gridFinalLength - occupiedLength).EnsurePositive();
-                        length = remainingLength * (definition.Numerator / definition.Denominator);
-                        length = MathHelper.Clamp(length, definition.MinLength, definition.UserMaxLength);
-                    }
-
-                    occupiedLength += length;
-                    definition.FinalLength = length;
-                }
-            }
-
-            if (occupiedLength.IsGreaterThan(gridFinalLength))
-            {
-                IOrderedEnumerable<DefinitionBase> sortedDefinitions =
-                    stars.Concat(nonStarDefinitions).OrderBy(o => o.FinalLength - o.MinLength);
-
-                float excessLength = occupiedLength - gridFinalLength;
-                int i = 0;
-                foreach (DefinitionBase definitionBase in sortedDefinitions)
-                {
-                    float finalLength = definitionBase.FinalLength - (excessLength / (definitions.Length - i));
-                    finalLength = MathHelper.Clamp(finalLength, definitionBase.MinLength, definitionBase.FinalLength);
-                    excessLength -= definitionBase.FinalLength - finalLength;
-
-                    definitionBase.FinalLength = finalLength;
-                    i++;
-                }
-            }
-
-            definitions[0].FinalOffset = 0f;
-            for (int i = 1; i < definitions.Length; i++)
-            {
-                DefinitionBase previousDefinition = definitions[i - 1];
-                definitions[i].FinalOffset = previousDefinition.FinalOffset + previousDefinition.FinalLength;
-            }
-        }
-
         private void CreateCells()
         {
             this.cells = new Cell[this.Children.Count];
@@ -402,13 +157,13 @@ namespace Nine.Graphics.UI.Controls
                     int columnIndex = Math.Min(GetColumn(child), this.columns.Length - 1);
                     int rowIndex = Math.Min(GetRow(child), this.rows.Length - 1);
                     var cell = new Cell
-                        {
-                            ColumnIndex = columnIndex, 
-                            RowIndex = rowIndex, 
-                            Child = child, 
-                            WidthType = this.columns[columnIndex].LengthType, 
-                            HeightType = this.rows[rowIndex].LengthType, 
-                        };
+                    {
+                        ColumnIndex = columnIndex,
+                        RowIndex = rowIndex,
+                        Child = child,
+                        WidthType = this.columns[columnIndex].LengthType,
+                        HeightType = this.rows[rowIndex].LengthType,
+                    };
 
                     if (cell.HeightType == GridUnitType.Star)
                     {
@@ -577,6 +332,233 @@ namespace Nine.Graphics.UI.Controls
                 }
             }
         }
+
+        #endregion
+
+        #region Static Methods
+
+        /// <summary>
+        ///     Gets the value of the Column attached property for the specified element.
+        /// </summary>
+        /// <param name = "element">The element for which to read the proerty value.</param>
+        /// <returns>The value of the Column attached property.</returns>
+        public static int GetColumn(UIElement element)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            return (int)element.ExternalProperties["Column"];
+        }
+
+        /// <summary>
+        ///     Gets the value of the Row attached property for the specified element.
+        /// </summary>
+        /// <param name = "element">The element for which to read the proerty value.</param>
+        /// <returns>The value of the Row attached property.</returns>
+        public static int GetRow(UIElement element)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            return (int)element.ExternalProperties["Row"];
+        }
+
+        /// <summary>
+        ///     Sets the value of the Column attached property for the specified element.
+        /// </summary>
+        /// <param name = "element">The element for which to write the proerty value.</param>
+        /// <param name = "value">The value of the Column attached property.</param>
+        public static void SetColumn(UIElement element, int value)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            element.ExternalProperties["Column"] = value;
+        }
+
+        /// <summary>
+        ///     Sets the value of the Row attached property for the specified element.
+        /// </summary>
+        /// <param name = "element">The element for which to write the proerty value.</param>
+        /// <param name = "value">The value of the Row attached property.</param>
+        public static void SetRow(UIElement element, int value)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            element.ExternalProperties["Row"] = value;
+        }
+
+        private static void AllocateProportionalSpace(IEnumerable<DefinitionBase> definitions, float availableLength)
+        {
+            float occupiedLength = 0f;
+
+            var stars = new LinkedList<DefinitionBase>();
+
+            foreach (DefinitionBase definition in definitions)
+            {
+                switch (definition.LengthType)
+                {
+                    case GridUnitType.Auto:
+                        occupiedLength += definition.MinLength;
+                        break;
+                    case GridUnitType.Pixel:
+                        occupiedLength += definition.AvailableLength;
+                        break;
+                    case GridUnitType.Star:
+                        float numerator = definition.UserLength.Value;
+                        if (numerator.IsCloseTo(0f))
+                        {
+                            definition.Numerator = 0f;
+                            definition.StarAllocationOrder = 0f;
+                        }
+                        else
+                        {
+                            definition.Numerator = numerator;
+                            definition.StarAllocationOrder = Math.Max(definition.MinLength, definition.UserMaxLength) /
+                                                             numerator;
+                        }
+
+                        stars.AddLast(definition);
+                        break;
+                }
+            }
+
+            if (stars.Count > 0)
+            {
+                DefinitionBase[] sortedStars = stars.OrderBy(o => o.StarAllocationOrder).ToArray();
+
+                float denominator = 0f;
+                foreach (DefinitionBase definition in sortedStars.Reverse())
+                {
+                    denominator += definition.Numerator;
+                    definition.Denominator = denominator;
+                }
+
+                foreach (DefinitionBase definition in sortedStars)
+                {
+                    float length;
+                    if (definition.Numerator.IsCloseTo(0f))
+                    {
+                        length = definition.MinLength;
+                    }
+                    else
+                    {
+                        float remainingLength = (availableLength - occupiedLength).EnsurePositive();
+                        length = remainingLength * (definition.Numerator / definition.Denominator);
+                        length = MathHelper.Clamp(length, definition.MinLength, definition.UserMaxLength);
+                    }
+
+                    occupiedLength += length;
+                    definition.AvailableLength = length;
+                }
+            }
+        }
+
+        private static void SetFinalLength(DefinitionBase[] definitions, float gridFinalLength)
+        {
+            if (definitions == null) // TODO?
+                return;
+
+            float occupiedLength = 0f;
+
+            var stars = new LinkedList<DefinitionBase>();
+            var nonStarDefinitions = new LinkedList<DefinitionBase>();
+
+            foreach (DefinitionBase definition in definitions)
+            {
+                float minLength;
+
+                switch (definition.UserLength.GridUnitType)
+                {
+                    case GridUnitType.Auto:
+                        minLength = definition.MinLength;
+
+                        definition.FinalLength = MathHelper.Clamp(minLength, definition.MinLength, definition.UserMaxLength);
+
+                        occupiedLength += definition.FinalLength;
+                        nonStarDefinitions.AddFirst(definition);
+                        break;
+                    case GridUnitType.Pixel:
+                        minLength = definition.UserLength.Value;
+
+                        definition.FinalLength = MathHelper.Clamp(minLength, definition.MinLength, definition.UserMaxLength);
+
+                        occupiedLength += definition.FinalLength;
+                        nonStarDefinitions.AddFirst(definition);
+                        break;
+                    case GridUnitType.Star:
+                        float numerator = definition.UserLength.Value;
+                        if (numerator.IsCloseTo(0f))
+                        {
+                            definition.Numerator = 0f;
+                            definition.StarAllocationOrder = 0f;
+                        }
+                        else
+                        {
+                            definition.Numerator = numerator;
+                            definition.StarAllocationOrder = Math.Max(definition.MinLength, definition.UserMaxLength) /
+                                                             numerator;
+                        }
+
+                        stars.AddLast(definition);
+                        break;
+                }
+            }
+
+            if (stars.Count > 0)
+            {
+                DefinitionBase[] sortedStars = stars.OrderBy(o => o.StarAllocationOrder).ToArray();
+
+                float denominator = 0f;
+                foreach (DefinitionBase definitionBase in sortedStars.Reverse())
+                {
+                    denominator += definitionBase.Numerator;
+                    definitionBase.Denominator = denominator;
+                }
+
+                foreach (DefinitionBase definition in sortedStars)
+                {
+                    float length;
+                    if (definition.Numerator.IsCloseTo(0f))
+                    {
+                        length = definition.MinLength;
+                    }
+                    else
+                    {
+                        float remainingLength = (gridFinalLength - occupiedLength).EnsurePositive();
+                        length = remainingLength * (definition.Numerator / definition.Denominator);
+                        length = MathHelper.Clamp(length, definition.MinLength, definition.UserMaxLength);
+                    }
+
+                    occupiedLength += length;
+                    definition.FinalLength = length;
+                }
+            }
+
+            if (occupiedLength.IsGreaterThan(gridFinalLength))
+            {
+                IOrderedEnumerable<DefinitionBase> sortedDefinitions =
+                    stars.Concat(nonStarDefinitions).OrderBy(o => o.FinalLength - o.MinLength);
+
+                float excessLength = occupiedLength - gridFinalLength;
+                int i = 0;
+                foreach (DefinitionBase definitionBase in sortedDefinitions)
+                {
+                    float finalLength = definitionBase.FinalLength - (excessLength / (definitions.Length - i));
+                    finalLength = MathHelper.Clamp(finalLength, definitionBase.MinLength, definitionBase.FinalLength);
+                    excessLength -= definitionBase.FinalLength - finalLength;
+
+                    definitionBase.FinalLength = finalLength;
+                    i++;
+                }
+            }
+
+            definitions[0].FinalOffset = 0f;
+            for (int i = 1; i < definitions.Length; i++)
+            {
+                DefinitionBase previousDefinition = definitions[i - 1];
+                definitions[i].FinalOffset = previousDefinition.FinalOffset + previousDefinition.FinalLength;
+            }
+        }
+
+        #endregion
 
         private struct Cell
         {

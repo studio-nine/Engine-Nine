@@ -27,7 +27,7 @@ namespace Nine.Graphics.UI.Media
 {
     using Microsoft.Xna.Framework;
 
-    public abstract class ImageSource : ReactiveObject
+    public abstract class ImageSource
     {
         public abstract float Y { get; }
 

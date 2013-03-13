@@ -30,51 +30,13 @@ namespace Nine.Graphics.UI.Controls
 
     public class Canvas : Panel
     {
-        public static readonly ReactiveProperty<float> LeftProperty = ReactiveProperty<float>.Register(
-            "Left", typeof(Canvas), float.NaN, ReactivePropertyChangedCallbacks.InvalidateArrange);
+        //public static readonly ReactiveProperty<float> LeftProperty = ReactiveProperty<float>.Register(
+        //    "Left", typeof(Canvas), float.NaN, ReactivePropertyChangedCallbacks.InvalidateArrange);
 
-        public static readonly ReactiveProperty<float> TopProperty = ReactiveProperty<float>.Register(
-            "Top", typeof(Canvas), float.NaN, ReactivePropertyChangedCallbacks.InvalidateArrange);
+        //public static readonly ReactiveProperty<float> TopProperty = ReactiveProperty<float>.Register(
+        //    "Top", typeof(Canvas), float.NaN, ReactivePropertyChangedCallbacks.InvalidateArrange);
 
-        public static float GetLeft(UIElement element)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            return element.GetValue(LeftProperty);
-        }
-
-        public static float GetTop(UIElement element)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            return element.GetValue(TopProperty);
-        }
-
-        public static void SetLeft(UIElement element, float value)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            element.SetValue(LeftProperty, value);
-        }
-
-        public static void SetTop(UIElement element, float value)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            element.SetValue(TopProperty, value);
-        }
+        #region Methods
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
@@ -125,5 +87,59 @@ namespace Nine.Graphics.UI.Controls
 
             return new Vector2();
         }
+
+        #endregion
+
+        #region Static Methods
+
+        public static float GetLeft(UIElement element)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+
+            var Property = element.GetType().GetProperty("Left");
+            if (Property != null)
+                return (int)Property.GetValue(element, null);
+            else
+                throw new ArgumentNullException("element.Left");
+        }
+
+        public static float GetTop(UIElement element)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+
+            var Property = element.GetType().GetProperty("Top");
+            if (Property != null)
+                return (int)Property.GetValue(element, null);
+            else
+                throw new ArgumentNullException("element.Top");
+        }
+
+        public static void SetLeft(UIElement element, float value)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+
+            var Property = element.GetType().GetProperty("Left");
+            if (Property != null)
+                Property.SetValue(element, value, null);
+            else
+                throw new ArgumentNullException("element.Left");
+        }
+
+        public static void SetTop(UIElement element, float value)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+
+            var Property = element.GetType().GetProperty("Top");
+            if (Property != null)
+                Property.SetValue(element, value, null);
+            else
+                throw new ArgumentNullException("element.Top");
+        }
+
+        #endregion
     }
 }

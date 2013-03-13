@@ -34,12 +34,6 @@ namespace Nine.Graphics.UI.Media
     public class SolidColorBrush : Brush, IConvertible
     {
         /// <summary>
-        ///     <see cref = "ReactiveProperty{T}">ReactiveProperty</see> representing the <see cref = "Color">Color</see> property.
-        /// </summary>
-        public static readonly ReactiveProperty<Color> ColorProperty = ReactiveProperty<Color>.Register(
-            "Color", typeof(SolidColorBrush), Color.White);
-
-        /// <summary>
         ///     Initializes a new instance of the <see cref = "SolidColorBrush">SolidColorBrush</see> class.
         /// </summary>
         /// <param name = "color">The <see cref = "Color">Color</see> with which to create this <see cref = "SolidColorBrush">SolidColorBrush</see>.</param>
@@ -51,11 +45,7 @@ namespace Nine.Graphics.UI.Media
         /// <summary>
         ///     The Color of the SolidColorBrush.
         /// </summary>
-        public Color Color
-        {
-            get { return this.GetValue(ColorProperty); }
-            set { this.SetValue(ColorProperty, value); }
-        }
+        public Color Color { get; set; }
 
         public override string ToString()
         {

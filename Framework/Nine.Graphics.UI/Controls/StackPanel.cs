@@ -30,18 +30,7 @@ namespace Nine.Graphics.UI.Controls
 
     public class StackPanel : Panel
     {
-        public static readonly ReactiveProperty<Orientation> OrientationProperty =
-            ReactiveProperty<Orientation>.Register(
-                "Orientation", 
-                typeof(StackPanel), 
-                Orientation.Vertical, 
-                ReactivePropertyChangedCallbacks.InvalidateMeasure);
-
-        public Orientation Orientation
-        {
-            get { return this.GetValue(OrientationProperty); }
-            set { this.SetValue(OrientationProperty, value); }
-        }
+        public Orientation Orientation { get; set; }
 
         protected override Vector2 ArrangeOverride(Vector2 arrangeSize)
         {

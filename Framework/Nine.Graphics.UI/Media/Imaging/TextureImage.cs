@@ -26,8 +26,6 @@
 namespace Nine.Graphics.UI.Media.Imaging
 {
     using System;
-
-    using Nine.Graphics.UI.Graphics;
     using Microsoft.Xna.Framework.Graphics;
 
     public class TextureImage : BitmapSource
@@ -37,9 +35,7 @@ namespace Nine.Graphics.UI.Media.Imaging
         public TextureImage(Texture2D texture)
         {
             if (texture == null)
-            {
                 throw new ArgumentNullException("texture");
-            }
 
             this.texture = texture;
             this.PixelHeight = this.Texture.Width;
@@ -48,10 +44,7 @@ namespace Nine.Graphics.UI.Media.Imaging
 
         public Texture2D Texture
         {
-            get
-            {
-                return this.texture;
-            }
+            get { return this.texture; }
         }
     }
 }

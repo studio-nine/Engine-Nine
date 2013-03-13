@@ -27,57 +27,16 @@ namespace Nine.Graphics.UI.Controls
 {
     public class RowDefinition : DefinitionBase
     {
-        public static readonly ReactiveProperty<GridLength> HeightProperty =
-            ReactiveProperty<GridLength>.Register("Y", typeof(RowDefinition), new GridLength(1, GridUnitType.Star));
-
-        public static readonly ReactiveProperty<float> MaxHeightProperty =
-            ReactiveProperty<float>.Register("MaxHeight", typeof(RowDefinition), float.PositiveInfinity);
-
-        public static readonly ReactiveProperty<float> MinHeightProperty =
-            ReactiveProperty<float>.Register("MinHeight", typeof(RowDefinition), 0f);
-
         public RowDefinition()
             : base(DefinitionType.Row)
         {
+            Height = new GridLength(1, GridUnitType.Star);
+            MaxHeight = float.PositiveInfinity;
+            MinHeight = 0;
         }
 
-        public GridLength Y
-        {
-            get
-            {
-                return this.GetValue(HeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(HeightProperty, value);
-            }
-        }
-
-        public float MaxHeight
-        {
-            get
-            {
-                return this.GetValue(MaxHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(MaxHeightProperty, value);
-            }
-        }
-
-        public float MinHeight
-        {
-            get
-            {
-                return this.GetValue(MinHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(MinHeightProperty, value);
-            }
-        }
+        public GridLength Height { get; set; }
+        public float MaxHeight { get; set; }
+        public float MinHeight { get; set; }
     }
 }

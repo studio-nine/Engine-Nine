@@ -262,5 +262,15 @@ namespace Nine
             CreateMerged(ref original, ref additional, out result);
             return result;
         }
+
+        /// <summary>
+        /// Convert to Rectangle
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <returns></returns>
+        public static implicit operator Rectangle(BoundingRectangle rect)
+        {
+            return new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
+        }
     }
 }

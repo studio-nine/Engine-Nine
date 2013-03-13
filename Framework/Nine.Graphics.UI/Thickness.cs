@@ -33,6 +33,8 @@ namespace Nine.Graphics.UI
     [DebuggerDisplay("{Left}, {Top}, {Right}, {Bottom}")]
     public struct Thickness : IEquatable<Thickness>
     {
+        public static readonly Thickness Empty = new Thickness();
+
         public float Left;
         public float Right;
         public float Top;

@@ -33,15 +33,7 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class ContentControl : Control
     {
-        public static readonly ReactiveProperty<UIElement> ContentProperty =
-            ReactiveProperty<UIElement>.Register("Content", typeof(ContentControl), null, ContentPropertyChangedCallback);
-
-        public UIElement Content
-        {
-            get { return this.GetValue(ContentProperty); }
-            set { this.SetValue(ContentProperty, value); }
-        }
-
+        public UIElement Content { get; set; }
 
         public override IList<UIElement> GetChildren()
         {
@@ -82,6 +74,7 @@ namespace Nine.Graphics.UI.Controls
         {
         }
 
+        /*
         private static void ContentPropertyChangedCallback(
             ReactiveObject source, ReactivePropertyChangeEventArgs<UIElement> change)
         {
@@ -102,5 +95,6 @@ namespace Nine.Graphics.UI.Controls
 
             contentControl.OnContentChanged(oldContent, newContent);
         }
+         */
     }
 }

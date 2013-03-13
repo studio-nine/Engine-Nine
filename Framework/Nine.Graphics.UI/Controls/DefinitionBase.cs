@@ -27,7 +27,7 @@ namespace Nine.Graphics.UI.Controls
 {
     using System;
 
-    public abstract class DefinitionBase : ReactiveObject
+    public abstract class DefinitionBase
     {
         private readonly DefinitionType definitionType;
 
@@ -63,8 +63,7 @@ namespace Nine.Graphics.UI.Controls
             get
             {
                 return this.definitionType == DefinitionType.Column
-                           ? this.GetValue(ColumnDefinition.WidthProperty)
-                           : this.GetValue(RowDefinition.HeightProperty);
+                           ? GetValue<GridLength>("Width") : GetValue<GridLength>("Height");
             }
         }
 
@@ -73,8 +72,7 @@ namespace Nine.Graphics.UI.Controls
             get
             {
                 return this.definitionType == DefinitionType.Column
-                           ? this.GetValue(ColumnDefinition.MaxWidthProperty)
-                           : this.GetValue(RowDefinition.MaxHeightProperty);
+                           ? GetValue<float>("MaxWidth") : GetValue<float>("MaxHeight");
             }
         }
 
@@ -83,14 +81,21 @@ namespace Nine.Graphics.UI.Controls
             get
             {
                 return this.definitionType == DefinitionType.Column
-                           ? this.GetValue(ColumnDefinition.MinWidthProperty)
-                           : this.GetValue(RowDefinition.MinHeightProperty);
+                           ? GetValue<float>("MinWidth") : GetValue<float>("MinHeight");
             }
         }
 
         internal void UpdateMinLength(float minLength)
         {
             this.MinLength = Math.Max(this.MinLength, minLength);
+        }
+
+        private T GetValue<T>(string Name) where T : struct
+        {
+            var Property = this.GetType().GetProperty(Name);
+            if (Property == null)
+                throw new ArgumentNullException("name");
+            return (T)Property.GetValue(this, null);
         }
     }
 }
