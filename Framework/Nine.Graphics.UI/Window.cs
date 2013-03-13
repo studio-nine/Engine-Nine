@@ -113,6 +113,13 @@ namespace Nine.Graphics.UI
             }
         }
 
+        public override System.Collections.Generic.IList<UIElement> GetChildren()
+        {
+            if (Content != null)
+                return new UIElement[] { Content };
+            return null;
+        }
+
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
             Content.Arrange(new BoundingRectangle(finalSize.X, finalSize.Y));

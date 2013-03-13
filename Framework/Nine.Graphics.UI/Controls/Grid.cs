@@ -84,11 +84,6 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        public override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
-        {
-            base.OnRender(spriteBatch);
-        }
-
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
             SetFinalLength(this.columns, finalSize.X);
@@ -138,7 +133,8 @@ namespace Nine.Graphics.UI.Controls
             this.MeasureCells(availableSize);
 
             return new Vector2(
-                this.columns.Sum(definition => definition.MinLength), this.rows.Sum(definition => definition.MinLength));
+                this.columns.Sum(definition => definition.MinLength), 
+                this.rows.Sum(definition => definition.MinLength));
         }
 
         private void CreateCells()

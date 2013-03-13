@@ -29,34 +29,9 @@ namespace Nine.Graphics.UI.Controls
 
     public abstract class DefinitionBase
     {
-        private readonly DefinitionType definitionType;
+        protected enum DefinitionType { Column, Row }
 
-        protected DefinitionBase(DefinitionType definitionType)
-        {
-            this.definitionType = definitionType;
-        }
-
-        protected enum DefinitionType
-        {
-            Column, 
-            Row
-        }
-
-        internal float AvailableLength { get; set; }
-
-        internal float Denominator { get; set; }
-
-        internal float FinalLength { get; set; }
-
-        internal float FinalOffset { get; set; }
-
-        internal GridUnitType LengthType { get; set; }
-
-        internal float MinLength { get; set; }
-
-        internal float Numerator { get; set; }
-
-        internal float StarAllocationOrder { get; set; }
+        #region Properties / Fields
 
         internal GridLength UserLength
         {
@@ -66,7 +41,6 @@ namespace Nine.Graphics.UI.Controls
                            ? GetValue<GridLength>("Width") : GetValue<GridLength>("Height");
             }
         }
-
         internal float UserMaxLength
         {
             get
@@ -75,7 +49,6 @@ namespace Nine.Graphics.UI.Controls
                            ? GetValue<float>("MaxWidth") : GetValue<float>("MaxHeight");
             }
         }
-
         internal float UserMinLength
         {
             get
@@ -84,6 +57,26 @@ namespace Nine.Graphics.UI.Controls
                            ? GetValue<float>("MinWidth") : GetValue<float>("MinHeight");
             }
         }
+
+        private readonly DefinitionType definitionType;
+
+        internal float AvailableLength { get; set; }
+        internal float Denominator { get; set; }
+        internal float FinalLength { get; set; }
+        internal float FinalOffset { get; set; }
+        internal GridUnitType LengthType { get; set; }
+        internal float MinLength { get; set; }
+        internal float Numerator { get; set; }
+        internal float StarAllocationOrder { get; set; }
+
+        #endregion
+
+        protected DefinitionBase(DefinitionType definitionType)
+        {
+            this.definitionType = definitionType;
+        }
+
+        #region Methods
 
         internal void UpdateMinLength(float minLength)
         {
@@ -97,5 +90,7 @@ namespace Nine.Graphics.UI.Controls
                 throw new ArgumentNullException("name");
             return (T)Property.GetValue(this, null);
         }
+
+        #endregion
     }
 }

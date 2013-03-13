@@ -25,8 +25,15 @@
 
 namespace Nine.Graphics.UI.Controls
 {
+    /// <summary>
+    ///     Defines Row properties that apply to <see cref="Nine.Graphics.UI.Controls.Grid"/>.
+    /// </summary>
     public class RowDefinition : DefinitionBase
     {
+        public GridLength Height { get; set; }
+        public float MaxHeight { get; set; }
+        public float MinHeight { get; set; }
+
         public RowDefinition()
             : base(DefinitionType.Row)
         {
@@ -34,9 +41,5 @@ namespace Nine.Graphics.UI.Controls
             MaxHeight = float.PositiveInfinity;
             MinHeight = 0;
         }
-
-        public GridLength Height { get; set; }
-        public float MaxHeight { get; set; }
-        public float MinHeight { get; set; }
     }
 }

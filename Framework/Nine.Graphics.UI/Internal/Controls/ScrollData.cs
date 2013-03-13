@@ -30,13 +30,9 @@ namespace Nine.Graphics.UI.Internal.Controls
     internal struct ScrollData
     {
         public bool CanHorizontallyScroll;
-
         public bool CanVerticallyScroll;
-
         public Vector2 Extent;
-
         public Vector2 Offset;
-
         public Vector2 Viewport;
     }
 }

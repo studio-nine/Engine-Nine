@@ -32,28 +32,51 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    /// <summary>
+    ///     Control to display a flow of Content
+    /// </summary>
     public class TextBlock : UIElement
     {
-        private static readonly Regex WhiteSpaceRegEx = new Regex(@"\s+", RegexOptions.Compiled);
+        #region Properties
 
+        #endregion
+
+        #region Fields
+
+        private static readonly Regex WhiteSpaceRegEx = new Regex(@"\s+", RegexOptions.Compiled);
         private readonly SpriteFont spriteFont;
-        private string formattedText;
-        
-        // TODO?: Brush
+
         public SolidColorBrush Background { get; set; }
         public SolidColorBrush Foreground { get; set; }
 
         public Thickness Padding { get; set; }
         public string Text { get; set; }
         public TextWrapping Wrapping { get; set; }
+        private string formattedText;
+        
+        #endregion
 
         public TextBlock(SpriteFont spriteFont)
         {
-            if (spriteFont == null) 
+            if (spriteFont == null)
                 throw new ArgumentNullException("spriteFont");
 
             this.spriteFont = spriteFont;
             this.Text = "";
+        }
+
+        #region Methods
+
+        public override void OnRender(SpriteBatch spriteBatch)
+        {
+            if (this.Background != null)
+            {
+                spriteBatch.Draw(
+                    new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)this.ActualWidth, (int)this.ActualHeight), Background.Color);
+            }
+
+            var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
+            spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top), TextColor.Color);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
@@ -75,18 +98,6 @@ namespace Nine.Graphics.UI.Controls
             return new Vector2(
                 measureString.X + this.Padding.Left + this.Padding.Right, 
                 measureString.Y + this.Padding.Top + this.Padding.Bottom);
-        }
-
-        public override void OnRender(SpriteBatch spriteBatch)
-        {
-            if (this.Background != null)
-            {
-                spriteBatch.Draw(
-                    new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)this.ActualWidth, (int)this.ActualHeight), Background.Color);
-            }
-
-            var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
-            spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top), TextColor.Color);
         }
 
         private static string WrapText(SpriteFont font, string text, float maxLineWidth)
@@ -116,5 +127,7 @@ namespace Nine.Graphics.UI.Controls
 
             return stringBuilder.ToString();
         }
+
+        #endregion
     }
 }

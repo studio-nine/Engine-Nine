@@ -30,11 +30,22 @@ namespace Nine.Graphics.UI.Controls
     using Nine.Graphics.UI.Internal.Controls;
     using Nine.Graphics.UI.Media;
 
+    /// <summary>
+    ///     Represents a control that displays an image.
+    /// </summary>
     public class Image : UIElement
     {
         public Texture2D Source { get; set; }
         public Stretch Stretch { get; set; }
         public StretchDirection StretchDirection { get; set; }
+
+        public override void OnRender(SpriteBatch spriteBatch)
+        {
+            if (this.Source != null)
+            {
+                spriteBatch.Draw(this.Source, new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)RenderSize.X, (int)RenderSize.Y), Color.White);
+            }
+        }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
@@ -44,14 +55,6 @@ namespace Nine.Graphics.UI.Controls
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
             return this.GetScaledImageSize(availableSize);
-        }
-
-        public override void OnRender(SpriteBatch spriteBatch)
-        {
-            if (this.Source != null)
-            {
-                spriteBatch.Draw(this.Source, new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)RenderSize.X, (int)RenderSize.Y), Color.White);
-            }
         }
 
         private Vector2 GetScaledImageSize(Vector2 givenSize)

@@ -36,62 +36,59 @@ namespace Nine.Graphics.UI.Controls
     {
         private readonly IList<BoundingRectangle> borders = new List<BoundingRectangle>();
 
-        // TODO?: SolidColorBrush to Brush
         public SolidColorBrush Background { get; set; }
         public SolidColorBrush BorderBrush { get; set; }
+
         public Thickness BorderThickness { get; set; }
-        public UIElement Child { get; set; }
         public Thickness Padding { get; set; }
         
-        // TODO: Only Can/need have one Child
-        public override IList<UIElement> GetChildren()
-        {
-            var child = Child;
-            if (child != null)
-            {
-                children[0] = child;
-                return children;
-            }
-            return null;
-        }
-        private UIElement[] children = new UIElement[1];
+        public UIElement Child { get; set; }
 
         #region Methods
 
         public override void OnRender(SpriteBatch spriteBatch)
         {
-            // TODO: Opt
             if (BorderThickness != Thickness.Empty && BorderBrush != null)
             {
                 GenerateBorders();
-
                 foreach (BoundingRectangle border in this.borders)
                 {
-                    spriteBatch.Draw((Rectangle)border, BorderBrush.Color);
+                    var Rect = border;
+                    Rect.X += VisualOffset.X;
+                    Rect.Y += VisualOffset.Y;
+                    spriteBatch.Draw(Rect, BorderBrush.Color);
                 }
             }
 
             if (this.Background != null)
             {
                 spriteBatch.Draw(
-                    (Rectangle)new BoundingRectangle(VisualOffset.X, VisualOffset.Y, this.ActualWidth, this.ActualHeight)
+                    new BoundingRectangle(VisualOffset.X, VisualOffset.Y, this.ActualWidth, this.ActualHeight)
                         .Deflate(this.BorderThickness), Background.Color);
             }
+
+            if (Child != null)
+                Child.OnRender(spriteBatch);
+        }
+
+        public override IList<UIElement> GetChildren()
+        {
+            if (Child != null)
+                return new UIElement[] { Child };
+            return null;
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
             UIElement child = this.Child;
-
             if (child != null)
             {
+                // TODO!: VisualOffset
                 var finalRect = new BoundingRectangle(finalSize.X, finalSize.Y);
-
                 finalRect = finalRect.Deflate(this.BorderThickness);
                 finalRect = finalRect.Deflate(this.Padding);
                 child.Arrange(finalRect);
             }
-
             return finalSize;
         }
 
@@ -103,7 +100,6 @@ namespace Nine.Graphics.UI.Controls
             if (child != null)
             {
                 child.Measure(availableSize.Deflate(borderThicknessAndPadding));
-
                 return child.DesiredSize.Inflate(borderThicknessAndPadding);
             }
 
@@ -151,27 +147,5 @@ namespace Nine.Graphics.UI.Controls
         }
 
         #endregion
-
-        /*
-        private static void ChildPropertyChangedCallback(
-            ReactiveObject source, ReactivePropertyChangeEventArgs<UIElement> change)
-        {
-            var border = (Border)source;
-            border.InvalidateMeasure();
-
-            UIElement oldChild = change.OldValue;
-            if (oldChild != null)
-            {
-                oldChild.Parent = null;
-            }
-
-            UIElement newChild = change.NewValue;
-            if (newChild != null)
-            {
-                newChild.Parent = border;
-            }
-        }
-        */
-
     }
 }

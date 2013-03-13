@@ -36,16 +36,8 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class ItemsControl : Control
     {
-        private IDisposable changingItems;
+        private IDisposable changingItems; // Why u mad Visual Studio?!
         private bool isItemsSourceNew;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref = "ItemsControl">ItemsControl</see> class.
-        /// </summary>
-        public ItemsControl()
-        {
-            this.ItemsPanel = new StackPanel();
-        }
 
         /// <summary>
         ///     Gets or sets a function that is used to generate the <see cref = "UIElement">UIElement</see> for each item in the <see cref = "ItemsSource">ItemsSource</see>.
@@ -63,17 +55,24 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         public IEnumerable ItemsSource { get; set; }
 
+        #region Constructor
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref = "ItemsControl">ItemsControl</see> class.
+        /// </summary>
+        public ItemsControl()
+        {
+            this.ItemsPanel = new StackPanel();
+        }
+
+        #endregion
+
+        #region Methods
+
         public override IList<UIElement> GetChildren()
         {
-            var child = ItemsPanel;
-            if (child != null)
-            {
-                children[0] = child;
-                return children;
-            }
-            return null;
+            return new UIElement[] { ItemsPanel };
         }
-        private UIElement[] children = new UIElement[1];
 
         public override void OnApplyTemplate()
         {
@@ -102,102 +101,6 @@ namespace Nine.Graphics.UI.Controls
             child.Measure(availableSize);
             return child.DesiredSize;
         }
-/*
-        private static void ItemsPanelChanged(ReactiveObject source, ReactivePropertyChangeEventArgs<Panel> change)
-        {
-            var itemsControl = (ItemsControl)source;
-            Panel newPanel = change.NewValue;
-            Panel oldPanel = change.OldValue;
-
-            if (oldPanel != null)
-            {
-                oldPanel.Parent = null;
-            }
-
-            if (newPanel != null)
-            {
-                if (!(newPanel.Children is ITemplatedList<UIElement>))
-                {
-                    throw new NotSupportedException(
-                        "ItemsControl requires a panel whose Children collection implements ITemplatedList<UIElement>");
-                }
-
-                newPanel.Parent = itemsControl;
-            }
-
-            itemsControl.InvalidateMeasure();
-        }
-
-        private static void ItemsSourceChanged(
-            ReactiveObject source, ReactivePropertyChangeEventArgs<IEnumerable> change)
-        {
-            var itemsControl = (ItemsControl)source;
-            if (change.OldValue is INotifyCollectionChanged)
-            {
-                itemsControl.changingItems.Dispose();
-            }
-
-            var observableCollection = change.NewValue as INotifyCollectionChanged;
-            if (observableCollection != null)
-            {
-
-            }
-
-            itemsControl.isItemsSourceNew = true;
-            itemsControl.InvalidateMeasure();
-        }
-
-        
-        private void OnNextItemChange(EventPattern<NotifyCollectionChangedEventArgs> eventData)
-        {
-            var children = (ITemplatedList<UIElement>)this.ItemsPanel.Children;
-            switch (eventData.EventArgs.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (object newItem in eventData.EventArgs.NewItems)
-                    {
-                        children.Add(newItem, this.ItemTemplate);
-                    }
-
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    {
-                        int startingIndex = eventData.EventArgs.OldStartingIndex;
-                        for (int index = startingIndex;
-                             index < startingIndex + eventData.EventArgs.OldItems.Count;
-                             index++)
-                        {
-                            children.RemoveAt(index);
-                        }
-
-                        break;
-                    }
-
-                case NotifyCollectionChangedAction.Replace:
-                    {
-                        int startingIndex = eventData.EventArgs.NewStartingIndex;
-
-                        foreach (object newItem in eventData.EventArgs.NewItems)
-                        {
-                            this.ItemsPanel.Children.RemoveAt(startingIndex);
-                            children.Insert(startingIndex, newItem, this.ItemTemplate);
-                            startingIndex++;
-                        }
-
-                        break;
-                    }
-
-#if !WINDOWS_PHONE
-                case NotifyCollectionChangedAction.Move:
-                    children.Move(eventData.EventArgs.OldStartingIndex, eventData.EventArgs.NewStartingIndex);
-
-                    break;
-#endif
-                case NotifyCollectionChangedAction.Reset:
-                    this.PopulatePanelFromItemsSource();
-                    break;
-            }
-        }*/
 
         private void PopulatePanelFromItemsSource()
         {
@@ -212,5 +115,7 @@ namespace Nine.Graphics.UI.Controls
                 }
             }
         }
+
+        #endregion
     }
 }

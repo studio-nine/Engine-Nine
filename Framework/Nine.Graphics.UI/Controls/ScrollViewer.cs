@@ -31,9 +31,7 @@ namespace Nine.Graphics.UI.Controls
 
     public class ScrollViewer : ContentControl, IInputElement
     {
-        private bool isInsertingScrollContentPresenter;
-
-        private IScrollInfo scrollInfo;
+        #region Properties
 
         public bool CanHorizontallyScroll
         {
@@ -82,6 +80,15 @@ namespace Nine.Graphics.UI.Controls
                 return this.scrollInfo != null ? this.scrollInfo.Viewport : new Vector2();
             }
         }
+
+        #endregion
+
+        #region Fields
+
+        private bool isInsertingScrollContentPresenter;
+        private IScrollInfo scrollInfo;
+
+        #endregion 
 
         protected override void OnContentChanged(UIElement oldContent, UIElement newContent)
         {

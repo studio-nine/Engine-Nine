@@ -25,8 +25,15 @@
 
 namespace Nine.Graphics.UI.Controls
 {
+    /// <summary>
+    ///     Defines Column properties that apply to <see cref="Nine.Graphics.UI.Controls.Grid"/>.
+    /// </summary>
     public class ColumnDefinition : DefinitionBase
     {
+        public GridLength Width { get; set; }
+        public float MaxWidth { get; set; }
+        public float MinWidth { get; set; }
+
         public ColumnDefinition()
             : base(DefinitionType.Column)
         {
@@ -34,9 +41,5 @@ namespace Nine.Graphics.UI.Controls
             MaxWidth = float.PositiveInfinity;
             MinWidth = 0;
         }
-
-        public GridLength Width { get; set; }
-        public float MaxWidth { get; set; }
-        public float MinWidth { get; set; }
     }
 }

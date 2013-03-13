@@ -28,6 +28,9 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework;
     using System;
 
+    /// <summary>
+    ///     Arranges child elements into a single line that can be oriented horizontally or vertically.
+    /// </summary>
     public class StackPanel : Panel
     {
         public Orientation Orientation { get; set; }

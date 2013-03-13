@@ -38,24 +38,48 @@ namespace Nine.Graphics.UI
     {
         #region Properties
 
-        internal Dictionary<string, object> ExternalProperties = new Dictionary<string, object>();
-
-        internal bool isArrangeValid;
-        internal bool isMeasureValid;
-
-        private Vector2 previousAvailableSize;
-        private BoundingRectangle previousFinalRect;
-
-        private bool isClippingRequired;
-        private Vector2 unclippedSize;
-        private Vector2 visualOffset;
-
         public bool Visible
         {
             get { return visible; }
             set { visible = value; }
         }
         private bool visible = true;
+
+        public BoundingRectangle? Clip
+        {
+            get { return this.clip; }
+        }
+        private BoundingRectangle? clip = null;
+
+        public BoundingRectangle RenderTransform
+        {
+            get { return new BoundingRectangle(VisualOffset.X, VisualOffset.Y, ActualWidth, ActualHeight); }
+        }
+
+        public Vector2 VisualOffset
+        {
+            get { return this.visualOffset; }
+        }
+
+        IContainer IComponent.Parent
+        {
+            get { return Parent; }
+            set { Parent = value as UIElement; }
+        }
+
+        System.Collections.IList IContainer.Children
+        {
+            get { return GetChildren() as System.Collections.IList; }
+        }
+
+        #endregion 
+
+        #region Fields
+
+        internal Dictionary<string, object> ExternalProperties = new Dictionary<string, object>();
+
+        internal bool isArrangeValid;
+        internal bool isMeasureValid;
 
         public float Width = float.NaN;
         public float Height = float.NaN;
@@ -75,44 +99,27 @@ namespace Nine.Graphics.UI
         public float ActualWidth { get { return RenderSize.X; } }
         public float ActualHeight { get { return RenderSize.Y; } }
 
-        public BoundingRectangle? Clip
-        {
-            get { return this.clip; }
-        }
-        private BoundingRectangle? clip = null;
-
         public object DataContext { get; set; }
-
         public bool IsMouseCaptured { get; set; }
-
         public Thickness Margin { get; set; }
 
-        public BoundingRectangle RenderTransform
-        {
-            get { return new BoundingRectangle(VisualOffset.X, VisualOffset.Y, ActualWidth, ActualHeight); }
-        }
+        private Vector2 previousAvailableSize;
+        private BoundingRectangle previousFinalRect;
 
-        public Vector2 VisualOffset
-        {
-            get { return this.visualOffset; }
-        }
+        private bool isClippingRequired;
+        private Vector2 unclippedSize;
+        private Vector2 visualOffset;
 
         public UIElement Parent { get; set; }
-
-        IContainer IComponent.Parent 
-        {
-            get { return Parent; }
-            set { Parent = value as UIElement; }
-        }
-
-        System.Collections.IList IContainer.Children 
-        {
-            get { return GetChildren() as System.Collections.IList; } 
-        }
 
         #endregion
 
         #region Methods
+
+        internal void NotifyGesture(Gesture gesture)
+        {
+            OnNextGesture(gesture);
+        }
 
         public bool CaptureMouse()
         {
@@ -134,14 +141,163 @@ namespace Nine.Graphics.UI
             }
         }
 
-        public virtual void OnApplyTemplate()
-        {
+        public virtual void OnApplyTemplate() { }
 
-        }
-            
-        public virtual IList<UIElement> GetChildren()
+        public virtual IList<UIElement> GetChildren() { return null; }
+
+        public bool HitTest(Vector2 point)
         {
-            return null;
+            Vector2 absoluteOffset = Vector2.Zero;
+            UIElement currentElement = this;
+
+            while (currentElement != null)
+            {
+                absoluteOffset += currentElement.VisualOffset;
+                currentElement = currentElement.Parent;
+            }
+
+            var hitTestRect = new BoundingRectangle(absoluteOffset.X, absoluteOffset.Y, this.ActualWidth, this.ActualHeight);            
+            return hitTestRect.Contains(point.X, point.Y) == ContainmentType.Contains;
+        }
+
+        public virtual void OnRender(SpriteBatch spriteBatch) { }
+
+        public bool TryGetRootElement(out Window rootElement)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual BoundingRectangle? GetClippingRect(Vector2 finalSize)
+        {
+            if (!this.isClippingRequired)
+                return null;
+
+            var max = new MinMax(this);
+            Vector2 renderSize = this.RenderSize;
+
+            float maxWidth = float.IsPositiveInfinity(max.MaxWidth) ? renderSize.X : max.MaxWidth;
+            float maxHeight = float.IsPositiveInfinity(max.MaxHeight) ? renderSize.Y : max.MaxHeight;
+
+            bool isClippingRequiredDueToMaxSize = maxWidth.IsLessThan(renderSize.X) ||
+                                                  maxHeight.IsLessThan(renderSize.Y);
+
+            renderSize.X = Math.Min(renderSize.X, max.MaxWidth);
+            renderSize.Y = Math.Min(renderSize.Y, max.MaxHeight);
+
+            Thickness margin = this.Margin;
+            float horizontalMargins = margin.Left + margin.Right;
+            float verticalMargins = margin.Top + margin.Bottom;
+
+            var clientSize = new Vector2(
+                (finalSize.X - horizontalMargins).EnsurePositive(), 
+                (finalSize.Y - verticalMargins).EnsurePositive());
+
+            bool isClippingRequiredDueToClientSize = clientSize.X.IsLessThan(renderSize.X) ||
+                                                     clientSize.Y.IsLessThan(renderSize.Y);
+
+            if (isClippingRequiredDueToMaxSize && !isClippingRequiredDueToClientSize)
+            {
+                return new BoundingRectangle(0f, 0f, maxWidth, maxHeight);
+            }
+
+            if (!isClippingRequiredDueToClientSize)
+            {
+                return BoundingRectangle.Empty;
+            }
+
+            Vector2 offset = this.ComputeAlignmentOffset(clientSize, renderSize);
+
+            var clipRect = new BoundingRectangle(-offset.X, -offset.Y, clientSize.X, clientSize.Y);
+
+            if (isClippingRequiredDueToMaxSize)
+            {
+                //clipRect.Contains(new BoundingRectangle(0f, 0f, maxWidth, maxHeight));
+            }
+            
+            return clipRect;
+        }
+
+        protected virtual void OnNextGesture(Gesture gesture) { }
+
+        private Vector2 ComputeAlignmentOffset(Vector2 clientSize, Vector2 inkSize)
+        {
+            var vector = new Vector2();
+            HorizontalAlignment horizontalAlignment = this.HorizontalAlignment;
+            VerticalAlignment verticalAlignment = this.VerticalAlignment;
+
+            if (horizontalAlignment == HorizontalAlignment.Stretch && inkSize.X > clientSize.X)
+            {
+                horizontalAlignment = HorizontalAlignment.Left;
+            }
+
+            if (verticalAlignment == VerticalAlignment.Stretch && inkSize.Y > clientSize.Y)
+            {
+                verticalAlignment = VerticalAlignment.Top;
+            }
+
+            switch (horizontalAlignment)
+            {
+                case HorizontalAlignment.Center:
+                case HorizontalAlignment.Stretch:
+                    vector.X = (clientSize.X - inkSize.X) * 0.5f;
+                    break;
+                case HorizontalAlignment.Left:
+                    vector.X = 0;
+                    break;
+                case HorizontalAlignment.Right:
+                    vector.X = clientSize.X - inkSize.X;
+                    break;
+            }
+
+            switch (verticalAlignment)
+            {
+                case VerticalAlignment.Center:
+                case VerticalAlignment.Stretch:
+                    vector.Y = (clientSize.Y - inkSize.Y) * 0.5f;
+                    return vector;
+                case VerticalAlignment.Bottom:
+                    vector.Y = clientSize.Y - inkSize.Y;
+                    return vector;
+                case VerticalAlignment.Top:
+                    vector.Y = 0;
+                    break;
+            }
+
+            return vector;
+        }
+
+        private object GetNearestDataContext()
+        {
+            UIElement curentElement = this;
+            object dataContext;
+
+            do
+            {
+                dataContext = curentElement.DataContext;
+                curentElement = curentElement.Parent;
+            }
+            while (dataContext == null && curentElement != null);
+
+            return dataContext;
+        }
+
+        private void InvalidateMeasureOnDataContextInheritors()
+        {
+            IEnumerable<UIElement> children = this.GetChildren();
+            if (children.Count() == 0)
+            {
+                this.InvalidateMeasure();
+            }
+            else
+            {
+                IEnumerable<UIElement> childrenInheritingDataContext =
+                    children.OfType<UIElement>().Where(element => element.DataContext == null);
+
+                foreach (UIElement element in childrenInheritingDataContext)
+                {
+                    element.InvalidateMeasureOnDataContextInheritors();
+                }
+            }
         }
 
         #region Measure and Arrange
@@ -357,168 +513,6 @@ namespace Nine.Graphics.UI
         }
 
         #endregion
-
-        public bool HitTest(Vector2 point)
-        {
-            Vector2 absoluteOffset = Vector2.Zero;
-            UIElement currentElement = this;
-
-            while (currentElement != null)
-            {
-                absoluteOffset += currentElement.VisualOffset;
-                currentElement = currentElement.Parent;
-            }
-
-            var hitTestRect = new BoundingRectangle(absoluteOffset.X, absoluteOffset.Y, this.ActualWidth, this.ActualHeight);            
-            return hitTestRect.Contains(point.X, point.Y) == ContainmentType.Contains;
-        }
-
-        public virtual void OnRender(SpriteBatch spriteBatch) { }
-
-        public bool TryGetRootElement(out Window rootElement)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected virtual BoundingRectangle? GetClippingRect(Vector2 finalSize)
-        {
-            if (!this.isClippingRequired)
-                return null;
-
-            var max = new MinMax(this);
-            Vector2 renderSize = this.RenderSize;
-
-            float maxWidth = float.IsPositiveInfinity(max.MaxWidth) ? renderSize.X : max.MaxWidth;
-            float maxHeight = float.IsPositiveInfinity(max.MaxHeight) ? renderSize.Y : max.MaxHeight;
-
-            bool isClippingRequiredDueToMaxSize = maxWidth.IsLessThan(renderSize.X) ||
-                                                  maxHeight.IsLessThan(renderSize.Y);
-
-            renderSize.X = Math.Min(renderSize.X, max.MaxWidth);
-            renderSize.Y = Math.Min(renderSize.Y, max.MaxHeight);
-
-            Thickness margin = this.Margin;
-            float horizontalMargins = margin.Left + margin.Right;
-            float verticalMargins = margin.Top + margin.Bottom;
-
-            var clientSize = new Vector2(
-                (finalSize.X - horizontalMargins).EnsurePositive(), 
-                (finalSize.Y - verticalMargins).EnsurePositive());
-
-            bool isClippingRequiredDueToClientSize = clientSize.X.IsLessThan(renderSize.X) ||
-                                                     clientSize.Y.IsLessThan(renderSize.Y);
-
-            if (isClippingRequiredDueToMaxSize && !isClippingRequiredDueToClientSize)
-            {
-                return new BoundingRectangle(0f, 0f, maxWidth, maxHeight);
-            }
-
-            if (!isClippingRequiredDueToClientSize)
-            {
-                return BoundingRectangle.Empty;
-            }
-
-            Vector2 offset = this.ComputeAlignmentOffset(clientSize, renderSize);
-
-            var clipRect = new BoundingRectangle(-offset.X, -offset.Y, clientSize.X, clientSize.Y);
-
-            if (isClippingRequiredDueToMaxSize)
-            {
-                //clipRect.Contains(new BoundingRectangle(0f, 0f, maxWidth, maxHeight));
-            }
-            
-            return clipRect;
-        }
-
-        protected virtual void OnNextGesture(Gesture gesture)
-        {
-        }
-
-        internal void NotifyGesture(Gesture gesture)
-        {
-            OnNextGesture(gesture);
-        }
-
-        private Vector2 ComputeAlignmentOffset(Vector2 clientSize, Vector2 inkSize)
-        {
-            var vector = new Vector2();
-            HorizontalAlignment horizontalAlignment = this.HorizontalAlignment;
-            VerticalAlignment verticalAlignment = this.VerticalAlignment;
-
-            if (horizontalAlignment == HorizontalAlignment.Stretch && inkSize.X > clientSize.X)
-            {
-                horizontalAlignment = HorizontalAlignment.Left;
-            }
-
-            if (verticalAlignment == VerticalAlignment.Stretch && inkSize.Y > clientSize.Y)
-            {
-                verticalAlignment = VerticalAlignment.Top;
-            }
-
-            switch (horizontalAlignment)
-            {
-                case HorizontalAlignment.Center:
-                case HorizontalAlignment.Stretch:
-                    vector.X = (clientSize.X - inkSize.X) * 0.5f;
-                    break;
-                case HorizontalAlignment.Left:
-                    vector.X = 0;
-                    break;
-                case HorizontalAlignment.Right:
-                    vector.X = clientSize.X - inkSize.X;
-                    break;
-            }
-
-            switch (verticalAlignment)
-            {
-                case VerticalAlignment.Center:
-                case VerticalAlignment.Stretch:
-                    vector.Y = (clientSize.Y - inkSize.Y) * 0.5f;
-                    return vector;
-                case VerticalAlignment.Bottom:
-                    vector.Y = clientSize.Y - inkSize.Y;
-                    return vector;
-                case VerticalAlignment.Top:
-                    vector.Y = 0;
-                    break;
-            }
-
-            return vector;
-        }
-
-        private object GetNearestDataContext()
-        {
-            UIElement curentElement = this;
-            object dataContext;
-
-            do
-            {
-                dataContext = curentElement.DataContext;
-                curentElement = curentElement.Parent;
-            }
-            while (dataContext == null && curentElement != null);
-
-            return dataContext;
-        }
-
-        private void InvalidateMeasureOnDataContextInheritors()
-        {
-            IEnumerable<UIElement> children = this.GetChildren();
-            if (children.Count() == 0)
-            {
-                this.InvalidateMeasure();
-            }
-            else
-            {
-                IEnumerable<UIElement> childrenInheritingDataContext =
-                    children.OfType<UIElement>().Where(element => element.DataContext == null);
-
-                foreach (UIElement element in childrenInheritingDataContext)
-                {
-                    element.InvalidateMeasureOnDataContextInheritors();
-                }
-            }
-        }
 
         #endregion
     }

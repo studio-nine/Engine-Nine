@@ -40,18 +40,10 @@ namespace Nine.Graphics.UI.Controls
             protected set { this.children = value; }
         }
 
-        public override IList<UIElement> GetChildren()
-        {
-            return this.children;
-        }
-
-        protected virtual IList<UIElement> CreateChildrenCollection()
-        {
-            return new ElementCollection(this);
-        }
-
         public SolidColorBrush Background { get; set; }
         private IList<UIElement> children;
+
+        #region Methods
 
         public override void OnRender(SpriteBatch spriteBatch)
         {
@@ -62,10 +54,22 @@ namespace Nine.Graphics.UI.Controls
                 child.OnRender(spriteBatch);
         }
 
+        public override IList<UIElement> GetChildren()
+        {
+            return this.children;
+        }
+
+        protected virtual IList<UIElement> CreateChildrenCollection()
+        {
+            return new ElementCollection(this);
+        }
+
         private void EnsureChildrenCollection()
         {
             if (this.children == null)
                 this.children = this.CreateChildrenCollection();
         }
+
+        #endregion
     }
 }

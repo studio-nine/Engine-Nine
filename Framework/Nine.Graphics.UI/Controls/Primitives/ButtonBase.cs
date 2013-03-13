@@ -26,16 +26,20 @@
 namespace Nine.Graphics.UI.Controls.Primitives
 {
     using System;
-
     using Nine.Graphics.UI.Input;
 
     public abstract class ButtonBase : ContentControl, IInputElement
     {
-        private bool isLeftButtonDown;
+        #region Fields
 
         public event EventHandler<EventArgs> Click;
-
         public bool IsPressed { get; set; }
+
+        private bool isLeftButtonDown;
+
+        #endregion
+
+        #region Methods
 
         protected virtual void OnClick()
         {
@@ -84,5 +88,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
                     break;
             }
         }
+
+        #endregion 
     }
 }

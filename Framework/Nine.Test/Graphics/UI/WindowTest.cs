@@ -10,7 +10,7 @@
     public class WindowTest
     {
         [TestMethod()]
-        public void Layout()
+        public void GridLayout()
         {
             Grid grid;
             Window window = new Window();
@@ -30,12 +30,22 @@
                         },
             };
 
-            var border1 = new Border();
+            var border1 = new Border()
+            {
+                Child = new Image()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch
+                }
+            };
             Grid.SetRow(border1, 1);
             Grid.SetColumn(border1, 0);
             grid.Children.Add(border1);
 
-            var border2 = new Border();
+            var border2 = new Border()
+            {
+                Child = new Image() { }
+            };
             Grid.SetRow(border2, 0);
             Grid.SetColumn(border2, 0);
             grid.Children.Add(border2);
@@ -44,9 +54,11 @@
 
             Assert.AreEqual(new Vector2(100, 100), border1.RenderSize);
             Assert.AreEqual(new Vector2(0, 100), border1.VisualOffset);
+            Assert.AreEqual(new Vector2(0, 100), border1.Child.VisualOffset);
 
             Assert.AreEqual(new Vector2(100, 100), border2.RenderSize);
             Assert.AreEqual(new Vector2(0, 0), border2.VisualOffset);
+            Assert.AreEqual(new Vector2(50, 50), border2.Child.VisualOffset);
         }
     }
 }

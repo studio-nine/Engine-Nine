@@ -30,12 +30,6 @@ namespace Nine.Graphics.UI.Controls
 
     public class Canvas : Panel
     {
-        //public static readonly ReactiveProperty<float> LeftProperty = ReactiveProperty<float>.Register(
-        //    "Left", typeof(Canvas), float.NaN, ReactivePropertyChangedCallbacks.InvalidateArrange);
-
-        //public static readonly ReactiveProperty<float> TopProperty = ReactiveProperty<float>.Register(
-        //    "Top", typeof(Canvas), float.NaN, ReactivePropertyChangedCallbacks.InvalidateArrange);
-
         #region Methods
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
@@ -96,48 +90,30 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-
-            var Property = element.GetType().GetProperty("Left");
-            if (Property != null)
-                return (int)Property.GetValue(element, null);
-            else
-                throw new ArgumentNullException("element.Left");
+            // Default Value (float.NaN)
+            return (float)element.ExternalProperties["Left"];
         }
 
         public static float GetTop(UIElement element)
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-
-            var Property = element.GetType().GetProperty("Top");
-            if (Property != null)
-                return (int)Property.GetValue(element, null);
-            else
-                throw new ArgumentNullException("element.Top");
+            // Default Value (float.NaN)
+            return (float)element.ExternalProperties["Top"];
         }
 
         public static void SetLeft(UIElement element, float value)
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-
-            var Property = element.GetType().GetProperty("Left");
-            if (Property != null)
-                Property.SetValue(element, value, null);
-            else
-                throw new ArgumentNullException("element.Left");
+            element.ExternalProperties["Left"] = value;
         }
 
         public static void SetTop(UIElement element, float value)
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-
-            var Property = element.GetType().GetProperty("Top");
-            if (Property != null)
-                Property.SetValue(element, value, null);
-            else
-                throw new ArgumentNullException("element.Top");
+            element.ExternalProperties["Top"] = value;
         }
 
         #endregion

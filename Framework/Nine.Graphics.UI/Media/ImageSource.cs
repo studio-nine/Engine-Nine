@@ -30,7 +30,6 @@ namespace Nine.Graphics.UI.Media
     public abstract class ImageSource
     {
         public abstract float Y { get; }
-
         public abstract float X { get; }
 
         internal virtual Vector2 Size

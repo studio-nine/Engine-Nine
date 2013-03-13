@@ -25,58 +25,69 @@ namespace Samples
                 InputEnabled = true
             });
 
-            var Font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");
-
             Window window = new Window();
 
             var grid = new Grid()
                 {
                     RowDefinitions =
                         {
-                            new RowDefinition { Height = new GridLength(100) }, 
-                            new RowDefinition { Height = new GridLength(100) }, 
+                            new RowDefinition { Height = new GridLength(200) }, 
+                            new RowDefinition { Height = new GridLength(200) }, 
                         },
                     ColumnDefinitions =
                         {
-                            new ColumnDefinition() { Width = new GridLength(100) },
-                            new ColumnDefinition() { Width = new GridLength(100) },
+                            new ColumnDefinition() { Width = new GridLength(200) },
+                            new ColumnDefinition() { Width = new GridLength(200) },
                         },
                 };
             window.Content = grid;
 
-            Color[] Colors = new Color[]
+            var border1 = new Border
             {
-                Color.Red, Color.Green, Color.Blue, Color.Orange
-            };
-
-            for (int i = 0; i < 4; ++i)
-            {
-                var border = new Border
+                BorderBrush = new SolidColorBrush(Color.Red),
+                BorderThickness = new Thickness(4),
+                Child = new Border()
                 {
-                    Background = new SolidColorBrush(Colors[i]),
-                    BorderThickness = new Thickness(4),
-                };
-                Grid.SetRow(border, i % 2);
-                Grid.SetColumn(border, (i + 4) % 2);
-                grid.Children.Add(border);
-            }
+                    Background = new SolidColorBrush(Color.Gold)
+                }
 
-            var border1 = new Border { Background = new SolidColorBrush(Color.Red), BorderThickness = new Thickness(4), };
+                //new TextBlock(content.Load<SpriteFont>("Fonts/Consolas.spritefont"))
+                //    { Margin = new Thickness(10), Text = "HELLO WORLD" }
+            };
             Grid.SetRow(border1, 0);
             Grid.SetColumn(border1, 0);
             grid.Children.Add(border1);
 
-            var border2 = new Border { Background = new SolidColorBrush(Color.Green), BorderThickness = new Thickness(4), };
+            var border2 = new Border 
+            {
+                BorderBrush = new SolidColorBrush(Color.Green),
+                BorderThickness = new Thickness(4),
+                Child = new Border()
+                {
+                    Background = new SolidColorBrush(Color.GhostWhite)
+                }
+
+                //Child = new Image() 
+                //    { Source = content.Load<Texture2D>("Textures/checker.bmp") }
+            };
             Grid.SetRow(border2, 1);
             Grid.SetColumn(border2, 0);
             grid.Children.Add(border2);
 
-            var border3 = new Border { Background = new SolidColorBrush(Color.Blue), BorderThickness = new Thickness(4), };
+            var border3 = new Border 
+            {
+                BorderBrush = new SolidColorBrush(Color.Blue), 
+                BorderThickness = new Thickness(4), 
+            };
             Grid.SetRow(border3, 0);
             Grid.SetColumn(border3, 1);
             grid.Children.Add(border3);
 
-            var border4 = new Border { Background = new SolidColorBrush(Color.Orange), BorderThickness = new Thickness(4), };
+            var border4 = new Border 
+            { 
+                BorderBrush = new SolidColorBrush(Color.Orange), 
+                BorderThickness = new Thickness(4), 
+            };
             Grid.SetRow(border4, 1);
             Grid.SetColumn(border4, 1);
             grid.Children.Add(border4);

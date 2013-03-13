@@ -34,6 +34,11 @@ namespace Nine.Graphics.UI.Media
     public class SolidColorBrush : Brush, IConvertible
     {
         /// <summary>
+        ///     The Color of the SolidColorBrush.
+        /// </summary>
+        public Color Color { get; set; }
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref = "SolidColorBrush">SolidColorBrush</see> class.
         /// </summary>
         /// <param name = "color">The <see cref = "Color">Color</see> with which to create this <see cref = "SolidColorBrush">SolidColorBrush</see>.</param>
@@ -42,15 +47,12 @@ namespace Nine.Graphics.UI.Media
             this.Color = color;
         }
 
-        /// <summary>
-        ///     The Color of the SolidColorBrush.
-        /// </summary>
-        public Color Color { get; set; }
-
         public override string ToString()
         {
             return this.Color.ToString();
         }
+
+        #region IConvertible
 
         TypeCode IConvertible.GetTypeCode()
         {
@@ -136,5 +138,7 @@ namespace Nine.Graphics.UI.Media
         {
             throw new InvalidCastException();
         }
+
+        #endregion
     }
 }

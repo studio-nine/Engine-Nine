@@ -34,15 +34,7 @@ namespace Nine.Graphics.UI.Controls
 
     public class ScrollContentPresenter : ContentControl, IScrollInfo
     {
-        private bool isClippingRequired;
-
-        private ScrollData scrollData;
-
-        public ScrollContentPresenter()
-        {
-            this.scrollData.CanHorizontallyScroll = true;
-            this.scrollData.CanVerticallyScroll = true;
-        }
+        #region Properties
 
         public bool CanHorizontallyScroll
         {
@@ -70,6 +62,23 @@ namespace Nine.Graphics.UI.Controls
         {
             get { return this.scrollData.Viewport; }
         }
+
+        #endregion
+
+        #region Fields
+
+        private bool isClippingRequired;
+        private ScrollData scrollData;
+
+        #endregion
+
+        public ScrollContentPresenter()
+        {
+            this.scrollData.CanHorizontallyScroll = true;
+            this.scrollData.CanVerticallyScroll = true;
+        }
+
+        #region Methods
 
         public void SetHorizontalOffset(float offset)
         {
@@ -178,5 +187,7 @@ namespace Nine.Graphics.UI.Controls
 
             this.scrollData.Offset = new Vector2(x, y);
         }
+
+        #endregion
     }
 }

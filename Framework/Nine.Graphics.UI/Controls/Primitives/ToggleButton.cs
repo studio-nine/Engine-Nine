@@ -32,6 +32,25 @@ namespace Nine.Graphics.UI.Controls.Primitives
     /// </summary>
     public class ToggleButton : ButtonBase
     {
+        #region Properties / Fields
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> is in a checked, unchecked or indeterminate state.
+        /// </summary>
+        public bool? IsChecked { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> supports two or three states.
+        /// </summary>
+        /// <remarks>
+        ///     If false, <see cref = "IsChecked">IsChecked</see> can only be true or false.  If true, <see cref = "IsChecked">IsChecked</see> can enter a third null state.
+        /// </remarks>
+        public bool IsThreeState { get; set; }
+
+        #endregion
+
+        #region Events
+
         /// <summary>
         ///     Occurs when a <see cref = "ToggleButton">ToggleButton</see> is checked.
         /// </summary>
@@ -50,18 +69,9 @@ namespace Nine.Graphics.UI.Controls.Primitives
         /// </summary>
         public event EventHandler<EventArgs> Unchecked;
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> is in a checked, unchecked or indeterminate state.
-        /// </summary>
-        public bool? IsChecked { get; set; }
+        #endregion
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> supports two or three states.
-        /// </summary>
-        /// <remarks>
-        ///     If false, <see cref = "IsChecked">IsChecked</see> can only be true or false.  If true, <see cref = "IsChecked">IsChecked</see> can enter a third null state.
-        /// </remarks>
-        public bool IsThreeState { get; set; }
+        #region Methods
 
         protected internal virtual void OnToggle()
         {
@@ -110,30 +120,6 @@ namespace Nine.Graphics.UI.Controls.Primitives
             }
         }
 
-        /*
-        private static void OnIsCheckedPropertyChanged(
-            ReactiveObject source, ReactivePropertyChangeEventArgs<bool?> args)
-        {
-            var button = source as ToggleButton;
-            if (button == null)
-            {
-                return;
-            }
-
-            bool? newValue = args.NewValue;
-            if (newValue == true)
-            {
-                button.OnChecked();
-            }
-            else if (newValue == false)
-            {
-                button.OnUnchecked();
-            }
-            else
-            {
-                button.OnIndeterminate();
-            }
-        }
-         * */
+        #endregion
     }
 }
