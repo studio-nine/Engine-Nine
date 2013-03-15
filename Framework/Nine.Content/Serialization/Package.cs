@@ -30,7 +30,7 @@ namespace Nine.Serialization
 
         public static void Build(string inputFileName, string outputFileName)
         {
-            Build(inputFileName, outputFileName, new PipelineGraphicsDeviceService { GraphicsDevice = Nine.Graphics.PipelineGraphics.GraphicsDevice });
+            //Build(inputFileName, outputFileName, new PipelineGraphicsDeviceService { GraphicsDevice = Nine.Graphics.PipelineGraphics.GraphicsDevice });
         }
 
         public static void Build(string inputFileName, string outputFileName, IServiceProvider serviceProvider)

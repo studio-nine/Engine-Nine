@@ -161,7 +161,7 @@ namespace Nine.Graphics.UI.Controls
             {
                 drawingContext.DrawRectangle(new BoundingRectangle(0, 0, this.ActualWidth, this.ActualHeight), this.Background);
             }
-
+            
             drawingContext.DrawText(
                 this.spriteFont, 
                 this.formattedText, 

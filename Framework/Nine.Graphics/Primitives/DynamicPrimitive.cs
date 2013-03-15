@@ -118,7 +118,7 @@
             this.initialBufferCapacity = initialBufferCapacity;
             this.maxBufferSizePerPrimitive = maxBufferSizePerPrimitive;
             this.rasterizerState = new RasterizerState() { CullMode = CullMode.None };
-            this.material = new TextureMaterial(graphics) { TwoSided = true };
+            this.material = new TextureMaterial(graphics) { TwoSided = true, VertexColorEnabled = true };
 
             this.vertexData = new VertexPositionColorNormalTexture[512];
             this.indexData = new ushort[6];

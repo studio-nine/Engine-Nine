@@ -1,6 +1,8 @@
 namespace Nine.Graphics.Materials
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
@@ -12,14 +14,14 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Defines a material that is grouped by material fragments.
     /// </summary>
-    [Nine.Serialization.NotBinarySerializable]
     [ContentProperty("MaterialParts")]
     public class MaterialGroup : Material, ISupportInitialize
     {
-        internal bool Initializing;
+        private bool initializing;
+
         internal Effect Effect;
         internal string Reference;
-        internal Dictionary<MaterialUsage, MaterialGroup> ExtendedMaterials;
+        internal MaterialGroup[] ExtendedMaterials;
                 
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialGroup"/> class.
@@ -106,8 +108,14 @@ namespace Nine.Graphics.Materials
                 materialParts[i].SetTexture(textureUsage, texture);
 
             if (ExtendedMaterials != null)
-                foreach (var material in ExtendedMaterials.Values)
-                    material.SetTexture(textureUsage, texture);
+            {
+                for (int i = 0; i < ExtendedMaterials.Length; i++)
+                {
+                    var material = ExtendedMaterials[i];
+                    if (material != null)
+                        material.SetTexture(textureUsage, texture);
+                }
+            }
         }
 
         /// <summary>
@@ -145,39 +153,38 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
         {
-            MaterialGroup result = existingInstance as MaterialGroup;
+            var result = existingInstance as MaterialGroup;
             if (result == null && ExtendedMaterials != null)
-                ExtendedMaterials.TryGetValue(usage, out result);
-            
-            if (result != null)
+                result = ExtendedMaterials[(int)usage];
+            if (result == null)
+                return null;
+
+            var srcCount = materialParts.Count;
+            var destCount = result.materialParts.Count;
+
+            if (srcCount > 0 && destCount > 0)
             {
-                var srcCount = materialParts.Count;
-                var destCount = result.materialParts.Count;
-                
-                if (srcCount > 0 && destCount > 0)
+                var src = 0;
+                var dest = 0;
+                var srcPart = materialParts[0];
+                var destPart = result.materialParts[0];
+                var srcType = srcPart.GetType();
+                var destType = destPart.GetType();
+
+                // Source material parts is a super set of destination material parts.
+                while (dest < destCount)
                 {
-                    var src = 0;
-                    var dest = 0;
-                    var srcPart = materialParts[0];
-                    var destPart = result.materialParts[0];
-                    var srcType = srcPart.GetType();
-                    var destType = destPart.GetType();
+                    destPart = result.materialParts[dest++];
+                    destType = destPart.GetType();
 
-                    // Source material parts is a super set of destination material parts.
-                    while (dest < destCount)
+                    while (src < srcCount)
                     {
-                        destPart = result.materialParts[dest++];
-                        destType = destPart.GetType();
-
-                        while (src < srcCount)
+                        srcPart = materialParts[src++];
+                        srcType = srcPart.GetType();
+                        if (srcType == destType)
                         {
-                            srcPart = materialParts[src++];
-                            srcType = srcPart.GetType();
-                            if (srcType == destType)
-                            {
-                                srcPart.OnResolveMaterialPart(usage, destPart);
-                                break;
-                            }
+                            srcPart.OnResolveMaterialPart(usage, destPart);
+                            break;
                         }
                     }
                 }
@@ -190,7 +197,7 @@ namespace Nine.Graphics.Materials
         /// </summary>
         internal void OnShaderChanged()
         {
-            if (!Initializing)
+            if (!initializing)
                 UpdateShader();
         }
 
@@ -221,26 +228,34 @@ namespace Nine.Graphics.Materials
         {
             if (Effect == null)
             {
-                throw new InvalidOperationException("The material state can only be modified at content build time.");
+                TryInvokeContentPipelineMethod("MaterialGroupBuilder", "Build", out Effect);
             }
         }
 
-        void ISupportInitialize.BeginInit()
-        {
-            if (!Initializing)
-            {
-                Initializing = true;
-            }
-        }
-
+        void ISupportInitialize.BeginInit() { initializing = true; }
         void ISupportInitialize.EndInit()
         {
-            if (Initializing)
+            if (initializing)
             {
                 UpdateShader();
-                Initializing = false;
+                initializing = false;
             }
         }
+
+        internal static bool TryInvokeContentPipelineMethod<T>(string className, string methodName, out T result, params object[] paramters)
+        {
+            result = default(T);
+#if WINDOWS
+            if (PipelineAssembly == null)
+                return false;
+            var flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
+            result = (T)PipelineAssembly.GetTypes().Single(type => type.Name == className).InvokeMember(methodName, flags, null, null, paramters);
+            return true;
+#else
+            return false;
+#endif
+        }
+        static Assembly PipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "Nine.Content");
     }
 
     class MaterialPartCollection : Collection<MaterialPart>

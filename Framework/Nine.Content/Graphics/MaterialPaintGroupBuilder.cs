@@ -4,15 +4,16 @@
     using System.Text;
     using Nine.Graphics.Materials;
 
-    static class MaterialPaintGroupBuilder
+    class MaterialPaintGroupBuilder
     {
-        public static string Build(MaterialPaintGroup materialPaintGroup, MaterialUsage usage)
+        public string Build(MaterialPaintGroup materialPaintGroup, MaterialUsage usage)
         {
+            var materialGroupBuilder = new MaterialGroupBuilder();
             var builder = new StringBuilder();
             var index = materialPaintGroup.MaterialGroup.MaterialParts.OfType<MaterialPaintGroup>().ToList().IndexOf(materialPaintGroup);
-            var builderContext = MaterialGroupBuilder.CreateMaterialGroupBuilderContext(materialPaintGroup.MaterialParts, usage, false);
+            var builderContext = materialGroupBuilder.CreateMaterialGroupBuilderContext(materialPaintGroup.MaterialParts, usage, false);
             
-            builder.AppendLine(MaterialGroupBuilder.GetShaderCodeBody(builderContext, "VSMain", "PSMain"));
+            builder.AppendLine(materialGroupBuilder.GetShaderCodeBody(builderContext, "VSMain", "PSMain"));
 
             builderContext.PixelShaderOutputs.AddRange(builderContext.PixelShaderInputs.Where(psi => psi.Out));
 
@@ -36,7 +37,7 @@
             return builder.ToString();
         }
 
-        private static string AppendWithCasingCorrection(string name, string prefix)
+        private string AppendWithCasingCorrection(string name, string prefix)
         {
             return string.Concat(prefix, name.Substring(0, 1).ToUpperInvariant(), name.Substring(1));
         }

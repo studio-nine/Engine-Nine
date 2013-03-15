@@ -4,7 +4,7 @@
     using System.Windows.Markup;
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-    using Nine.Serialization.Processors;
+    using Nine.Content.Pipeline.Processors;
 
     [ContentProperty("Layers")]
     public class Splatter
