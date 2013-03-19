@@ -28,7 +28,7 @@ namespace Nine.Graphics.UI.Media
     /// <summary>
     ///     Represents a Brush used to paint to the screen.  The type of Brush describes how the area is to be painted.
     /// </summary>
-    public abstract class Brush : ReactiveObject
+    public abstract class Brush
     {
     }
 }

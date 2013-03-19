@@ -30,8 +30,32 @@ namespace Nine.Graphics.UI
     public struct GridLength
     {
         private readonly GridUnitType gridUnitType;
-
         private readonly float value;
+
+        /// <summary>
+        ///     Gets a <see cref = "GridLength">GridLength</see> whose <see cref = "GridUnitType">GridUnitType</see> is set to <see cref = "Nine.Graphics.UI.GridUnitType.Auto">GridUnitType.Auto</see>.
+        /// </summary>
+        public static GridLength Auto
+        {
+            get;
+            private set;
+        }
+
+        public GridUnitType GridUnitType
+        {
+            get
+            {
+                return this.gridUnitType;
+            }
+        }
+
+        public float Value
+        {
+            get
+            {
+                return this.value;
+            }
+        }
 
         static GridLength()
         {
@@ -57,31 +81,6 @@ namespace Nine.Graphics.UI
 
             this.value = gridUnitType == GridUnitType.Auto ? 1 : value;
             this.gridUnitType = gridUnitType;
-        }
-
-        /// <summary>
-        ///     Gets a <see cref = "GridLength">GridLength</see> whose <see cref = "GridUnitType">GridUnitType</see> is set to <see cref = "Nine.Graphics.UI.GridUnitType.Auto">GridUnitType.Auto</see>.
-        /// </summary>
-        public static GridLength Auto
-        {
-            get;
-            private set;
-        }
-
-        public GridUnitType GridUnitType
-        {
-            get
-            {
-                return this.gridUnitType;
-            }
-        }
-
-        public float Value
-        {
-            get
-            {
-                return this.value;
-            }
         }
     }
 }

@@ -32,17 +32,24 @@ namespace Nine.Graphics.UI.Controls.Primitives
     /// </summary>
     public class ToggleButton : ButtonBase
     {
-        /// <summary>
-        ///     <see cref = "IsChecked">IsChecked</see> Reactive Property.
-        /// </summary>
-        public static readonly ReactiveProperty<bool?> IsCheckedProperty = ReactiveProperty<bool?>.Register(
-            "IsChecked", typeof(ToggleButton), false, OnIsCheckedPropertyChanged);
+        #region Properties / Fields
 
         /// <summary>
-        ///     <see cref = "IsThreeState">IsThreeState</see> Reactive Property.
+        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> is in a checked, unchecked or indeterminate state.
         /// </summary>
-        public static readonly ReactiveProperty<bool> IsThreeStateProperty =
-            ReactiveProperty<bool>.Register("IsThreeState", typeof(ToggleButton));
+        public bool? IsChecked { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> supports two or three states.
+        /// </summary>
+        /// <remarks>
+        ///     If false, <see cref = "IsChecked">IsChecked</see> can only be true or false.  If true, <see cref = "IsChecked">IsChecked</see> can enter a third null state.
+        /// </remarks>
+        public bool IsThreeState { get; set; }
+
+        #endregion
+
+        #region Events
 
         /// <summary>
         ///     Occurs when a <see cref = "ToggleButton">ToggleButton</see> is checked.
@@ -62,40 +69,9 @@ namespace Nine.Graphics.UI.Controls.Primitives
         /// </summary>
         public event EventHandler<EventArgs> Unchecked;
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> is in a checked, unchecked or indeterminate state.
-        /// </summary>
-        public bool? IsChecked
-        {
-            get
-            {
-                return this.GetValue(IsCheckedProperty);
-            }
+        #endregion
 
-            set
-            {
-                this.SetValue(IsCheckedProperty, value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> supports two or three states.
-        /// </summary>
-        /// <remarks>
-        ///     If false, <see cref = "IsChecked">IsChecked</see> can only be true or false.  If true, <see cref = "IsChecked">IsChecked</see> can enter a third null state.
-        /// </remarks>
-        public bool IsThreeState
-        {
-            get
-            {
-                return this.GetValue(IsThreeStateProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsThreeStateProperty, value);
-            }
-        }
+        #region Methods
 
         protected internal virtual void OnToggle()
         {
@@ -144,28 +120,6 @@ namespace Nine.Graphics.UI.Controls.Primitives
             }
         }
 
-        private static void OnIsCheckedPropertyChanged(
-            ReactiveObject source, ReactivePropertyChangeEventArgs<bool?> args)
-        {
-            var button = source as ToggleButton;
-            if (button == null)
-            {
-                return;
-            }
-
-            bool? newValue = args.NewValue;
-            if (newValue == true)
-            {
-                button.OnChecked();
-            }
-            else if (newValue == false)
-            {
-                button.OnUnchecked();
-            }
-            else
-            {
-                button.OnIndeterminate();
-            }
-        }
+        #endregion
     }
 }

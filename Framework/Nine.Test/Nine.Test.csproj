@@ -100,6 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Animations\TweenTest.cs" />
     <Compile Include="TriangleTest.cs" />
+    <Compile Include="Graphics\UI\WindowTest.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
@@ -111,6 +112,10 @@
     <ProjectReference Include="..\Nine.Graphics.3D\Nine.Graphics.3D.csproj">
       <Project>{88e70c7b-eddf-4415-b817-f7742e749a34}</Project>
       <Name>Nine.Graphics.3D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Graphics.UI\Nine.Graphics.UI.csproj">
+      <Project>{a8519d9a-c5f0-41e1-89d8-5ac6a5f4c351}</Project>
+      <Name>Nine.Graphics.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
       <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>

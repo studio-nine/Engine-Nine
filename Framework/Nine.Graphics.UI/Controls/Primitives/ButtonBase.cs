@@ -26,30 +26,20 @@
 namespace Nine.Graphics.UI.Controls.Primitives
 {
     using System;
-
     using Nine.Graphics.UI.Input;
 
     public abstract class ButtonBase : ContentControl, IInputElement
     {
-        public static readonly ReactiveProperty<bool> IsPressedProperty = ReactiveProperty<bool>.Register(
-            "IsPressed", typeof(ButtonBase), false);
+        #region Fields
+
+        public event EventHandler<EventArgs> Click;
+        public bool IsPressed { get; set; }
 
         private bool isLeftButtonDown;
 
-        public event EventHandler<EventArgs> Click;
+        #endregion
 
-        public bool IsPressed
-        {
-            get
-            {
-                return this.GetValue(IsPressedProperty);
-            }
-
-            protected internal set
-            {
-                this.SetValue(IsPressedProperty, value);
-            }
-        }
+        #region Methods
 
         protected virtual void OnClick()
         {
@@ -98,5 +88,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
                     break;
             }
         }
+
+        #endregion 
     }
 }

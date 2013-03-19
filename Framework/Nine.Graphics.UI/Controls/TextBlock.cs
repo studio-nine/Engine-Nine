@@ -28,110 +28,55 @@ namespace Nine.Graphics.UI.Controls
     using System;
     using System.Text;
     using System.Text.RegularExpressions;
-
-    using Nine.Graphics.UI.Graphics;
     using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    /// <summary>
+    ///     Control to display a flow of Content
+    /// </summary>
     public class TextBlock : UIElement
     {
-        public static readonly ReactiveProperty<Brush> BackgroundProperty =
-            ReactiveProperty<Brush>.Register("Background", typeof(TextBlock));
+        #region Properties
 
-        public static readonly ReactiveProperty<Brush> ForegroundProperty =
-            ReactiveProperty<Brush>.Register("Foreground", typeof(TextBlock));
+        #endregion
 
-        public static readonly ReactiveProperty<Thickness> PaddingProperty =
-            ReactiveProperty<Thickness>.Register(
-                "Padding", typeof(TextBlock), ReactivePropertyChangedCallbacks.InvalidateMeasure);
-
-        public static readonly ReactiveProperty<string> TextProperty = ReactiveProperty<string>.Register(
-            "Text", typeof(TextBlock), string.Empty, ReactivePropertyChangedCallbacks.InvalidateMeasure);
-
-        public static readonly ReactiveProperty<TextWrapping> WrappingProperty =
-            ReactiveProperty<TextWrapping>.Register(
-                "Wrapping", typeof(TextBlock), TextWrapping.NoWrap, ReactivePropertyChangedCallbacks.InvalidateMeasure);
+        #region Fields
 
         private static readonly Regex WhiteSpaceRegEx = new Regex(@"\s+", RegexOptions.Compiled);
-
         private readonly SpriteFont spriteFont;
 
+        public SolidColorBrush Background { get; set; }
+        public SolidColorBrush Foreground { get; set; }
+
+        public Thickness Padding { get; set; }
+        public string Text { get; set; }
+        public TextWrapping Wrapping { get; set; }
         private string formattedText;
+        
+        #endregion
 
         public TextBlock(SpriteFont spriteFont)
         {
             if (spriteFont == null)
-            {
                 throw new ArgumentNullException("spriteFont");
-            }
 
             this.spriteFont = spriteFont;
+            this.Text = "";
         }
 
-        public Brush Background
+        #region Methods
+
+        public override void OnRender(SpriteBatch spriteBatch)
         {
-            get
+            if (this.Background != null)
             {
-                return this.GetValue(BackgroundProperty);
+                spriteBatch.Draw(
+                    new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)this.ActualWidth, (int)this.ActualHeight), Background.Color);
             }
 
-            set
-            {
-                this.SetValue(BackgroundProperty, value);
-            }
-        }
-
-        public Brush Foreground
-        {
-            get
-            {
-                return this.GetValue(ForegroundProperty);
-            }
-
-            set
-            {
-                this.SetValue(ForegroundProperty, value);
-            }
-        }
-
-        public Thickness Padding
-        {
-            get
-            {
-                return this.GetValue(PaddingProperty);
-            }
-
-            set
-            {
-                this.SetValue(PaddingProperty, value);
-            }
-        }
-
-        public string Text
-        {
-            get
-            {
-                return this.GetValue(TextProperty);
-            }
-
-            set
-            {
-                this.SetValue(TextProperty, value);
-            }
-        }
-
-        public TextWrapping Wrapping
-        {
-            get
-            {
-                return this.GetValue(WrappingProperty);
-            }
-
-            set
-            {
-                this.SetValue(WrappingProperty, value);
-            }
+            var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
+            spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top), TextColor.Color);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
@@ -153,20 +98,6 @@ namespace Nine.Graphics.UI.Controls
             return new Vector2(
                 measureString.X + this.Padding.Left + this.Padding.Right, 
                 measureString.Y + this.Padding.Top + this.Padding.Bottom);
-        }
-
-        protected override void OnRender(IDrawingContext drawingContext)
-        {
-            if (this.Background != null)
-            {
-                drawingContext.DrawRectangle(new BoundingRectangle(0, 0, this.ActualWidth, this.ActualHeight), this.Background);
-            }
-
-            drawingContext.DrawText(
-                this.spriteFont, 
-                this.formattedText, 
-                new Vector2(this.Padding.Left, this.Padding.Top), 
-                this.Foreground ?? new SolidColorBrush(Color.Black));
         }
 
         private static string WrapText(SpriteFont font, string text, float maxLineWidth)
@@ -196,5 +127,7 @@ namespace Nine.Graphics.UI.Controls
 
             return stringBuilder.ToString();
         }
+
+        #endregion
     }
 }

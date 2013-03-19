@@ -205,6 +205,11 @@ namespace Nine
             return !(value1 == value2);
         }
 
+        public static implicit operator Rectangle(BoundingRectangle rect)
+        {
+            return new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
+        }
+
         public override int GetHashCode()
         {
             return X.GetHashCode() ^ Y.GetHashCode() ^ Width.GetHashCode() ^ Height.GetHashCode();

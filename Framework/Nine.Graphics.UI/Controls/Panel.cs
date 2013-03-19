@@ -28,26 +28,30 @@ namespace Nine.Graphics.UI.Controls
     using System.Collections.Generic;
     using System.Linq;
 
-    using Nine.Graphics.UI.Graphics;
     using Nine.Graphics.UI.Media;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework;
 
     public abstract class Panel : UIElement
     {
-        public static readonly ReactiveProperty<Brush> BackgroundProperty =
-            ReactiveProperty<Brush>.Register("Background", typeof(Panel));
-
-        private IList<UIElement> children;
-
-        public Brush Background
-        {
-            get { return this.GetValue(BackgroundProperty); }
-            set { this.SetValue(BackgroundProperty, value); }
-        }
-
         public IList<UIElement> Children
         {
             get { this.EnsureChildrenCollection(); return this.children; }
             protected set { this.children = value; }
+        }
+
+        public SolidColorBrush Background { get; set; }
+        private IList<UIElement> children;
+
+        #region Methods
+
+        public override void OnRender(SpriteBatch spriteBatch)
+        {
+            if (this.Background != null)
+                spriteBatch.Draw(RenderTransform, Background.Color);
+
+            foreach (var child in children)
+                child.OnRender(spriteBatch);
         }
 
         public override IList<UIElement> GetChildren()
@@ -60,20 +64,12 @@ namespace Nine.Graphics.UI.Controls
             return new ElementCollection(this);
         }
 
-        protected override void OnRender(IDrawingContext drawingContext)
-        {
-            if (this.Background != null)
-            {
-                drawingContext.DrawRectangle(new BoundingRectangle(0, 0, this.ActualWidth, this.ActualHeight), this.Background);
-            }
-        }
-
         private void EnsureChildrenCollection()
         {
             if (this.children == null)
-            {
                 this.children = this.CreateChildrenCollection();
-            }
         }
+
+        #endregion
     }
 }

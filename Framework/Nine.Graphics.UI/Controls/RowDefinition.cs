@@ -25,59 +25,21 @@
 
 namespace Nine.Graphics.UI.Controls
 {
+    /// <summary>
+    ///     Defines Row properties that apply to <see cref="Nine.Graphics.UI.Controls.Grid"/>.
+    /// </summary>
     public class RowDefinition : DefinitionBase
     {
-        public static readonly ReactiveProperty<GridLength> HeightProperty =
-            ReactiveProperty<GridLength>.Register("Y", typeof(RowDefinition), new GridLength(1, GridUnitType.Star));
-
-        public static readonly ReactiveProperty<float> MaxHeightProperty =
-            ReactiveProperty<float>.Register("MaxHeight", typeof(RowDefinition), float.PositiveInfinity);
-
-        public static readonly ReactiveProperty<float> MinHeightProperty =
-            ReactiveProperty<float>.Register("MinHeight", typeof(RowDefinition), 0f);
+        public GridLength Height { get; set; }
+        public float MaxHeight { get; set; }
+        public float MinHeight { get; set; }
 
         public RowDefinition()
             : base(DefinitionType.Row)
         {
-        }
-
-        public GridLength Y
-        {
-            get
-            {
-                return this.GetValue(HeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(HeightProperty, value);
-            }
-        }
-
-        public float MaxHeight
-        {
-            get
-            {
-                return this.GetValue(MaxHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(MaxHeightProperty, value);
-            }
-        }
-
-        public float MinHeight
-        {
-            get
-            {
-                return this.GetValue(MinHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(MinHeightProperty, value);
-            }
+            Height = new GridLength(1, GridUnitType.Star);
+            MaxHeight = float.PositiveInfinity;
+            MinHeight = 0;
         }
     }
 }

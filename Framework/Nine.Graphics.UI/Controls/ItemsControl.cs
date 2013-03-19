@@ -36,27 +36,26 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class ItemsControl : Control
     {
-        /// <summary>
-        ///     <see cref = "ItemTemplate">ItemTemplate</see> Reactive Property.
-        /// </summary>
-        public static readonly ReactiveProperty<Func<object, UIElement>> ItemTemplateProperty =
-            ReactiveProperty<Func<object, UIElement>>.Register("ItemTemplate", typeof(ItemsControl));
-
-        /// <summary>
-        ///     <see cref = "ItemsPanel">ItemsPanel</see> Reactive Property.
-        /// </summary>
-        public static readonly ReactiveProperty<Panel> ItemsPanelProperty =
-            ReactiveProperty<Panel>.Register("ItemsPanel", typeof(ItemsControl), ItemsPanelChanged);
-
-        /// <summary>
-        ///     <see cref = "ItemsSource">ItemsSource</see> Reactive Property.
-        /// </summary>
-        public static readonly ReactiveProperty<IEnumerable> ItemsSourceProperty =
-            ReactiveProperty<IEnumerable>.Register("ItemsSource", typeof(ItemsControl), ItemsSourceChanged);
-
-        private IDisposable changingItems;
-
+        private IDisposable changingItems; // Why u mad Visual Studio?!
         private bool isItemsSourceNew;
+
+        /// <summary>
+        ///     Gets or sets a function that is used to generate the <see cref = "UIElement">UIElement</see> for each item in the <see cref = "ItemsSource">ItemsSource</see>.
+        ///     The function takes one argument of type <see cref = "object">object</see> that represents the item's <see cref = "UIElement.DataContext">DataContext</see>.
+        /// </summary>
+        public Func<object, UIElement> ItemTemplate { get; set; }
+
+        /// <summary>
+        ///     Gets of sets the <see cref = "Panel">Panel</see> used to control the layout of items.
+        /// </summary>
+        public Panel ItemsPanel { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the collection of items to be displayed.
+        /// </summary>
+        public IEnumerable ItemsSource { get; set; }
+
+        #region Constructor
 
         /// <summary>
         ///     Initializes a new instance of the <see cref = "ItemsControl">ItemsControl</see> class.
@@ -66,45 +65,14 @@ namespace Nine.Graphics.UI.Controls
             this.ItemsPanel = new StackPanel();
         }
 
-        /// <summary>
-        ///     Gets or sets a function that is used to generate the <see cref = "UIElement">UIElement</see> for each item in the <see cref = "ItemsSource">ItemsSource</see>.
-        ///     The function takes one argument of type <see cref = "object">object</see> that represents the item's <see cref = "UIElement.DataContext">DataContext</see>.
-        /// </summary>
-        public Func<object, UIElement> ItemTemplate
-        {
-            get { return this.GetValue(ItemTemplateProperty); }
-            set { this.SetValue(ItemTemplateProperty, value); }
-        }
+        #endregion
 
-        /// <summary>
-        ///     Gets of sets the <see cref = "Panel">Panel</see> used to control the layout of items.
-        /// </summary>
-        public Panel ItemsPanel
-        {
-            get { return this.GetValue(ItemsPanelProperty); }
-            set { this.SetValue(ItemsPanelProperty, value); }
-        }
-
-        /// <summary>
-        ///     Gets or sets the collection of items to be displayed.
-        /// </summary>
-        public IEnumerable ItemsSource
-        {
-            get { return this.GetValue(ItemsSourceProperty); }
-            set { this.SetValue(ItemsSourceProperty, value); }
-        }
+        #region Methods
 
         public override IList<UIElement> GetChildren()
         {
-            var child = ItemsPanel;
-            if (child != null)
-            {
-                children[0] = child;
-                return children;
-            }
-            return null;
+            return new UIElement[] { ItemsPanel };
         }
-        private UIElement[] children = new UIElement[1];
 
         public override void OnApplyTemplate()
         {
@@ -119,9 +87,7 @@ namespace Nine.Graphics.UI.Controls
         {
             Panel child = this.ItemsPanel;
             if (child != null)
-            {
                 child.Arrange(new BoundingRectangle(finalSize.X, finalSize.Y));
-            }
 
             return finalSize;
         }
@@ -130,109 +96,11 @@ namespace Nine.Graphics.UI.Controls
         {
             Panel child = this.ItemsPanel;
             if (child == null)
-            {
                 return Vector2.Zero;
-            }
 
             child.Measure(availableSize);
             return child.DesiredSize;
         }
-
-        private static void ItemsPanelChanged(ReactiveObject source, ReactivePropertyChangeEventArgs<Panel> change)
-        {
-            var itemsControl = (ItemsControl)source;
-            Panel newPanel = change.NewValue;
-            Panel oldPanel = change.OldValue;
-
-            if (oldPanel != null)
-            {
-                oldPanel.Parent = null;
-            }
-
-            if (newPanel != null)
-            {
-                if (!(newPanel.Children is ITemplatedList<UIElement>))
-                {
-                    throw new NotSupportedException(
-                        "ItemsControl requires a panel whose Children collection implements ITemplatedList<UIElement>");
-                }
-
-                newPanel.Parent = itemsControl;
-            }
-
-            itemsControl.InvalidateMeasure();
-        }
-
-        private static void ItemsSourceChanged(
-            ReactiveObject source, ReactivePropertyChangeEventArgs<IEnumerable> change)
-        {
-            var itemsControl = (ItemsControl)source;
-            if (change.OldValue is INotifyCollectionChanged)
-            {
-                itemsControl.changingItems.Dispose();
-            }
-
-            var observableCollection = change.NewValue as INotifyCollectionChanged;
-            if (observableCollection != null)
-            {
-
-            }
-
-            itemsControl.isItemsSourceNew = true;
-            itemsControl.InvalidateMeasure();
-        }
-
-        /*
-        private void OnNextItemChange(EventPattern<NotifyCollectionChangedEventArgs> eventData)
-        {
-            var children = (ITemplatedList<UIElement>)this.ItemsPanel.Children;
-            switch (eventData.EventArgs.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (object newItem in eventData.EventArgs.NewItems)
-                    {
-                        children.Add(newItem, this.ItemTemplate);
-                    }
-
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    {
-                        int startingIndex = eventData.EventArgs.OldStartingIndex;
-                        for (int index = startingIndex;
-                             index < startingIndex + eventData.EventArgs.OldItems.Count;
-                             index++)
-                        {
-                            children.RemoveAt(index);
-                        }
-
-                        break;
-                    }
-
-                case NotifyCollectionChangedAction.Replace:
-                    {
-                        int startingIndex = eventData.EventArgs.NewStartingIndex;
-
-                        foreach (object newItem in eventData.EventArgs.NewItems)
-                        {
-                            this.ItemsPanel.Children.RemoveAt(startingIndex);
-                            children.Insert(startingIndex, newItem, this.ItemTemplate);
-                            startingIndex++;
-                        }
-
-                        break;
-                    }
-
-#if !WINDOWS_PHONE
-                case NotifyCollectionChangedAction.Move:
-                    children.Move(eventData.EventArgs.OldStartingIndex, eventData.EventArgs.NewStartingIndex);
-
-                    break;
-#endif
-                case NotifyCollectionChangedAction.Reset:
-                    this.PopulatePanelFromItemsSource();
-                    break;
-            }
-        }*/
 
         private void PopulatePanelFromItemsSource()
         {
@@ -247,5 +115,7 @@ namespace Nine.Graphics.UI.Controls
                 }
             }
         }
+
+        #endregion
     }
 }
