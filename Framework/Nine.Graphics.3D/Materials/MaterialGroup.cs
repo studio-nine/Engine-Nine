@@ -8,17 +8,21 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using Nine.Serialization;
 
     /// <summary>
     /// Defines a material that is grouped by material fragments.
     /// </summary>
-    [Nine.Serialization.NotBinarySerializable]
     [ContentProperty("MaterialParts")]
     public class MaterialGroup : Material, ISupportInitialize
     {
-        internal bool Initializing;
-        internal Effect Effect;
+        private bool Initializing;
+
         internal string Reference;
+
+        [BinarySerializable]
+        internal Effect Effect;
+        [BinarySerializable]
         internal Dictionary<MaterialUsage, MaterialGroup> ExtendedMaterials;
                 
         /// <summary>

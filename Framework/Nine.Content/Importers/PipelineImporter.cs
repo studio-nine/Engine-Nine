@@ -43,12 +43,20 @@ namespace Nine.Serialization.Importers
 
             if (Convert != null)
             {
-                var result = Convert(content);
-                if (result != null)
-                    return result;
+                var converted = Convert(content);
+                if (converted != null)
+                    return converted;
             }
             builder.Compile(builder.OutputFilename, content);
-            return builder.Content.Load<object>(builder.OutputFilename);
+
+            var loaded = builder.Content.Load<object>(builder.OutputFilename);
+            if (loaded != null)
+            {
+                var serializationOverride = serviceProvider.TryGetService<ISerializationOverride>();
+                if (serializationOverride != null)
+                    serializationOverride.SetOverride(loaded, content);
+            }
+            return loaded;
         }
 
         public string[] SupportedFileExtensions

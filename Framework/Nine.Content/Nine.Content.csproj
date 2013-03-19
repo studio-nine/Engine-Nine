@@ -106,6 +106,7 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="Serialization\PipelineObjectWriter.cs" />
     <Compile Include="Serialization\FileSystemResolver.cs" />
     <Compile Include="Serialization\SerializationOverride.cs" />
     <Compile Include="EmbeddedAssemblies.cs" />

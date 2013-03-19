@@ -7,7 +7,7 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Serialization;
 
-    class PipelineWriter<T> : BinaryObjectWriter<T, XnbReader>
+    class PipelineWriter<T> : BinaryObjectWriter<T, PipelineObjectReader>
     {
         private PipelineBuilder builder;
 

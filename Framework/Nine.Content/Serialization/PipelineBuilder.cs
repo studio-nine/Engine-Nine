@@ -305,11 +305,9 @@
                 });
                 output.Flush();
             }
-            catch (Exception e)
+            catch (TargetInvocationException e)
             {
-                Trace.TraceError("Error compiling {0}", content.GetType());
-                Trace.WriteLine(e);
-                throw new InvalidContentException("", e);
+                throw e.InnerException;
             }
         }
 

@@ -82,7 +82,7 @@
     <Compile Include="Animations\TweenAnimations.cs" />
     <Compile Include="Serialization\ContentLoaderExtensions.cs" />
     <Compile Include="Serialization\ZipArchive.cs" />
-    <Compile Include="Serialization\XnbReader.cs" />
+    <Compile Include="Serialization\PipelineObjectReader.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="Serialization\ContentProperties.cs" />
@@ -90,9 +90,8 @@
     <Compile Include="Component.cs" />
     <Compile Include="Serialization\BinaryReaderExtensions2.cs" />
     <Compile Include="Serialization\BinaryWriterExtensions2.cs" />
-    <Compile Include="Serialization\BinaryPackageResolver.cs" />
+    <Compile Include="Serialization\PackageResolver.cs" />
     <Compile Include="Serialization\Interfaces.cs" />
-    <Compile Include="Serialization\XnbLoader.cs" />
     <Compile Include="Design\RectangleConverter.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="SpatialQueryExtensions.cs" />

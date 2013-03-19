@@ -73,14 +73,6 @@ namespace Nine.Serialization
         private IServiceProvider serviceProvider;
         private Dictionary<string, object> cachedContents;
         private Stack<string> workingPath = new Stack<string>();
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentLoader"/> class.
-        /// </summary>
-        public ContentLoader() : this(null)
-        {
-            
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentLoader"/> class.
@@ -88,7 +80,7 @@ namespace Nine.Serialization
         public ContentLoader(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
-            this.resolvers.Add(new BinaryPackageResolver());
+            this.resolvers.Add(new PackageResolver());
             this.searchDirectories.Add("");
         }
 
@@ -103,7 +95,7 @@ namespace Nine.Serialization
         {
             if (workingPath.Count > 0)
                 fileName = Path.Combine(workingPath.Peek(), fileName);
-            fileName = NormalizePath(fileName);
+            fileName = Extensions.CleanPath(fileName);
 
             object result;
             if (cachedContents == null)
@@ -156,15 +148,6 @@ namespace Nine.Serialization
         {
             // TODO: Lock
             return Task.Factory.StartNew(() => Create<T>(fileName));
-        }
-
-        internal static string NormalizePath(string fileName)
-        {
-            if (fileName == null)
-                return null;
-            if (Path.IsPathRooted(fileName))
-                return Path.GetFullPath(fileName);
-            return Path.GetFullPath(Path.Combine("N:\\", fileName)).Substring(3);
         }
 
         /// <summary>
