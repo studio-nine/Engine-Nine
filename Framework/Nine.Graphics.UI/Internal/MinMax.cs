@@ -23,9 +23,10 @@
 */
 #endregion
 
-using Microsoft.Xna.Framework;
 namespace Nine.Graphics.UI.Internal
 {
+    using Microsoft.Xna.Framework;
+
     internal struct MinMax
     {
         internal readonly float MaxHeight;

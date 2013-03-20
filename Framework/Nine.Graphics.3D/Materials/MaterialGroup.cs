@@ -10,6 +10,7 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using Nine.Serialization;
 
     /// <summary>
     /// Defines a material that is grouped by material fragments.
@@ -113,8 +114,8 @@ namespace Nine.Graphics.Materials
                 {
                     var material = ExtendedMaterials[i];
                     if (material != null)
-                        material.SetTexture(textureUsage, texture);
-                }
+                    material.SetTexture(textureUsage, texture);
+        }
             }
         }
 
@@ -158,37 +159,37 @@ namespace Nine.Graphics.Materials
                 result = ExtendedMaterials[(int)usage];
             if (result == null)
                 return null;
-
-            var srcCount = materialParts.Count;
-            var destCount = result.materialParts.Count;
-
-            if (srcCount > 0 && destCount > 0)
-            {
-                var src = 0;
-                var dest = 0;
-                var srcPart = materialParts[0];
-                var destPart = result.materialParts[0];
-                var srcType = srcPart.GetType();
-                var destType = destPart.GetType();
-
-                // Source material parts is a super set of destination material parts.
-                while (dest < destCount)
+            
+                var srcCount = materialParts.Count;
+                var destCount = result.materialParts.Count;
+                
+                if (srcCount > 0 && destCount > 0)
                 {
-                    destPart = result.materialParts[dest++];
-                    destType = destPart.GetType();
+                    var src = 0;
+                    var dest = 0;
+                    var srcPart = materialParts[0];
+                    var destPart = result.materialParts[0];
+                    var srcType = srcPart.GetType();
+                    var destType = destPart.GetType();
 
-                    while (src < srcCount)
+                    // Source material parts is a super set of destination material parts.
+                    while (dest < destCount)
                     {
-                        srcPart = materialParts[src++];
-                        srcType = srcPart.GetType();
-                        if (srcType == destType)
+                        destPart = result.materialParts[dest++];
+                        destType = destPart.GetType();
+
+                        while (src < srcCount)
                         {
-                            srcPart.OnResolveMaterialPart(usage, destPart);
-                            break;
+                            srcPart = materialParts[src++];
+                            srcType = srcPart.GetType();
+                            if (srcType == destType)
+                            {
+                                srcPart.OnResolveMaterialPart(usage, destPart);
+                                break;
+                            }
                         }
                     }
                 }
-            }
             return result;
         }
 
@@ -243,7 +244,7 @@ namespace Nine.Graphics.Materials
         }
 
         internal static bool TryInvokeContentPipelineMethod<T>(string className, string methodName, out T result, params object[] paramters)
-        {
+            {
             result = default(T);
 #if WINDOWS
             if (PipelineAssembly == null)

@@ -109,6 +109,7 @@
     <Compile Include="Graphics\EffectCompiler.cs" />
     <Compile Include="Graphics\MaterialGroupBuilderLexer.cs" />
     <Compile Include="Pipeline\ContentPipeline.cs" />
+    <Compile Include="Serialization\PipelineObjectWriter.cs" />
     <Compile Include="Serialization\FileSystemResolver.cs" />
     <Compile Include="Serialization\SerializationOverride.cs" />
     <Compile Include="EmbeddedAssemblies.cs" />

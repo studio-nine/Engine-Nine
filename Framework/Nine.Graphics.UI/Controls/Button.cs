@@ -25,25 +25,17 @@
 
 namespace Nine.Graphics.UI.Controls
 {
+    using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Controls.Primitives;
+    using Nine.Graphics.UI.Media;
 
     public class Button : ButtonBase
     {
-        public static readonly ReactiveProperty<Thickness> PaddingProperty =
-            ReactiveProperty<Thickness>.Register(
-                "Padding", typeof(Button), new Thickness(), ReactivePropertyChangedCallbacks.InvalidateMeasure);
+        public Thickness Padding { get; set; }
 
-        public Thickness Padding
+        public override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            get
-            {
-                return this.GetValue(PaddingProperty);
-            }
-
-            set
-            {
-                this.SetValue(PaddingProperty, value);
-            }
+            spriteBatch.Draw(new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)ActualWidth, (int)ActualHeight), Color.White);
         }
 
         public override void OnApplyTemplate()

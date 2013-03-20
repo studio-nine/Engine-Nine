@@ -6,61 +6,67 @@ namespace Nine.Serialization
     using System.Text;
     using System.Windows.Markup;
 
-    [ContentProperty("Items")]
+    /// <summary>
+    /// Interface used to build a source asset into a binary package.
+    /// </summary>
+    public interface IPackageBuilder
+    {
+        void Build(Stream input, Stream output);
+    }
+
+    /// <summary>
+    /// Contains operations to create binary packages.
+    /// </summary>
     public class Package
     {
-        internal static readonly string FileExtension = ".nine";
-
-        public string Name { get; set; }
-        public string Version { get; set; }
-        public ICollection<string> AssemblyReferences { get; private set; }
-        public ICollection<PackageReference> References { get; private set; }
-        public ICollection<PackageItem> Items { get; private set; }
-
-        public Package()
-        {
-            References = new List<PackageReference>();
-            Items = new HashSet<PackageItem>();
-        }
-
         static Package()
         {
             Embedded.EnsureAssembliesInitialized();
+
+            Loader.Resolvers.Clear();
+            Loader.Resolvers.Add(Resolver);
+            Loader.Services.Add(new SerializationOverride());
         }
 
-        public static void Build(string inputFileName, string outputFileName)
+        static BinarySerializer Writer = new BinarySerializer();
+        static FileSystemResolver Resolver = new FileSystemResolver();        
+        static ContentLoader Loader = new ContentLoader(new PipelineGraphicsDeviceService { GraphicsDevice = Nine.Graphics.PipelineGraphics.GraphicsDevice });
+        
+        public static void BuildFile(string fileName, string outputFileName)
         {
-            //Build(inputFileName, outputFileName, new PipelineGraphicsDeviceService { GraphicsDevice = Nine.Graphics.PipelineGraphics.GraphicsDevice });
-        }
-
-        public static void Build(string inputFileName, string outputFileName, IServiceProvider serviceProvider)
-        {
-            var reader = new XamlSerializer();
-            var writer = new BinarySerializer();
-            var package = reader.Load<Package>(inputFileName, serviceProvider);
-
-            var inputDiectory = Path.GetDirectoryName(inputFileName);
-            var outputDirectory = Path.Combine(Path.GetDirectoryName(outputFileName), Path.GetFileNameWithoutExtension(inputFileName) + "-" + Guid.NewGuid().ToString("N").ToUpper());
-
+            var outputDirectory = Path.GetDirectoryName(outputFileName);
             if (!Directory.Exists(outputDirectory))
+                Directory.CreateDirectory(outputDirectory);
+
+            using (var output = new FileStream(outputFileName, FileMode.Create))
+        {
+                BuildItem(fileName, output);
+        }
+        }
+
+        private static void BuildItem(string fileName, Stream output)
+        {
+            var content = Loader.Load<object>(fileName);
+            Writer.Save(output, content, Loader);
+        }
+
+
+        public static void BuildDirectory(string directoryName, string outputFileName)
+        {
+            directoryName = Path.GetFullPath(directoryName);
+            outputFileName = Path.GetFullPath(outputFileName);
+
+            var outputDirectory = outputFileName + "-" + Guid.NewGuid().ToString("N").ToUpper();
                 Directory.CreateDirectory(outputDirectory);
 
             try
             {
-                foreach (var item in package.Items)
-                {
-                    if (Path.IsPathRooted(item.Source))
-                        throw new NotSupportedException("Absolute path not supported: " + item.Source);
-
-                    var itemDirectory = Path.Combine(outputDirectory, Path.GetDirectoryName(item.Source));
-                    if (!Directory.Exists(itemDirectory))
-                        Directory.CreateDirectory(itemDirectory);
-
-                    var name = Path.GetFileNameWithoutExtension(item.Source);
-                    using (var output = new FileStream(Path.Combine(itemDirectory, name), FileMode.Create))
+                foreach (var file in Directory.EnumerateFiles(directoryName, "*.*", SearchOption.AllDirectories))
                     {
-                        writer.Save(output, item.Loader.Load<object>(Path.Combine(inputDiectory, package.Name, item.Source), serviceProvider), serviceProvider);
-                    }
+                    var extension = Path.GetExtension(file);
+                    if (string.Equals(extension, ".importer", StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    BuildFile(file, Path.Combine(outputDirectory, file.Substring(directoryName.Length + 1)));
                 }
 
                 if (File.Exists(outputFileName))
@@ -76,26 +82,6 @@ namespace Nine.Serialization
             {
                 Directory.Delete(outputDirectory, true);
             }
-        }
     }
-
-    [ContentProperty("Loader")]
-    [System.Diagnostics.DebuggerDisplay("Source")]
-    public class PackageItem
-    {
-        public string Source
-        {
-            get { return source; }
-            set { source = ContentLoader.NormalizePath(value); }
-        }
-        private string source;
-
-        public IContentImporter Loader { get; set; }
-    }
-
-    [ContentProperty("Source")]
-    public class PackageReference
-    {
-        public string Source { get; set; }
     }
 }

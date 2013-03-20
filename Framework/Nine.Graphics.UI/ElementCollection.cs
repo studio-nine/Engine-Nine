@@ -31,9 +31,7 @@ namespace Nine.Graphics.UI
 
     public class ElementCollection : IList<UIElement>, ITemplatedList<UIElement>
     {
-        private readonly List<UIElement> elements = new List<UIElement>();
-
-        private readonly UIElement owner;
+        #region Properties
 
         public ElementCollection(UIElement owner)
         {
@@ -63,6 +61,17 @@ namespace Nine.Graphics.UI
                 this.SetParents(oldItem, newItem);
             }
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly List<UIElement> elements = new List<UIElement>();
+        private readonly UIElement owner;
+
+        #endregion
+
+        #region Methods
 
         public void Add(UIElement item)
         {
@@ -170,5 +179,7 @@ namespace Nine.Graphics.UI
                 newItem.Parent = this.owner;
             }
         }
+
+#endregion
     }
 }

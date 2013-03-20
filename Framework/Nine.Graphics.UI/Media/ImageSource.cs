@@ -27,10 +27,9 @@ namespace Nine.Graphics.UI.Media
 {
     using Microsoft.Xna.Framework;
 
-    public abstract class ImageSource : ReactiveObject
+    public abstract class ImageSource
     {
         public abstract float Y { get; }
-
         public abstract float X { get; }
 
         internal virtual Vector2 Size

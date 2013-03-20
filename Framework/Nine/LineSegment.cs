@@ -92,6 +92,37 @@ namespace Nine
         }
 
         /// <summary>
+        /// Determines whether a specified <see cref="LineSegment"/> intersects with this <see cref="LineSegment"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool Intersect(LineSegment value)
+        {
+            return (this.IntersectPoint(value) != null);
+        }
+
+        /// <summary>
+        /// Determines whether a specified <see cref="LineSegment"/> intersects with this <see cref="LineSegment"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>Collision Point</returns>
+        public Vector2? IntersectPoint(LineSegment value)
+        {
+            float x1 = End.X - Start.X,
+                y1 = End.Y - Start.Y,
+                x2 = End.X - Start.X,
+                y2 = End.Y - Start.Y;
+            float d = x1 * y2 - y1 * x2;
+            if (d == 0) return null;
+            float x3 = Start.X - Start.X,
+                y3 = Start.Y - Start.Y;
+            float t = (x3 * y2 - y3 * x2) / d;
+            float u = (x3 * y1 - y3 * x1) / d;
+            if (t < 0 || t > 1 || u < 0 || u > 1) return null;
+            return new Vector2(Start.X + t * x1, Start.Y + t * y1);
+        }
+
+        /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         public bool Equals(LineSegment other)

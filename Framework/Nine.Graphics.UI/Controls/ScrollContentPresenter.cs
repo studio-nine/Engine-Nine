@@ -34,9 +34,43 @@ namespace Nine.Graphics.UI.Controls
 
     public class ScrollContentPresenter : ContentControl, IScrollInfo
     {
-        private bool isClippingRequired;
+        #region Properties
 
+        public bool CanHorizontallyScroll
+        {
+            get { return this.scrollData.CanHorizontallyScroll; }
+            set { this.scrollData.CanHorizontallyScroll = value; }
+        }
+
+        public bool CanVerticallyScroll
+        {
+            get { return this.scrollData.CanVerticallyScroll; }
+            set { this.scrollData.CanVerticallyScroll = value; }
+        }
+
+        public Vector2 Extent
+        {
+            get { return this.scrollData.Extent; }
+        }
+
+        public Vector2 Offset
+        {
+            get { return this.scrollData.Offset; }
+        }
+
+        public Vector2 Viewport
+        {
+            get { return this.scrollData.Viewport; }
+        }
+
+        #endregion
+
+        #region Fields
+
+        private bool isClippingRequired;
         private ScrollData scrollData;
+
+        #endregion
 
         public ScrollContentPresenter()
         {
@@ -44,67 +78,15 @@ namespace Nine.Graphics.UI.Controls
             this.scrollData.CanVerticallyScroll = true;
         }
 
-        public bool CanHorizontallyScroll
-        {
-            get
-            {
-                return this.scrollData.CanHorizontallyScroll;
-            }
-
-            set
-            {
-                this.scrollData.CanHorizontallyScroll = value;
-            }
-        }
-
-        public bool CanVerticallyScroll
-        {
-            get
-            {
-                return this.scrollData.CanVerticallyScroll;
-            }
-
-            set
-            {
-                this.scrollData.CanVerticallyScroll = value;
-            }
-        }
-
-        public Vector2 Extent
-        {
-            get
-            {
-                return this.scrollData.Extent;
-            }
-        }
-
-        public Vector2 Offset
-        {
-            get
-            {
-                return this.scrollData.Offset;
-            }
-        }
-
-        public Vector2 Viewport
-        {
-            get
-            {
-                return this.scrollData.Viewport;
-            }
-        }
+        #region Methods
 
         public void SetHorizontalOffset(float offset)
         {
             if (!this.CanHorizontallyScroll)
-            {
                 return;
-            }
 
             if (float.IsNaN(offset))
-            {
                 throw new ArgumentOutOfRangeException("offset");
-            }
 
             offset = Math.Max(0f, offset);
 
@@ -118,14 +100,10 @@ namespace Nine.Graphics.UI.Controls
         public void SetVerticalOffset(float offset)
         {
             if (!this.CanVerticallyScroll)
-            {
                 return;
-            }
 
             if (float.IsNaN(offset))
-            {
                 throw new ArgumentOutOfRangeException("offset");
-            }
 
             offset = Math.Max(0f, offset);
 
@@ -179,14 +157,10 @@ namespace Nine.Graphics.UI.Controls
             {
                 Vector2 availableSizeForContent = availableSize;
                 if (this.scrollData.CanHorizontallyScroll)
-                {
                     availableSizeForContent.X = float.PositiveInfinity;
-                }
 
                 if (this.scrollData.CanVerticallyScroll)
-                {
                     availableSizeForContent.Y = float.PositiveInfinity;
-                }
 
                 content.Measure(availableSizeForContent);
                 desiredSize = content.DesiredSize;
@@ -213,5 +187,7 @@ namespace Nine.Graphics.UI.Controls
 
             this.scrollData.Offset = new Vector2(x, y);
         }
+
+        #endregion
     }
 }

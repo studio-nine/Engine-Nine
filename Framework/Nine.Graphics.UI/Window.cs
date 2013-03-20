@@ -27,11 +27,10 @@ namespace Nine.Graphics.UI
 {
     using System;
     using System.Linq;
-
-    using Nine.Graphics.UI.Graphics;
     using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
     ///     RootElement is the main host for all <see cref = "UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
@@ -41,9 +40,21 @@ namespace Nine.Graphics.UI
         private readonly IInputManager inputManager;
         private UIElement elementWithMouseCapture;
 
+        public UIElement Content { get; set; }
+
+        public IInputManager InputManager
+        {
+            get { return this.inputManager; }
+        }
+
+        /// <summary>
+        ///     Gets or sets the viewport used by <see cref = "Window">RootElement</see> to layout its content.
+        /// </summary>
+        public Rectangle Viewport { get; set; }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref = "Window">RootElement</see> class.
-        /// </summary>
+        /// </summary> 
         public Window() { }
 
         /// <summary>
@@ -56,31 +67,32 @@ namespace Nine.Graphics.UI
                 this.inputManager.GestureSampled += g => OnNextGesture(g);
         }
 
-        public IInputManager InputManager
-        {
-            get { return this.inputManager; }
-        }
-
-        /// <summary>
-        ///     Gets or sets the viewport used by <see cref = "Window">RootElement</see> to layout its content.
-        /// </summary>
-        public Rectangle? Viewport { get; set; }
+        #region Methods
 
         public void Draw(DrawingContext context, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            Rectangle viewport = this.Viewport.HasValue ? this.Viewport.Value : context.GraphicsDevice.Viewport.Bounds;
+            this.Viewport = this.Viewport.IsEmpty? this.Viewport : context.GraphicsDevice.Viewport.Bounds;
+            Update();
+
+            if (Content != null)
+                Content.OnRender(spriteBatch);
+        }
+
+        public void Update()
+        {
+            if (Viewport == null)
+                throw new ArgumentNullException("Viewport");
+
             BoundingRectangle bounds = new BoundingRectangle
             {
-                X = viewport.X,
-                Y = viewport.Y,
-                Width = viewport.Width,
-                Height = viewport.Height,
+                X = Viewport.X,
+                Y = Viewport.Y,
+                Width = Viewport.Width,
+                Height = Viewport.Height,
             };
 
             Measure(new Vector2(bounds.Width, bounds.Height));
             Arrange(bounds);
-
-
         }
 
         public bool CaptureMouse(UIElement element)
@@ -99,6 +111,25 @@ namespace Nine.Graphics.UI
             {
                 this.elementWithMouseCapture = null;
             }
+        }
+
+        public override System.Collections.Generic.IList<UIElement> GetChildren()
+        {
+            if (Content != null)
+                return new UIElement[] { Content };
+            return null;
+        }
+
+        protected override Vector2 ArrangeOverride(Vector2 finalSize)
+        {
+            Content.Arrange(new BoundingRectangle(finalSize.X, finalSize.Y));
+            return Content.RenderSize;
+        }
+
+        protected override Vector2 MeasureOverride(Vector2 availableSize)
+        {
+            Content.Measure(availableSize);
+            return Content.RenderSize;
         }
 
         protected override void OnNextGesture(Gesture gesture)
@@ -132,6 +163,8 @@ namespace Nine.Graphics.UI
             }
             return false;
         }
+
+#endregion
 
         #region ISprite
         Microsoft.Xna.Framework.Graphics.BlendState ISprite.BlendState

@@ -9,18 +9,14 @@ namespace Nine.Serialization
     using System.Reflection;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class BinaryPackageResolver : IContentResolver, IDisposable
+    public class PackageResolver : IContentResolver, IDisposable
     {
-        internal static readonly string FileExtension = ".n";
+        public const string FileExtension = ".n";
 
-        private BinarySerializer binaryLoader;
-
-        public BinaryPackageResolver() { }
-        public BinaryPackageResolver(BinarySerializer binarySerializer) { this.binaryLoader = binarySerializer; }
-
+        private BinarySerializer binaryLoader = new BinarySerializer();
         private Dictionary<string, ZipArchive> cachedPackages = new Dictionary<string, ZipArchive>(StringComparer.OrdinalIgnoreCase);
 
-        public bool TryResolveContent(string fileName, IServiceProvider serviceProvider, out Stream stream, out IContentImporter contentLoader)
+        public bool TryResolveContent(string fileName, IServiceProvider serviceProvider, out Stream stream, out IContentImporter contentImporter)
         {
             ZipArchive package;
             ZipArchiveEntry entry;
@@ -31,22 +27,24 @@ namespace Nine.Serialization
             {
                 if (!cachedPackages.TryGetValue(packageDirectory, out package))
                 {
-                    if (!Directory.Exists(packageDirectory))
-                        continue;
-                    if (!File.Exists(packageFilename = packageDirectory + FileExtension))
-                        continue;
-                    cachedPackages[packageDirectory] = package = new ZipArchive(File.OpenRead(packageFilename));
+                    cachedPackages[packageDirectory] = package =
+                        Directory.Exists(packageDirectory) &&
+                        File.Exists(packageFilename = packageDirectory + FileExtension) ?
+                        new ZipArchive(File.OpenRead(packageFilename)) : null;
                 }
 
-                if ((entry = package.GetEntry(fileName)) != null)
+                if (package == null)
+                    continue;
+
+                if ((entry = package.GetEntry(fileName.Substring(packageDirectory.Length + 1))) != null)
                 {
                     stream = entry.Open();
-                    contentLoader = binaryLoader;
+                    contentImporter = binaryLoader;
                     return true;
                 }
             }
             stream = null;
-            contentLoader = null;
+            contentImporter = null;
             return false;
         }
 

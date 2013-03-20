@@ -28,20 +28,12 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework;
     using System;
 
+    /// <summary>
+    ///     Arranges child elements into a single line that can be oriented horizontally or vertically.
+    /// </summary>
     public class StackPanel : Panel
     {
-        public static readonly ReactiveProperty<Orientation> OrientationProperty =
-            ReactiveProperty<Orientation>.Register(
-                "Orientation", 
-                typeof(StackPanel), 
-                Orientation.Vertical, 
-                ReactivePropertyChangedCallbacks.InvalidateMeasure);
-
-        public Orientation Orientation
-        {
-            get { return this.GetValue(OrientationProperty); }
-            set { this.SetValue(OrientationProperty, value); }
-        }
+        public Orientation Orientation { get; set; }
 
         protected override Vector2 ArrangeOverride(Vector2 arrangeSize)
         {

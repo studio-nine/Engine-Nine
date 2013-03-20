@@ -27,70 +27,70 @@ namespace Nine.Graphics.UI.Controls
 {
     using System;
 
-    public abstract class DefinitionBase : ReactiveObject
+    public abstract class DefinitionBase
     {
-        private readonly DefinitionType definitionType;
+        protected enum DefinitionType { Column, Row }
 
-        protected DefinitionBase(DefinitionType definitionType)
-        {
-            this.definitionType = definitionType;
-        }
-
-        protected enum DefinitionType
-        {
-            Column, 
-            Row
-        }
-
-        internal float AvailableLength { get; set; }
-
-        internal float Denominator { get; set; }
-
-        internal float FinalLength { get; set; }
-
-        internal float FinalOffset { get; set; }
-
-        internal GridUnitType LengthType { get; set; }
-
-        internal float MinLength { get; set; }
-
-        internal float Numerator { get; set; }
-
-        internal float StarAllocationOrder { get; set; }
+        #region Properties / Fields
 
         internal GridLength UserLength
         {
             get
             {
                 return this.definitionType == DefinitionType.Column
-                           ? this.GetValue(ColumnDefinition.WidthProperty)
-                           : this.GetValue(RowDefinition.HeightProperty);
+                           ? GetValue<GridLength>("Width") : GetValue<GridLength>("Height");
             }
         }
-
         internal float UserMaxLength
         {
             get
             {
                 return this.definitionType == DefinitionType.Column
-                           ? this.GetValue(ColumnDefinition.MaxWidthProperty)
-                           : this.GetValue(RowDefinition.MaxHeightProperty);
+                           ? GetValue<float>("MaxWidth") : GetValue<float>("MaxHeight");
             }
         }
-
         internal float UserMinLength
         {
             get
             {
                 return this.definitionType == DefinitionType.Column
-                           ? this.GetValue(ColumnDefinition.MinWidthProperty)
-                           : this.GetValue(RowDefinition.MinHeightProperty);
+                           ? GetValue<float>("MinWidth") : GetValue<float>("MinHeight");
             }
         }
+
+        private readonly DefinitionType definitionType;
+
+        internal float AvailableLength { get; set; }
+        internal float Denominator { get; set; }
+        internal float FinalLength { get; set; }
+        internal float FinalOffset { get; set; }
+        internal GridUnitType LengthType { get; set; }
+        internal float MinLength { get; set; }
+        internal float Numerator { get; set; }
+        internal float StarAllocationOrder { get; set; }
+
+        #endregion
+
+        protected DefinitionBase(DefinitionType definitionType)
+        {
+            this.definitionType = definitionType;
+        }
+
+        #region Methods
 
         internal void UpdateMinLength(float minLength)
         {
             this.MinLength = Math.Max(this.MinLength, minLength);
         }
+
+        private T GetValue<T>(string Name) where T : struct
+        {
+            var Property = this.GetType().GetProperty(Name);
+            if (Property == null)
+                throw new ArgumentNullException("name");
+            return (T)Property.GetValue(this, null);
+        }
+
+        #endregion
     }
 }

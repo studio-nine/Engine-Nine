@@ -26,62 +26,24 @@
 namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
-    using Nine.Graphics.UI.Graphics;
+    using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Internal.Controls;
     using Nine.Graphics.UI.Media;
 
+    /// <summary>
+    ///     Represents a control that displays an image.
+    /// </summary>
     public class Image : UIElement
     {
-        public static readonly ReactiveProperty<ImageSource> SourceProperty =
-            ReactiveProperty<ImageSource>.Register(
-                "Source", typeof(Image), null, ReactivePropertyChangedCallbacks.InvalidateMeasure);
+        public Texture2D Source { get; set; }
+        public Stretch Stretch { get; set; }
+        public StretchDirection StretchDirection { get; set; }
 
-        public static readonly ReactiveProperty<StretchDirection> StretchDirectionProperty =
-            ReactiveProperty<StretchDirection>.Register(
-                "StretchDirection", 
-                typeof(Image), 
-                StretchDirection.Both, 
-                ReactivePropertyChangedCallbacks.InvalidateMeasure);
-
-        public static readonly ReactiveProperty<Stretch> StretchProperty = ReactiveProperty<Stretch>.Register(
-            "Stretch", typeof(Image), Stretch.Uniform, ReactivePropertyChangedCallbacks.InvalidateMeasure);
-
-        public ImageSource Source
+        public override void OnRender(SpriteBatch spriteBatch)
         {
-            get
+            if (this.Source != null)
             {
-                return this.GetValue(SourceProperty);
-            }
-
-            set
-            {
-                this.SetValue(SourceProperty, value);
-            }
-        }
-
-        public Stretch Stretch
-        {
-            get
-            {
-                return this.GetValue(StretchProperty);
-            }
-
-            set
-            {
-                this.SetValue(StretchProperty, value);
-            }
-        }
-
-        public StretchDirection StretchDirection
-        {
-            get
-            {
-                return this.GetValue(StretchDirectionProperty);
-            }
-
-            set
-            {
-                this.SetValue(StretchDirectionProperty, value);
+                spriteBatch.Draw(this.Source, new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)RenderSize.X, (int)RenderSize.Y), Color.White);
             }
         }
 
@@ -95,23 +57,12 @@ namespace Nine.Graphics.UI.Controls
             return this.GetScaledImageSize(availableSize);
         }
 
-        protected override void OnRender(IDrawingContext drawingContext)
-        {
-            if (this.Source != null)
-            {
-                drawingContext.DrawImage(this.Source, new BoundingRectangle(this.RenderSize.X, this.RenderSize.Y));
-            }
-        }
-
         private Vector2 GetScaledImageSize(Vector2 givenSize)
         {
-            ImageSource source = this.Source;
-            if (source == null)
-            {
+            if (Source == null)
                 return new Vector2();
-            }
 
-            Vector2 contentSize = source.Size;
+            Vector2 contentSize = new Vector2(Source.Width, Source.Height);
             Vector2 scale = Viewbox.ComputeScaleFactor(givenSize, contentSize, this.Stretch, this.StretchDirection);
             return new Vector2(contentSize.X * scale.X, contentSize.Y * scale.Y);
         }
