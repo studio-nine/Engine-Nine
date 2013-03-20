@@ -449,7 +449,7 @@ namespace Nine.Graphics.UI.Controls
 
         private static void SetFinalLength(DefinitionBase[] definitions, float gridFinalLength)
         {
-            if (definitions == null) // TODO?
+            if (definitions == null)
                 return;
 
             float occupiedLength = 0f;

@@ -20,10 +20,7 @@ namespace Samples
         {
             var scene = new Scene();
 
-            scene.Add(new Camera2D(graphics)
-            {
-                InputEnabled = true
-            });
+            scene.Add(new Camera2D(graphics) { InputEnabled = true });
 
             Window window = new Window();
 

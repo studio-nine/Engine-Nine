@@ -67,7 +67,7 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        public override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(SpriteBatch spriteBatch)
         {
             if (this.Background != null)
             {

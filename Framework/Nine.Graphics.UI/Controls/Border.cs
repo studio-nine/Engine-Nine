@@ -46,13 +46,14 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        public override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(SpriteBatch spriteBatch)
         {
             if (BorderThickness != Thickness.Empty && BorderBrush != null)
             {
                 GenerateBorders();
                 foreach (BoundingRectangle border in this.borders)
                 {
+                    // TODO: It needs to get the grid visualOffset
                     var Rect = border;
                     Rect.X += VisualOffset.X;
                     Rect.Y += VisualOffset.Y;
@@ -83,7 +84,6 @@ namespace Nine.Graphics.UI.Controls
             UIElement child = this.Child;
             if (child != null)
             {
-                // TODO!: VisualOffset
                 var finalRect = new BoundingRectangle(finalSize.X, finalSize.Y);
                 finalRect = finalRect.Deflate(this.BorderThickness);
                 finalRect = finalRect.Deflate(this.Padding);

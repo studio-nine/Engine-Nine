@@ -44,7 +44,7 @@
 
             var border2 = new Border()
             {
-                Child = new Image() { }
+                Child = new Border() { }
             };
             Grid.SetRow(border2, 0);
             Grid.SetColumn(border2, 0);
@@ -58,7 +58,7 @@
 
             Assert.AreEqual(new Vector2(100, 100), border2.RenderSize);
             Assert.AreEqual(new Vector2(0, 0), border2.VisualOffset);
-            Assert.AreEqual(new Vector2(50, 50), border2.Child.VisualOffset);
+            Assert.AreEqual(new Vector2(0, 0), border2.Child.VisualOffset);
         }
     }
 }
