@@ -94,7 +94,7 @@ namespace Nine.Serialization
 
             block = new byte[filenameLength];
             n = s.Read(block, 0, block.Length);
-            FullName = Shared.StringFromBuffer(block, 0, block.Length);
+            FullName = Extensions.CleanPath(Shared.StringFromBuffer(block, 0, block.Length));
             Name = Path.GetFileName(FullName);
 
             s.Seek(extraFieldLength, SeekOrigin.Current);
@@ -168,7 +168,6 @@ namespace Nine.Serialization
         {
             this.stream = stream;
             this.entries = new List<ZipArchiveEntry>();
-            this.entriesDictionary = new Dictionary<string, ZipArchiveEntry>();
             this.Entries = new ReadOnlyCollection<ZipArchiveEntry>(entries);
 
             ZipArchiveEntry e;
@@ -184,12 +183,11 @@ namespace Nine.Serialization
         {
             if (entriesDictionary == null)
             {
-                entriesDictionary = new Dictionary<string, ZipArchiveEntry>(entries.Count);
+                entriesDictionary = new Dictionary<string, ZipArchiveEntry>(entries.Count, StringComparer.OrdinalIgnoreCase);
                 for (int i = 0; i < entries.Count; i++)
-                {
                     entriesDictionary.Add(entries[i].FullName, entries[i]);
-                }
             }
+
             ZipArchiveEntry result;
             if (entriesDictionary.TryGetValue(filename, out result))
                 return result;

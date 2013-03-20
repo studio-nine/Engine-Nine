@@ -1,4 +1,4 @@
-﻿namespace Nine.Graphics
+﻿namespace Nine.Content.Pipeline
 {
     using System.Linq;
     using System.Windows.Forms;

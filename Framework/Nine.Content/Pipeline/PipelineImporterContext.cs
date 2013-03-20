@@ -1,4 +1,4 @@
-﻿namespace Nine.Serialization
+﻿namespace Nine.Content.Pipeline
 {
     using Microsoft.Xna.Framework.Content.Pipeline;
 
@@ -18,7 +18,7 @@
 
         public override string IntermediateDirectory
         {
-            get { return pipelineBuilder.Constants.IntermediateDirectory; }
+            get { return pipelineBuilder.IntermediateDirectory; }
         }
 
         public override ContentBuildLogger Logger
@@ -28,7 +28,7 @@
 
         public override string OutputDirectory
         {
-            get { return pipelineBuilder.Constants.OutputDirectory; }
+            get { return pipelineBuilder.OutputDirectory; }
         }
     }
 }

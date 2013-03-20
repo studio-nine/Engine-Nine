@@ -53,7 +53,7 @@ namespace Nine.Graphics.UI.Controls
         public string Text { get; set; }
         public TextWrapping Wrapping { get; set; }
         private string formattedText;
-        
+
         #endregion
 
         public TextBlock(SpriteFont spriteFont)
@@ -70,10 +70,7 @@ namespace Nine.Graphics.UI.Controls
         protected internal override void OnRender(SpriteBatch spriteBatch)
         {
             if (this.Background != null)
-            {
-                spriteBatch.Draw(
-                    new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)this.ActualWidth, (int)this.ActualHeight), Background.Color);
-            }
+                spriteBatch.Draw(RenderTransform, Background.Color);
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
             spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top), TextColor.Color);

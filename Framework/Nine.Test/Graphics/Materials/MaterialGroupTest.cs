@@ -6,6 +6,7 @@ namespace Nine.Graphics.Materials.Test
     using Nine.Graphics.Materials;
     using Nine.Graphics.Materials.MaterialParts;
     using Nine.Serialization;
+    using Nine.Content.Pipeline;
 
     [TestClass]
     public class MaterialGroupTest
@@ -22,7 +23,7 @@ namespace Nine.Graphics.Materials.Test
         public void MaterialGroupEmptyTest()
         {
             MaterialGroup materialGroup = new MaterialGroup();
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -30,7 +31,7 @@ namespace Nine.Graphics.Materials.Test
         {
             MaterialGroup materialGroup = new MaterialGroup();
             materialGroup.MaterialParts.Add(new DiffuseMaterialPart());
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -39,7 +40,7 @@ namespace Nine.Graphics.Materials.Test
             MaterialGroup materialGroup = new MaterialGroup();
             materialGroup.MaterialParts.Add(new SkinnedMaterialPart());
             materialGroup.MaterialParts.Add(new DiffuseMaterialPart());
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -50,7 +51,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(new SpecularMaterialPart());
             materialGroup.MaterialParts.Add(new EmissiveMaterialPart());
             materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -61,7 +62,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(new SpecularMaterialPart());
             materialGroup.MaterialParts.Add(new NormalMapMaterialPart());
             materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -72,7 +73,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(new SpecularMaterialPart());
             materialGroup.MaterialParts.Add(new NormalMapMaterialPart());
             materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.DepthAndNormal, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.DepthAndNormal, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -84,7 +85,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(new SpecularMaterialPart());
             materialGroup.MaterialParts.Add(new NormalMapMaterialPart());
             materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -95,7 +96,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(new NormalMapMaterialPart());
             materialGroup.MaterialParts.Add(new SpecularMaterialPart());
             materialGroup.MaterialParts.Add(new DeferredLightsMaterialPart());
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -105,7 +106,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(new DiffuseMaterialPart());
             materialGroup.MaterialParts.Add(new SpecularMaterialPart());
             materialGroup.MaterialParts.Add(new DeferredLightsMaterialPart());
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.DepthAndNormal, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.DepthAndNormal, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -121,7 +122,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(layer0);
             materialGroup.MaterialParts.Add(layer1);
 
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -139,7 +140,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(layer1);
             materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
 
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -159,7 +160,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(layer1);
             materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
 
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -179,7 +180,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(layer1);
             materialGroup.MaterialParts.Add(new DeferredLightsMaterialPart());
 
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
 
         [TestMethod()]
@@ -199,7 +200,7 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(layer1);
             materialGroup.MaterialParts.Add(new DeferredLightsMaterialPart());
 
-            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.DepthAndNormal, new PipelineBuilder().ProcessorContext);
+            //MaterialGroupBuilder.BuildByUsage(materialGroup, MaterialUsage.DepthAndNormal, new PipelineBuilder().ProcessorContext);
         }
     }
 }

@@ -4,8 +4,7 @@
     using System.IO;
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-
-
+    
     /// <summary>
     /// Imports grayscale raw texture.
     /// </summary>

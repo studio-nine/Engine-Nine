@@ -106,6 +106,10 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="Graphics\EffectCompiler.cs" />
+    <Compile Include="Graphics\MaterialGroupBuilderLexer.cs" />
+    <Compile Include="Pipeline\ContentPipeline.cs" />
+    <Compile Include="Serialization\PipelineObjectWriter.cs" />
     <Compile Include="Serialization\FileSystemResolver.cs" />
     <Compile Include="Serialization\SerializationOverride.cs" />
     <Compile Include="EmbeddedAssemblies.cs" />
@@ -114,7 +118,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EmbeddedAssemblies.resx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\ModelWriter.cs" />
     <Compile Include="Graphics\MaterialPartShaders.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -126,53 +129,50 @@
     <Compile Include="Importers\EffectImporter.cs" />
     <Compile Include="Importers\SpriteFontImporter.cs" />
     <Compile Include="Importers\HeightmapImporter.cs" />
-    <Compile Include="Serialization\PipelineBuilder.cs" />
-    <Compile Include="Serialization\PipelineBuildLogger.cs" />
-    <Compile Include="Serialization\PipelineConstants.cs" />
-    <Compile Include="Serialization\PipelineContentManager.cs" />
-    <Compile Include="Serialization\PipelineImporterContext.cs" />
-    <Compile Include="Serialization\PipelineProcessorContext.cs" />
+    <Compile Include="Pipeline\PipelineBuilder.cs" />
+    <Compile Include="Pipeline\PipelineBuildLogger.cs" />
+    <Compile Include="Pipeline\PipelineContentManager.cs" />
+    <Compile Include="Pipeline\PipelineImporterContext.cs" />
+    <Compile Include="Pipeline\PipelineProcessorContext.cs" />
     <Compile Include="Serialization\XamlSerializer.cs" />
     <Compile Include="Design\TransformConverter.cs" />
     <Compile Include="Graphics\MaterialPaintGroupBuilder.cs" />
     <Compile Include="Serialization\Package.cs" />
-    <Compile Include="Processors\InstancedModelProcessor.cs" />
+    <Compile Include="Pipeline\Processors\InstancedModelProcessor.cs" />
     <Compile Include="Transform2D.cs" />
     <Compile Include="Graphics\DistributionMap.cs" />
     <Compile Include="Graphics\Splatter.cs" />
     <Compile Include="Graphics\MaterialGroupBuilder.cs" />
     <Compile Include="Graphics\CustomEffectContent.cs" />
-    <Compile Include="Graphics\PipelineGraphics.cs" />
+    <Compile Include="Pipeline\PipelineGraphics.cs" />
     <Compile Include="Navigation\PathGridBuilder.cs" />
     <Compile Include="Navigation\PathGridContent.cs" />
-    <Compile Include="Processors\CustomMaterialProcessor.cs" />
-    <Compile Include="Processors\CustomEffectProcessor.cs" />
-    <Compile Include="Processors\MaterialGroupProcessor.cs" />
+    <Compile Include="Pipeline\Processors\CustomMaterialProcessor.cs" />
+    <Compile Include="Pipeline\Processors\CustomEffectProcessor.cs" />
+    <Compile Include="Pipeline\Processors\MaterialGroupProcessor.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />
     <Compile Include="Graphics\ProceduralTextureGenerator.cs" />
-    <Compile Include="Importers\ManifestImporter.cs" />
-    <Compile Include="ContentProcessorContextExtensions.cs" />
-    <Compile Include="Processors\ManifestProcessor.cs" />
-    <Compile Include="Processors\ModelCollisionProcessor.cs" />
-    <Compile Include="Processors\NormalTextureProcessor.cs" />
+    <Compile Include="Pipeline\PipelineExtensions.cs" />
+    <Compile Include="Pipeline\Processors\ManifestProcessor.cs" />
+    <Compile Include="Pipeline\Processors\ModelCollisionProcessor.cs" />
+    <Compile Include="Pipeline\Processors\NormalTextureProcessor.cs" />
     <Compile Include="Degrees.cs" />
     <Compile Include="ExternalReference.cs" />
     <Compile Include="TextureTransform.cs" />
     <Compile Include="Transform.cs" />
     <Compile Include="Serialization\TreeWriter.cs" />
     <Compile Include="Graphics\TextureAtlasContent.cs" />
-    <Compile Include="Processors\ModelAnimationProcessor.cs" />
-    <Compile Include="Processors\ModelSkeletonProcessor.cs" />
-    <Compile Include="Processors\TextureAtlasProcessor.cs" />
+    <Compile Include="Pipeline\Processors\ModelAnimationProcessor.cs" />
+    <Compile Include="Pipeline\Processors\ModelSkeletonProcessor.cs" />
+    <Compile Include="Pipeline\Processors\TextureAtlasProcessor.cs" />
     <Compile Include="Importers\RawTextureImporter.cs" />
-    <Compile Include="Processors\GrayScaleTextureProcessor.cs" />
-    <Compile Include="Processors\SplatterTextureProcessor.cs" />
-    <Compile Include="Processors\ExtendedModelProcessor.cs" />
-    <Compile Include="Processors\HeightmapProcessor.cs" />
-    <Compile Include="Processors\GeometryProcessor.cs" />
+    <Compile Include="Pipeline\Processors\GrayScaleTextureProcessor.cs" />
+    <Compile Include="Pipeline\Processors\SplatterTextureProcessor.cs" />
+    <Compile Include="Pipeline\Processors\ExtendedModelProcessor.cs" />
+    <Compile Include="Pipeline\Processors\HeightmapProcessor.cs" />
+    <Compile Include="Pipeline\Processors\GeometryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContentReference.cs" />
-    <Compile Include="Importers\PipelineImporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nine.Graphics.3D\Nine.Graphics.3D.csproj">

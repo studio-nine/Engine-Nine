@@ -140,16 +140,9 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-#if WINDOWS
-            if (!IsContentBuild)
-                throw new InvalidOperationException();
-
-            var flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
-            var pipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().Single(assembly => assembly.GetName().Name == "Nine.Serialization");
-            return (string)pipelineAssembly.GetTypes().Single(type => type.Name == "MaterialPaintGroupBuilder").InvokeMember("Build", flags, null, null, new object[] { this, usage });
-#else
-            throw new NotSupportedException();
-#endif
+            string result;
+            MaterialGroup.TryInvokeContentPipelineMethod("MaterialPaintGroupBuilder", "Build", out result, this, usage);
+            return result;
         }
 
         /// <summary>

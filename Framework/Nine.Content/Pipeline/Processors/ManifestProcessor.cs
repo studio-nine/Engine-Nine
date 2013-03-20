@@ -1,4 +1,4 @@
-﻿namespace Nine.Serialization.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
     using System;
     using System.Collections.Generic;

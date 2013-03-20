@@ -16,7 +16,7 @@ namespace Samples
         public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
-            scene = new Scene(new PassThroughSceneManager(), null);
+            //scene = new Scene(new PassThroughSceneManager(), null);
             //scene = new Scene(new BruteForceSceneManager());
             var cube = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/Cube/Cube.fbx");
 

@@ -1,4 +1,4 @@
-﻿namespace Nine.Serialization
+﻿namespace Nine.Content.Pipeline
 {
     using System;
     using System.Collections.Generic;
@@ -10,14 +10,8 @@
     {
         public Dictionary<string, Stream> MemoryStreams { get; private set; }
 
-        public PipelineContentManager(GraphicsDevice graphics)
-            : base(new PipelineGraphicsDeviceService() { GraphicsDevice = graphics })
-        {
-            MemoryStreams = new Dictionary<string, Stream>(StringComparer.OrdinalIgnoreCase);
-        }
-
         public PipelineContentManager(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+            : base(serviceProvider ?? new PipelineGraphicsDeviceService())
         {
             MemoryStreams = new Dictionary<string, Stream>(StringComparer.OrdinalIgnoreCase);
         }
@@ -47,8 +41,11 @@
         public event EventHandler<EventArgs> DeviceReset;
         public event EventHandler<EventArgs> DeviceResetting;
 #pragma warning restore 0067
-
-        public GraphicsDevice GraphicsDevice { get; set; }
+        
+        public GraphicsDevice GraphicsDevice
+        {
+            get { return PipelineGraphics.GraphicsDevice; }
+        }
 
         public object GetService(Type serviceType)
         {

@@ -1,4 +1,4 @@
-﻿namespace Nine.Serialization
+﻿namespace Nine.Content.Pipeline
 {
     using System.Diagnostics;
     using Microsoft.Xna.Framework.Content.Pipeline;

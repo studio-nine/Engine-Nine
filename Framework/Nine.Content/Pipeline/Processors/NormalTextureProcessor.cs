@@ -1,4 +1,4 @@
-﻿namespace Nine.Serialization.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Processors;

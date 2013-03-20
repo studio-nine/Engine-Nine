@@ -1,5 +1,9 @@
-﻿namespace Nine.Serialization
+﻿namespace Nine.Content.Pipeline
 {
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+    using Microsoft.Xna.Framework.Graphics;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -8,43 +12,35 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Microsoft.Xna.Framework.Content;
-    using Microsoft.Xna.Framework.Content.Pipeline;
-    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-    using Microsoft.Xna.Framework.Graphics;
     using IImporter = Microsoft.Xna.Framework.Content.Pipeline.IContentImporter;
     using IProcessor = Microsoft.Xna.Framework.Content.Pipeline.IContentProcessor;
     
-    /// <summary>
-    /// Enables Xna framework content build without using Visual Studio
-    /// </summary>
-    public class PipelineBuilder
+    class PipelineBuilder
     {
-        internal string OutputFilename;
-        internal PipelineConstants Constants;
+        public string IntermediateDirectory { get; private set; }
+        public string OutputDirectory { get; private set; }
+        public string OutputFilename { get; private set; }
 
-        private PipelineImporterContext importerContext;
-        private PipelineProcessorContext processorContext;
+        public ContentImporterContext ImporterContext { get; private set; }
+        public ContentProcessorContext ProcessorContext { get; private set; }
 
-        public ContentImporterContext ImporterContext
+        public PipelineBuilder(string intermediateDirectory = null, string outputDirectory = null)
         {
-            get { return importerContext ?? (importerContext = new PipelineImporterContext(this)); }
-        }
+            ImporterContext = new PipelineImporterContext(this);
+            ProcessorContext = new PipelineProcessorContext(this);
 
-        public ContentProcessorContext ProcessorContext
-        {
-            get { return processorContext ?? (processorContext = new PipelineProcessorContext(this)); }
-        }
+            if (intermediateDirectory == null || outputDirectory == null)
+            {
+                var guid = Guid.NewGuid().ToString("N").ToUpper();
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                var versionString = string.Format("v{0}.{1}", version.Major, version.Minor);
+                var baseDirectory = Path.Combine(Path.GetTempPath(), "Engine Nine", versionString, "PipelineBuilder");
+                IntermediateDirectory = Path.Combine(baseDirectory, "Intermediate");
+                OutputDirectory = Path.Combine(baseDirectory, "Bin");
+            }
 
-        public PipelineBuilder(GraphicsDevice graphics = null) : this(graphics, TargetPlatform.Windows)
-        {
-            
-        }
-
-        public PipelineBuilder(GraphicsDevice graphics, TargetPlatform targetPlatform, 
-                               string intermediateDirectory = null, string outputDirectory = null)
-        {
-            Constants = new PipelineConstants(intermediateDirectory, outputDirectory, targetPlatform, graphics);
+            IntermediateDirectory = intermediateDirectory ?? IntermediateDirectory;
+            OutputDirectory = outputDirectory ?? OutputDirectory;
         }
 
         public string Build(string sourceAssetFile, string processorName, OpaqueDataDictionary processorParameters, string importerName, string fileName)
@@ -135,8 +131,7 @@
                     throw new InvalidOperationException(string.Format("Cannot find processor {0}", processorName));
 
                 ApplyParameters(processor, processorParameters);
-                processorContext = processorContext ?? new PipelineProcessorContext(this);
-                return (TOutput)processor.Process(input, processorContext);
+                return (TOutput)processor.Process(input, ProcessorContext);
             }
             catch (Exception e)
             {
@@ -148,7 +143,7 @@
 
         public ContentManager Content
         {
-            get { return contentManager ?? (contentManager = new PipelineContentManager(Constants.GraphicsDevice)); }
+            get { return contentManager; }
         }
         private PipelineContentManager contentManager;
 
@@ -185,7 +180,7 @@
 
         public PipelineBuilder Clone()
         {
-            var result = new PipelineBuilder(Constants.GraphicsDevice, Constants.TargetPlatform, Constants.IntermediateDirectory, Constants.OutputDirectory);
+            var result = new PipelineBuilder(IntermediateDirectory, OutputDirectory);
             result.ExternalReferenceResolve = this.ExternalReferenceResolve;
             return result;
         }
@@ -221,7 +216,7 @@
             if (content == null)
                 return null;
             var contentWriter = ContentWriters.FirstOrDefault(writer => writer.TargetType == content.GetType());
-            return contentWriter != null ? contentWriter.GetRuntimeType(Constants.TargetPlatform) : content.GetType().AssemblyQualifiedName;
+            return contentWriter != null ? contentWriter.GetRuntimeType(TargetPlatform.Windows) : content.GetType().AssemblyQualifiedName;
         }
 
         private static IProcessor FindDefaultProcessor(IImporter importer)
@@ -273,7 +268,7 @@
         private string GetAssetFilename(string fileName, int i, string extension)
         {
             if (!Path.IsPathRooted(fileName))
-                fileName = Path.Combine(Constants.OutputDirectory, fileName);
+                fileName = Path.Combine(OutputDirectory, fileName);
 
             if (i > 0)
                 return fileName + i.ToString() + extension;
@@ -301,13 +296,15 @@
                 var method = contentCompiler.GetType().GetMethod("Compile", BindingFlags.NonPublic | BindingFlags.Instance);
                 method.Invoke(contentCompiler, new object[] 
                 {
-                    output, content, TargetPlatform.Windows, GraphicsProfile.Reach, false, Constants.OutputDirectory, ".",
+                    output, content, TargetPlatform.Windows, GraphicsProfile.HiDef, false, OutputDirectory, ".",
                 });
                 output.Flush();
             }
-            catch (TargetInvocationException e)
+            catch (Exception e)
             {
-                throw e.InnerException;
+                Trace.TraceError("Error compiling {0}", content.GetType());
+                Trace.WriteLine(e);
+                throw new InvalidContentException("", e);
             }
         }
 

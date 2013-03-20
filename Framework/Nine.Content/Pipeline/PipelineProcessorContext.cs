@@ -1,4 +1,4 @@
-﻿namespace Nine.Serialization
+﻿namespace Nine.Content.Pipeline
 {
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Graphics;
@@ -36,12 +36,12 @@
         
         public override string BuildConfiguration
         {
-            get { return pipelineBuilder.Constants.BuildConfiguration; }
+            get { return "Release"; }
         }
 
         public override string IntermediateDirectory
         {
-            get { return pipelineBuilder.Constants.IntermediateDirectory; }
+            get { return pipelineBuilder.IntermediateDirectory; }
         }
 
         public override ContentBuildLogger Logger
@@ -51,7 +51,7 @@
 
         public override string OutputDirectory
         {
-            get { return pipelineBuilder.Constants.OutputDirectory; }
+            get { return pipelineBuilder.OutputDirectory; }
         }
 
         public override string OutputFilename
@@ -66,12 +66,12 @@
 
         public override TargetPlatform TargetPlatform
         {
-            get { return pipelineBuilder.Constants.TargetPlatform; }
+            get { return TargetPlatform.Windows; }
         }
 
         public override GraphicsProfile TargetProfile
         {
-            get { return pipelineBuilder.Constants.TargetProfile; }
+            get { return GraphicsProfile.HiDef; }
         }
     }
 }

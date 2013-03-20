@@ -331,7 +331,6 @@ namespace Nine.Serialization
         {
             public void SetStream(Stream stream)
             {
-                Flush();
                 base.OutStream = stream;
             }
         }
@@ -347,8 +346,6 @@ namespace Nine.Serialization
 
             public void SetStream(Stream stream)
             {
-                if (this.stream.InnerStream != null)
-                    this.stream.InnerStream.Flush();
                 this.stream.InnerStream = stream;
             }
         }

@@ -7,6 +7,7 @@ namespace Nine
     using Microsoft.Xna.Framework;
     using System.Reflection;
     using System.Linq;
+    using System.IO;
     
     static class Extensions
     {
@@ -100,6 +101,15 @@ namespace Nine
                     }
                 }
             }
+        }
+
+        public static string CleanPath(string path)
+        {
+            if (path == null)
+                return null;
+            if (Path.IsPathRooted(path))
+                return Path.GetFullPath(path);
+            return Path.GetFullPath(Path.Combine("N:\\", path)).Substring(3);
         }
 
         public static int UpperPowerOfTwo(int v)

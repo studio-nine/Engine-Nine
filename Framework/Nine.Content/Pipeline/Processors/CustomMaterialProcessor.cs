@@ -1,4 +1,4 @@
-﻿namespace Nine.Serialization.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
     using System.IO;
     using System.Security.Cryptography;
@@ -28,7 +28,7 @@
                 }
 
                 var name = hashString.ToString().ToUpperInvariant();
-                var assetName = Path.Combine(ContentProcessorContextExtensions.DefaultOutputDirectory, name);
+                var assetName = Path.Combine(PipelineExtensions.DefaultOutputDirectory, name);
                 var sourceFile = Path.Combine(context.IntermediateDirectory, input.GetType().Name + "-" + name + ".fx");
 
                 File.WriteAllText(sourceFile, input.ShaderCode);

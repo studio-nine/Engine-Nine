@@ -49,6 +49,7 @@ namespace Samples
 #if WINDOWS
             loader.Resolvers.Add(new FileSystemResolver());
 #endif
+            //Package.BuildDirectory("../Content1", "../Content.zip");
 
             Components.Add(new FrameRate(GraphicsDevice, loader.Load<SpriteFont>("Fonts/Consolas.spritefont")));
             Components.Add(new InputComponent(Window.Handle));  

@@ -7,6 +7,7 @@
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
     using Nine.Serialization;
+    using Nine.Content.Pipeline;
 
     public class DistributionMap
     {
@@ -74,7 +75,7 @@
 
             var random = new Random(Seed);
             var transforms = new List<Matrix>();
-            var texture = (new PipelineBuilder()).BuildAndLoad<Texture2DContent>(Texture.Filename, (string)null, null, null);            
+            var texture = ContentPipeline.LoadContent<Texture2DContent>(Texture.Filename, new Microsoft.Xna.Framework.Content.Pipeline.TextureImporter());
             
             texture.ConvertBitmapType(typeof(PixelBitmapContent<float>));
             

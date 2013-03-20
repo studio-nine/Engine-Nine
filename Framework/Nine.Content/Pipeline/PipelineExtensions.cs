@@ -1,4 +1,4 @@
-﻿namespace Nine.Serialization
+﻿namespace Nine.Content.Pipeline
 {
     using System;
     using System.ComponentModel;
@@ -20,8 +20,7 @@
     /// Enables a centralized place where LinkedEffect can be compiled and cached.
     /// Use this library to eliminated duplicated LinkedEffects.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class ContentProcessorContextExtensions
+    static class PipelineExtensions
     {
         #region BuildAsset
         // This value will be used by ContentReference when serialize using

@@ -2,6 +2,7 @@
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Content.Pipeline;
     using Nine.Serialization;
 
     [TestClass]
