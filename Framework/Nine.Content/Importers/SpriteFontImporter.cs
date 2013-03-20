@@ -10,7 +10,7 @@ namespace Nine.Serialization.Importers
     {
         public object Import(Stream stream, IServiceProvider serviceProvider)
         {
-            return ContentPipeline.Load<Microsoft.Xna.Framework.Graphics.Model>(stream, new FontDescriptionImporter(), new FontDescriptionProcessor(), serviceProvider);
+            return ContentPipeline.Load<Microsoft.Xna.Framework.Graphics.SpriteFont>(stream, new FontDescriptionImporter(), new FontDescriptionProcessor(), serviceProvider);
         }
 
         public string[] SupportedFileExtensions

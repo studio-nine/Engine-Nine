@@ -15,10 +15,10 @@
     /// For example, a sprite may contain a texture property that cannot 
     /// be saved directly, when saving that texture property, the BinarySerializer
     /// will first try to get a serialization override using the 
-    /// <see cref="ISerializationOverride.TryGetSerializationOverride"/>
-    /// method, it will get a <see cref="ContentReference"/> object that contains
+    /// <see cref="TryGetOverride"/>
+    /// method, it will get a ContentReference object that contains
     /// the orginal filename where the texture was loaded, in this case, the
-    /// <see cref="ContentReference"/> is saved instead.
+    /// ContentReference is saved instead.
     /// </remarks>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public interface ISerializationOverride
@@ -52,7 +52,7 @@
     /// For example, different materials might be using the same shader code but
     /// with different paramter values. When saving these materials, it is ideal
     /// to share the shader code with all the materials.
-    /// <see cref="ISerializationSharing.Share"/> method will share the shader code
+    /// <see cref="Share"/> method will share the shader code
     /// and returns an unique filename to access that shared resource.
     /// </remarks>
     [EditorBrowsable(EditorBrowsableState.Never)]

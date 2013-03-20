@@ -6,6 +6,7 @@
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Content.Pipeline;
 
     /// <summary>
     /// Defines a generic binary object writer that writes xna content.

@@ -1,5 +1,6 @@
 namespace Nine.Serialization
 {
+    using Nine.Content.Pipeline;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -29,8 +30,8 @@ namespace Nine.Serialization
         }
 
         static BinarySerializer Writer = new BinarySerializer();
-        static FileSystemResolver Resolver = new FileSystemResolver();        
-        static ContentLoader Loader = new ContentLoader(new PipelineGraphicsDeviceService { GraphicsDevice = Nine.Graphics.PipelineGraphics.GraphicsDevice });
+        static FileSystemResolver Resolver = new FileSystemResolver();
+        static ContentLoader Loader = new ContentLoader(new PipelineGraphicsDeviceService());
         
         public static void BuildFile(string fileName, string outputFileName)
         {
@@ -39,9 +40,9 @@ namespace Nine.Serialization
                 Directory.CreateDirectory(outputDirectory);
 
             using (var output = new FileStream(outputFileName, FileMode.Create))
-        {
+            {
                 BuildItem(fileName, output);
-        }
+            }
         }
 
         private static void BuildItem(string fileName, Stream output)

@@ -11,7 +11,7 @@
         public Dictionary<string, Stream> MemoryStreams { get; private set; }
 
         public PipelineContentManager(IServiceProvider serviceProvider)
-            : base(serviceProvider ?? new PipelineGraphicsDeviceService() { GraphicsDevice = PipelineGraphics.GraphicsDevice })
+            : base(serviceProvider ?? new PipelineGraphicsDeviceService())
         {
             MemoryStreams = new Dictionary<string, Stream>(StringComparer.OrdinalIgnoreCase);
         }
@@ -41,8 +41,11 @@
         public event EventHandler<EventArgs> DeviceReset;
         public event EventHandler<EventArgs> DeviceResetting;
 #pragma warning restore 0067
-
-        public GraphicsDevice GraphicsDevice { get; set; }
+        
+        public GraphicsDevice GraphicsDevice
+        {
+            get { return PipelineGraphics.GraphicsDevice; }
+        }
 
         public object GetService(Type serviceType)
         {

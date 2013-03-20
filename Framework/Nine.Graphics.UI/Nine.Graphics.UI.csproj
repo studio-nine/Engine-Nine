@@ -120,7 +120,6 @@
     <Compile Include="Input\IInputManager.cs" />
     <Compile Include="Internal\FloatExtensions.cs" />
     <Compile Include="Internal\MinMax.cs" />
-    <Compile Include="Internal\SizeExtensions.cs" />
     <Compile Include="Internal\ThicknessExtensions.cs" />
     <Compile Include="Internal\Vector2Extensions.cs" />
     <Compile Include="Controls\Button.cs" />

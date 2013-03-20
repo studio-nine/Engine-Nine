@@ -49,7 +49,9 @@
 
         public static T Load<T>(Stream input, IImporter importer, IProcessor processor = null, IServiceProvider serviceProvider = null)
         {
-            builder.Compile(builder.OutputFilename, LoadContent<T>(input, importer, processor));
+            var content = LoadContent<object>(input, importer, processor);
+            var filename = builder.OutputFilename;
+            builder.Compile(filename, content);
             return Singleton<IServiceProvider, PipelineContentManager>.GetInstance(serviceProvider).Load<T>(builder.OutputFilename);
         }
 
