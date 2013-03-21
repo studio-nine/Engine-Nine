@@ -40,8 +40,6 @@ namespace Nine.Graphics.UI.Controls
         }
         private NotificationCollection<UIElement> children;
 
-        public SolidColorBrush Background { get; set; }
-
         public Panel()
         {
             children = new NotificationCollection<UIElement>();
@@ -58,8 +56,7 @@ namespace Nine.Graphics.UI.Controls
 
         protected internal override void OnRender(SpriteBatch spriteBatch)
         {
-            if (this.Background != null)
-                spriteBatch.Draw(RenderTransform, Background.Color);
+            base.OnRender(spriteBatch);
 
             foreach (var child in children)
                 child.OnRender(spriteBatch);

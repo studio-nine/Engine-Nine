@@ -89,7 +89,9 @@
     <Compile Include="Internal\BoundingRectangleExtensions.cs" />
     <Compile Include="Media\BlankTexture.cs" />
     <Compile Include="Media\Brushes\GradientBrush.cs" />
+    <Compile Include="Media\Brushes\ImageBrush.cs" />
     <Compile Include="Media\Brushes\LinearGradientBrush.cs" />
+    <Compile Include="Media\Brushes\TileBrush.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
