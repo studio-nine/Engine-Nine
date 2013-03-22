@@ -49,8 +49,6 @@ namespace Nine.Samples
 #if WINDOWS
             loader.Resolvers.Add(new FileSystemResolver());
 #endif
-            //Package.BuildDirectory("../Content1", "../Content.zip");
-
             Components.Add(new FrameRate(GraphicsDevice, loader.Load<SpriteFont>("Fonts/Consolas.spritefont")));
             Components.Add(new InputComponent(Window.Handle));  
 
@@ -68,7 +66,7 @@ namespace Nine.Samples
                 where type.IsSubclassOf(typeof(Sample)) && type != typeof(SampleScene)
                 select (Sample)Activator.CreateInstance(type));
 
-            //samples = new List<Sample> { new CubeStressTest(); };
+            //samples = new List<Sample> { new SkinnedModelTest() };
         }
 
         private void LoadNextScene()
@@ -77,7 +75,7 @@ namespace Nine.Samples
             {
                 scenes.Add(currentScene = samples[nextScene].CreateScene(GraphicsDevice, loader));
 
-                // TODO: rework on this design
+                // TODO: rework on this design         
                 currentScene.Add(new FreeCamera(GraphicsDevice));
                 SceneExtensions.SetDrawingContext(currentScene, new DrawingContext3D(GraphicsDevice, currentScene));
             }

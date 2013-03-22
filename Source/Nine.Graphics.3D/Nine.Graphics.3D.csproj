@@ -95,6 +95,7 @@
     <Compile Include="Animations\BoneAnimationClip.cs" />
     <Compile Include="Animations\LookAtController.cs" />
     <Compile Include="Cameras\ChaseCamera.cs" />
+    <Compile Include="ModelSource.cs" />
     <Compile Include="DirectionalLight.cs" />
     <Compile Include="DirectionalLightCollection.cs" />
     <Compile Include="DrawingContext3D.cs" />
