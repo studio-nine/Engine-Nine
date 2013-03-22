@@ -29,7 +29,7 @@ namespace Nine.Graphics.UI.Controls
     using System.Collections.Generic;
 
     /// <summary>
-    ///     Represents a control with a single piece of content.
+    /// Represents a control with a single piece of content.
     /// </summary>
     public class ContentControl : Control
     {
@@ -73,28 +73,5 @@ namespace Nine.Graphics.UI.Controls
         protected virtual void OnContentChanged(UIElement oldContent, UIElement newContent)
         {
         }
-
-        /*
-        private static void ContentPropertyChangedCallback(
-            ReactiveObject source, ReactivePropertyChangeEventArgs<UIElement> change)
-        {
-            var contentControl = (ContentControl)source;
-            contentControl.InvalidateMeasure();
-
-            UIElement oldContent = change.OldValue;
-            if (oldContent != null)
-            {
-                oldContent.Parent = null;
-            }
-
-            UIElement newContent = change.NewValue;
-            if (newContent != null)
-            {
-                newContent.Parent = contentControl;
-            }
-
-            contentControl.OnContentChanged(oldContent, newContent);
-        }
-         */
     }
 }

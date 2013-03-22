@@ -29,13 +29,14 @@ namespace Nine.Graphics.UI.Controls
     using Nine.Graphics.UI.Controls.Primitives;
     using Nine.Graphics.UI.Media;
 
+    // TODO: Expand on Button
     public class Button : ButtonBase
     {
         public Thickness Padding { get; set; }
 
-        public override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)ActualWidth, (int)ActualHeight), Color.White);
+            spriteBatch.Draw(RenderTransform, Color.White);
         }
 
         public override void OnApplyTemplate()
