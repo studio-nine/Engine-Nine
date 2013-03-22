@@ -48,7 +48,7 @@ namespace Nine.Graphics.UI.Media
         }
 
         public SolidColorBrush(string Hash)
-        {
+        { // Not sure if this is going to be here
             var Number = int.Parse(Hash);
             this.Color = Number.ConvertToColor();
         }

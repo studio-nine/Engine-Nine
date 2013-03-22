@@ -54,10 +54,9 @@ namespace Nine.Graphics.UI.Controls
                 GenerateBorders();
                 foreach (BoundingRectangle border in this.borders)
                 {
-                    // TODO: It needs to get the grid visualOffset
                     var Rect = border;
-                    Rect.X += VisualOffset.X;
-                    Rect.Y += VisualOffset.Y;
+                    Rect.X += VisualOffset.X + Parent.VisualOffset.X;
+                    Rect.Y += VisualOffset.Y + Parent.VisualOffset.Y;
                     spriteBatch.Draw(Rect, BorderBrush.Color);
                 }
             }

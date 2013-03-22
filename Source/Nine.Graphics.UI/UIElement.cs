@@ -52,9 +52,30 @@ namespace Nine.Graphics.UI
         }
         private BoundingRectangle? clip = null;
 
+        public BoundingRectangle AbsoluteRenderTransform
+        {
+            get 
+            {
+                return new BoundingRectangle(AbsoluteVisualOffset.X, AbsoluteVisualOffset.Y, ActualWidth, ActualHeight);
+            }
+        }
+
         public BoundingRectangle RenderTransform
         {
             get { return new BoundingRectangle(VisualOffset.X, VisualOffset.Y, ActualWidth, ActualHeight); }
+        }
+
+        public Vector2 AbsoluteVisualOffset
+        {
+            get 
+            {
+                var Result = this.VisualOffset;
+                if (Parent != null)
+                {
+                    Result += Parent.AbsoluteVisualOffset;
+                }
+                return Result; 
+            }
         }
 
         public Vector2 VisualOffset
@@ -167,7 +188,7 @@ namespace Nine.Graphics.UI
         {
             if (Background != null)
             {
-                spriteBatch.Draw(RenderTransform, Background);
+                spriteBatch.Draw(AbsoluteRenderTransform, Background);
             }
         }
 

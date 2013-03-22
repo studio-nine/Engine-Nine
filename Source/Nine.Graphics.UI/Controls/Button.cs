@@ -34,11 +34,6 @@ namespace Nine.Graphics.UI.Controls
     {
         public Thickness Padding { get; set; }
 
-        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(RenderTransform, Color.White);
-        }
-
         public override void OnApplyTemplate()
         {
             if (this.Content != null)
