@@ -6,14 +6,13 @@
 
     class MaterialPaintGroupBuilder
     {
-        public string Build(MaterialPaintGroup materialPaintGroup, MaterialUsage usage)
+        public static string Build(MaterialPaintGroup materialPaintGroup, MaterialUsage usage)
         {
-            var materialGroupBuilder = new MaterialGroupBuilder();
             var builder = new StringBuilder();
             var index = materialPaintGroup.MaterialGroup.MaterialParts.OfType<MaterialPaintGroup>().ToList().IndexOf(materialPaintGroup);
-            var builderContext = materialGroupBuilder.CreateMaterialGroupBuilderContext(materialPaintGroup.MaterialParts, usage, false);
+            var builderContext = MaterialGroupBuilder.CreateMaterialGroupBuilderContext(materialPaintGroup.MaterialParts, usage, false);
             
-            builder.AppendLine(materialGroupBuilder.GetShaderCodeBody(builderContext, "VSMain", "PSMain"));
+            builder.AppendLine(MaterialGroupBuilder.GetShaderCodeBody(builderContext, "VSMain", "PSMain"));
 
             builderContext.PixelShaderOutputs.AddRange(builderContext.PixelShaderInputs.Where(psi => psi.Out));
 
@@ -37,7 +36,7 @@
             return builder.ToString();
         }
 
-        private string AppendWithCasingCorrection(string name, string prefix)
+        private static string AppendWithCasingCorrection(string name, string prefix)
         {
             return string.Concat(prefix, name.Substring(0, 1).ToUpperInvariant(), name.Substring(1));
         }

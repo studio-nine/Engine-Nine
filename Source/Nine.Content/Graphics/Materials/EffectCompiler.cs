@@ -9,14 +9,14 @@
     {
         public static byte[] Compile(string effectCode)
         {
-            using (var memoryStream = new MemoryStream())
+            using (var stream = new FileStream(Path.Combine(Path.GetTempPath(), Path.GetTempFileName()), FileMode.Create))
             {
-                var writer = new StreamWriter(memoryStream);
+                var writer = new StreamWriter(stream);
                 writer.Write(effectCode);
                 writer.Flush();
-                memoryStream.Seek(0, SeekOrigin.Begin);
+                stream.Seek(0, SeekOrigin.Begin);
 
-                return ContentPipeline.LoadContent<CompiledEffectContent>(memoryStream
+                return ContentPipeline.LoadContent<CompiledEffectContent>(stream
                      , new Microsoft.Xna.Framework.Content.Pipeline.EffectImporter()
                      , new EffectProcessor()).GetEffectCode();
             }

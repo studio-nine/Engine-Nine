@@ -3,6 +3,7 @@
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
     using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+    using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Materials.MaterialParts;
     using System;
     using System.Collections.Generic;
@@ -14,20 +15,39 @@
 
     class MaterialGroupBuilder
     {
-        const string WorkingPath = "MaterialGroups";
-
-        private int NextValidSemanticIndex = 0;
-
-        public void Build(MaterialGroup materialGroup)
+        static readonly string WorkingPath = "MaterialGroups";
+        static readonly MaterialUsage[] MaterialUsages = Enum.GetValues(typeof(MaterialUsage)).Cast<MaterialUsage>().ToArray();
+        
+        public static void Build(MaterialGroup input)
         {
+            input.Effect = BuildByUsage(input, MaterialUsage.Default);
+            input.ExtendedMaterials = new MaterialGroup[MaterialUsages.Length];
+            foreach (MaterialUsage usage in MaterialUsages)
+            {
+                if (usage == MaterialUsage.Default)
+                    continue;
+                var extendedMaterial = input.Clone();
+                extendedMaterial.ExtendedMaterials = null;
+                extendedMaterial.Effect = BuildByUsage(extendedMaterial, usage);
+                if (extendedMaterial.Effect != null)
+                    input.ExtendedMaterials[(int)usage] = extendedMaterial;
+            }
+        }
 
+        private static Effect BuildByUsage(MaterialGroup input, MaterialUsage materialUsage)
+        {
+            byte[] effectCode;
+            byte[] key;
+            if (BuildByUsage(input, materialUsage, out effectCode, out key))
+                return new Effect(input.GraphicsDevice, effectCode);
+            return null;
         }
         
-        public bool BuildByUsage(MaterialGroup materialGroup, MaterialUsage usage, out byte[] effectCode, out byte[] key)
+        private static bool BuildByUsage(MaterialGroup materialGroup, MaterialUsage usage, out byte[] effectCode, out byte[] key)
         {
             key = effectCode = null;
 
-            // Make sure we have the nesessary building blocks of a shader
+            // Make sure we have the necessary building blocks of a shader
             if (materialGroup.MaterialParts.Count <= 0)
                 materialGroup.MaterialParts.Add(new DiffuseMaterialPart() { DiffuseColorEnabled = false, TextureEnabled = false });
 
@@ -79,7 +99,7 @@
             }
         }
 
-        private bool BuildEffect(MaterialGroupBuilderContext builderContext, string version, out byte[] effectCode, out byte[] hash)
+        private static bool BuildEffect(MaterialGroupBuilderContext builderContext, string version, out byte[] effectCode, out byte[] hash)
         {
             var shaderCode = GetShaderCodeForProfile(builderContext, version);
             var compiledEffect = EffectCompiler.Compile(shaderCode);
@@ -94,7 +114,7 @@
             return false;
         }
 
-        internal MaterialGroupBuilderContext CreateMaterialGroupBuilderContext(IList<MaterialPart> materialParts, MaterialUsage usage, bool simplify)
+        internal static MaterialGroupBuilderContext CreateMaterialGroupBuilderContext(IList<MaterialPart> materialParts, MaterialUsage usage, bool simplify)
         {
             var builderContext = new MaterialGroupBuilderContext();
 
@@ -331,9 +351,9 @@
             builderContext.VertexShaderOutputs.RemoveAll(vso => vso.Semantic != "POSITION0" && !builderContext.PixelShaderInputs.Any(psi => psi.Name == vso.Name));
 
             // Expand vertex shader outputs that do not have a valid semantic
-            NextValidSemanticIndex = 0;
+            var nextValidSemanticIndex = 0;
             builderContext.VertexShaderOutputSemanticMapping = builderContext.VertexShaderOutputs.Where(vso => vso.Semantic == null || !validVertexShaderOutputSemantic.IsMatch(vso.Semantic))
-                                                       .ToDictionary(arg => arg, arg => NextValidSemantic(builderContext.VertexShaderOutputs));
+                                                       .ToDictionary(arg => arg, arg => NextValidSemantic(builderContext.VertexShaderOutputs, ref nextValidSemanticIndex));
 
             // POSITION0 is not a valid pixel shader input semantics            
             if (builderContext.PixelShaderInputs.Any(psi => psi.Semantic == "POSITION0"))
@@ -345,7 +365,7 @@
                     Name = vso.Name + "_pos0_",
                     Type = vso.Type,
                 };
-                var semantic = NextValidSemantic(builderContext.VertexShaderOutputs);
+                var semantic = NextValidSemantic(builderContext.VertexShaderOutputs, ref nextValidSemanticIndex);
                 builderContext.VertexShaderOutputSemanticMapping.Add(arg, semantic);
                 builderContext.PixelShaderInputs.Single(psi => psi.Semantic == "POSITION0").Semantic = semantic;
             }
@@ -385,7 +405,7 @@
             return builderContext;
         }
 
-        internal string GetShaderCodeForProfile(MaterialGroupBuilderContext builderContext, string profile)
+        internal static string GetShaderCodeForProfile(MaterialGroupBuilderContext builderContext, string profile)
         {
             var builder = new StringBuilder();
             builder.Append(GetShaderCodeBody(builderContext, "VS", "PS"));
@@ -406,7 +426,7 @@
             return builder.ToString();
         }
 
-        internal string GetShaderCodeBody(MaterialGroupBuilderContext builderContext, string vsName, string psName)
+        internal static string GetShaderCodeBody(MaterialGroupBuilderContext builderContext, string vsName, string psName)
         {
             var builder = new StringBuilder();
             foreach (var materialPart in builderContext.MaterialPartDeclarations)
@@ -488,11 +508,11 @@
             builder.AppendLine("}");
             return builder.ToString();
         }
-        
-        private string NextValidSemantic(List<ArgumentDeclaration> vertexShaderOutputs)
+
+        private static string NextValidSemantic(List<ArgumentDeclaration> vertexShaderOutputs, ref int nextValidSemanticIndex)
         {
             string result = null;
-            do { result = string.Concat("TEXCOORD", NextValidSemanticIndex++); }
+            do { result = string.Concat("TEXCOORD", nextValidSemanticIndex++); }
             while (vertexShaderOutputs.Any(arg => arg.Semantic == result));
             vertexShaderOutputs.RemoveAll(arg => arg.Semantic == result);
             return result;

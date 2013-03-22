@@ -72,10 +72,7 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected void NotifyShaderChanged()
         {
-#if WINDOWS
-            if (!MaterialPart.IsContentBuild && !MaterialPart.IsContentRead)
-                MaterialGroup.OnShaderChanged();
-#endif
+            MaterialGroup.OnShaderChanged();
         }
 
         /// <summary>
@@ -88,10 +85,6 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected EffectParameter GetParameter(string parameterName)
         {
-#if WINDOWS
-            if (IsContentBuild)
-                return null;
-#endif
             return MaterialGroup.Effect.Parameters[string.Concat(parameterName, ParameterSuffix)];
         }
 
@@ -106,10 +99,7 @@ namespace Nine.Graphics.Materials
             var parameters = MaterialGroup.Effect.Parameters;
             parameter = null;
             index = -1;
-#if WINDOWS
-            if (IsContentBuild)
-                return;
-#endif
+
             parameter = parameters[string.Concat(parameterName, ParameterSuffix)];
             if (parameter == null)
                 return;
@@ -146,10 +136,6 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected EffectParameter GetParameterBySemantic(string semantic)
         {
-#if WINDOWS
-            if (IsContentBuild)
-                return null;
-#endif
             foreach (EffectParameter parameter in MaterialGroup.Effect.Parameters)
                 if (parameter.Semantic == semantic && parameter.Name.EndsWith(ParameterSuffix))
                     return parameter;
@@ -157,20 +143,6 @@ namespace Nine.Graphics.Materials
         }
 
         #region GetShaderCode
-#if WINDOWS
-        static MaterialPart()
-        {
-            var pipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "Nine.Serialization");
-            if (pipelineAssembly != null)
-            {
-                ShaderResources = new global::System.Resources.ResourceManager("Nine.Serialization.Graphics.MaterialPartShaders", pipelineAssembly);
-                IsContentBuild = true;
-            }
-        }
-
-        private static System.Resources.ResourceManager ShaderResources;
-        internal static bool IsContentBuild = false;
-#endif
         internal static bool IsContentRead = false;
 
         /// <summary>
@@ -178,13 +150,9 @@ namespace Nine.Graphics.Materials
         /// </summary>
         internal static string GetShaderCode(string resourceKey)
         {
-#if WINDOWS
-            if (!IsContentBuild)
-                throw new InvalidOperationException();
-            return System.Text.Encoding.UTF8.GetString((byte[])ShaderResources.GetObject(resourceKey));
-#else
-            throw new NotSupportedException();
-#endif
+            return System.Text.Encoding.UTF8.GetString(
+                MaterialGroup.TryInvokeContentPipelineMethod<byte[]>(
+                "MaterialPartShaders", "get_" + resourceKey));
         }
         #endregion
     }

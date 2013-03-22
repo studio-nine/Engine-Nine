@@ -106,8 +106,13 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="Graphics\EffectCompiler.cs" />
-    <Compile Include="Graphics\MaterialGroupBuilderLexer.cs" />
+    <Compile Include="Graphics\Materials\EffectCompiler.cs" />
+    <Compile Include="Graphics\Materials\MaterialGroupBuilderLexer.cs" />
+    <Compile Include="Graphics\Materials\MaterialPartShaders.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MaterialPartShaders.resx</DependentUpon>
+    </Compile>
     <Compile Include="Pipeline\ContentPipeline.cs" />
     <Compile Include="Serialization\PipelineObjectWriter.cs" />
     <Compile Include="Serialization\FileSystemResolver.cs" />
@@ -117,11 +122,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EmbeddedAssemblies.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\MaterialPartShaders.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MaterialPartShaders.resx</DependentUpon>
     </Compile>
     <Compile Include="Importers\TextureImporter.cs" />
     <Compile Include="Importers\XModelImporter.cs" />
@@ -136,20 +136,19 @@
     <Compile Include="Pipeline\PipelineProcessorContext.cs" />
     <Compile Include="Serialization\XamlSerializer.cs" />
     <Compile Include="Design\TransformConverter.cs" />
-    <Compile Include="Graphics\MaterialPaintGroupBuilder.cs" />
+    <Compile Include="Graphics\Materials\MaterialPaintGroupBuilder.cs" />
     <Compile Include="Serialization\Package.cs" />
     <Compile Include="Pipeline\Processors\InstancedModelProcessor.cs" />
     <Compile Include="Transform2D.cs" />
     <Compile Include="Graphics\DistributionMap.cs" />
     <Compile Include="Graphics\Splatter.cs" />
-    <Compile Include="Graphics\MaterialGroupBuilder.cs" />
-    <Compile Include="Graphics\CustomEffectContent.cs" />
+    <Compile Include="Graphics\Materials\MaterialGroupBuilder.cs" />
+    <Compile Include="Graphics\Materials\CustomEffectContent.cs" />
     <Compile Include="Pipeline\PipelineGraphics.cs" />
     <Compile Include="Navigation\PathGridBuilder.cs" />
     <Compile Include="Navigation\PathGridContent.cs" />
     <Compile Include="Pipeline\Processors\CustomMaterialProcessor.cs" />
     <Compile Include="Pipeline\Processors\CustomEffectProcessor.cs" />
-    <Compile Include="Pipeline\Processors\MaterialGroupProcessor.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />
     <Compile Include="Graphics\ProceduralTextureGenerator.cs" />
     <Compile Include="Pipeline\PipelineExtensions.cs" />
@@ -224,40 +223,40 @@
       <SubType>Designer</SubType>
       <LastGenOutput>EmbeddedAssemblies.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Graphics\MaterialPartShaders.resx">
+    <EmbeddedResource Include="Graphics\Materials\MaterialPartShaders.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>MaterialPartShaders.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graphics\Shaders\BeginPaintGroup.fragment" />
-    <None Include="Graphics\Shaders\AlphaTest.fragment" />
-    <None Include="Graphics\Shaders\Depth.fragment" />
-    <None Include="Graphics\Shaders\InstanceTransform.fragment" />
-    <None Include="Graphics\Shaders\TangentTransform.fragment" />
-    <None Include="Graphics\Shaders\EndPaintGroup.fragment" />
-    <None Include="Graphics\Shaders\DiffuseTexture.fragment" />
-    <None Include="Graphics\Shaders\BeginLight.fragment" />
-    <None Include="Graphics\Shaders\DeferredLightBuffer.fragment" />
-    <None Include="Graphics\Shaders\DepthAndNormal.fragment" />
-    <None Include="Graphics\Shaders\DetailTexture.fragment" />
-    <None Include="Graphics\Shaders\DeferredLights.fragment" />
-    <None Include="Graphics\Shaders\EmissiveMap.fragment" />
-    <None Include="Graphics\Shaders\SpecularMap.fragment" />
-    <None Include="Graphics\Shaders\SpotLight.fragment" />
-    <None Include="Graphics\Shaders\PointLight.fragment" />
-    <None Include="Graphics\Shaders\NormalMap.fragment" />
-    <None Include="Graphics\Shaders\ShadowMap.fragment" />
-    <None Include="Graphics\Shaders\EnvironmentMap.fragment" />
-    <None Include="Graphics\Shaders\DirectionalLight.fragment" />
-    <None Include="Graphics\Shaders\DualTexture.fragment" />
-    <None Include="Graphics\Shaders\EndLight.fragment" />
-    <None Include="Graphics\Shaders\Fog.fragment" />
-    <None Include="Graphics\Shaders\SkinTransform.fragment" />
-    <None Include="Graphics\Shaders\ColorMatrix.fragment" />
-    <None Include="Graphics\Shaders\TextureTransform.fragment" />
-    <None Include="Graphics\Shaders\VertexTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\BeginPaintGroup.fragment" />
+    <None Include="Graphics\Materials\Shaders\AlphaTest.fragment" />
+    <None Include="Graphics\Materials\Shaders\Depth.fragment" />
+    <None Include="Graphics\Materials\Shaders\InstanceTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\TangentTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\EndPaintGroup.fragment" />
+    <None Include="Graphics\Materials\Shaders\DiffuseTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\BeginLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\DeferredLightBuffer.fragment" />
+    <None Include="Graphics\Materials\Shaders\DepthAndNormal.fragment" />
+    <None Include="Graphics\Materials\Shaders\DetailTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\DeferredLights.fragment" />
+    <None Include="Graphics\Materials\Shaders\EmissiveMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\SpecularMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\SpotLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\PointLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\NormalMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\ShadowMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\EnvironmentMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\DirectionalLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\DualTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\EndLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\Fog.fragment" />
+    <None Include="Graphics\Materials\Shaders\SkinTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\ColorMatrix.fragment" />
+    <None Include="Graphics\Materials\Shaders\TextureTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\VertexTransform.fragment" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

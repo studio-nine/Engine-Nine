@@ -140,9 +140,7 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            string result;
-            MaterialGroup.TryInvokeContentPipelineMethod("MaterialPaintGroupBuilder", "Build", out result, this, usage);
-            return result;
+            return MaterialGroup.TryInvokeContentPipelineMethod<string>("MaterialPaintGroupBuilder", "Build", this, usage);
         }
 
         /// <summary>

@@ -21,25 +21,12 @@ namespace Nine.Graphics.Materials
         private bool initializing;
 
         internal Effect Effect;
-        internal string Reference;
         internal MaterialGroup[] ExtendedMaterials;
-                
+        
         /// <summary>
-        /// Initializes a new instance of the <see cref="MaterialGroup"/> class.
+        /// Gets the graphics device associated with this material group.
         /// </summary>
-        internal MaterialGroup() : this(null)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MaterialGroup"/> class.
-        /// </summary>
-        internal MaterialGroup(IServiceProvider serviceProvider)
-        {
-            materialParts = new MaterialPartCollection();
-            materialParts.Bind(this);
-        }
+        public GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
         /// Gets a collection holding all the material parts.
@@ -50,6 +37,16 @@ namespace Nine.Graphics.Materials
         }
         private MaterialPartCollection materialParts;
         private Dictionary<Type, MaterialPart> materialPartDictionary;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MaterialGroup"/> class.
+        /// </summary>
+        internal MaterialGroup(GraphicsDevice graphics)
+        {
+            this.GraphicsDevice = graphics;
+            this.materialParts = new MaterialPartCollection();
+            this.materialParts.Bind(this);
+        }
 
         /// <summary>
         /// Queries the material for the specified feature T.
@@ -208,7 +205,7 @@ namespace Nine.Graphics.Materials
         public MaterialGroup Clone()
         {
             var count = materialParts.Count;
-            var result = new MaterialGroup();
+            var result = new MaterialGroup(GraphicsDevice);
             
             result.Effect = Effect;
             result.TwoSided = TwoSided;
@@ -228,9 +225,7 @@ namespace Nine.Graphics.Materials
         private void UpdateShader()
         {
             if (Effect == null)
-            {
-                TryInvokeContentPipelineMethod("MaterialGroupBuilder", "Build", out Effect);
-            }
+                TryInvokeContentPipelineMethod<Effect>("MaterialGroupBuilder", "Build", this);
         }
 
         void ISupportInitialize.BeginInit() { initializing = true; }
@@ -243,17 +238,15 @@ namespace Nine.Graphics.Materials
             }
         }
 
-        internal static bool TryInvokeContentPipelineMethod<T>(string className, string methodName, out T result, params object[] paramters)
-            {
-            result = default(T);
+        internal static T TryInvokeContentPipelineMethod<T>(string className, string methodName, params object[] paramters)
+        {
 #if WINDOWS
             if (PipelineAssembly == null)
-                return false;
+                return default(T);
             var flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
-            result = (T)PipelineAssembly.GetTypes().Single(type => type.Name == className).InvokeMember(methodName, flags, null, null, paramters);
-            return true;
+            return (T)PipelineAssembly.GetTypes().Single(type => type.Name == className).InvokeMember(methodName, flags, null, null, paramters);
 #else
-            return false;
+            return default(T);
 #endif
         }
         static Assembly PipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "Nine.Content");
@@ -286,11 +279,7 @@ namespace Nine.Graphics.Materials
             
             base.InsertItem(index, item);
             item.MaterialGroup = materialGroup;
-#if WINDOWS
-            if (!MaterialPart.IsContentBuild && materialGroup != null)
-#else
-            if (materialGroup != null)
-#endif
+            if (materialGroup != null && materialGroup.Effect != null)
                 item.OnBind();
             if (materialGroup != null)
                 materialGroup.OnShaderChanged();
@@ -303,11 +292,7 @@ namespace Nine.Graphics.Materials
             
             base.SetItem(index, item);
             item.MaterialGroup = materialGroup;
-#if WINDOWS
-            if (!MaterialPart.IsContentBuild && materialGroup != null)
-#else
-            if (materialGroup != null)
-#endif
+            if (materialGroup != null && materialGroup.Effect != null)
                 item.OnBind();
             if (materialGroup != null)
                 materialGroup.OnShaderChanged();
@@ -325,40 +310,6 @@ namespace Nine.Graphics.Materials
             base.RemoveItem(index);
             if (materialGroup != null)
                 materialGroup.OnShaderChanged();
-        }
-    }
-
-    class MaterialGroupReader : ContentTypeReader<MaterialGroup>
-    {
-        internal static int Index = -1;
-        protected override MaterialGroup Read(ContentReader input, MaterialGroup existingInstance)
-        {
-            /*
-            if (existingInstance == null)
-                existingInstance = new MaterialGroup();
-
-            int count = 0;
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.IsTransparent = input.ReadBoolean();
-            existingInstance.IsAdditive = input.ReadBoolean();
-            existingInstance.TwoSided = input.ReadBoolean();
-            existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.AttachedProperties = input.ReadObject<AttachableMemberIdentifierCollection>();
-
-            existingInstance.Effect = input.ReadExternalReference<Effect>();
-
-            MaterialPart.IsContentRead = true;
-
-            count = input.ReadInt32();
-            for (Index = 0; Index < count; Index++)
-                existingInstance.MaterialParts.Add(input.ReadObject<MaterialPart>());
-            Index = -1;
-            MaterialPart.IsContentRead = false;
-
-            existingInstance.ExtendedMaterials = input.ReadObject<Dictionary<MaterialUsage, MaterialGroup>>();
-            return existingInstance;
-             */
-            return null;
         }
     }
 }
