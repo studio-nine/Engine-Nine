@@ -41,5 +41,10 @@ namespace Nine.Graphics.UI.Controls
                 this.Content.Margin = this.Padding;
             }
         }
+
+        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        {
+            base.OnRender(spriteBatch);
+        }
     }
 }

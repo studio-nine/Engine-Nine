@@ -32,7 +32,7 @@
 
             var border1 = new Border()
             {
-                Child = new Image()
+                Content = new Image()
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Stretch
@@ -44,7 +44,7 @@
 
             var border2 = new Border()
             {
-                Child = new Border() { }
+                Content = new Border() { }
             };
             Grid.SetRow(border2, 0);
             Grid.SetColumn(border2, 0);
@@ -54,11 +54,31 @@
 
             Assert.AreEqual(new Vector2(100, 100), border1.RenderSize);
             Assert.AreEqual(new Vector2(0, 100), border1.VisualOffset);
-            Assert.AreEqual(new Vector2(0, 100), border1.Child.VisualOffset);
+            Assert.AreEqual(new Vector2(0, 100), border1.Content.VisualOffset);
 
             Assert.AreEqual(new Vector2(100, 100), border2.RenderSize);
             Assert.AreEqual(new Vector2(0, 0), border2.VisualOffset);
-            Assert.AreEqual(new Vector2(0, 0), border2.Child.VisualOffset);
+            Assert.AreEqual(new Vector2(0, 0), border2.Content.VisualOffset);
+            // I might have made my math wrong
+        }
+
+        [TestMethod()]
+        public void StackPanelLayout()
+        {
+            StackPanel sp;
+            Window window = new Window();
+            window.Viewport = new Rectangle(0, 0, 800, 800);
+
+            window.Content = sp = new StackPanel() { Orientation = Orientation.Horizontal };
+
+            Border Border1, Border2, Border21;
+
+            sp.Children.Add(Border1 = new Border() { Height = 50 });
+            sp.Children.Add(Border2 = new Border() { Height = 50, Content = Border21 = new Border() });
+
+            Assert.AreEqual(new Vector2(0, 50), Border2.AbsoluteVisualOffset);
+            Assert.AreEqual(new Vector2(0, 50), Border21.AbsoluteVisualOffset);
+            // I might have made my math wrong
         }
     }
 }

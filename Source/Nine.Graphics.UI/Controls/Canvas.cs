@@ -28,17 +28,10 @@ namespace Nine.Graphics.UI.Controls
     using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
+    using Nine.Graphics.UI.Controls.Shapes;
 
-    [Obsolete()]
     public class Canvas : Panel
     {
-        public List<Shapes.Shape> Childrens = new List<Shapes.Shape>();
-
-        public Canvas()
-        {
-
-        }
-
         #region Methods
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
@@ -46,9 +39,7 @@ namespace Nine.Graphics.UI.Controls
             foreach (UIElement element in this.GetChildren())
             {
                 if (element == null)
-                {
                     continue;
-                }
 
                 float x = 0f;
                 float y = 0f;

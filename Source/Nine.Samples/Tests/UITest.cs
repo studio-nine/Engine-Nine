@@ -5,21 +5,21 @@ namespace Nine.Samples
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine;
+    using Nine.Serialization;
     using Nine.Components;
     using Nine.Graphics;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI;
     using Nine.Graphics.UI.Controls;
+    using Nine.Graphics.UI.Controls.Shapes;
     using Nine.Graphics.UI.Media;
-    using Nine.Serialization;
 
     public class UITest : Sample
     {
         public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
-
             scene.Add(new Camera2D(graphics) { InputEnabled = true });
 
             Window window = new Window();
@@ -29,6 +29,8 @@ namespace Nine.Samples
                     RowDefinitions =
                         {
                             new RowDefinition() { Height = new GridLength(400) },
+                            new RowDefinition() { Height = new GridLength(20) },
+                            new RowDefinition() { Height = new GridLength(400) }, 
                         },
                     ColumnDefinitions =
                         {
@@ -64,26 +66,19 @@ namespace Nine.Samples
                 {
                     BorderBrush = new SolidColorBrush(Color.Red),
                     BorderThickness = new Thickness(4),
-                    Child = new Border()
-                    {
-                        Background = new SolidColorBrush(Color.Gold)
-                    }
                 };
-                Grid.SetRow(border1, 0);
-                Grid.SetColumn(border1, 0);
                 grid.Children.Add(border1);
 
                 var border2 = new Border
                 {
                     BorderBrush = new SolidColorBrush(Color.Green),
                     BorderThickness = new Thickness(4),
-                    Child = new Border()
+                    Content = new Border()
                     {
                         Background = new ImageBrush(content.Load<Texture2D>("Textures/checker.bmp"))
                     }
                 };
                 Grid.SetRow(border2, 1);
-                Grid.SetColumn(border2, 0);
                 grid.Children.Add(border2);
 
                 var border3 = new Border
@@ -91,7 +86,6 @@ namespace Nine.Samples
                     BorderBrush = new SolidColorBrush(Color.Blue),
                     BorderThickness = new Thickness(4),
                 };
-                Grid.SetRow(border3, 0);
                 Grid.SetColumn(border3, 1);
                 grid.Children.Add(border3);
 
@@ -115,7 +109,7 @@ namespace Nine.Samples
                     Height = 50, 
                     BorderBrush = new SolidColorBrush(Color.Green), 
                     BorderThickness = new Thickness(2),
-                    Child = new Button()
+                    Content = new Button()
                     {
                         Margin = new Thickness(2),
                         Background = new SolidColorBrush(Color.LightGray),
@@ -125,6 +119,20 @@ namespace Nine.Samples
 
                 Grid.SetColumn(StackPanel, 2);
                 MainGrid.Children.Add(StackPanel);
+            }
+
+            { // #Image
+                var Image = new Image(content.Load<Texture2D>("Textures/box.dds"));
+                Grid.SetRow(Image, 2);
+                Grid.SetColumn(Image, 0);
+                MainGrid.Children.Add(Image);
+            }
+
+            { // #Canvas
+                var Canvas = new Canvas();
+                Grid.SetRow(Canvas, 2);
+                Grid.SetColumn(Canvas, 2);
+                MainGrid.Children.Add(Canvas);
             }
 
             scene.Add(window);
