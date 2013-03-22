@@ -59,24 +59,6 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="mscorlib" />
-    <Reference Include="Nine">
-      <HintPath>..\..\References\x86\Nine.dll</HintPath>
-    </Reference>
-    <Reference Include="Nine.Content">
-      <HintPath>..\..\References\x86\Nine.Content.dll</HintPath>
-    </Reference>
-    <Reference Include="Nine.Graphics">
-      <HintPath>..\..\References\x86\Nine.Graphics.dll</HintPath>
-    </Reference>
-    <Reference Include="Nine.Graphics.3D">
-      <HintPath>..\..\References\x86\Nine.Graphics.3D.dll</HintPath>
-    </Reference>
-    <Reference Include="Nine.Graphics.UI">
-      <HintPath>..\..\References\x86\Nine.Graphics.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Nine.Physics">
-      <HintPath>..\..\References\x86\Nine.Physics.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -148,6 +130,32 @@
       <ProductName>Microsoft XNA Framework Redistributable 4.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nine.Content\Nine.Content.csproj">
+      <Project>{926ce988-9e75-40dd-80f1-1709a91f8c35}</Project>
+      <Name>Nine.Content</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Graphics.3D\Nine.Graphics.3D.csproj">
+      <Project>{88e70c7b-eddf-4415-b817-f7742e749a34}</Project>
+      <Name>Nine.Graphics.3D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Graphics.UI\Nine.Graphics.UI.csproj">
+      <Project>{a8519d9a-c5f0-41e1-89d8-5ac6a5f4c351}</Project>
+      <Name>Nine.Graphics.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
+      <Project>{9436af22-6937-4bee-887e-c93a4692bdd7}</Project>
+      <Name>Nine.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Physics\Nine.Physics.csproj">
+      <Project>{5e8a4935-1fa4-4beb-8e9c-6003c0c296b7}</Project>
+      <Name>Nine.Physics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine\Nine.csproj">
+      <Project>{e4f84943-5258-4f67-9c6c-739c18a47120}</Project>
+      <Name>Nine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!--

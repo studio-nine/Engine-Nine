@@ -17,6 +17,9 @@
             //System.Diagnostics.Debugger.Launch();
 
             var g = new AssemblyData(Assembly.LoadFrom(target));
+            if (g.Types.Count <= 0)
+                return null;
+
             var reader = new BinaryObjectReader(g);
             var writer = new BinaryObjectWriter(g);
 

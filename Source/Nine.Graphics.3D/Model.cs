@@ -14,6 +14,26 @@ namespace Nine.Graphics
     /// <summary>
     /// Defines a basic model that can be rendered using the renderer with a designated material.
     /// </summary>
+    /// <remarks>
+    /// A <see cref="Model"/> contains the following properties:
+    /// 1. A <see cref="IModelSource"/> that contains the geometries, triangles and vertices.
+    /// 2. A <see cref="Skeleton"/> that contains the name and transformation of the bone hierarchy.
+    /// 3. A <see cref="Material"/> that specifies the appearence of the <see cref="Model"/>.
+    /// 4. A collection of <see cref="BoneAnimation"/> that can be used to animation the <see cref="Model"/>
+    /// 
+    /// To create a model, create a new instance of the <see cref="Model"/> class and the set the
+    /// <see cref="Model.Source"/>, <see cref="Model.Skeleton"/>, <see cref="Model.Material"/> and
+    /// <see cref="Model.Animations"/> properties accordingly.
+    /// 
+    /// Typically, a 3d model is exported from digital content creation tools. During the export, all
+    /// the above properties are bundled into a single file format (e.g. FBX or X). When loading the
+    /// model, use <see cref="ModelSource.SetSource"/> method to set all the properties together that
+    /// comes from the source model file. 
+    /// 
+    /// In Xaml, this is done though setting the ModelSource.Source attached property. So setting
+    /// Model.Source property will only set the geometry of the model, while setting ModelSource.Source
+    /// property will also update the skeleton, animations and materials.
+    /// </remarks>
     [ContentProperty("Attachments")]
     public class Model : Transformable, Nine.IContainer, Nine.IUpdateable, ISpatialQueryable, IPickable, IGeometry, ISupportInstancing, INotifyCollectionChanged<object>
     {
@@ -201,34 +221,24 @@ namespace Nine.Graphics
         private AnimationPlayer animations;
 
         /// <summary>
-        /// Gets the skeleton of this model.
+        /// Gets the or sets skeleton of this model.
         /// </summary>
-        public Skeleton Skeleton
+        public Skeleton Skeleton 
         {
-            get { return sharedSkeleton ?? skeleton; }
-        }
-        private Skeleton skeleton;
-
-        /// <summary>
-        /// Gets or sets the shared skeleton.
-        /// When a valid shared skeleton is set, the model will be rendered using this shared skeleton.
-        /// </summary>
-        public Skeleton SharedSkeleton
-        {
-            get { return sharedSkeleton; }
-            set
+            get { return skeleton; }
+            set 
             {
-                if (sharedSkeleton != value)
+                if (skeleton != value)
                 {
                     if (value != null && value.BoneTransforms.Length != skeleton.BoneTransforms.Length)
                         throw new InvalidOperationException("The shared skeleton does not match the skeleton used by this model.");
-                    sharedSkeleton = value;
+                    skeleton = value;
                     UpdateBoneTransforms();
                 }
             }
         }
-        private Skeleton sharedSkeleton;
-
+        private Skeleton skeleton;
+        
         /// <summary>
         /// Gets a value indicating whether this instance is skinned.
         /// </summary>
@@ -386,7 +396,8 @@ namespace Nine.Graphics
 
             var absoluteTransformChanged = ((absoluteTransformDirtyFlags & ModelAbsoluteTransformDirty) != 0);
             var boneTransformChanged = false;
-
+            
+                /* TODO:
             // Skip updating the animation when animation culling is enabled.
             if (animations != null && (!AnimationCullingEnabled || insideViewFrustum))
             {
@@ -401,7 +412,7 @@ namespace Nine.Graphics
             {
                 UpdateBoneTransforms();
                 boneTransformChanged = true;
-            }
+            }*/
 
             if (absoluteTransformChanged || boneTransformChanged)
             {

@@ -107,7 +107,7 @@ namespace Nine.Graphics
                             var sourceModel = transformable as Model;
                             if (sourceModel == null)
                                 throw new InvalidOperationException("The target object must be a Model when skeleton sharing is turned on.");
-                            sourceModel.SharedSkeleton = model.Skeleton;
+                            sourceModel.Skeleton = model.Skeleton;
                         }
                         transformable.Transform = Transform.HasValue ? Transform.Value : Matrix.Identity;
                     }
