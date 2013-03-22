@@ -39,7 +39,7 @@ namespace Nine.Graphics.UI.Controls
         public Stretch Stretch { get; set; }
         public StretchDirection StretchDirection { get; set; }
 
-        public override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(SpriteBatch spriteBatch)
         {
             if (this.Source != null)
             {

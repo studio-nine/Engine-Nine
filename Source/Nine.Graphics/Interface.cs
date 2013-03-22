@@ -173,42 +173,6 @@ namespace Nine.Graphics
     }
 
     /// <summary>
-    /// Defines an interface for objects that supports hardware instancing
-    /// </summary>
-    public interface ISupportInstancing
-    {
-        /// <summary>
-        /// Gets the subset count.
-        /// </summary>
-        int MeshCount { get; }
-
-        /// <summary>
-        /// Gets the bounding box of this instance.
-        /// </summary>
-        BoundingBox BoundingBox { get; }
-
-        /// <summary>
-        /// Gets the material for the given subset.
-        /// </summary>
-        Material GetMaterial(int mesh);
-
-        /// <summary>
-        /// Prepares the material for rendering.
-        /// </summary>
-        void PrepareMaterial(int mesh, Material material);
-
-        /// <summary>
-        /// Gets the vertex buffer for the given subset.
-        /// </summary>
-        void GetVertexBuffer(int mesh, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices);
-
-        /// <summary>
-        /// Gets the index buffer for the given subset.
-        /// </summary>
-        void GetIndexBuffer(int mesh, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount);
-    }
-
-    /// <summary>
     /// Defines an object that supports debug visual.
     /// </summary>
     interface IDebugDrawable

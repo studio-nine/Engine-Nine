@@ -3,7 +3,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    public class BlankTexture
+    internal class BlankTexture
     {
         public Texture2D Texture;
 

@@ -66,7 +66,7 @@ namespace Nine.Samples
                 where type.IsSubclassOf(typeof(Sample)) && type != typeof(SampleScene)
                 select (Sample)Activator.CreateInstance(type));
 
-            samples = new List<Sample> { new ShadowMapTest() };
+            //samples = new List<Sample> { new SkinnedModelTest() };
         }
 
         private void LoadNextScene()

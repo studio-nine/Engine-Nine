@@ -65,14 +65,14 @@
             }
 
             if (serializationAssembly != null)
-                LogMessage("Serialization assembly generated", MessageImportance.High);
-            else
-                LogError("Error generating serialization assembly", null, null, 0, 0);
-
-            if (serializationAssembly != null && Merge)
             {
-                MergeAssemblies(DelaySign, KeyFile, Target, serializationAssembly);
-                LogMessage("Serialization assemblies merged", MessageImportance.High);
+                LogMessage("Serialization assembly generated", MessageImportance.Normal);
+
+                if (Merge)
+                {
+                    MergeAssemblies(DelaySign, KeyFile, Target, serializationAssembly);
+                    LogMessage("Serialization assemblies merged", MessageImportance.Normal);
+                }
             }
             return true;
         }

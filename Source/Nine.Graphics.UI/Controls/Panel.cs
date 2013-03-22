@@ -36,19 +36,27 @@ namespace Nine.Graphics.UI.Controls
     {
         public IList<UIElement> Children
         {
-            get { this.EnsureChildrenCollection(); return this.children; }
-            protected set { this.children = value; }
+            get { return this.children; }
+        }
+        private NotificationCollection<UIElement> children;
+
+        public Panel()
+        {
+            children = new NotificationCollection<UIElement>();
+            children.Sender = this;
+            children.Added += Child_Added;
         }
 
-        public SolidColorBrush Background { get; set; }
-        private IList<UIElement> children;
+        void Child_Added(object value)
+        {
+            (value as UIElement).Parent = this;
+        }
 
         #region Methods
 
-        public override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(SpriteBatch spriteBatch)
         {
-            if (this.Background != null)
-                spriteBatch.Draw(RenderTransform, Background.Color);
+            base.OnRender(spriteBatch);
 
             foreach (var child in children)
                 child.OnRender(spriteBatch);
@@ -57,17 +65,6 @@ namespace Nine.Graphics.UI.Controls
         public override IList<UIElement> GetChildren()
         {
             return this.children;
-        }
-
-        protected virtual IList<UIElement> CreateChildrenCollection()
-        {
-            return new ElementCollection(this);
-        }
-
-        private void EnsureChildrenCollection()
-        {
-            if (this.children == null)
-                this.children = this.CreateChildrenCollection();
         }
 
         #endregion

@@ -8,7 +8,7 @@ set flags=/nologo /p:Configuration=Release /p:Optimize=true /p:DebugSymbols=fals
 pushd ..
 
 call %msbuild% %flags% Source\Nine.Serialization.sln
-call %msbuild% %flags% Source\Nine.Windows.sln
+call %msbuild% %flags% Source\Nine.sln
 call %msbuild% %flags% Source\Nine.Studio.sln
 
 popd

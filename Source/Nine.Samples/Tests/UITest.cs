@@ -20,10 +20,7 @@ namespace Nine.Samples
         {
             var scene = new Scene();
 
-            scene.Add(new Camera2D(graphics)
-            {
-                InputEnabled = true
-            });
+            scene.Add(new Camera2D(graphics) { InputEnabled = true });
 
             Window window = new Window();
 
@@ -58,13 +55,16 @@ namespace Nine.Samples
             Grid.SetColumn(border1, 0);
             grid.Children.Add(border1);
 
-            var border2 = new Border 
+            var border2 = new Border
             {
                 BorderBrush = new SolidColorBrush(Color.Green),
                 BorderThickness = new Thickness(4),
                 Child = new Border()
                 {
-                    Background = new SolidColorBrush(Color.GhostWhite)
+                    Background = new Nine.Graphics.UI.Media.ImageBrush() 
+                    { 
+                        Source = content.Load<Texture2D>("Textures/checker.bmp") 
+                    }
                 }
 
                 //Child = new Image() 

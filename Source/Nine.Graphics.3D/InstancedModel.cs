@@ -9,8 +9,46 @@ namespace Nine.Graphics
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
-    using Nine.Graphics.Materials.MaterialParts;        
-    
+    using Nine.Graphics.Materials.MaterialParts;
+
+    #region ISupportInstancing
+    /// <summary>
+    /// Defines an interface for objects that supports hardware instancing
+    /// </summary>
+    public interface ISupportInstancing
+    {
+        /// <summary>
+        /// Gets the subset count.
+        /// </summary>
+        int MeshCount { get; }
+
+        /// <summary>
+        /// Gets the bounding box of this instance.
+        /// </summary>
+        BoundingBox BoundingBox { get; }
+
+        /// <summary>
+        /// Gets the material for the given subset.
+        /// </summary>
+        Material GetMaterial(int mesh);
+
+        /// <summary>
+        /// Prepares the material for rendering.
+        /// </summary>
+        void PrepareMaterial(int mesh, Material material);
+
+        /// <summary>
+        /// Gets the vertex buffer for the given subset.
+        /// </summary>
+        void GetVertexBuffer(int mesh, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices);
+
+        /// <summary>
+        /// Gets the index buffer for the given subset.
+        /// </summary>
+        void GetIndexBuffer(int mesh, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount);
+    }
+    #endregion
+
     #region InstancedModel
     /// <summary>
     /// Defines an instanced model that can be rendered using hardware instancing.

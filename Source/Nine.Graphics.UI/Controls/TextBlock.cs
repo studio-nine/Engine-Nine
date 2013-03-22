@@ -46,7 +46,6 @@ namespace Nine.Graphics.UI.Controls
         private static readonly Regex WhiteSpaceRegEx = new Regex(@"\s+", RegexOptions.Compiled);
         private readonly SpriteFont spriteFont;
 
-        public SolidColorBrush Background { get; set; }
         public SolidColorBrush Foreground { get; set; }
 
         public Thickness Padding { get; set; }
@@ -67,13 +66,9 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        public override void OnRender(SpriteBatch spriteBatch)
-            {
-            if (this.Background != null)
+        protected internal override void OnRender(SpriteBatch spriteBatch)
         {
-                spriteBatch.Draw(
-                    new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)this.ActualWidth, (int)this.ActualHeight), Background.Color);
-            }
+            base.OnRender(spriteBatch);
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
             spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top), TextColor.Color);

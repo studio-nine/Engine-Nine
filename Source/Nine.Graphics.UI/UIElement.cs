@@ -33,6 +33,7 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.UI.Media;
 
     public abstract class UIElement : IContainer, IComponent
     {
@@ -81,6 +82,8 @@ namespace Nine.Graphics.UI
         internal bool isArrangeValid;
         internal bool isMeasureValid;
 
+        public Brush Background = null;
+
         public float Width = float.NaN;
         public float Height = float.NaN;
 
@@ -110,7 +113,7 @@ namespace Nine.Graphics.UI
         private Vector2 unclippedSize;
         private Vector2 visualOffset;
 
-        public UIElement Parent { get; set; }
+        public UIElement Parent { get; internal set; }
 
         #endregion
 
@@ -160,7 +163,13 @@ namespace Nine.Graphics.UI
             return hitTestRect.Contains(point.X, point.Y) == ContainmentType.Contains;
         }
 
-        public virtual void OnRender(SpriteBatch spriteBatch) { }
+        protected internal virtual void OnRender(SpriteBatch spriteBatch) 
+        {
+            if (Background != null)
+            {
+                spriteBatch.Draw(RenderTransform, Background);
+            }
+        }
 
         public bool TryGetRootElement(out Window rootElement)
         {
@@ -463,7 +472,6 @@ namespace Nine.Graphics.UI
         /// <returns>The desired size of this element in layout.</returns>
         private Vector2 MeasureCore(Vector2 availableSize)
         {
-            // TODO:
             //this.ResolveDeferredBindings(this.GetNearestDataContext());
             this.OnApplyTemplate();
 

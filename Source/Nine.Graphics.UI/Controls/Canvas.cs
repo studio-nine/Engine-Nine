@@ -25,11 +25,20 @@
 
 namespace Nine.Graphics.UI.Controls
 {
-    using Microsoft.Xna.Framework;
     using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
 
+    [Obsolete()]
     public class Canvas : Panel
     {
+        public List<Shapes.Shape> Childrens = new List<Shapes.Shape>();
+
+        public Canvas()
+        {
+
+        }
+
         #region Methods
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
