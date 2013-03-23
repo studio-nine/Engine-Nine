@@ -20,7 +20,7 @@ namespace Nine.Samples
         public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
-            scene.Add(new Camera2D(graphics) { InputEnabled = true });
+            scene.Add(new TMPCamera2D(graphics));
 
             Window window = new Window();
 
@@ -28,21 +28,14 @@ namespace Nine.Samples
                 {
                     RowDefinitions =
                         {
-                            new RowDefinition() { Height = new GridLength(400) },
-                            new RowDefinition() { Height = new GridLength(20) },
-                            new RowDefinition() { Height = new GridLength(400) }, 
-                            new RowDefinition() { Height = new GridLength(20) },
-                            new RowDefinition() { Height = new GridLength(400) }, 
+                            new RowDefinition() { Height = new GridLength(50, GridUnitType.Star) },
+                            new RowDefinition() { Height = new GridLength(50, GridUnitType.Star) }, 
                         },
                     ColumnDefinitions =
                         {
-                            new ColumnDefinition() { Width = new GridLength(400) },
-                            new ColumnDefinition() { Width = new GridLength(20) },
-                            new ColumnDefinition() { Width = new GridLength(400) }, 
-                            new ColumnDefinition() { Width = new GridLength(20) },
-                            new ColumnDefinition() { Width = new GridLength(400) }, 
-                            new ColumnDefinition() { Width = new GridLength(20) },
-                            new ColumnDefinition() { Width = new GridLength(400) }, 
+                            new ColumnDefinition() { Width = new GridLength(25, GridUnitType.Star) },
+                            new ColumnDefinition() { Width = new GridLength(25, GridUnitType.Star) }, 
+                            new ColumnDefinition() { Width = new GridLength(25, GridUnitType.Star) }, 
                         },
                 };
 
@@ -124,17 +117,11 @@ namespace Nine.Samples
 
                 // #ProgressBar
                 ProgressBar ProgressBar;
-                StackPanel.Children.Add(new Border()
+                StackPanel.Children.Add(ProgressBar = new ProgressBar()
                 {
-                    Margin = new Thickness(2),
+                    Value = 50,
                     Height = 50,
-                    BorderBrush = new SolidColorBrush(Color.Blue),
-                    BorderThickness = new Thickness(2),
-                    Content = ProgressBar = new ProgressBar()
-                    {
-                        Value = 50,
-                        Margin = new Thickness(2)
-                    }
+                    Margin = new Thickness(2)
                 });
 
                 // This is mostly just to test it out :D
@@ -149,16 +136,38 @@ namespace Nine.Samples
                 scene.Add(TweenA);
                 TweenA.Play();
 
+                // #ProgressBar
+                ProgressBar ProgressBar2;
+                StackPanel.Children.Add(ProgressBar2 = new ProgressBar()
+                {
+                    Orientation = Orientation.Vertical,
+                    Value = 50,
+                    Height = 100,
+                    Margin = new Thickness(20,2,20,2)
+                });
+
+                // This is mostly just to test it out :D
+                var TweenA2 = new Nine.Animations.TweenAnimation<float>((Interpolate<float>)MathHelper.Lerp, (Operator<float>)AddHelper.Add);
+                TweenA2.Target = ProgressBar2;
+                TweenA2.TargetProperty = "Value";
+                TweenA2.From = 10;
+                TweenA2.To = 100;
+                TweenA2.Duration = new TimeSpan(0, 0, 5);
+                TweenA2.AutoReverse = true;
+                TweenA2.Repeat = 10000000f;
+                scene.Add(TweenA2);
+                TweenA2.Play();
+
                 ScrollViewer.Content = ScrollContentPresenter;
                 ScrollContentPresenter.Content = StackPanel;
-                Grid.SetColumn(ScrollViewer, 2);
+                Grid.SetColumn(ScrollViewer, 1);
                 MainGrid.Children.Add(ScrollViewer);
             }
             #endregion
 
             { // #Image
                 var Image = new Image(content.Load<Texture2D>("Textures/box.dds"));
-                Grid.SetRow(Image, 2);
+                Grid.SetRow(Image, 1);
                 Grid.SetColumn(Image, 0);
                 MainGrid.Children.Add(Image);
             }

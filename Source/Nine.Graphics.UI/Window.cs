@@ -83,9 +83,10 @@ namespace Nine.Graphics.UI
 
         public void Draw(DrawingContext context, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            this.Viewport = this.Viewport.IsEmpty? this.Viewport : context.GraphicsDevice.Viewport.Bounds;
+            this.Viewport = this.Viewport.IsEmpty ? context.GraphicsDevice.Viewport.Bounds : this.Viewport;
             Update();
 
+            base.OnRender(spriteBatch);
             if (Content != null)
                 Content.OnRender(spriteBatch);
         }
