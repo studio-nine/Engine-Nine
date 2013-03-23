@@ -55,6 +55,7 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
@@ -82,8 +83,11 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="Controls\MediaElement.cs" />
+    <Compile Include="Controls\RangeBase.cs" />
     <Compile Include="Controls\Shapes\Rectangle.cs" />
     <Compile Include="Controls\Shapes\Shape.cs" />
+    <Compile Include="Controls\ProgressBar.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Internal\BoundingRectangleExtensions.cs" />

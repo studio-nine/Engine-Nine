@@ -186,6 +186,14 @@ namespace Nine.Graphics.UI
 
         protected internal virtual void OnRender(SpriteBatch spriteBatch) 
         {
+            /* TODO: Clipping
+            if (isClippingRequired)
+            {
+                var ClippingRect = GetClippingRect(RenderSize);
+                if (ClippingRect.HasValue)
+                    spriteBatch.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
+            } */
+
             if (Background != null)
             {
                 spriteBatch.Draw(AbsoluteRenderTransform, Background);
@@ -194,7 +202,18 @@ namespace Nine.Graphics.UI
 
         public bool TryGetRootElement(out Window rootElement)
         {
-            throw new NotImplementedException();
+            if (Parent != null)
+            {
+                if (Parent is Window)
+                {
+                    rootElement = Parent as Window;
+                    return true;
+                }
+                else
+                    return Parent.TryGetRootElement(out rootElement);
+            }
+            rootElement = null;
+            return false;
         }
 
         protected virtual BoundingRectangle? GetClippingRect(Vector2 finalSize)

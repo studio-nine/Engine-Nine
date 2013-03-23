@@ -64,8 +64,8 @@ namespace Nine.Graphics.UI.Controls
                 foreach (BoundingRectangle border in this.borders)
                 {
                     var Rect = border;
-                    Rect.X += VisualOffset.X + Parent.VisualOffset.X;
-                    Rect.Y += VisualOffset.Y + Parent.VisualOffset.Y;
+                    Rect.X += AbsoluteVisualOffset.X;
+                    Rect.Y += AbsoluteVisualOffset.Y;
                     spriteBatch.Draw(Rect, BorderBrush.Color);
                 }
             }

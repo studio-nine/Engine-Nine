@@ -33,45 +33,47 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class ContentControl : Control
     {
-        public UIElement Content { get; set; }
+        public UIElement Content 
+        {
+            get { return content; }
+            set
+            {
+                content = value;
+                content.Parent = this;
+            }
+        }
+        private UIElement content;
 
         public override IList<UIElement> GetChildren()
         {
             var child = Content;
             if (child != null)
-            {
-                children[0] = child;
-                return children;
-            }
+                return new UIElement[] { Content };
             return null;
         }
-        private UIElement[] children = new UIElement[1];
+
+        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        {
+            base.OnRender(spriteBatch);
+            if (Content != null)
+                Content.OnRender(spriteBatch);
+        }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            UIElement content = this.Content;
-            if (content != null)
-            {
-                content.Arrange(new BoundingRectangle(finalSize.X, finalSize.Y));
-            }
-
+            if (Content != null)
+                Content.Arrange(new BoundingRectangle(finalSize.X, finalSize.Y));
             return finalSize;
         }
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
-            UIElement content = this.Content;
-            if (content == null)
-            {
+            if (Content == null)
                 return Vector2.Zero;
-            }
-
-            content.Measure(availableSize);
+            Content.Measure(availableSize);
             return content.DesiredSize;
         }
 
-        protected virtual void OnContentChanged(UIElement oldContent, UIElement newContent)
-        {
-        }
+        protected virtual void OnContentChanged(UIElement oldContent, UIElement newContent) { }
     }
 }

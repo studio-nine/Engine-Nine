@@ -10,7 +10,7 @@ namespace Nine
     /// <summary>
     /// Helper class to add common types.
     /// </summary>
-    static class AddHelper
+    public static class AddHelper
     {
         public static int Add(int x, int y)
         {

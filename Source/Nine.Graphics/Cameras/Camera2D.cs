@@ -106,7 +106,7 @@
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            GraphicsDevice = graphics;           
+            GraphicsDevice = graphics;
         
             Zoom = 1;
             MinZoom = 0.01f;

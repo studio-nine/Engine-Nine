@@ -40,7 +40,16 @@ namespace Nine.Graphics.UI
         private readonly IInputManager inputManager;
         private UIElement elementWithMouseCapture;
 
-        public UIElement Content { get; set; }
+        public UIElement Content 
+        {
+            get { return content; }
+            set
+            {
+                content = value;
+                content.Parent = this;
+            }
+        }
+        private UIElement content;
 
         public IInputManager InputManager
         {

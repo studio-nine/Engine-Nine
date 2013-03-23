@@ -49,7 +49,9 @@ namespace Nine.Graphics.UI.Controls
         {
             base.OnRender(spriteBatch);
             if (this.Source != null)
+            {
                 spriteBatch.Draw(this.Source, AbsoluteRenderTransform, Color.White);
+            }
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

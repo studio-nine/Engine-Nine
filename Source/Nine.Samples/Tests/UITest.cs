@@ -31,6 +31,8 @@ namespace Nine.Samples
                             new RowDefinition() { Height = new GridLength(400) },
                             new RowDefinition() { Height = new GridLength(20) },
                             new RowDefinition() { Height = new GridLength(400) }, 
+                            new RowDefinition() { Height = new GridLength(20) },
+                            new RowDefinition() { Height = new GridLength(400) }, 
                         },
                     ColumnDefinitions =
                         {
@@ -39,9 +41,10 @@ namespace Nine.Samples
                             new ColumnDefinition() { Width = new GridLength(400) }, 
                             new ColumnDefinition() { Width = new GridLength(20) },
                             new ColumnDefinition() { Width = new GridLength(400) }, 
+                            new ColumnDefinition() { Width = new GridLength(20) },
+                            new ColumnDefinition() { Width = new GridLength(400) }, 
                         },
                 };
-            window.Content = MainGrid;
 
             #region Borders
             { // #Borders
@@ -100,7 +103,10 @@ namespace Nine.Samples
             }
             #endregion
 
-            { // #StackPanel
+            #region StackPanel & ScrollViewer
+            { // #StackPanel & #ScrollViewer
+                var ScrollViewer = new ScrollViewer();
+                var ScrollContentPresenter = new ScrollContentPresenter();
                 var StackPanel = new StackPanel() { Orientation = Orientation.Vertical, Background = new ImageBrush(content.Load<Texture2D>("Textures/checker.bmp")) };
                 StackPanel.Children.Add(new Border() { Margin = new Thickness(2), Height = 50, BorderBrush = new SolidColorBrush(Color.Red), BorderThickness = new Thickness(2) });
                 StackPanel.Children.Add(new Border() 
@@ -115,11 +121,40 @@ namespace Nine.Samples
                         Background = new SolidColorBrush(Color.LightGray),
                     }
                 });
-                StackPanel.Children.Add(new Border() { Margin = new Thickness(2), Height = 50, BorderBrush = new SolidColorBrush(Color.Blue), BorderThickness = new Thickness(2) });
 
-                Grid.SetColumn(StackPanel, 2);
-                MainGrid.Children.Add(StackPanel);
+                // #ProgressBar
+                ProgressBar ProgressBar;
+                StackPanel.Children.Add(new Border()
+                {
+                    Margin = new Thickness(2),
+                    Height = 50,
+                    BorderBrush = new SolidColorBrush(Color.Blue),
+                    BorderThickness = new Thickness(2),
+                    Content = ProgressBar = new ProgressBar()
+                    {
+                        Value = 50,
+                        Margin = new Thickness(2)
+                    }
+                });
+
+                // This is mostly just to test it out :D
+                var TweenA = new Nine.Animations.TweenAnimation<float>((Interpolate<float>)MathHelper.Lerp, (Operator<float>)AddHelper.Add);
+                TweenA.Target = ProgressBar;
+                TweenA.TargetProperty = "Value";
+                TweenA.From = 10;
+                TweenA.To = 90;
+                TweenA.Duration = new TimeSpan(0, 0, 5);
+                TweenA.AutoReverse = true;
+                TweenA.Repeat = 10000000f;
+                scene.Add(TweenA);
+                TweenA.Play();
+
+                ScrollViewer.Content = ScrollContentPresenter;
+                ScrollContentPresenter.Content = StackPanel;
+                Grid.SetColumn(ScrollViewer, 2);
+                MainGrid.Children.Add(ScrollViewer);
             }
+            #endregion
 
             { // #Image
                 var Image = new Image(content.Load<Texture2D>("Textures/box.dds"));
@@ -135,6 +170,17 @@ namespace Nine.Samples
                 MainGrid.Children.Add(Canvas);
             }
 
+            /* Nine Content loader dont support video
+            { // #MediaElement
+                var MediaElement = new MediaElement(content.Load<Microsoft.Xna.Framework.Media.Video>("TEST.wmv"));
+                MediaElement.Play();
+                Grid.SetRow(MediaElement, 2);
+                Grid.SetColumn(MediaElement, 4);
+                MainGrid.Children.Add(MediaElement);
+            }
+            */
+
+            window.Content = MainGrid;
             scene.Add(window);
             return scene;
         }
