@@ -41,7 +41,16 @@ namespace Nine.Graphics.UI.Controls
         public Thickness BorderThickness { get; set; }
         public Thickness Padding { get; set; }
         
-        public UIElement Child { get; set; }
+        public UIElement Content 
+        {
+            get { return content; }
+            set 
+            {
+                content = value;
+                content.Parent = this;
+            }
+        }
+        private UIElement content;
 
         #region Methods
 
@@ -54,28 +63,27 @@ namespace Nine.Graphics.UI.Controls
                 GenerateBorders();
                 foreach (BoundingRectangle border in this.borders)
                 {
-                    // TODO: It needs to get the grid visualOffset
                     var Rect = border;
-                    Rect.X += VisualOffset.X;
-                    Rect.Y += VisualOffset.Y;
+                    Rect.X += AbsoluteVisualOffset.X;
+                    Rect.Y += AbsoluteVisualOffset.Y;
                     spriteBatch.Draw(Rect, BorderBrush.Color);
                 }
             }
 
-            if (Child != null)
-                Child.OnRender(spriteBatch);
+            if (Content != null)
+                Content.OnRender(spriteBatch);
         }
 
         public override IList<UIElement> GetChildren()
         {
-            if (Child != null)
-                return new UIElement[] { Child };
+            if (Content != null)
+                return new UIElement[] { Content };
             return null;
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            UIElement child = this.Child;
+            UIElement child = this.Content;
             if (child != null)
             {
                 var finalRect = new BoundingRectangle(finalSize.X, finalSize.Y);
@@ -90,7 +98,7 @@ namespace Nine.Graphics.UI.Controls
         {
             Thickness borderThicknessAndPadding = this.BorderThickness + this.Padding;
 
-            UIElement child = this.Child;
+            UIElement child = this.Content;
             if (child != null)
             {
                 child.Measure(availableSize.Deflate(borderThicknessAndPadding));

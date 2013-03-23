@@ -31,7 +31,7 @@ namespace Nine.Graphics.UI.Controls
     using Nine.Graphics.UI.Media;
 
     /// <summary>
-    ///     Represents a control that displays an image.
+    /// Represents a control that displays an image.
     /// </summary>
     public class Image : UIElement
     {
@@ -39,11 +39,18 @@ namespace Nine.Graphics.UI.Controls
         public Stretch Stretch { get; set; }
         public StretchDirection StretchDirection { get; set; }
 
+        public Image() { }
+        public Image(Texture2D Source)
+        {
+            this.Source = Source;
+        }
+
         protected internal override void OnRender(SpriteBatch spriteBatch)
         {
+            base.OnRender(spriteBatch);
             if (this.Source != null)
             {
-                spriteBatch.Draw(this.Source, new Rectangle((int)VisualOffset.X, (int)VisualOffset.Y, (int)RenderSize.X, (int)RenderSize.Y), Color.White);
+                spriteBatch.Draw(this.Source, AbsoluteRenderTransform, Color.White);
             }
         }
 
@@ -61,7 +68,7 @@ namespace Nine.Graphics.UI.Controls
         {
             if (Source == null)
                 return new Vector2();
-
+            // TODO: Clipping
             Vector2 contentSize = new Vector2(Source.Width, Source.Height);
             Vector2 scale = Viewbox.ComputeScaleFactor(givenSize, contentSize, this.Stretch, this.StretchDirection);
             return new Vector2(contentSize.X * scale.X, contentSize.Y * scale.Y);

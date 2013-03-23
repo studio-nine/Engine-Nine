@@ -52,9 +52,30 @@ namespace Nine.Graphics.UI
         }
         private BoundingRectangle? clip = null;
 
+        public BoundingRectangle AbsoluteRenderTransform
+        {
+            get 
+            {
+                return new BoundingRectangle(AbsoluteVisualOffset.X, AbsoluteVisualOffset.Y, ActualWidth, ActualHeight);
+            }
+        }
+
         public BoundingRectangle RenderTransform
         {
             get { return new BoundingRectangle(VisualOffset.X, VisualOffset.Y, ActualWidth, ActualHeight); }
+        }
+
+        public Vector2 AbsoluteVisualOffset
+        {
+            get 
+            {
+                var Result = this.VisualOffset;
+                if (Parent != null)
+                {
+                    Result += Parent.AbsoluteVisualOffset;
+                }
+                return Result; 
+            }
         }
 
         public Vector2 VisualOffset
@@ -165,15 +186,34 @@ namespace Nine.Graphics.UI
 
         protected internal virtual void OnRender(SpriteBatch spriteBatch) 
         {
+            /* TODO: Clipping
+            if (isClippingRequired)
+            {
+                var ClippingRect = GetClippingRect(RenderSize);
+                if (ClippingRect.HasValue)
+                    spriteBatch.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
+            } */
+
             if (Background != null)
             {
-                spriteBatch.Draw(RenderTransform, Background);
+                spriteBatch.Draw(AbsoluteRenderTransform, Background);
             }
         }
 
         public bool TryGetRootElement(out Window rootElement)
         {
-            throw new NotImplementedException();
+            if (Parent != null)
+            {
+                if (Parent is Window)
+                {
+                    rootElement = Parent as Window;
+                    return true;
+                }
+                else
+                    return Parent.TryGetRootElement(out rootElement);
+            }
+            rootElement = null;
+            return false;
         }
 
         protected virtual BoundingRectangle? GetClippingRect(Vector2 finalSize)

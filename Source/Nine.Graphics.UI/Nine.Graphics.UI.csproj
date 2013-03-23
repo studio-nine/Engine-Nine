@@ -55,6 +55,7 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
@@ -82,11 +83,15 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="Controls\MediaElement.cs" />
+    <Compile Include="Controls\RangeBase.cs" />
     <Compile Include="Controls\Shapes\Rectangle.cs" />
     <Compile Include="Controls\Shapes\Shape.cs" />
+    <Compile Include="Controls\ProgressBar.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Internal\BoundingRectangleExtensions.cs" />
+    <Compile Include="ITemplatedList.cs" />
     <Compile Include="Media\BlankTexture.cs" />
     <Compile Include="Media\Brushes\GradientBrush.cs" />
     <Compile Include="Media\Brushes\ImageBrush.cs" />
@@ -119,7 +124,6 @@
     <Compile Include="HorizontalAlignment.cs" />
     <Compile Include="Controls\ItemsControl.cs" />
     <Compile Include="Controls\Primitives\IScrollInfo.cs" />
-    <Compile Include="ITemplatedList.cs" />
     <Compile Include="Controls\ScrollContentPresenter.cs" />
     <Compile Include="Controls\ScrollViewer.cs" />
     <Compile Include="Controls\VirtualizingStackPanel.cs" />
@@ -139,9 +143,6 @@
     <Compile Include="Input\Gesture.cs" />
     <Compile Include="Media\Stretch.cs" />
     <Compile Include="Media\Brushes\Brush.cs" />
-    <Compile Include="Media\ImageSource.cs" />
-    <Compile Include="Media\Imaging\BitmapSource.cs" />
-    <Compile Include="Media\Imaging\TextureImage.cs" />
     <Compile Include="Media\Brushes\SolidColorBrush.cs" />
     <Compile Include="Controls\ColumnDefinition.cs" />
     <Compile Include="Controls\Border.cs" />
@@ -154,10 +155,8 @@
     <Compile Include="Controls\RowDefinition.cs" />
     <Compile Include="Controls\StackPanel.cs" />
     <Compile Include="Controls\TextBlock.cs" />
-    <Compile Include="VirtualizingElementCollection.cs" />
     <Compile Include="TextWrapping.cs" />
     <Compile Include="UIElement.cs" />
-    <Compile Include="ElementCollection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\Bin\Nine.Serialization.targets" />

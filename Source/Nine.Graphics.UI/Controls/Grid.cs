@@ -342,7 +342,10 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            return (int)element.ExternalProperties["Column"];
+            if (element.ExternalProperties.ContainsKey("Column"))
+                return (int)element.ExternalProperties["Column"];
+            else
+                return 0; // Default Value
         }
 
         /// <summary>
@@ -354,7 +357,10 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            return (int)element.ExternalProperties["Row"];
+            if (element.ExternalProperties.ContainsKey("Row"))
+                return (int)element.ExternalProperties["Row"];
+            else
+                return 0; // Default Value
         }
 
         /// <summary>

@@ -1,12 +1,14 @@
 ﻿namespace Nine.Graphics.UI.Controls.Shapes
 {
+    using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Media;
 
     public class Rectangle : Shape
     {
-        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        public Rectangle(float w, float h)
         {
-            spriteBatch.Draw(RenderTransform, Fill.Color);
+            this.Width = w;
+            this.Height = h;
         }
     }
 }

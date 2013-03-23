@@ -21,6 +21,7 @@
         public MouseButtons RotateButton { get; set; }
         public MouseButtons TranslateButton { get; set; }
 
+        public Transformable TargetObject;
         public Vector3 LookAt
         {
             get { return lookAt; }
@@ -68,7 +69,13 @@
             forward.Z = -(float)Math.Sin(Yaw) * forward.Z;
 
             var up = Vector3.Up;
-            var eye = lookAt - forward;
+            var eye = Vector3.Zero;
+
+            if (TargetObject == null)
+                eye = lookAt - forward;
+            else
+                eye = TargetObject.AbsoluteTransform.Translation - forward;
+
             Matrix.CreateWorld(ref eye, ref forward, ref up, out transform);
             NotifyTransformChanged();
         }

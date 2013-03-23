@@ -25,11 +25,11 @@
 
 namespace Nine.Graphics.UI.Controls
 {
-    using Microsoft.Xna.Framework;
     using System;
+    using Microsoft.Xna.Framework;
 
     /// <summary>
-    ///     Arranges child elements into a single line that can be oriented horizontally or vertically.
+    /// Arranges child elements into a single line that can be oriented horizontally or vertically.
     /// </summary>
     public class StackPanel : Panel
     {
@@ -59,7 +59,6 @@ namespace Nine.Graphics.UI.Controls
                         finalRect.Height = height;
                         finalRect.Width = Math.Max(arrangeSize.X, child.DesiredSize.X);
                     }
-
                     child.Arrange(finalRect);
                 }
             }
@@ -72,21 +71,12 @@ namespace Nine.Graphics.UI.Controls
             var size = new Vector2();
             bool isHorizontalOrientation = this.Orientation == Orientation.Horizontal;
             if (isHorizontalOrientation)
-            {
                 availableSize.X = float.PositiveInfinity;
-            }
             else
-            {
                 availableSize.Y = float.PositiveInfinity;
-            }
 
             foreach (UIElement child in this.GetChildren())
             {
-                if (child == null)
-                {
-                    continue;
-                }
-
                 child.Measure(availableSize);
                 Vector2 desiredSize = child.DesiredSize;
                 if (isHorizontalOrientation)
@@ -100,7 +90,6 @@ namespace Nine.Graphics.UI.Controls
                     size.Y += desiredSize.Y;
                 }
             }
-
             return size;
         }
     }

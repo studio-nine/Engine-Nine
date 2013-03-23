@@ -14,22 +14,17 @@
 
         public static void Draw(this SpriteBatch spriteBatch, Rectangle rect, Brush c)
         {
-            // Optimize, Tho I would say this is a temporarily way of drawing
-            switch (c.GetType().Name)
+            // I would say this is a temporarily way of drawing
+            if (c is SolidColorBrush)
             {
-                case "SolidColorBrush":
-                    var Texture = Nine.Graphics.GraphicsResources<BlankTexture>.GetInstance(spriteBatch.GraphicsDevice);
-                    spriteBatch.Draw(Texture.Texture, rect, (c as SolidColorBrush).Color);
-                    break;
-
-                case "ImageBrush":
-                    spriteBatch.Draw((c as ImageBrush).Source, rect, Color.White);
-                    break;
-
-
-                case "Brush":
-                case "TileBrush":
-                    throw new System.NotSupportedException();
+                var Texture = Nine.Graphics.GraphicsResources<BlankTexture>.GetInstance(spriteBatch.GraphicsDevice);
+                spriteBatch.Draw(Texture.Texture, rect, (c as SolidColorBrush).Color);
+            }
+            else if (c is ImageBrush)
+            {
+                var ImageBrush = c as ImageBrush;
+                var Rect = ImageBrush.Calculate(ImageBrush.Source ,rect);
+                spriteBatch.Draw(ImageBrush.Source, Rect, null, Color.White, 0, Vector2.Zero, ImageBrush.Effects, 0);
             }
         }
     }
