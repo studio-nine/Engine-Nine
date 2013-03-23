@@ -1,4 +1,4 @@
-﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml">
+﻿<Scene>
 
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />

@@ -19,7 +19,8 @@
     /// </summary>
     public class XamlSerializer : IContentImporter
     {
-        // TODO: set default xaml namespace to "http://schemas.microsoft.com/nine/2011/xaml"
+        internal const string DefaultNamespace = "http://schemas.microsoft.com/nine/2011/xaml";
+
         internal IServiceProvider ServiceProvider;
         internal ISerializationOverride SerializationOverride;
         internal Stack<MarkupExtension> MarkupExtensions = new Stack<MarkupExtension>();
@@ -36,8 +37,7 @@
         public object Load(Stream stream, IServiceProvider serviceProvider)
         {
             InitializeServices(serviceProvider);
-
-            var reader = new XamlXmlReader(stream);
+            var reader = new XamlXmlReader(XmlReader.Create(stream, null, new XmlParserContext(null, new DefaultNamespaceManager(), null, XmlSpace.Default)));
             var writer = new ObjectWriter(this, new SchemaContext(this));
             XamlServices.Transform(reader, writer, false);
             return writer.Result;
@@ -101,6 +101,18 @@
             get { return SupportedFileExtensions; }
         }
         static readonly string[] SupportedFileExtensions = new[] { ".xaml" };
+    }
+    #endregion
+
+    #region DefaultNamespaceReader
+    class DefaultNamespaceManager : XmlNamespaceManager
+    {
+        public DefaultNamespaceManager() : base(new NameTable()) { }
+        public override string LookupNamespace(string prefix)
+        {
+            var result = base.LookupNamespace(prefix);
+            return string.IsNullOrEmpty(result) ? XamlSerializer.DefaultNamespace : result;
+        }
     }
     #endregion
 

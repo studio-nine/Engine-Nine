@@ -1,5 +1,4 @@
-﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" 
-       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+﻿<Scene xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:my="clr-namespace:TutorialData;assembly=TutorialData"
        xmlns:xna="clr-namespace:Microsoft.Xna.Framework;assembly=Microsoft.Xna.Framework">
     

@@ -4,7 +4,7 @@
     The root element is a Scene that serves as a root container for all graphical objects.
     The minimum setup for a scene typically contains a skybox, an ambient light, a directional light and a fog.    
 -->
-<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml">
+<Scene>
     
     <!-- A cube texture has to be assigned to a skybox. -->
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap.dds}" />

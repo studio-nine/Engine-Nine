@@ -1,7 +1,5 @@
-﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml"
-       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-       xmlns:xna="clr-namespace:Microsoft.Xna.Framework;assembly=Microsoft.Xna.Framework">
-
+﻿<Scene>
+    
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap.dds}" />
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
