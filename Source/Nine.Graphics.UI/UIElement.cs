@@ -186,13 +186,16 @@ namespace Nine.Graphics.UI
 
         protected internal virtual void OnRender(SpriteBatch spriteBatch) 
         {
-            /* TODO: Clipping
+            if (spriteBatch.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
+            {
+                spriteBatch.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
+            }
             if (isClippingRequired)
             {
                 var ClippingRect = GetClippingRect(RenderSize);
                 if (ClippingRect.HasValue)
                     spriteBatch.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
-            } */
+            }
 
             if (Background != null)
             {
@@ -251,6 +254,7 @@ namespace Nine.Graphics.UI
 
             if (!isClippingRequiredDueToClientSize)
             {
+                // TODO: Clipping
                 return BoundingRectangle.Empty;
             }
 

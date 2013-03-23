@@ -142,7 +142,7 @@ namespace Nine.Samples
                 TweenA.Target = ProgressBar;
                 TweenA.TargetProperty = "Value";
                 TweenA.From = 10;
-                TweenA.To = 90;
+                TweenA.To = 100;
                 TweenA.Duration = new TimeSpan(0, 0, 5);
                 TweenA.AutoReverse = true;
                 TweenA.Repeat = 10000000f;
@@ -162,23 +162,6 @@ namespace Nine.Samples
                 Grid.SetColumn(Image, 0);
                 MainGrid.Children.Add(Image);
             }
-
-            { // #Canvas
-                var Canvas = new Canvas();
-                Grid.SetRow(Canvas, 2);
-                Grid.SetColumn(Canvas, 2);
-                MainGrid.Children.Add(Canvas);
-            }
-
-            /* Nine Content loader dont support video
-            { // #MediaElement
-                var MediaElement = new MediaElement(content.Load<Microsoft.Xna.Framework.Media.Video>("TEST.wmv"));
-                MediaElement.Play();
-                Grid.SetRow(MediaElement, 2);
-                Grid.SetColumn(MediaElement, 4);
-                MainGrid.Children.Add(MediaElement);
-            }
-            */
 
             window.Content = MainGrid;
             scene.Add(window);

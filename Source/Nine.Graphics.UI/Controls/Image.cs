@@ -36,7 +36,7 @@ namespace Nine.Graphics.UI.Controls
     public class Image : UIElement
     {
         public Texture2D Source { get; set; }
-        public Stretch Stretch { get; set; }
+        public Stretch Stretch = Stretch.Fill;
         public StretchDirection StretchDirection { get; set; }
 
         public Image() { }
@@ -68,7 +68,6 @@ namespace Nine.Graphics.UI.Controls
         {
             if (Source == null)
                 return new Vector2();
-            // TODO: Clipping
             Vector2 contentSize = new Vector2(Source.Width, Source.Height);
             Vector2 scale = Viewbox.ComputeScaleFactor(givenSize, contentSize, this.Stretch, this.StretchDirection);
             return new Vector2(contentSize.X * scale.X, contentSize.Y * scale.Y);

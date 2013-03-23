@@ -33,10 +33,13 @@ namespace Nine.Graphics.UI
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    ///     RootElement is the main host for all <see cref = "UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
+    /// RootElement is the main host for all <see cref = "UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
     /// </summary>
     public class Window : UIElement, ISprite
     {
+        internal static RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true, FillMode = FillMode.WireFrame };
+        internal static RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
+
         private readonly IInputManager inputManager;
         private UIElement elementWithMouseCapture;
 
@@ -57,17 +60,17 @@ namespace Nine.Graphics.UI
         }
 
         /// <summary>
-        ///     Gets or sets the viewport used by <see cref = "Window">RootElement</see> to layout its content.
+        /// Gets or sets the viewport used by <see cref = "Window">RootElement</see> to layout its content.
         /// </summary>
         public Rectangle Viewport { get; set; }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref = "Window">RootElement</see> class.
+        /// Initializes a new instance of the <see cref = "Window">RootElement</see> class.
         /// </summary> 
         public Window() { }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref = "Window">RootElement</see> class.
+        /// Initializes a new instance of the <see cref = "Window">RootElement</see> class.
         /// </summary>
         /// <param name = "inputManager">An implementation of <see cref = "IInputManager">IInputManager</see> that can be used to respond to user input.</param>
         public Window(IInputManager inputManager)
