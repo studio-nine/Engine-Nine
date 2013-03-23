@@ -1,16 +1,16 @@
 ﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Camera2D/>
-    <FullScreenQuad Texture="{ContentReference ../Textures/box}" />
+    <Camera2D />
+    <FullScreenQuad Texture="{ContentReference ../Textures/box.dds}" />
 
     <Group Transform2D.Scale="1,1" Transform2D.Rotation="0">
         
-        <Sprite Texture="{ContentReference ../Textures/checker}" />
+        <Sprite Texture="{ContentReference ../Textures/checker.bmp}" />
 
-        <Sprite Name="Rectangle2" Position="200,0" Size="100,100" Scale="1,2" ZOrder="1" FlipX="True" Texture="{ContentReference ../Textures/checker}" />
+        <Sprite Name="Rectangle2" Position="200,0" Size="100,100" Scale="1,2" ZOrder="1" FlipX="True" Texture="{ContentReference ../Textures/checker.bmp}" />
 
         <Sprite Name="Rectangle1" Position="-200,0" Size="100,200" Scale="1,1" ZOrder="-1" FlipY="True">
-            <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
+            <BasicMaterial Texture="{ContentReference ../Textures/checker.bmp}" />
         </Sprite>
 
         <!--
@@ -21,7 +21,7 @@
         </Sprite>
         -->
         
-        <TextSprite Anchor="1,1" Name="Wait" Text="Press any key to continue..." Font="{ContentReference ../Fonts/Consolas}" ZOrder="1" />
+        <TextSprite Anchor="1,1" Name="Wait" Text="Press any key to continue..." Font="{ContentReference ../Fonts/Consolas.spritefont}" ZOrder="1" />
 
         <Group.Animations>
             <AnimationGroup>

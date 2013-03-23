@@ -41,7 +41,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialGroup"/> class.
         /// </summary>
-        internal MaterialGroup(GraphicsDevice graphics)
+        public MaterialGroup(GraphicsDevice graphics)
         {
             this.GraphicsDevice = graphics;
             this.materialParts = new MaterialPartCollection();

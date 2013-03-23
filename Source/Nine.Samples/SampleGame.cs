@@ -8,6 +8,7 @@ namespace Nine.Samples
     using Nine.Graphics;
     using Nine.Serialization;
     using System;
+    using System.IO;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -63,10 +64,11 @@ namespace Nine.Samples
         {
             samples.AddRange(
                 from type in Assembly.GetExecutingAssembly().GetTypes().OrderBy(x => x.Name)
-                where type.IsSubclassOf(typeof(Sample)) && type != typeof(SampleScene)
+                where type.IsSubclassOf(typeof(Sample)) && type != typeof(Tutorial)
                 select (Sample)Activator.CreateInstance(type));
-
-            //samples = new List<Sample> { new SkinnedModelTest() };
+            
+            samples = new List<Sample> { new CubeStressTest() };
+            //samples = new List<Sample> { new Tutorial("Scenes/13. Physics.xaml") };
         }
 
         private void LoadNextScene()
@@ -76,7 +78,7 @@ namespace Nine.Samples
                 scenes.Add(currentScene = samples[nextScene].CreateScene(GraphicsDevice, loader));
 
                 // TODO: rework on this design
-                currentScene.Add(new FreeCamera(GraphicsDevice));
+                currentScene.Add(new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40)));
                 SceneExtensions.SetDrawingContext(currentScene, new DrawingContext3D(GraphicsDevice, currentScene));
             }
 

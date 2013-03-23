@@ -19,6 +19,7 @@
     /// </summary>
     public class XamlSerializer : IContentImporter
     {
+        // TODO: set default xaml namespace to "http://schemas.microsoft.com/nine/2011/xaml"
         internal IServiceProvider ServiceProvider;
         internal ISerializationOverride SerializationOverride;
         internal Stack<MarkupExtension> MarkupExtensions = new Stack<MarkupExtension>();

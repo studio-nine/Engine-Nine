@@ -1,23 +1,24 @@
-﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:my="clr-namespace:TutorialData;assembly=TutorialData">
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml"
+       xmlns:my="clr-namespace:Nine.Samples;assembly=Nine.Samples">
     
-    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap.dds}" />
     <Fog Name="MyFog" FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight CastShadow="True" DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
 
-    <Surface Heightmap="{ContentReference ../Textures/RF1}" Transform.Position="-50,-10,-50" TextureTransform.Scale="0.3, 0.3">
+    <Surface Heightmap="{ContentReference ../Terrain/RF1.bmp}" Transform.Position="-50,-10,-50" TextureTransform.Scale="0.3, 0.3">
         <MaterialGroup>
-            <DiffuseMaterialPart Texture="{ContentReference ../Textures/TerrainTex}" />
+            <DiffuseMaterialPart Texture="{ContentReference ../Terrain/grass.dds}" />
             <ShadowMapMaterialPart />
             <DirectionalLightMaterialPart />
         </MaterialGroup>
     </Surface>
 
     <!-- Create a terrain collider to make the above terrain respond to collision events -->
-    <TerrainCollider Heightmap="{ContentReference ../Textures/RF1}" Transform.Position="-50,-10,-50"/>
+    <TerrainCollider Heightmap="{ContentReference ../Terrain/RF1.bmp}" Transform.Position="-50,-10,-50"/>
 
     <Group Transform.Position="10,20,0">
-        <Box Transform.Scale="1,4,8" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
+        <Box Transform.Scale="1,4,8" Material="{BasicMaterial Texture={ContentReference ../Textures/box.dds}, LightingEnabled = true}" />
         
         <!-- Attach a rigid body to a group so the group will be simulated using physics engine -->
         <RigidBody>
@@ -28,31 +29,31 @@
     </Group>
 
     <Group Transform.Position="15,25,0">
-        <Cylinder Transform.Scale="2,1,2" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
+        <Cylinder Transform.Scale="2,1,2" Material="{BasicMaterial Texture={ContentReference ../Textures/box.dds}, LightingEnabled = true}" />
         <RigidBody>
             <CylinderCollider Radius="2" Height="1" />
         </RigidBody>
     </Group>
     
     <Group Transform.Position="15,30,0">
-        <Cylinder Transform.Scale="1,2,1" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
-        <Sphere Transform.Position="0,1,0" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
-        <Sphere Transform.Position="0,-1,0" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
+        <Cylinder Transform.Scale="1,2,1" Material="{BasicMaterial Texture={ContentReference ../Textures/box.dds}, LightingEnabled = true}" />
+        <Sphere Transform.Position="0,1,0" Material="{BasicMaterial Texture={ContentReference ../Textures/box.dds}, LightingEnabled = true}" />
+        <Sphere Transform.Position="0,-1,0" Material="{BasicMaterial Texture={ContentReference ../Textures/box.dds}, LightingEnabled = true}" />
         <RigidBody>
             <CapsuleCollider Radius="1" Height="2" />
         </RigidBody>
     </Group>
 
     <Group Transform.Position="15,32,0">
-        <Cone Transform.Scale="1,2,1" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
+        <Cone Transform.Scale="1,2,1" Material="{BasicMaterial Texture={ContentReference ../Textures/box.dds}, LightingEnabled = true}" />
         <RigidBody>
             <ConeCollider Radius="1" Height="2" />
         </RigidBody>
     </Group>
 
     <Group Transform.Position="15,40,0">
-        <Box Transform.Scale="4,0.5,4" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
-        <Cylinder Transform.Scale="1,2,1" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
+        <Box Transform.Scale="4,0.5,4" Material="{BasicMaterial Texture={ContentReference ../Textures/box.dds}, LightingEnabled = true}" />
+        <Cylinder Transform.Scale="1,2,1" Material="{BasicMaterial Texture={ContentReference ../Textures/box.dds}, LightingEnabled = true}" />
         <RigidBody>
             <CompoundCollider>
                 <BoxCollider Size="4,0.5,4" />
@@ -62,19 +63,19 @@
     </Group>
     
     <Group>
-        <Model Source="{ContentReference ../Models/Tank}" />
-        <ModelCollider Source="{ContentReference ../Models/Tank}" />
+        <Model Source="{ContentReference ../Models/Tank/Tank.fbx}" />
+        <ModelCollider Source="{ContentReference ../Models/Tank/Tank.fbx}" />
     </Group>
 
     <Group Transform.Position="15, 60, 0">
-        <Model Source="{ContentReference ../Models/Tank}" />
+        <Model Source="{ContentReference ../Models/Tank/Tank.fbx}" />
         <RigidBody>
-            <ModelCollider Source="{ContentReference ../Models/Tank}" />
+            <ModelCollider Source="{ContentReference ../Models/Tank/Tank.fbx}" />
         </RigidBody>
     </Group>
     
     <Group Transform.Position="15,35,0">
-        <Sphere Transform.Scale="4,4,4" Material="{BasicMaterial Texture={ContentReference ../Textures/box}, LightingEnabled = true}" />
+        <Sphere Transform.Scale="4,4,4" Material="{BasicMaterial Texture={ContentReference ../Textures/box.dds}, LightingEnabled = true}" />
         <RigidBody>
             <SphereCollider Radius="4" />
         </RigidBody>

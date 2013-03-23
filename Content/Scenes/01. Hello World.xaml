@@ -6,32 +6,17 @@
 -->
 <Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml">
     
-    <!-- 
-        A cube texture has to be assigned to a skybox.
-    
-        Notice that the texture references the output .xnb asset file. By default, any reference to external
-        asset is the relative path to the output asset (without file extension), this allows you to easily
-        specify how the external assets are imported and processed. But there are cases when you have to
-        reference the source asset file, which will be stated explicity.
-    
-        Skybox currently won't show up on Windows Phone.
-    -->
-    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <!-- A cube texture has to be assigned to a skybox. -->
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap.dds}" />
 
-    <!--
-        You can optionally specify the name of an object and retrieve it using Scene.Find(name) method.
-    -->
+    <!-- You can optionally specify the name of an object and retrieve it using Scene.Find(name) method. -->
     <Fog Name="MyFog" FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     
-    <!--
-        The ambient light defines the color of an object when it is completely not lit, it will prevent 
-        objects looking too dark.
-    -->
+    <!-- The ambient light defines the color of an object when it is completely not lit, it will prevent
+        objects from looking too dark. -->
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
 
-    <!--
-        This is the main directional light of the scene. 
-    -->
+    <!-- This is the main directional light of the scene. -->
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
     
 </Scene>

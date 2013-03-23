@@ -2,45 +2,45 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:xna="clr-namespace:Microsoft.Xna.Framework;assembly=Microsoft.Xna.Framework">
 
-    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap.dds}" />
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
 
     <Cross Transform.Position="-40,0,0">
-        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box}"  />
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box.dds}"  />
     </Cross>
 
     <Box Transform.Position="-30,0,0">
-        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box}"  />
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box.dds}"  />
     </Box>
     
     <Cone Transform.Position="-20,0,0">
-        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box}"  />
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box.dds}"  />
     </Cone>
 
     <Cylinder Transform.Position="-10,0,0">
-        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box}"  />
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box.dds}"  />
     </Cylinder>
 
     <Dome Transform.Position="0,0,0">
-        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box}"  />
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box.dds}"  />
     </Dome>
 
     <Plane Transform.Position="10,0,0">
-        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box}"  />
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box.dds}"  />
     </Plane>
 
     <Sphere Transform.Position="20,0,0">
-        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box}"  />
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box.dds}"  />
     </Sphere>
 
     <Teapot Transform.Position="30,0,0">
-        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box}"  />
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box.dds}"  />
     </Teapot>
 
     <Torus Transform.Position="40,0,0">
-        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box}"  />
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/box.dds}"  />
     </Torus>
 
 </Scene>

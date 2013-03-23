@@ -1,6 +1,6 @@
 ﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml">
 
-    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap.dds}" />
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
@@ -28,10 +28,10 @@
         In this tutorial, a basic material is applied to the terrain. The texture will map across the entire
         terrain by default. This behavior can be changed by setting the TextureScale and TextureOffset.
     -->
-    <Surface Heightmap="{ContentReference ../Textures/MountainHeightmap}" 
+    <Surface Heightmap="{ContentReference ../Terrain/MountainHeightmap.bmp}" 
              Transform.Position="0, -20, 0" TextureTransform.Scale="0.2, 0.2"
              LevelOfDetailEnabled="True" LevelOfDetailStart="20" LevelOfDetailEnd="200">
-        <BasicMaterial Texture="{ContentReference ../Textures/grass}" />
+        <BasicMaterial Texture="{ContentReference ../Terrain/grass.dds}" />
     </Surface>
 
     <!--
@@ -42,19 +42,19 @@
         Normal mapping requires the vertices of the terrain to contain tangent and binormal channels, which
         isn't enabled by default. You can set the VertexType property to the name of the vertex type and the
         vertex data will be converted into that format.
-    -->
     <Surface Heightmap="{ContentReference ../Textures/RF1}"
              Transform.Position="-128, -20, -128" LevelOfDetailEnabled="False" 
              TextureTransform.Scale="0.2, 0.2" VertexType="VertexPositionNormalTangentBinormalTexture">
                             
+    -->
         <!--
             You should set the MaterialPaintGroup.MaskTextureScale to the inverse of TextureTransform.Scale so 
             that the layers will map across the entire terrain.
-        -->
         <MaterialGroup MaterialPaintGroup.MaskTextureScale="5, 5">
         
             <MaterialPaintGroup.MaskTextures>
-                <!-- Specify the mask textures of each material paint group using a splatter. -->
+        -->
+                <!-- Specify the mask textures of each material paint group using a splatter.
                 <Splatter>
                     <ExternalReference />
                     <ExternalReference>../../Content/Terrain/2.bmp</ExternalReference>
@@ -87,12 +87,12 @@
                 <DiffuseMaterialPart Texture="{ContentReference ../Textures/terrainTex}" />
                 <EmissiveMaterialPart EmissiveColor="0.2, 0.2, 0" />
             </MaterialPaintGroup>
-            
+             -->
             <!--
                 Terrain material also supports detailed texture in case you look at the terrain really close.
             <DetailMaterialPart DetailTexture="{ContentReference ..\Textures\LandscapeDetail}" DetailTextureScale="0.5, 0.5" />
-            -->
             <DirectionalLightMaterialPart />
         </MaterialGroup>
     </Surface>
+            -->
 </Scene>

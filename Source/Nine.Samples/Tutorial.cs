@@ -1,22 +1,14 @@
 namespace Nine.Samples
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
     using Nine;
-    using Nine.Components;
-    using Nine.Graphics;
     using Nine.Serialization;
 
-    public class SampleScene : Sample
+    public class Tutorial : Sample
     {
         private readonly string assetName;
      
-        public SampleScene(string assetName) 
+        public Tutorial(string assetName) 
         {
             this.assetName = assetName; 
         }
