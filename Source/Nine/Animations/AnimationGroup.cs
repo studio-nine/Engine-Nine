@@ -96,7 +96,7 @@ namespace Nine.Animations
         {
             repeatCounter = 0;
             for (int i = 0; i < animations.Count; ++i)
-                animations[i].Play();
+                animations[i].OnStarted();
             base.OnStarted();
         }
 
@@ -106,7 +106,7 @@ namespace Nine.Animations
         protected override void OnStopped()
         {
             for (int i = 0; i < animations.Count; ++i)
-                animations[i].Stop();
+                animations[i].OnStopped();
             base.OnStopped();
         }
 
@@ -116,7 +116,7 @@ namespace Nine.Animations
         protected override void OnPaused()
         {
             for (int i = 0; i < animations.Count; ++i)
-                animations[i].Pause();
+                animations[i].OnPaused();
             base.OnPaused();
         }
 
@@ -126,7 +126,7 @@ namespace Nine.Animations
         protected override void OnResumed()
         {
             for (int i = 0; i < animations.Count; ++i)
-                animations[i].Resume();
+                animations[i].OnResumed();
             base.OnResumed();
         }
 
@@ -166,13 +166,12 @@ namespace Nine.Animations
                     repeatCounter++;
                     if (repeatCounter == Repeat)
                     {
-                        Stop();
                         OnCompleted();
                     }
                     else
                     {
                         for (int i = 0; i < animations.Count; ++i)
-                            animations[i].Play();
+                            animations[i].OnStarted();
                         OnRepeated();
                     }
                 }

@@ -170,7 +170,7 @@
             {
                 IAnimation animation = controller as IAnimation;
                 if (animation != null)
-                    animation.Play();
+                    animation.OnStarted();
             }
 
             // Refresh the pose immediately so the skin transform is correct even if update is never called.
@@ -198,7 +198,7 @@
             {
                 IAnimation animation = controller as IAnimation;
                 if (animation != null)
-                    animation.Stop();
+                    animation.OnStopped();
             }
 
             base.OnStopped();
@@ -213,7 +213,7 @@
             {
                 IAnimation animation = controller as IAnimation;
                 if (animation != null)
-                    animation.Pause();
+                    animation.OnPaused();
             }
 
             base.OnPaused();
@@ -228,7 +228,7 @@
             {
                 IAnimation animation = controller as IAnimation;
                 if (animation != null)
-                    animation.Resume();
+                    animation.OnResumed();
             }
 
             base.OnResumed();
@@ -283,7 +283,6 @@
 
             if (allStopped)
             {
-                Stop();
                 OnCompleted();
             }
         }

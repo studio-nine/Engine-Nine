@@ -273,7 +273,6 @@ namespace Nine.Animations
             }
             if (!(ElapsedTime < max_elapsed))
             {
-                Stop();
                 OnCompleted();
             }
         }

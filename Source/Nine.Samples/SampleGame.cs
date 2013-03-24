@@ -67,8 +67,8 @@ namespace Nine.Samples
                 where type.IsSubclassOf(typeof(Sample)) && type != typeof(Tutorial)
                 select (Sample)Activator.CreateInstance(type));
             
-            samples = new List<Sample> { new CubeStressTest() };
-            samples = new List<Sample> { new Tutorial("Scenes/01. Hello World.xaml") };
+            samples = new List<Sample> { new UITest() };
+            //samples = new List<Sample> { new Tutorial("Scenes/01. Hello World.xaml") };
         }
 
         private void LoadNextScene()

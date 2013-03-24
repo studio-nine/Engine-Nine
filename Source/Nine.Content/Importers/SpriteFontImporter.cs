@@ -10,6 +10,12 @@ namespace Nine.Serialization.Importers
     {
         public object Import(Stream stream, IServiceProvider serviceProvider)
         {
+            // For each file:
+            //  - lookup from cache
+            //  - import with ContentPipeline importer & processor
+            //      - Need (Profile, Platform, OutputDir, IntermediateDir)
+            //  - save with binary serializer (OutputDir)
+            //  - load
             return ContentPipeline.Load<Microsoft.Xna.Framework.Graphics.SpriteFont>(stream, new FontDescriptionImporter(), new FontDescriptionProcessor(), serviceProvider);
         }
 
@@ -18,4 +24,6 @@ namespace Nine.Serialization.Importers
             get { return ContentPipeline.GetSupportedFileExtensions(typeof(FontDescriptionImporter)); }
         }
     }
+
+    class SpriteFontWriter : PipelineObjectWriter<Microsoft.Xna.Framework.Graphics.SpriteFont> { }
 }

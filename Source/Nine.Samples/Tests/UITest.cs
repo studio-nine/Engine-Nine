@@ -146,8 +146,7 @@ namespace Nine.Samples
                 TweenA.Duration = new TimeSpan(0, 0, 5);
                 TweenA.AutoReverse = true;
                 TweenA.Repeat = 10000000f;
-                scene.Add(TweenA);
-                TweenA.Play();
+                scene.Animations.Play(TweenA);
 
                 ScrollViewer.Content = ScrollContentPresenter;
                 ScrollContentPresenter.Content = StackPanel;
@@ -170,15 +169,15 @@ namespace Nine.Samples
                 MainGrid.Children.Add(Canvas);
             }
 
-            /* Nine Content loader dont support video
+            /* Nine Content loader dont support video */
             { // #MediaElement
-                var MediaElement = new MediaElement(content.Load<Microsoft.Xna.Framework.Media.Video>("TEST.wmv"));
+                var MediaElement = new MediaElement(content.Load<Microsoft.Xna.Framework.Media.Video>("test.wmv"));
                 MediaElement.Play();
                 Grid.SetRow(MediaElement, 2);
                 Grid.SetColumn(MediaElement, 4);
                 MainGrid.Children.Add(MediaElement);
             }
-            */
+            
 
             window.Content = MainGrid;
             scene.Add(window);

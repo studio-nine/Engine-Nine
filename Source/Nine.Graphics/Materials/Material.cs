@@ -106,7 +106,7 @@ namespace Nine.Graphics.Materials
         /// Gets or sets the next material to form a multi pass material chain.
         /// </summary>
         public Material NextMaterial { get; set; }
-
+        
         /// <summary>
         /// Occurs when a material usage is not found.
         /// </summary>
@@ -114,7 +114,7 @@ namespace Nine.Graphics.Materials
         /// The first material represents the material to be resolved.
         /// The second material represents any existing material instance that are resolved.
         /// </remarks>
-        public static event Func<Material, MaterialUsage, Material, Material> MaterialResolve;
+        public static event MaterialResolveEventHandler MaterialResolve;
         #endregion
 
         #region Methods
@@ -184,7 +184,7 @@ namespace Nine.Graphics.Materials
                 var listeners = MaterialResolve.GetInvocationList();
                 for (int i = 0; i < listeners.Length; ++i)
                 {
-                    var resolve = (Func<Material, MaterialUsage, Material, Material>)listeners[i];
+                    var resolve = (MaterialResolveEventHandler)listeners[i];
                     if (resolve != null && (result = resolve(this, usage, existingInstance)) != null)
                         break;
                 }
@@ -220,7 +220,7 @@ namespace Nine.Graphics.Materials
         }
 
         /// <summary>
-        /// Restores any shader parameters changes after drawing the promitive.
+        /// Restores any shader parameters changes after drawing the primitives.
         /// </summary>
         public void EndApply(DrawingContext context) 
         {
@@ -239,4 +239,7 @@ namespace Nine.Graphics.Materials
         protected abstract void OnEndApply(DrawingContext context);
         #endregion
     }
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public delegate Material MaterialResolveEventHandler(Material material, MaterialUsage usage, Material existingInstance);
 }

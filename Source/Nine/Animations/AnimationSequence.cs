@@ -111,12 +111,12 @@ namespace Nine.Animations
         private void Seek(int index)
         {
             if (CurrentIndex != index && Current != null)
-                Current.Stop();
+                Current.OnStopped();
 
             currentIndex = index;
 
             if (Current != null)
-                Current.Play();
+                Current.OnStarted();
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Nine.Animations
         {
             if (Current != null)
             {
-                Current.Stop();
+                Current.OnStopped();
                 currentIndex = 0;
             }
 
@@ -151,7 +151,7 @@ namespace Nine.Animations
         protected override void OnPaused()
         {
             if (Current != null)
-                Current.Pause();
+                Current.OnPaused();
 
             base.OnPaused();
         }
@@ -162,7 +162,7 @@ namespace Nine.Animations
         protected override void OnResumed()
         {
             if (Current != null)
-                Current.Resume();
+                Current.OnResumed();
 
             base.OnResumed();
         }
@@ -185,7 +185,7 @@ namespace Nine.Animations
                     currentIndex++;
 
                     if (CurrentIndex < Animations.Count)
-                        Current.Play();
+                        Current.OnStarted();
                 }
 
                 if (CurrentIndex == Animations.Count)
@@ -193,7 +193,6 @@ namespace Nine.Animations
                     repeatCounter++;
                     if (repeatCounter == Repeat)
                     {
-                        Stop();
                         OnCompleted();
                     }
                     else

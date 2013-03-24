@@ -108,13 +108,13 @@ namespace Nine.Animations
         public IAnimation Play(string animationName)
         {
             if (current != null)
-                current.Stop();
+                current.OnStopped();
 
             IAnimation animation;
             if (Animations.TryGetValue(animationName, out animation))
             {
                 current = animation;
-                current.Play();
+                current.OnStarted();
             }
             return animation;
         }
@@ -125,11 +125,11 @@ namespace Nine.Animations
         public IAnimation Play(IAnimation animation)
         {
             if (current != null)
-                current.Stop();
+                current.OnStopped();
             if (animation != null)
             {
                 current = animation;
-                current.Play();
+                current.OnStarted();
             }
             return current;
         }
