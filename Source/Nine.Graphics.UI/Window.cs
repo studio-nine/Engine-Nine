@@ -27,15 +27,19 @@ namespace Nine.Graphics.UI
 {
     using System;
     using System.Linq;
+    using System.Windows.Markup;
     using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using Nine.Graphics.Primitives;
+
     /// <summary>
     /// RootElement is the main host for all <see cref = "UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
     /// </summary>
-    public class Window : UIElement, ISprite
+    [ContentProperty("Content")]
+    public class Window : UIElement, ISprite, IDebugDrawable
     {
         internal static RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true, FillMode = FillMode.WireFrame };
         internal static RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
@@ -83,7 +87,9 @@ namespace Nine.Graphics.UI
 
         public void Draw(DrawingContext context, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            this.Viewport = this.Viewport.IsEmpty ? context.GraphicsDevice.Viewport.Bounds : this.Viewport;
+            if (this.Viewport != context.GraphicsDevice.Viewport.Bounds)
+                this.Viewport = context.GraphicsDevice.Viewport.Bounds;
+            //this.Viewport = this.Viewport.IsEmpty ? context.GraphicsDevice.Viewport.Bounds : this.Viewport;
             Update();
 
             base.OnRender(spriteBatch);
@@ -204,6 +210,19 @@ namespace Nine.Graphics.UI
         {
             throw new InvalidOperationException();
         }
+        #endregion
+
+        #region IDebugDrawable
+
+        bool IDebugDrawable.Visible { get { return true; } }
+        void IDebugDrawable.Draw(DrawingContext context, DynamicPrimitive primitive)
+        {
+            var Children = GetChildren();
+            if (Children != null)
+                foreach (var Child in Children)
+                    Child.OnDebugRender(primitive);
+        }
+
         #endregion
     }
 }

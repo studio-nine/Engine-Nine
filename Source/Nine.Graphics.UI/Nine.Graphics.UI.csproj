@@ -89,7 +89,6 @@
     <Compile Include="Controls\Shapes\Rectangle.cs" />
     <Compile Include="Controls\Shapes\Shape.cs" />
     <Compile Include="Controls\ProgressBar.cs" />
-    <Compile Include="Controls\ToggleButton.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Internal\BoundingRectangleExtensions.cs" />

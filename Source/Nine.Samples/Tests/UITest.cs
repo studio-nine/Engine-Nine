@@ -101,18 +101,12 @@ namespace Nine.Samples
                 var ScrollViewer = new ScrollViewer();
                 var ScrollContentPresenter = new ScrollContentPresenter();
                 var StackPanel = new StackPanel() { Orientation = Orientation.Vertical, Background = new ImageBrush(content.Load<Texture2D>("Textures/checker.bmp")) };
-                StackPanel.Children.Add(new Border() { Margin = new Thickness(2), Height = 50, BorderBrush = new SolidColorBrush(Color.Red), BorderThickness = new Thickness(2) });
-                StackPanel.Children.Add(new Border() 
-                { 
-                    Margin = new Thickness(2), 
-                    Height = 50, 
-                    BorderBrush = new SolidColorBrush(Color.Green), 
-                    BorderThickness = new Thickness(2),
-                    Content = new Button()
-                    {
-                        Margin = new Thickness(2),
-                        Background = new SolidColorBrush(Color.LightGray),
-                    }
+                StackPanel.Children.Add(new Border() { Margin = new Thickness(8), Height = 50, BorderBrush = new SolidColorBrush(Color.Red), BorderThickness = new Thickness(6) });
+                StackPanel.Children.Add(new Button()
+                {
+                    Height = 50,
+                    Margin = new Thickness(4),
+                    Background = new SolidColorBrush(Color.LightGray),
                 });
 
                 // #ProgressBar

@@ -71,7 +71,7 @@ namespace Nine.Graphics.UI.Controls
             base.OnRender(spriteBatch);
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
-            spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top), TextColor.Color);
+            spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top), TextColor.ToColor());
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

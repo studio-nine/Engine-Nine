@@ -20,7 +20,7 @@
                 var Texture = Nine.Graphics.GraphicsResources<BlankTexture>.GetInstance(spriteBatch.GraphicsDevice);
                 // Absolute Rendering
                 spriteBatch.Draw(Texture.Texture,
-                    new Vector2(rect.X, rect.Y), null, (c as SolidColorBrush).Color, 0, 
+                    new Vector2(rect.X, rect.Y), null, (c as SolidColorBrush).ToColor(), 0, 
                     Vector2.Zero, new Vector2(rect.Width, rect.Height), SpriteEffects.None, 0);
                 //spriteBatch.Draw(Texture.Texture, rect, (c as SolidColorBrush).Color);
             }

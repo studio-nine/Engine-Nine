@@ -26,7 +26,7 @@
 namespace Nine.Graphics.UI.Controls
 {
     /// <summary>
-    ///     Defines Row properties that apply to <see cref="Nine.Graphics.UI.Controls.Grid"/>.
+    /// Defines Row properties that apply to <see cref="Nine.Graphics.UI.Controls.Grid"/>.
     /// </summary>
     public class RowDefinition : DefinitionBase
     {

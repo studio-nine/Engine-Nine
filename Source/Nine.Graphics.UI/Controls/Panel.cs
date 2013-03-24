@@ -25,13 +25,15 @@
 
 namespace Nine.Graphics.UI.Controls
 {
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Collections.Generic;
+    using System.Windows.Markup;
 
-    using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework;
+    using Nine.Graphics.UI.Media;
 
+    [ContentProperty("Children")]
     public abstract class Panel : UIElement
     {
         public IList<UIElement> Children

@@ -66,7 +66,7 @@ namespace Nine.Graphics.UI.Controls
                     var Rect = border;
                     Rect.X += AbsoluteVisualOffset.X;
                     Rect.Y += AbsoluteVisualOffset.Y;
-                    spriteBatch.Draw(Rect, BorderBrush.Color);
+                    spriteBatch.Draw(Rect, BorderBrush);
                 }
             }
 

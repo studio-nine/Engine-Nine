@@ -26,15 +26,17 @@
 namespace Nine.Graphics.UI.Controls
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Collections.Generic;
 
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Media;
 
+    using Nine.Graphics.Primitives;
+
     /// <summary>
-    ///     A Grid layout panel consisting of columns and rows.
+    /// A Grid layout panel consisting of columns and rows.
     /// </summary>
     public class Grid : Panel
     {
@@ -55,7 +57,7 @@ namespace Nine.Graphics.UI.Controls
         #region Properties
 
         /// <summary>
-        ///     Gets the collection of column definitions.
+        /// Gets the collection of column definitions.
         /// </summary>
         /// <value>The column definitions collection.</value>
         public IList<ColumnDefinition> ColumnDefinitions
@@ -64,7 +66,7 @@ namespace Nine.Graphics.UI.Controls
         }
 
         /// <summary>
-        ///     Gets the collection of row definitions.
+        /// Gets the collection of row definitions.
         /// </summary>
         /// <value>The row definitions collection.</value>
         public IList<RowDefinition> RowDefinitions
@@ -73,6 +75,11 @@ namespace Nine.Graphics.UI.Controls
         }
 
         #endregion
+
+        public Grid()
+        {
+
+        }
 
         #region Fields
 
@@ -327,6 +334,28 @@ namespace Nine.Graphics.UI.Controls
                         Math.Min(cell.Child.DesiredSize.Y, heightDefinition.UserMaxLength));
                 }
             }
+        }
+
+        protected internal override void OnDebugRender(DynamicPrimitive primitive)
+        {
+            base.OnDebugRender(primitive);
+            /*
+            for (int x = 0; x < this.columns.Length; x++)
+                for (int y = 0; y < this.rows.Length; y++)
+                {
+                    int columnIndex = this.cells[x].ColumnIndex;
+                    int rowIndex = this.cells[y].RowIndex;
+
+                    primitive.AddRectangle(
+                        new Vector2(
+                            this.columns[columnIndex].FinalOffset,
+                            this.rows[rowIndex].FinalOffset),
+                        new Vector2(
+                            this.columns[columnIndex].FinalLength,
+                            this.rows[rowIndex].FinalLength), 
+                        null, Color.Red, 2);
+
+                }*/
         }
 
         #endregion

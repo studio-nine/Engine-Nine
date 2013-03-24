@@ -35,6 +35,8 @@ namespace Nine.Graphics.UI
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Media;
 
+    using Nine.Graphics.Primitives;
+
     public abstract class UIElement : IContainer, IComponent
     {
         #region Properties
@@ -201,6 +203,19 @@ namespace Nine.Graphics.UI
             {
                 spriteBatch.Draw(AbsoluteRenderTransform, Background);
             }
+        }
+        protected internal virtual void OnDebugRender(DynamicPrimitive primitive)
+        {
+            primitive.AddRectangle(
+                new Vector2(AbsoluteRenderTransform.X, AbsoluteRenderTransform.Y),
+                new Vector2(AbsoluteRenderTransform.X + AbsoluteRenderTransform.Width,
+                    AbsoluteRenderTransform.Y + AbsoluteRenderTransform.Height),
+                null, Color.LightBlue, 2);
+
+            var Children = GetChildren();
+            if (Children != null)
+                foreach (var Child in Children)
+                    Child.OnDebugRender(primitive);
         }
 
         public bool TryGetRootElement(out Window rootElement)

@@ -25,32 +25,34 @@
 
 namespace Nine.Graphics.UI.Media
 {
-    using Microsoft.Xna.Framework;
     using System;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
 
     /// <summary>
-    ///     Represents a <see cref = "Brush">Brush</see> of the specified <see cref = "Color">Color</see> which can be used to paint an area with a solid color.
+    /// Represents a <see cref="Brush">Brush</see> of the specified <see cref="Vector4">Vector4</see> which can be used to paint an area with a solid color.
     /// </summary>
-    public class SolidColorBrush : Brush //, IConvertible
+    [ContentProperty("Color")]
+    public class SolidColorBrush : Brush
     {
         /// <summary>
-        ///     The Color of the SolidColorBrush.
+        /// The Color of the SolidColorBrush.
         /// </summary>
-        public Color Color { get; set; }
+        public Vector4 Color { get; set; }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref = "SolidColorBrush">SolidColorBrush</see> class.
-        /// </summary>
-        /// <param name = "color">The <see cref = "Color">Color</see> with which to create this <see cref = "SolidColorBrush">SolidColorBrush</see>.</param>
+        public SolidColorBrush() { }
         public SolidColorBrush(Color color)
+        {
+            this.Color = color.ToVector4();
+        }
+        public SolidColorBrush(Vector4 color)
         {
             this.Color = color;
         }
 
-        public SolidColorBrush(string Hash)
-        { // Not sure if this is going to be here
-            var Number = int.Parse(Hash);
-            this.Color = Number.ConvertToColor();
+        public Color ToColor()
+        {
+            return new Color(Color.X, Color.Y, Color.Z, Color.W);
         }
 
         public override string ToString()
