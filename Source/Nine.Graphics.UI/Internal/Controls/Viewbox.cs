@@ -57,6 +57,9 @@ namespace Nine.Graphics.UI.Internal.Controls
             {
                 switch (stretch)
                 {
+                    case Stretch.Fill:
+                        return new Vector2(availableSize.X / contentSize.X, availableSize.Y / contentSize.Y);
+
                     case Stretch.Uniform:
                         scaleX = scaleY = (scaleX < scaleY) ? scaleX : scaleY;
                         break;

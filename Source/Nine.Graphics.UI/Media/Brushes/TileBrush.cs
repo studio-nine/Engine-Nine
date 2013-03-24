@@ -14,18 +14,19 @@
 
         internal Rectangle Calculate(Texture2D Texture, Rectangle RenderTransform)
         {
+            // TODO: Remove
             switch (Stretch)
             {
                 case Media.Stretch.None:
                     {
                         var Result = RenderTransform;
                         if (Texture.Width > RenderTransform.Width)
-                            ; // TODO: Clipping
+                            ;
                         else if (Texture.Width < RenderTransform.Width)
                             Result.Width = Texture.Width;
 
                         if (Texture.Height > RenderTransform.Height)
-                            ; // ^^
+                            ;
                         else if (Texture.Height < RenderTransform.Height)
                             Result.Height = Texture.Height;
                         return Result;

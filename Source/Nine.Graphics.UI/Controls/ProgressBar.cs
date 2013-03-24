@@ -24,17 +24,26 @@
             switch (Orientation)
             {
                 case Controls.Orientation.Horizontal:
-                    var SliderTransform = AbsoluteRenderTransform;
+                    var HorzBar = AbsoluteRenderTransform;
 
-                    SliderTransform.X += BarMargin.Left;
-                    SliderTransform.Y += BarMargin.Top;
-                    SliderTransform.Width -= BarMargin.Right * 2;
-                    SliderTransform.Height -= BarMargin.Bottom * 2;
+                    HorzBar.X += BarMargin.Left;
+                    HorzBar.Y += BarMargin.Top;
+                    HorzBar.Width -= BarMargin.Right * 2;
+                    HorzBar.Height -= BarMargin.Bottom * 2;
 
-                    SliderTransform.Width = SliderTransform.Width * ((Value - Minimum) / (Maximum - Minimum));
-                    spriteBatch.Draw(SliderTransform, BarBrush);
+                    HorzBar.Width = HorzBar.Width * ((Value - Minimum) / (Maximum - Minimum));
+                    spriteBatch.Draw(HorzBar, BarBrush);
                     break;
                 case Controls.Orientation.Vertical:
+                    var VertBar = AbsoluteRenderTransform;
+
+                    VertBar.X += BarMargin.Left;
+                    VertBar.Y += BarMargin.Top;
+                    VertBar.Width -= BarMargin.Right * 2;
+                    VertBar.Height -= BarMargin.Bottom * 2;
+
+                    VertBar.Height = VertBar.Height * ((Value - Minimum) / (Maximum - Minimum));
+                    spriteBatch.Draw(VertBar, BarBrush);
                     break;
             }
         }

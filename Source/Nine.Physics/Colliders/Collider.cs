@@ -13,6 +13,8 @@ namespace Nine.Physics.Colliders
     /// </summary>
     public abstract class Collider : Transformable, IContainer, INotifyCollectionChanged<object>
     {
+        #region Properties
+
         /// <summary>
         /// Gets the dynamic and static friction of this collider.
         /// </summary>
@@ -72,6 +74,8 @@ namespace Nine.Physics.Colliders
         }
         internal Entity entity;
 
+        #endregion
+
         internal Vector3? Offset;
 
         private IMaterialOwner materialOwner;
@@ -81,6 +85,8 @@ namespace Nine.Physics.Colliders
         /// Initializes a new instance of the <see cref="Collider"/> class.
         /// </summary>
         protected Collider() { }
+
+        #region Methods
 
         /// <summary>
         /// Called when this collider is attached to a rigid body.
@@ -153,6 +159,8 @@ namespace Nine.Physics.Colliders
             if (spaceObject != null && added != null)
                 added(spaceObject);
         }
+
+        #endregion
 
         event Action<object> INotifyCollectionChanged<object>.Added
         {

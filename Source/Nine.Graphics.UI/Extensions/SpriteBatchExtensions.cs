@@ -12,13 +12,17 @@
             spriteBatch.Draw(Texture.Texture, rect, c);
         }
 
-        public static void Draw(this SpriteBatch spriteBatch, Rectangle rect, Brush c)
+        public static void Draw(this SpriteBatch spriteBatch, BoundingRectangle rect, Brush c)
         {
             // I would say this is a temporarily way of drawing
             if (c is SolidColorBrush)
             {
                 var Texture = Nine.Graphics.GraphicsResources<BlankTexture>.GetInstance(spriteBatch.GraphicsDevice);
-                spriteBatch.Draw(Texture.Texture, rect, (c as SolidColorBrush).Color);
+                // Absolute Rendering
+                spriteBatch.Draw(Texture.Texture,
+                    new Vector2(rect.X, rect.Y), null, (c as SolidColorBrush).Color, 0, 
+                    Vector2.Zero, new Vector2(rect.Width, rect.Height), SpriteEffects.None, 0);
+                //spriteBatch.Draw(Texture.Texture, rect, (c as SolidColorBrush).Color);
             }
             else if (c is ImageBrush)
             {
