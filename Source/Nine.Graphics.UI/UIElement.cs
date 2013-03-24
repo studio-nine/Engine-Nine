@@ -37,6 +37,7 @@ namespace Nine.Graphics.UI
 
     using Nine.Graphics.Primitives;
 
+    [Nine.Serialization.BinarySerializable]
     public abstract class UIElement : IContainer, IComponent
     {
         #region Properties

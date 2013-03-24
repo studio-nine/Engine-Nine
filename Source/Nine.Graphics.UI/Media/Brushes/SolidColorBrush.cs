@@ -30,7 +30,8 @@ namespace Nine.Graphics.UI.Media
     using Microsoft.Xna.Framework;
 
     /// <summary>
-    /// Represents a <see cref="Brush">Brush</see> of the specified <see cref="Vector4">Vector4</see> which can be used to paint an area with a solid color.
+    /// Represents a <see cref="Brush">Brush</see> of the specified <see cref="Vector3">Vector3</see> 
+    /// which can be used to paint an area with a solid color.
     /// </summary>
     [ContentProperty("Color")]
     public class SolidColorBrush : Brush
@@ -38,21 +39,21 @@ namespace Nine.Graphics.UI.Media
         /// <summary>
         /// The Color of the SolidColorBrush.
         /// </summary>
-        public Vector4 Color { get; set; }
+        public Vector3 Color { get; set; }
 
         public SolidColorBrush() { }
         public SolidColorBrush(Color color)
         {
-            this.Color = color.ToVector4();
+            this.Color = color.ToVector3();
         }
-        public SolidColorBrush(Vector4 color)
+        public SolidColorBrush(Vector3 color)
         {
             this.Color = color;
         }
 
         public Color ToColor()
         {
-            return new Color(Color.X, Color.Y, Color.Z, Color.W);
+            return new Color(Color.X, Color.Y, Color.Z, Alpha);
         }
 
         public override string ToString()

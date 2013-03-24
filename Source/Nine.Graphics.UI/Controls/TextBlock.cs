@@ -33,7 +33,7 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    ///     Control to display a flow of Content
+    /// Control to display a flow of Content
     /// </summary>
     public class TextBlock : UIElement
     {
@@ -54,7 +54,7 @@ namespace Nine.Graphics.UI.Controls
         private string formattedText;
 
         #endregion
-
+        public TextBlock() : this(null) { } // TODO:
         public TextBlock(SpriteFont spriteFont)
         {
             if (spriteFont == null)
@@ -71,7 +71,7 @@ namespace Nine.Graphics.UI.Controls
             base.OnRender(spriteBatch);
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
-            spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top), TextColor.ToColor());
+            spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset, TextColor.ToColor());
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

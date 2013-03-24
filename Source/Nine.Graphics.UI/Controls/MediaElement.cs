@@ -16,12 +16,6 @@
         }
         private Video video;
 
-        public bool Looping
-        {
-            get { return player.IsLooped; }
-            set { player.IsLooped = value; }
-        }
-
         public bool Loop
         {
             get { return player.IsLooped; }

@@ -21,6 +21,7 @@ namespace Nine.Samples
         {
             var scene = new Scene();
             scene.Add(new TMPCamera2D(graphics));
+            var Font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");
 
             Window window = new Window();
 
@@ -111,22 +112,19 @@ namespace Nine.Samples
 
                 // #ProgressBar
                 ProgressBar ProgressBar;
-                StackPanel.Children.Add(ProgressBar = new ProgressBar()
-                    {
-                        Value = 50,
-                    Height = 50,
-                        Margin = new Thickness(2)
-                });
+                StackPanel.Children.Add(ProgressBar = new ProgressBar() { Value = 50, Height = 50, Margin = new Thickness(2) });
 
-                // This is mostly just to test it out :D
-                var TweenA = new Nine.Animations.TweenAnimation<float>((Interpolate<float>)MathHelper.Lerp, (Operator<float>)AddHelper.Add);
-                TweenA.Target = ProgressBar;
-                TweenA.TargetProperty = "Value";
-                TweenA.From = 10;
-                TweenA.To = 100;
-                TweenA.Duration = new TimeSpan(0, 0, 5);
-                TweenA.AutoReverse = true;
-                TweenA.Repeat = 10000000f;
+                var TweenA = new Nine.Animations.TweenAnimation<float>((Interpolate<float>)MathHelper.Lerp, (Operator<float>)AddHelper.Add)
+                {
+                    Target = ProgressBar,
+                    TargetProperty = "Value",
+                    From = 10,
+                    To = 100,
+                    Duration = new TimeSpan(0, 0, 5),
+                    AutoReverse = true,
+                    Repeat = 10000000f
+                };
+                // Currently can only play one Animation at the time
                 scene.Animations.Play(TweenA);
 
                 // #ProgressBar
@@ -139,20 +137,21 @@ namespace Nine.Samples
                     Margin = new Thickness(20,2,20,2)
                 });
 
-                // This is mostly just to test it out :D
-                var TweenA2 = new Nine.Animations.TweenAnimation<float>((Interpolate<float>)MathHelper.Lerp, (Operator<float>)AddHelper.Add);
-                TweenA2.Target = ProgressBar2;
-                TweenA2.TargetProperty = "Value";
-                TweenA2.From = 10;
-                TweenA2.To = 100;
-                TweenA2.Duration = new TimeSpan(0, 0, 5);
-                TweenA2.AutoReverse = true;
-                TweenA2.Repeat = 10000000f;
+                var TweenA2 = new Nine.Animations.TweenAnimation<float>((Interpolate<float>)MathHelper.Lerp, (Operator<float>)AddHelper.Add)
+                {
+                    Target = ProgressBar2,
+                    TargetProperty = "Value",
+                    From = 10,
+                    To = 100,
+                    Duration = new TimeSpan(0, 0, 5),
+                    AutoReverse = true,
+                    Repeat = 10000000f
+                };
                 scene.Animations.Play(TweenA2);
 
                 ScrollViewer.Content = ScrollContentPresenter;
                 ScrollContentPresenter.Content = StackPanel;
-                Grid.SetColumn(ScrollViewer, 1);
+                Grid.SetColumn(ScrollViewer, 2);
                 MainGrid.Children.Add(ScrollViewer);
             }
             #endregion
@@ -164,12 +163,66 @@ namespace Nine.Samples
                 MainGrid.Children.Add(Image);
             }
 
+            // #Controls
+            var ControlGrid = new Grid()
+            {
+                RowDefinitions =
+                    {
+                        new RowDefinition() { Height = new GridLength(50, GridUnitType.Star) }, 
+                        new RowDefinition() { Height = new GridLength(50, GridUnitType.Star) },
+                        new RowDefinition() { Height = new GridLength(50, GridUnitType.Star) }, 
+                        new RowDefinition() { Height = new GridLength(50, GridUnitType.Star) },
+                    },
+                ColumnDefinitions =
+                    {
+                        new ColumnDefinition() { Width = new GridLength(50, GridUnitType.Star) },
+                        new ColumnDefinition() { Width = new GridLength(50, GridUnitType.Star) },
+                    },
+            };
+            Grid.SetRow(ControlGrid, 1);
+            Grid.SetColumn(ControlGrid, 1);
+            MainGrid.Children.Add(ControlGrid);
+
             { // #MediaElement
-                var MediaElement = new MediaElement(content.Load<Microsoft.Xna.Framework.Media.Video>("test.wmv"));
-                MediaElement.Play();
-                Grid.SetRow(MediaElement, 2);
+                var MediaElement = new MediaElement(content.Load<Microsoft.Xna.Framework.Media.Video>("test.wmv"))
+                {
+                    Loop = true
+                };
+                //MediaElement.Play();
+                Grid.SetRow(MediaElement, 0);
                 Grid.SetColumn(MediaElement, 1);
                 MainGrid.Children.Add(MediaElement);
+
+                var PlayButton = new Button()
+                {
+                    Margin = new Thickness(8),
+                    Background = new SolidColorBrush(Color.LightGray),
+                    Content = new TextBlock(Font)
+                    {
+                        Text = "Play",
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center
+                    }
+                };
+                PlayButton.Click += (s, e) => { MediaElement.Play(); };
+                Grid.SetColumn(PlayButton, 0);
+
+                var PauseButton = new Button()
+                {
+                    Margin = new Thickness(8),
+                    Background = new SolidColorBrush(Color.LightGray),
+                    Content = new TextBlock(Font)
+                    {
+                        Text = "Pause", 
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center
+                    }
+                };
+                PlayButton.Click += (s, e) => { MediaElement.Pause(); };
+                Grid.SetColumn(PauseButton, 1);
+
+                ControlGrid.Children.Add(PlayButton);
+                ControlGrid.Children.Add(PauseButton);
             }
             
 

@@ -26,16 +26,19 @@
 namespace Nine.Graphics.UI.Controls
 {
     using System.Collections.Generic;
+    using System.Windows.Markup;
 
     using Nine.Graphics.UI.Internal;
     using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    [ContentProperty("Content")]
     public class Border : UIElement
     {
         private readonly IList<BoundingRectangle> borders = new List<BoundingRectangle>();
 
+        [System.Windows.Markup.DependsOn("SolidColorBrush")]
         public SolidColorBrush BorderBrush { get; set; }
 
         public Thickness BorderThickness { get; set; }

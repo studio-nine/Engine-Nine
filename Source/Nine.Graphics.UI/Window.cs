@@ -41,8 +41,8 @@ namespace Nine.Graphics.UI
     [ContentProperty("Content")]
     public class Window : UIElement, ISprite, IDebugDrawable
     {
-        internal static RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true, FillMode = FillMode.WireFrame };
-        internal static RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
+        internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
+        internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
 
         private readonly IInputManager inputManager;
         private UIElement elementWithMouseCapture;

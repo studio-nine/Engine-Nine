@@ -4,7 +4,7 @@
 
     <Window>
         <Grid>
-            <Grid.RowDefinitions>
+            <!--<Grid.RowDefinitions>
                 <RowDefinitions Height="400" />
                 <RowDefinitions Height="400" />
             </Grid.RowDefinitions>
@@ -12,20 +12,20 @@
                 <ColumnDefinition Width="400" />
                 <ColumnDefinition Width="400" />
                 <ColumnDefinition Width="400" />
-            </Grid.ColumnDefinition>
+            </Grid.ColumnDefinition>-->
 
             <!-- Borders -->
             <Grid Grid.Column="0" Grid.Row="0">
-                <Grid.RowDefinitions>
+                <!--<Grid.RowDefinitions>
                     <RowDefinitions Height="50*" />
                     <RowDefinitions Height="50*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinition>
                     <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="50*" />
-                </Grid.ColumnDefinition>
-                <Border Grid.Row="0" Grid.Column="0" BorderBrush="1,0,0,1" BorderThickness="4" />
-                <Border Grid.Row="1" Grid.Column="0" BorderBrush="0,1,0,1" BorderThickness="4">
+                </Grid.ColumnDefinition>-->
+                <Border Grid.Row="0" Grid.Column="0" BorderBrush="1, 0, 0" BorderThickness="4" />
+                <Border Grid.Row="1" Grid.Column="0" BorderBrush="0,1,0" BorderThickness="4">
                     <Border.Background>
                         <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
                     </Border.Background>
