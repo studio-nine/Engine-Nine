@@ -1,8 +1,6 @@
-﻿<Group xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+﻿<Group>
     <Model Name="Dude" Source="{ContentReference ../Models/Dude}" Material="{SkinnedMaterial}">
-        <ModelAttachment Bone="R_Hand">
-            
+        <ModelAttachment Bone="R_Hand">            
             <ParticleEffect Name="Fire" Texture="{ContentReference ../Textures/fire}">
                 <ParticleEffect.Emitter>
                     <PointEmitter Emission="50" Duration="0.5 ~ 1" Speed="0" Size="0.5 ~ 1" />
@@ -11,9 +9,7 @@
                 <SizeController EndSize ="4 ~ 5" />
                 <SpeedController EndSpeed ="0" />
                 <FadeController />
-            </ParticleEffect>
-            
+            </ParticleEffect>            
         </ModelAttachment>        
-    </Model>
-    
+    </Model>    
 </Group>

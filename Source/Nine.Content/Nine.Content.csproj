@@ -94,6 +94,7 @@
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -113,6 +114,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MaterialPartShaders.resx</DependentUpon>
     </Compile>
+    <Compile Include="Importers\VideoImporter.cs" />
     <Compile Include="Pipeline\ContentPipeline.cs" />
     <Compile Include="Serialization\PipelineObjectWriter.cs" />
     <Compile Include="Serialization\FileSystemResolver.cs" />

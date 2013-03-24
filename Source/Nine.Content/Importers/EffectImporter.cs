@@ -18,4 +18,6 @@ namespace Nine.Serialization.Importers
             get { return ContentPipeline.GetSupportedFileExtensions(typeof(Microsoft.Xna.Framework.Content.Pipeline.EffectImporter)); }
         }
     }
+
+    class EffectWriter : PipelineObjectWriter<Microsoft.Xna.Framework.Graphics.Effect> { }
 }

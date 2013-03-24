@@ -1,4 +1,4 @@
-﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml">
+<Scene xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Camera2D />
 

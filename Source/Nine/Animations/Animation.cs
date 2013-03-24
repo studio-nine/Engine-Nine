@@ -16,7 +16,7 @@ namespace Nine.Animations
         /// <summary>
         /// Plays the animation from start position.
         /// </summary>
-        public void Play()
+        void IAnimation.OnStarted()
         {
             State = AnimationState.Playing;
             OnStarted();
@@ -25,7 +25,7 @@ namespace Nine.Animations
         /// <summary>
         /// Stops the animation.
         /// </summary>
-        public void Stop()
+        void IAnimation.OnStopped()
         {
             State = AnimationState.Stopped;
             OnStopped();
@@ -34,7 +34,7 @@ namespace Nine.Animations
         /// <summary>
         /// Pauses the animation.
         /// </summary>
-        public void Pause()
+        void IAnimation.OnPaused()
         {
             if (State == AnimationState.Playing)
             {
@@ -46,7 +46,7 @@ namespace Nine.Animations
         /// <summary>
         /// Resumes the animation.
         /// </summary>
-        public void Resume()
+        void IAnimation.OnResumed()
         {
             if (State == AnimationState.Paused)
             {
@@ -100,8 +100,14 @@ namespace Nine.Animations
                 resumed(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Call this in derived classes when this animation has completely finished playing.
+        /// </summary>
         protected virtual void OnCompleted()
         {
+            State = AnimationState.Stopped;
+            OnStopped();
+
             var completed = Completed;
             if (completed != null)
                 completed(this, EventArgs.Empty);

@@ -51,7 +51,6 @@ namespace Nine.Animations
             ElapsedTime += TimeSpan.FromSeconds(elapsedTime);
             if (ElapsedTime > Duration)
             {
-                Stop();
                 OnCompleted();
             }
         }

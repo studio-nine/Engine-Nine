@@ -36,7 +36,4 @@
             builder.Compile(output.BaseStream, value);
         }
     }
-
-    class SpriteFontWriter : PipelineObjectWriter<SpriteFont> { }
-    class EffectWriter : PipelineObjectWriter<Effect> { }
 }

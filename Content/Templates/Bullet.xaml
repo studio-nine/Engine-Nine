@@ -1,7 +1,4 @@
-﻿<Group xmlns="http://schemas.microsoft.com/nine/2011/xaml" 
-       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-       xmlns:my="clr-namespace:TutorialData;assembly=TutorialData">
-
+﻿<Group xmlns:my="clr-namespace:TutorialData;assembly=TutorialData">
     <ParticleEffect Name="Fireball" Texture="{ContentReference ../Textures/fire}">
         <ParticleEffect.Emitter>
             <PointEmitter Emission="50" Duration="1.5 ~ 3" Speed="4 ~ 5" Size="0.5 ~ 1" Spread="{Degrees 15}" />
@@ -10,8 +7,6 @@
         <SizeController EndSize ="4 ~ 5" />
         <SpeedController EndSpeed ="0" />
         <FadeController />        
-    </ParticleEffect>
-    
-    <my:ExampleBullet Speed="100" Duration="00:00:05.0" />
-    
+    </ParticleEffect>    
+    <my:ExampleBullet Speed="100" Duration="00:00:05.0" />    
 </Group>

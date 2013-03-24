@@ -112,10 +112,10 @@ namespace Nine.Samples
                 // #ProgressBar
                 ProgressBar ProgressBar;
                 StackPanel.Children.Add(ProgressBar = new ProgressBar()
-                {
-                    Value = 50,
+                    {
+                        Value = 50,
                     Height = 50,
-                    Margin = new Thickness(2)
+                        Margin = new Thickness(2)
                 });
 
                 // This is mostly just to test it out :D
@@ -127,8 +127,7 @@ namespace Nine.Samples
                 TweenA.Duration = new TimeSpan(0, 0, 5);
                 TweenA.AutoReverse = true;
                 TweenA.Repeat = 10000000f;
-                scene.Add(TweenA);
-                TweenA.Play();
+                scene.Animations.Play(TweenA);
 
                 // #ProgressBar
                 ProgressBar ProgressBar2;
@@ -149,8 +148,7 @@ namespace Nine.Samples
                 TweenA2.Duration = new TimeSpan(0, 0, 5);
                 TweenA2.AutoReverse = true;
                 TweenA2.Repeat = 10000000f;
-                scene.Add(TweenA2);
-                TweenA2.Play();
+                scene.Animations.Play(TweenA2);
 
                 ScrollViewer.Content = ScrollContentPresenter;
                 ScrollContentPresenter.Content = StackPanel;
@@ -165,6 +163,15 @@ namespace Nine.Samples
                 Grid.SetColumn(Image, 0);
                 MainGrid.Children.Add(Image);
             }
+
+            { // #MediaElement
+                var MediaElement = new MediaElement(content.Load<Microsoft.Xna.Framework.Media.Video>("test.wmv"));
+                MediaElement.Play();
+                Grid.SetRow(MediaElement, 2);
+                Grid.SetColumn(MediaElement, 1);
+                MainGrid.Children.Add(MediaElement);
+            }
+            
 
             window.Content = MainGrid;
             scene.Add(window);

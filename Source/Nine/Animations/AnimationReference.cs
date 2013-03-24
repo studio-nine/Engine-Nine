@@ -29,11 +29,11 @@ namespace Nine.Animations
                 if (source != value && (source = value) != null && State != source.State)
                 {
                     if (State == AnimationState.Playing)
-                        source.Play();
+                        source.OnStarted();
                     else if (State == AnimationState.Stopped)
-                        source.Stop();
+                        source.OnStopped();
                     else if (State == AnimationState.Paused)
-                        source.Pause();
+                        source.OnPaused();
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace Nine.Animations
                 }
             }
             if (source != null)
-                source.Play();
+                source.OnStarted();
             base.OnStarted();
         }
 
@@ -101,7 +101,7 @@ namespace Nine.Animations
         protected override void OnStopped()
         {
             if (source != null)
-                source.Stop();
+                source.OnStopped();
             base.OnStopped();
         }
 
@@ -111,7 +111,7 @@ namespace Nine.Animations
         protected override void OnPaused()
         {
             if (source != null)
-                source.Pause();
+                source.OnPaused();
             base.OnPaused();
         }
 
@@ -121,7 +121,7 @@ namespace Nine.Animations
         protected override void OnResumed()
         {
             if (source != null)
-                source.Resume();
+                source.OnResumed();
             base.OnResumed();
         }
 

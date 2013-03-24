@@ -1,5 +1,4 @@
-﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml"
-       xmlns:my="clr-namespace:Nine.Samples;assembly=Nine.Samples">
+﻿<Scene xmlns:my="clr-namespace:Nine.Samples;assembly=Nine.Samples">
     
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap.dds}" />
     <Fog Name="MyFog" FogColor="1, 1, 1" FogStart="50" FogEnd="500" />

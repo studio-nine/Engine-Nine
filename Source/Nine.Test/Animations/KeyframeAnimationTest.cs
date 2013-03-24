@@ -42,7 +42,7 @@
             TestAnimation animation = new TestAnimation();
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
             animation.Update(5);
@@ -55,7 +55,7 @@
             TestAnimation animation = new TestAnimation();
             
             animation.StartupDirection = AnimationDirection.Backward;
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
             animation.Update(2);
 
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
@@ -68,7 +68,7 @@
             TestAnimation animation = new TestAnimation();
 
             animation.Repeat = 2.5f;
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
 
             animation.Update(12.4f);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
@@ -84,7 +84,7 @@
 
             animation.Repeat = 2.25f;
             animation.AutoReverse = true;
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
 
             animation.Update(6);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
@@ -103,7 +103,7 @@
         {
             TestAnimation animation = new TestAnimation();
 
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
 
             animation.Seek(TimeSpan.FromSeconds(4.5f));
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
@@ -117,7 +117,7 @@
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
 
             animation.StartupDirection = AnimationDirection.Backward;
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
             animation.Seek(1);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
@@ -133,7 +133,7 @@
             animation.Speed = 2;
             animation.Repeat = 2.25f;
             animation.AutoReverse = true;
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
 
             animation.Update(3);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
@@ -161,7 +161,7 @@
                         Assert.AreEqual(index, e.Frame);
                     index++;
                 };
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
 
             for (int i = 0; i < 20; ++i)
                 animation.Update(0.25f);
@@ -176,7 +176,7 @@
             TestAnimation animation = new TestAnimation();
             animation.Repeat = 9999;
             animation.Ending = KeyframeEnding.Clamp;
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
 
             for (int i = 0; i < 5; ++i)
             {
@@ -185,7 +185,7 @@
             Assert.AreEqual(0, animation.CurrentFrame);
 
             animation.Ending = KeyframeEnding.Discard;
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
 
             for (int i = 0; i < 5; ++i)
             {
@@ -195,7 +195,7 @@
 
             animation.Ending = KeyframeEnding.Discard;
             animation.AutoReverse = true;
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
 
             for (int i = 0; i < 50; ++i)
             {
@@ -218,7 +218,7 @@
             {
                 frameCount++;
             };
-            animation.Play();
+            ((IAnimation)animation).OnStarted();
 
             for (int i = 0; i < 200; ++i)
                 animation.Update(0.25f);

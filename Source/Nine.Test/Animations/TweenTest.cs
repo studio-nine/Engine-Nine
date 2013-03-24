@@ -22,7 +22,7 @@
             {
                 completed = true;
             };
-            tween.Play();
+            ((IAnimation)tween).OnStarted();
             tween.Update(0.34234f);
             tween.Update(1.284957f);
             tween.Update(0.0001479f);
@@ -48,7 +48,7 @@
             {
                 completed = true;
             };
-            tween.Play();
+            ((IAnimation)tween).OnStarted();
             tween.Update(0.34234f);
 
             Assert.IsTrue(completed);
@@ -72,7 +72,7 @@
             {
                 completed = true;
             };
-            tween.Play();
+            ((IAnimation)tween).OnStarted();
             tween.Update(0.34234f);
             tween.Update(1.284957f);
             tween.Update(0.0001479f);
@@ -99,7 +99,7 @@
                 completed = true;
             };
             tween.StartupDirection = AnimationDirection.Backward;
-            tween.Play();
+            ((IAnimation)tween).OnStarted();
             tween.Update(0.34234f);
             tween.Update(1.284957f);
             tween.Update(0.0001479f);

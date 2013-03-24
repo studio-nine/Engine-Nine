@@ -36,22 +36,22 @@ namespace Nine.Animations
         /// <summary>
         /// Plays the animation from start position.
         /// </summary>
-        void Play();
+        void OnStarted();
 
         /// <summary>
         /// Stops the animation at the current position.
         /// </summary>
-        void Stop();
+        void OnStopped();
 
         /// <summary>
         /// Pauses the animation at the current position.
         /// </summary>
-        void Pause();
+        void OnPaused();
 
         /// <summary>
         /// Resumes the animation from the current position.
         /// </summary>
-        void Resume();
+        void OnResumed();
 
         /// <summary>
         /// Occurs when this animation has completely finished playing.
