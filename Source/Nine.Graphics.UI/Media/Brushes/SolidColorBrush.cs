@@ -42,6 +42,12 @@ namespace Nine.Graphics.UI.Media
         public Vector3 Color { get; set; }
 
         public SolidColorBrush() { }
+        public SolidColorBrush(float R, float G, float B) : this(R, G, B, 1) { }
+        public SolidColorBrush(float R, float G, float B, float A)
+        {
+            this.Color = new Vector3(R, G, B);
+            this.Alpha = A;
+        }
         public SolidColorBrush(Color color)
         {
             this.Color = color.ToVector3();

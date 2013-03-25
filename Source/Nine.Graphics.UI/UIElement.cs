@@ -29,6 +29,7 @@ namespace Nine.Graphics.UI
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Xaml;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Internal;
@@ -38,7 +39,7 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.Primitives;
 
     [Nine.Serialization.BinarySerializable]
-    public abstract class UIElement : IContainer, IComponent
+    public abstract class UIElement : Nine.Object, IAttachedPropertyStore, IContainer, IComponent
     {
         #region Properties
 
@@ -126,9 +127,11 @@ namespace Nine.Graphics.UI
         public float ActualWidth { get { return RenderSize.X; } }
         public float ActualHeight { get { return RenderSize.Y; } }
 
-        public object DataContext { get; set; }
+        public object DataContext;
         public bool IsMouseCaptured { get; set; }
         public Thickness Margin { get; set; }
+
+        public UIElement Parent { get; internal set; }
 
         private Vector2 previousAvailableSize;
         private BoundingRectangle previousFinalRect;
@@ -136,8 +139,6 @@ namespace Nine.Graphics.UI
         private bool isClippingRequired;
         private Vector2 unclippedSize;
         private Vector2 visualOffset;
-
-        public UIElement Parent { get; internal set; }
 
         #endregion
 
@@ -147,6 +148,8 @@ namespace Nine.Graphics.UI
             Height = float.NaN;
             MaxWidth = float.PositiveInfinity;
             MaxHeight = float.PositiveInfinity;
+
+            IsMouseCaptured = true;
         }
 
         #region Methods
@@ -591,5 +594,35 @@ namespace Nine.Graphics.UI
         #endregion
 
         #endregion
+
+        #region IAttachedPropertyStore
+
+        int IAttachedPropertyStore.PropertyCount { get { return ExternalProperties.Count; } }
+
+        void IAttachedPropertyStore.CopyPropertiesTo(KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
+        {
+            throw new NotSupportedException();
+        }
+        bool IAttachedPropertyStore.RemoveProperty(AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return ExternalProperties.Remove(attachableMemberIdentifier.MemberName);
+        }
+        void IAttachedPropertyStore.SetProperty(AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            ExternalProperties[attachableMemberIdentifier.MemberName] = value;
+        }
+        bool IAttachedPropertyStore.TryGetProperty(AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            if (ExternalProperties.ContainsKey(attachableMemberIdentifier.MemberName))
+            {
+                value = ExternalProperties[attachableMemberIdentifier.MemberName];
+                return true;
+            }
+            value = null;
+            return false;
+        }
+
+        #endregion
+
     }
 }

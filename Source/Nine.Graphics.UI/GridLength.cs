@@ -26,14 +26,17 @@
 namespace Nine.Graphics.UI
 {
     using System;
+    using System.ComponentModel;
+    using Nine.Design;
 
+    [TypeConverter(typeof(GridLengthConverter))]
     public struct GridLength
     {
         private readonly GridUnitType gridUnitType;
         private readonly float value;
 
         /// <summary>
-        ///     Gets a <see cref = "GridLength">GridLength</see> whose <see cref = "GridUnitType">GridUnitType</see> is set to <see cref = "Nine.Graphics.UI.GridUnitType.Auto">GridUnitType.Auto</see>.
+        /// Gets a <see cref = "GridLength">GridLength</see> whose <see cref = "GridUnitType">GridUnitType</see> is set to <see cref = "Nine.Graphics.UI.GridUnitType.Auto">GridUnitType.Auto</see>.
         /// </summary>
         public static GridLength Auto
         {

@@ -43,16 +43,15 @@ namespace Nine.Graphics.UI.Controls
         private enum Dimension { X, Y }
         private enum UpdateMinLengths { SkipHeights, SkipWidths, WidthsAndHeights }
 
-        private readonly LinkedList<Cell> allStars = new LinkedList<Cell>();
-        private readonly LinkedList<Cell> autoPixelHeightStarWidth = new LinkedList<Cell>();
-        private readonly IList<ColumnDefinition> columnDefinitions = new List<ColumnDefinition>();
-
         private readonly bool[] hasAuto = new bool[2];
         private readonly bool[] hasStar = new bool[2];
 
         private readonly LinkedList<Cell> noStars = new LinkedList<Cell>();
-        private readonly IList<RowDefinition> rowDefinitions = new List<RowDefinition>();
+        private readonly LinkedList<Cell> allStars = new LinkedList<Cell>();
         private readonly LinkedList<Cell> starHeightAutoPixelWidth = new LinkedList<Cell>();
+        private readonly LinkedList<Cell> autoPixelHeightStarWidth = new LinkedList<Cell>();
+        private readonly IList<ColumnDefinition> columnDefinitions = new List<ColumnDefinition>();
+        private readonly IList<RowDefinition> rowDefinitions = new List<RowDefinition>();
 
         #region Properties
 
@@ -594,13 +593,9 @@ namespace Nine.Graphics.UI.Controls
         private struct Cell
         {
             public UIElement Child;
-
             public int ColumnIndex;
-
             public GridUnitType HeightType;
-
             public int RowIndex;
-
             public GridUnitType WidthType;
         }
     }

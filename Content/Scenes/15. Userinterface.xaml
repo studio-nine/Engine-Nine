@@ -4,7 +4,7 @@
 
     <Window>
         <Grid>
-            <!--<Grid.RowDefinitions>
+           <!-- <Grid.RowDefinitions>
                 <RowDefinitions Height="400" />
                 <RowDefinitions Height="400" />
             </Grid.RowDefinitions>
@@ -14,7 +14,6 @@
                 <ColumnDefinition Width="400" />
             </Grid.ColumnDefinition>-->
 
-            <!-- Borders -->
             <Grid Grid.Column="0" Grid.Row="0">
                 <!--<Grid.RowDefinitions>
                     <RowDefinitions Height="50*" />
@@ -24,54 +23,25 @@
                     <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="50*" />
                 </Grid.ColumnDefinition>-->
-                <Border Grid.Row="0" Grid.Column="0" BorderThickness="10">
-                    <Border.BorderBrush>
-                        <SolidColorBrush Color="1,0,0" />
-                    </Border.BorderBrush>
-                </Border>
-                <Border Grid.Row="1" Grid.Column="0" BorderThickness="8">
-                    <Border.BorderBrush>
-                        <SolidColorBrush Color="0,1,0" />
-                    </Border.BorderBrush>
+                <Border Grid.Row="0" Grid.Column="0" BorderBrush="Red" BorderThickness="10" />
+                <Border Grid.Row="1" Grid.Column="0" BorderBrush="Green" BorderThickness="8">
                     <Border.Background>
                         <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
                     </Border.Background>
                 </Border>
-                <Border Grid.Row="0" Grid.Column="1" BorderThickness="6">
-                    <Border.BorderBrush>
-                        <SolidColorBrush Color="0,0,1" />
-                    </Border.BorderBrush>
-                </Border>
-                <Border Grid.Row="1" Grid.Column="1" BorderThickness="4">
-                    <Border.BorderBrush>
-                        <SolidColorBrush Color="1,1,0" />
-                    </Border.BorderBrush>
-                </Border>
+                <Border Grid.Row="0" Grid.Column="1" BorderBrush="Blue" BorderThickness="6" />
+                <Border Grid.Row="1" Grid.Column="1" BorderBrush="Orange" BorderThickness="4" />
             </Grid>
           
             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
                 <StackPanel.Background>
                     <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
                 </StackPanel.Background>
-                <Border Margin="2" Height="50" BorderThickness="2">
-                    <Border.BorderBrush>
-                      <SolidColorBrush Color="1,0,0" />
-                    </Border.BorderBrush>
+                <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2" />
+                <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+                    <Button Margin="2" Background="LightGray" />
                 </Border>
-                <Border Margin="2" Height="50" BorderThickness="2">
-                    <Border.BorderBrush>
-                        <SolidColorBrush Color="0,1,0" />
-                    </Border.BorderBrush>
-                    <Button Margin="2">
-                        <Button.Background>
-                            <SolidColorBrush Color="211,211,211" />
-                        </Button.Background>
-                    </Button>
-                </Border>
-                <Border Margin="2" Height="50" BorderThickness="2">
-                    <Border.BorderBrush>
-                        <SolidColorBrush Color="0,0,1" />
-                    </Border.BorderBrush>
+                <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
                     <ProgressBar Margin="2" Value="50" />
                 </Border>
             </StackPanel>

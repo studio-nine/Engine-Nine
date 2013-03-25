@@ -26,7 +26,7 @@
 namespace Nine.Graphics.UI.Controls
 {
     /// <summary>
-    ///     Defines Column properties that apply to <see cref="Nine.Graphics.UI.Controls.Grid"/>.
+    /// Defines Column properties that apply to <see cref="Nine.Graphics.UI.Controls.Grid"/>.
     /// </summary>
     public class ColumnDefinition : DefinitionBase
     {

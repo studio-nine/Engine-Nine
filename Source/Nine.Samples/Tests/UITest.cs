@@ -114,7 +114,7 @@ namespace Nine.Samples
                 ProgressBar ProgressBar;
                 StackPanel.Children.Add(ProgressBar = new ProgressBar() { Value = 50, Height = 50, Margin = new Thickness(2) });
 
-                var TweenA = new Nine.Animations.TweenAnimation<float>((Interpolate<float>)MathHelper.Lerp, (Operator<float>)AddHelper.Add)
+                var TweenA = new Nine.Animations.TweenAnimation<float>()
                 {
                     Target = ProgressBar,
                     TargetProperty = "Value",
@@ -137,7 +137,7 @@ namespace Nine.Samples
                     Margin = new Thickness(20,2,20,2)
                 });
 
-                var TweenA2 = new Nine.Animations.TweenAnimation<float>((Interpolate<float>)MathHelper.Lerp, (Operator<float>)AddHelper.Add)
+                var TweenA2 = new Nine.Animations.TweenAnimation<float>()
                 {
                     Target = ProgressBar2,
                     TargetProperty = "Value",

@@ -29,6 +29,7 @@ namespace Nine.Graphics.UI.Media
     /// Represents a Brush used to paint to the screen. The type of Brush describes how the area is to be painted.
     /// </summary>
     [Nine.Serialization.BinarySerializable]
+    [System.ComponentModel.TypeConverter(typeof(Nine.Design.SolidColorBrushConverter))]
     public abstract class Brush
     {
         public float Alpha = 1;
