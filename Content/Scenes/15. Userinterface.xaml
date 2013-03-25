@@ -1,6 +1,6 @@
 <Scene xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Camera2D />
+    <TMPCamera2D />
 
     <Window>
         <Grid>
@@ -24,33 +24,59 @@
                     <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="50*" />
                 </Grid.ColumnDefinition>-->
-                <Border Grid.Row="0" Grid.Column="0" BorderBrush="1, 0, 0" BorderThickness="4" />
-                <Border Grid.Row="1" Grid.Column="0" BorderBrush="0,1,0" BorderThickness="4">
+                <Border Grid.Row="0" Grid.Column="0" BorderThickness="10">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="1,0,0" />
+                    </Border.BorderBrush>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="0" BorderThickness="8">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="0,1,0" />
+                    </Border.BorderBrush>
                     <Border.Background>
                         <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
                     </Border.Background>
                 </Border>
-                <Border Grid.Row="0" Grid.Column="1" BorderBrush="0,0,1,1" BorderThickness="4" />
-                <Border Grid.Row="1" Grid.Column="1" BorderBrush="1,1,0,1" BorderThickness="4" />
+                <Border Grid.Row="0" Grid.Column="1" BorderThickness="6">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="0,0,1" />
+                    </Border.BorderBrush>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="1" BorderThickness="4">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="1,1,0" />
+                    </Border.BorderBrush>
+                </Border>
             </Grid>
           
-            <!-- StackPanel -->
             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
                 <StackPanel.Background>
                     <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
                 </StackPanel.Background>
-                <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2" />
-                <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
-                    <Button Margin="2" Background="LightGray" />
+                <Border Margin="2" Height="50" BorderThickness="2">
+                    <Border.BorderBrush>
+                      <SolidColorBrush Color="1,0,0" />
+                    </Border.BorderBrush>
                 </Border>
-                <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
+                <Border Margin="2" Height="50" BorderThickness="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="0,1,0" />
+                    </Border.BorderBrush>
+                    <Button Margin="2">
+                        <Button.Background>
+                            <SolidColorBrush Color="211,211,211" />
+                        </Button.Background>
+                    </Button>
+                </Border>
+                <Border Margin="2" Height="50" BorderThickness="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="0,0,1" />
+                    </Border.BorderBrush>
                     <ProgressBar Margin="2" Value="50" />
                 </Border>
             </StackPanel>
           
-            <!-- Image -->
-            <Image Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
-        
+            <!--<Image Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />-->
         </Grid>
     </Window>  
 

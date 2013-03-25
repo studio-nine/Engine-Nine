@@ -38,7 +38,6 @@ namespace Nine.Graphics.UI.Controls
     {
         private readonly IList<BoundingRectangle> borders = new List<BoundingRectangle>();
 
-        [System.Windows.Markup.DependsOn("SolidColorBrush")]
         public SolidColorBrush BorderBrush { get; set; }
 
         public Thickness BorderThickness { get; set; }

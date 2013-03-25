@@ -106,13 +106,13 @@ namespace Nine.Graphics.UI
         internal bool isArrangeValid;
         internal bool isMeasureValid;
 
-        public Brush Background = null;
+        public Brush Background { get; set; }
 
-        public float Width = float.NaN;
-        public float Height = float.NaN;
+        public float Width { get; set; }
+        public float Height { get; set; }
 
-        public float MaxHeight = float.PositiveInfinity;
-        public float MaxWidth = float.PositiveInfinity;
+        public float MaxWidth { get; set; }
+        public float MaxHeight { get; set; }
 
         public float MinHeight { get; set; }
         public float MinWidth { get; set; }
@@ -140,6 +140,14 @@ namespace Nine.Graphics.UI
         public UIElement Parent { get; internal set; }
 
         #endregion
+
+        protected UIElement()
+        {
+            Width = float.NaN;
+            Height = float.NaN;
+            MaxWidth = float.PositiveInfinity;
+            MaxHeight = float.PositiveInfinity;
+        }
 
         #region Methods
 

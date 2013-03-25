@@ -26,11 +26,15 @@
 namespace Nine.Graphics.UI
 {
     using System;
+    using System.ComponentModel;
     using System.Diagnostics;
-
     using Nine.Graphics.UI.Internal;
 
     [DebuggerDisplay("{Left}, {Top}, {Right}, {Bottom}")]
+#if WINDOWS
+    [Serializable()]
+    [TypeConverter(typeof(Nine.Design.ThicknessConverter))]
+#endif
     public struct Thickness : IEquatable<Thickness>
     {
         public static readonly Thickness Empty = new Thickness();
@@ -111,6 +115,11 @@ namespace Nine.Graphics.UI
         {
             return other.Bottom.IsCloseTo(this.Bottom) && other.Left.IsCloseTo(this.Left) &&
                    other.Right.IsCloseTo(this.Right) && other.Top.IsCloseTo(this.Top);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1},{2},{3}", Left, Top, Right, Bottom);
         }
     }
 }
