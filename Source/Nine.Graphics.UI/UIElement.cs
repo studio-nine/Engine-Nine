@@ -39,7 +39,7 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.Primitives;
 
     [Nine.Serialization.BinarySerializable]
-    public abstract class UIElement : Nine.Object, IAttachedPropertyStore, IContainer, IComponent
+    public abstract class UIElement : Nine.Object, IContainer, IComponent
     {
         #region Properties
 
@@ -101,8 +101,6 @@ namespace Nine.Graphics.UI
         #endregion 
 
         #region Fields
-
-        internal Dictionary<string, object> ExternalProperties = new Dictionary<string, object>();
 
         internal bool isArrangeValid;
         internal bool isMeasureValid;
@@ -594,35 +592,5 @@ namespace Nine.Graphics.UI
         #endregion
 
         #endregion
-
-        #region IAttachedPropertyStore
-
-        int IAttachedPropertyStore.PropertyCount { get { return ExternalProperties.Count; } }
-
-        void IAttachedPropertyStore.CopyPropertiesTo(KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
-        {
-            throw new NotSupportedException();
-        }
-        bool IAttachedPropertyStore.RemoveProperty(AttachableMemberIdentifier attachableMemberIdentifier)
-        {
-            return ExternalProperties.Remove(attachableMemberIdentifier.MemberName);
-        }
-        void IAttachedPropertyStore.SetProperty(AttachableMemberIdentifier attachableMemberIdentifier, object value)
-        {
-            ExternalProperties[attachableMemberIdentifier.MemberName] = value;
-        }
-        bool IAttachedPropertyStore.TryGetProperty(AttachableMemberIdentifier attachableMemberIdentifier, out object value)
-        {
-            if (ExternalProperties.ContainsKey(attachableMemberIdentifier.MemberName))
-            {
-                value = ExternalProperties[attachableMemberIdentifier.MemberName];
-                return true;
-            }
-            value = null;
-            return false;
-        }
-
-        #endregion
-
     }
 }

@@ -27,6 +27,7 @@ namespace Nine.Graphics.UI.Controls
 {
     using System;
     using System.Collections.Generic;
+    using System.Xaml;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Controls.Shapes;
 
@@ -86,34 +87,41 @@ namespace Nine.Graphics.UI.Controls
 
         #region Static Methods
 
+        static readonly AttachableMemberIdentifier LeftMember = new AttachableMemberIdentifier(typeof(float), "Left");
+        static readonly AttachableMemberIdentifier TopMember = new AttachableMemberIdentifier(typeof(float), "Top");
+
         public static float GetLeft(UIElement element)
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            // Default Value (float.NaN)
-            return (float)element.ExternalProperties["Left"];
+            if (element.AttachedProperties.ContainsKey(LeftMember))
+                return (float)element.AttachedProperties[LeftMember];
+            else
+                return float.NaN;
         }
 
         public static float GetTop(UIElement element)
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            // Default Value (float.NaN)
-            return (float)element.ExternalProperties["Top"];
+            if (element.AttachedProperties.ContainsKey(TopMember))
+                return (float)element.AttachedProperties[TopMember];
+            else
+                return float.NaN;
         }
 
         public static void SetLeft(UIElement element, float value)
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            element.ExternalProperties["Left"] = value;
+            element.AttachedProperties[LeftMember] = value;
         }
 
         public static void SetTop(UIElement element, float value)
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            element.ExternalProperties["Top"] = value;
+            element.AttachedProperties[TopMember] = value;
         }
 
         #endregion

@@ -34,6 +34,7 @@ namespace Nine.Graphics.UI.Controls
     using Nine.Graphics.UI.Media;
 
     using Nine.Graphics.Primitives;
+    using System.Xaml;
 
     /// <summary>
     /// A Grid layout panel consisting of columns and rows.
@@ -361,6 +362,9 @@ namespace Nine.Graphics.UI.Controls
 
         #region Static Methods
 
+        static readonly AttachableMemberIdentifier RowMember = new AttachableMemberIdentifier(typeof(int), "Row");
+        static readonly AttachableMemberIdentifier ColumnMember = new AttachableMemberIdentifier(typeof(int), "Column");
+
         /// <summary>
         ///     Gets the value of the Column attached property for the specified element.
         /// </summary>
@@ -370,8 +374,8 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            if (element.ExternalProperties.ContainsKey("Column"))
-                return (int)element.ExternalProperties["Column"];
+            if (element.AttachedProperties.ContainsKey(ColumnMember))
+                return (int)element.AttachedProperties[ColumnMember];
             else
                 return 0; // Default Value
         }
@@ -385,8 +389,8 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            if (element.ExternalProperties.ContainsKey("Row"))
-                return (int)element.ExternalProperties["Row"];
+            if (element.AttachedProperties.ContainsKey(RowMember))
+                return (int)element.AttachedProperties[RowMember];
             else
                 return 0; // Default Value
         }
@@ -400,7 +404,7 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            element.ExternalProperties["Column"] = value;
+            element.AttachedProperties[ColumnMember] = value;
         }
 
         /// <summary>
@@ -412,7 +416,7 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            element.ExternalProperties["Row"] = value;
+            element.AttachedProperties[RowMember] = value;
         }
 
         private static void AllocateProportionalSpace(IEnumerable<DefinitionBase> definitions, float availableLength)
