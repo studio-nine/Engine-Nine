@@ -9,10 +9,15 @@
     {
         #region Properties
 
-        public Video Video
+        public Video Source
         {
             get { return video; }
-            set { video = value; }
+            set 
+            { 
+                video = value; 
+                Play(); 
+                // Not sure if this should be placed here.
+            }
         }
         private Video video;
 
@@ -59,23 +64,21 @@
         private VideoPlayer player;
         private Texture2D Texture;
 
-        public MediaElement()
-        {
-            player = new VideoPlayer();
-        }
+        public MediaElement() : this(null) { }
         public MediaElement(Video video)
         {
-            this.Video = video;
             player = new VideoPlayer();
+            if (video != null)
+                this.Source = video;
         }
 
         #region Methods
 
         public void Play()
         {
-            if (Video == null)
+            if (Source == null)
                 throw new ArgumentNullException();
-            player.Play(Video);
+            player.Play(Source);
         }
         
         public void Resume()
