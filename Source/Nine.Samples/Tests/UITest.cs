@@ -20,7 +20,6 @@ namespace Nine.Samples
         public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
-            scene.Add(new TMPCamera2D(graphics));
             var Font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");
 
             Window window = new Window();

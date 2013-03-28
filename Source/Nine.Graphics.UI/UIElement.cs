@@ -131,6 +131,8 @@ namespace Nine.Graphics.UI
 
         public UIElement Parent { get; internal set; }
 
+        internal Window Window;
+
         private Vector2 previousAvailableSize;
         private BoundingRectangle previousFinalRect;
 
@@ -139,6 +141,8 @@ namespace Nine.Graphics.UI
         private Vector2 visualOffset;
 
         #endregion
+        
+        #region Methods
 
         protected UIElement()
         {
@@ -149,8 +153,6 @@ namespace Nine.Graphics.UI
 
             IsMouseCaptured = true;
         }
-
-        #region Methods
 
         internal void NotifyGesture(Gesture gesture)
         {
@@ -230,18 +232,13 @@ namespace Nine.Graphics.UI
 
         public bool TryGetRootElement(out Window rootElement)
         {
-            if (Parent != null)
+            UIElement element = this;
+            while ((rootElement = element.Window) == null)
             {
-                if (Parent is Window)
-                {
-                    rootElement = Parent as Window;
-                    return true;
-                }
-                else
-                    return Parent.TryGetRootElement(out rootElement);
+                if ((element = element.Parent) == null)
+                    return false;
             }
-            rootElement = null;
-            return false;
+            return true;
         }
 
         protected virtual BoundingRectangle? GetClippingRect(Vector2 finalSize)
