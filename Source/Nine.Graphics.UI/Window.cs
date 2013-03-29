@@ -26,34 +26,40 @@
 namespace Nine.Graphics.UI
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
     using System.Windows.Markup;
-    using Nine.Graphics.UI.Input;
-    using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
+    using Nine.Graphics.Drawing;
     using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Input;
 
     /// <summary>
     /// RootElement is the main host for all <see cref = "UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
     /// </summary>
     [ContentProperty("Content")]
-    public class Window : UIElement, ISprite, IDebugDrawable
+    public class Window : Pass, IGraphicsObject, IDebugDrawable
     {
         internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
         internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
-
+        
         private readonly IInputManager inputManager;
         private UIElement elementWithMouseCapture;
+        private SpriteBatch spriteBatch;
 
         public UIElement Content 
         {
             get { return content; }
-            set
+            set 
             {
-                content = value;
-                content.Parent = this;
+                if (content != value)
+                {
+                    if (content != null)
+                        content.Window = null;
+                    content = value;
+                    if (content != null)
+                        content.Window = this;
+                }
             }
         }
         private UIElement content;
@@ -80,25 +86,19 @@ namespace Nine.Graphics.UI
         public Window(IInputManager inputManager)
         {
             if ((this.inputManager = inputManager) != null)
-                this.inputManager.GestureSampled += g => OnNextGesture(g);
+                this.inputManager.GestureSampled += g => NotifyGesture(content, g);
         }
 
         #region Methods
 
-        public void Draw(DrawingContext context, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
+            if (content == null)
+                return;
+
             if (this.Viewport != context.GraphicsDevice.Viewport.Bounds)
                 this.Viewport = context.GraphicsDevice.Viewport.Bounds;
-            //this.Viewport = this.Viewport.IsEmpty ? context.GraphicsDevice.Viewport.Bounds : this.Viewport;
-            Update();
 
-            base.OnRender(spriteBatch);
-            if (Content != null)
-                Content.OnRender(spriteBatch);
-        }
-
-        public void Update()
-        {
             if (Viewport == null)
                 throw new ArgumentNullException("Viewport");
 
@@ -110,11 +110,21 @@ namespace Nine.Graphics.UI
                 Height = Viewport.Height,
             };
 
-            Measure(new Vector2(bounds.Width, bounds.Height));
-            Arrange(bounds);
+            content.Measure(new Vector2(bounds.Width, bounds.Height));
+            content.Arrange(bounds);
+
+            if (content != null)
+            {
+                // TODO: We might want to render using PrimitiveBatch to allow non-rectangular shapes.
+                if (spriteBatch == null)
+                    spriteBatch = new SpriteBatch(context.GraphicsDevice);
+                spriteBatch.Begin();
+                content.OnRender(spriteBatch);
+                spriteBatch.End();
+            }
         }
 
-        public bool CaptureMouse(UIElement element)
+        internal bool CaptureMouse(UIElement element)
         {
             if (this.elementWithMouseCapture == null)
             {
@@ -124,7 +134,7 @@ namespace Nine.Graphics.UI
             return false;
         }
 
-        public void ReleaseMouseCapture(UIElement element)
+        internal void ReleaseMouseCapture(UIElement element)
         {
             if (this.elementWithMouseCapture == element)
             {
@@ -132,35 +142,11 @@ namespace Nine.Graphics.UI
             }
         }
 
-        public override System.Collections.Generic.IList<UIElement> GetChildren()
-        {
-            if (Content != null)
-                return new UIElement[] { Content };
-            return null;
-        }
-
-        protected override Vector2 ArrangeOverride(Vector2 finalSize)
-        {
-            Content.Arrange(new BoundingRectangle(finalSize.X, finalSize.Y));
-            return Content.RenderSize;
-        }
-
-        protected override Vector2 MeasureOverride(Vector2 availableSize)
-        {
-            Content.Measure(availableSize);
-            return Content.RenderSize;
-        }
-
-        protected override void OnNextGesture(Gesture gesture)
-        {
-            if (this.elementWithMouseCapture != null)
-                this.elementWithMouseCapture.NotifyGesture(gesture);
-            else
-                NotifyGesture(this, gesture);
-        }
-
         private static bool NotifyGesture(UIElement element, Gesture gesture)
         {
+            if (element == null)
+                return false;
+
             var children = element.GetChildren();
             if (children != null)
             {
@@ -185,31 +171,19 @@ namespace Nine.Graphics.UI
 
 #endregion
 
-        #region ISprite
-        Microsoft.Xna.Framework.Graphics.BlendState ISprite.BlendState
+        #region IGraphicsObject
+
+        void IGraphicsObject.OnAdded(DrawingContext context)
         {
-            get { return null; }
+            context.Passes.Add(this);
+            AddDependency(context.MainPass);
         }
 
-        Materials.Material ISprite.Material
+        void IGraphicsObject.OnRemoved(DrawingContext context)
         {
-            get { return null; }
+            context.Passes.Remove(this);
         }
 
-        Microsoft.Xna.Framework.Graphics.SamplerState ISprite.SamplerState
-        {
-            get { return null; }
-        }
-
-        int ISprite.ZOrder
-        {
-            get { return 0; }
-        }
-
-        void ISprite.Draw(DrawingContext context, Materials.Material material)
-        {
-            throw new InvalidOperationException();
-        }
         #endregion
 
         #region IDebugDrawable
@@ -217,10 +191,8 @@ namespace Nine.Graphics.UI
         bool IDebugDrawable.Visible { get { return true; } }
         void IDebugDrawable.Draw(DrawingContext context, DynamicPrimitive primitive)
         {
-            var Children = GetChildren();
-            if (Children != null)
-                foreach (var Child in Children)
-                    Child.OnDebugRender(primitive);
+            if (content != null)
+                content.OnDebugRender(primitive);
         }
 
         #endregion

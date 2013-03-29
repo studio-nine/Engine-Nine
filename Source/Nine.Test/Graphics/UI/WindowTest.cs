@@ -50,8 +50,6 @@
             Grid.SetColumn(border2, 0);
             grid.Children.Add(border2);
 
-            window.Update();
-
             Assert.AreEqual(new Vector2(100, 100), border1.RenderSize);
             Assert.AreEqual(new Vector2(0, 100), border1.VisualOffset);
             Assert.AreEqual(new Vector2(0, 100), border1.Content.VisualOffset);

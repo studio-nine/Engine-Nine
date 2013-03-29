@@ -89,7 +89,6 @@
       <DependentUpon>Nine.Graphics.Materials.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\SpriteAnimation.cs" />
-    <Compile Include="Cameras\TMPCamera2D.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Materials\TextureMaterial.cs" />
