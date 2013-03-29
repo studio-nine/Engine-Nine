@@ -25,61 +25,52 @@
 
 namespace Nine.Graphics.UI.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Nine.Graphics.UI.Controls.Primitives;
+    using Nine.Graphics.UI.Internal.Controls;
     /*
     public class VirtualizingStackPanel : StackPanel, IScrollInfo
     {
         private VirtualizingElementCollection children;
-
         private ScrollData scrollData;
+
+        #region Properties
 
         public bool CanHorizontallyScroll
         {
-            get
-            {
-                return this.scrollData.CanHorizontallyScroll;
-            }
-
-            set
-            {
-                this.scrollData.CanHorizontallyScroll = value;
-            }
+            get { return this.scrollData.CanHorizontallyScroll; }
+            set { this.scrollData.CanHorizontallyScroll = value; }
         }
 
         public bool CanVerticallyScroll
         {
-            get
-            {
-                return this.scrollData.CanVerticallyScroll;
-            }
-
-            set
-            {
-                this.scrollData.CanVerticallyScroll = value;
-            }
+            get { return this.scrollData.CanVerticallyScroll; }
+            set { this.scrollData.CanVerticallyScroll = value; }
         }
 
-        public Size Extent
+        public Vector2 Extent
         {
-            get
-            {
-                return this.scrollData.Extent;
-            }
+            get { return this.scrollData.Extent; }
         }
 
-        public Vector Offset
+        public Vector2 Offset
         {
-            get
-            {
-                return this.scrollData.Offset;
-            }
+            get { return this.scrollData.Offset; }
         }
 
-        public Size Viewport
+        public Vector2 Viewport
         {
-            get
-            {
-                return this.scrollData.Viewport;
-            }
+            get { return this.scrollData.Viewport; }
+        }
+
+        #endregion
+
+        protected override IList<UIElement> CreateChildrenCollection()
+        {
+            this.children = new VirtualizingElementCollection(this);
+            return this.children;
         }
 
         public override IEnumerable<UIElement> GetVisualChildren()
@@ -95,15 +86,9 @@ namespace Nine.Graphics.UI.Controls
         {
         }
 
-        protected override IList<UIElement> CreateChildrenCollection()
+        protected override BoundingRectangle MeasureOverride(BoundingRectangle availableSize)
         {
-            this.children = new VirtualizingElementCollection(this);
-            return this.children;
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            var viewportUsed = new Size();
+            var viewportUsed = new BoundingRectangle();
 
             var availableSizeForContent = availableSize;
             if (this.Orientation == Orientation.Horizontal || this.scrollData.CanHorizontallyScroll)
@@ -122,9 +107,7 @@ namespace Nine.Graphics.UI.Controls
             foreach (var child in this.children.GetCursor(firstVisibleChild))
             {
                 if (isLastVisibleChild)
-                {
                     break;
-                }
 
                 if (child != null)
                 {
@@ -152,7 +135,7 @@ namespace Nine.Graphics.UI.Controls
             return viewportUsed;
         }
 
-        private void UpdateScrollData(Size viewport, Size extent)
+        private void UpdateScrollData(Vector2 viewport, Vector2 extent)
         {
             this.scrollData.Viewport = viewport;
             this.scrollData.Extent = extent;
@@ -162,8 +145,7 @@ namespace Nine.Graphics.UI.Controls
             float y = this.scrollData.Offset.Y.Coerce(
                 0f, this.scrollData.Extent.Y - this.scrollData.Viewport.Y);
 
-            this.scrollData.Offset = new Vector(x, y);
+            this.scrollData.Offset = new Vector2(x, y);
         }
-    }
-*/
+    }*/
 }

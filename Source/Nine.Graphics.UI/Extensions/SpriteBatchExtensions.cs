@@ -18,17 +18,27 @@
             if (c is SolidColorBrush)
             {
                 var Texture = Nine.Graphics.GraphicsResources<BlankTexture>.GetInstance(spriteBatch.GraphicsDevice);
-                // Absolute Rendering
                 spriteBatch.Draw(Texture.Texture,
                     new Vector2(rect.X, rect.Y), null, (c as SolidColorBrush).ToColor(), 0, 
                     Vector2.Zero, new Vector2(rect.Width, rect.Height), SpriteEffects.None, 0);
-                //spriteBatch.Draw(Texture.Texture, rect, (c as SolidColorBrush).Color);
             }
             else if (c is ImageBrush)
             {
                 var ImageBrush = c as ImageBrush;
                 var Rect = ImageBrush.Calculate(ImageBrush.Source ,rect);
                 spriteBatch.Draw(ImageBrush.Source, Rect, null, Color.White, 0, Vector2.Zero, ImageBrush.Effects, 0);
+            }
+            else if (c is LinearGradientBrush)
+            {
+                // TODO: Apply Gradient Effect
+                var Texture = Nine.Graphics.GraphicsResources<BlankTexture>.GetInstance(spriteBatch.GraphicsDevice);
+                var Brush = c as LinearGradientBrush;
+                if (Brush.GradientStops.Count < 2)
+                    throw new System.ArgumentOutOfRangeException("Brush.GradientStops");
+
+                spriteBatch.Draw(Texture.Texture,
+                    new Vector2(rect.X, rect.Y), null, Color.White, 0,
+                    Vector2.Zero, new Vector2(rect.Width, rect.Height), SpriteEffects.None, 0);
             }
         }
     }
