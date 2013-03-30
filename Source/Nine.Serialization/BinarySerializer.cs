@@ -158,16 +158,16 @@ namespace Nine.Serialization
         }
 
         /// <summary>
-        /// Saves to the specified output stream.
+        /// Saves the target object to the specified output stream.
         /// </summary>
         public void Save(Stream output, object value)
         {
             binaryWriter.SetStream(output);
-            ((IBinaryObjectSerializer)this).WriteObject(binaryWriter, value, this);
+            WriteObject(binaryWriter, value, this);
         }
 
         /// <summary>
-        /// Saves to the specified output stream.
+        /// Saves the target object to the specified output stream.
         /// </summary>
         public void Save(Stream output, object value, IServiceProvider serviceProvider)
         {
@@ -175,7 +175,7 @@ namespace Nine.Serialization
             {
                 serviceProviderStack.Push(serviceProvider);
                 binaryWriter.SetStream(output);
-                ((IBinaryObjectSerializer)this).WriteObject(binaryWriter, value, this);
+                WriteObject(binaryWriter, value, this);
             }
             finally
             {
@@ -266,6 +266,11 @@ namespace Nine.Serialization
 
         void IBinaryObjectSerializer.WriteObject(BinaryWriter output, object value, IServiceProvider services)
         {
+            WriteObject(output, value, services);
+        }
+
+        private void WriteObject(BinaryWriter output, object value, IServiceProvider services)
+        {
             if (value == null)
             {
                 output.Write((int)0);
@@ -279,10 +284,8 @@ namespace Nine.Serialization
                 }
 
                 IBinaryObjectWriter writer;
-
-                var targetType = value.GetType();
-                if (!writers.TryGetValue(targetType, out writer))
-                    throw new NotSupportedException("Don't know how to write: " + targetType);
+                if (!writers.TryGetValue(value.GetType(), out writer))
+                    throw new NotSupportedException("Don't know how to write: " + value.GetType());
 
                 output.Write(ComputeHash(writer.ReaderType));
                 writer.Write(output, value, this);

@@ -8,14 +8,6 @@ namespace Nine.Serialization
     using System.Windows.Markup;
 
     /// <summary>
-    /// Interface used to build a source asset into a binary package.
-    /// </summary>
-    public interface IPackageBuilder
-    {
-        void Build(Stream input, Stream output);
-    }
-
-    /// <summary>
     /// Contains operations to create binary packages.
     /// </summary>
     public class Package
@@ -29,10 +21,10 @@ namespace Nine.Serialization
             Loader.Services.Add(new SerializationOverride());
         }
 
-        static BinarySerializer Writer = new BinarySerializer();
+        static BinarySerializer BinarySerializer = new BinarySerializer();
         static FileSystemResolver Resolver = new FileSystemResolver();
         static ContentLoader Loader = new ContentLoader(new PipelineGraphicsDeviceService());
-        
+
         public static void BuildFile(string fileName, string outputFileName)
         {
             var outputDirectory = Path.GetDirectoryName(outputFileName);
@@ -41,16 +33,15 @@ namespace Nine.Serialization
 
             using (var output = new FileStream(outputFileName, FileMode.Create))
             {
-                BuildItem(fileName, output);
+                BuildFile(fileName, output);
             }
         }
 
-        private static void BuildItem(string fileName, Stream output)
+        public static void BuildFile(string fileName, Stream output)
         {
             var content = Loader.Load<object>(fileName);
-            Writer.Save(output, content, Loader);
+            BinarySerializer.Save(output, content, Loader);
         }
-
 
         public static void BuildDirectory(string directoryName, string outputFileName)
         {
@@ -58,12 +49,12 @@ namespace Nine.Serialization
             outputFileName = Path.GetFullPath(outputFileName);
 
             var outputDirectory = outputFileName + "-" + Guid.NewGuid().ToString("N").ToUpper();
-                Directory.CreateDirectory(outputDirectory);
+            Directory.CreateDirectory(outputDirectory);
 
             try
             {
                 foreach (var file in Directory.EnumerateFiles(directoryName, "*.*", SearchOption.AllDirectories))
-                    {
+                {
                     var extension = Path.GetExtension(file);
                     if (string.Equals(extension, ".importer", StringComparison.OrdinalIgnoreCase))
                         continue;
@@ -83,6 +74,6 @@ namespace Nine.Serialization
             {
                 Directory.Delete(outputDirectory, true);
             }
-    }
+        }
     }
 }

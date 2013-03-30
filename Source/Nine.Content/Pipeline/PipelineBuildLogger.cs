@@ -25,10 +25,6 @@
         public override void LogWarning(string helpLink, ContentIdentity contentIdentity, string message, params object[] messageArgs)
         {
             Trace.TraceWarning(message, messageArgs);
-            Trace.WriteLine(helpLink);
-            Trace.WriteLine(string.Format("FragmentIdentifier: {0}", contentIdentity.FragmentIdentifier));
-            Trace.WriteLine(string.Format("SourceFilename: {0}", contentIdentity.SourceFilename));
-            Trace.WriteLine(string.Format("SourceTool: {0}", contentIdentity.SourceTool));
         }
     }
 }

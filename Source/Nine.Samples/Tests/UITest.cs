@@ -154,8 +154,7 @@ namespace Nine.Samples
                 TweenA2.Duration = new TimeSpan(0, 0, 5);
                 TweenA2.AutoReverse = true;
                 TweenA2.Repeat = 10000000f;
-                scene.Add(TweenA2);
-                TweenA2.Play();
+                scene.Animations.Play(TweenA2);
 
                 ScrollViewer.Content = ScrollContentPresenter;
                 ScrollContentPresenter.Content = StackPanel;
