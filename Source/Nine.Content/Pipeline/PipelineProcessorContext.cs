@@ -6,31 +6,28 @@
     class PipelineProcessorContext : ContentProcessorContext
     {
         private OpaqueDataDictionary parameters;
-        private PipelineBuilder pipelineBuilder;
+        private PipelineBuilder builder;
 
         public PipelineProcessorContext(PipelineBuilder pipelineBuilder)
         {
-            this.pipelineBuilder = pipelineBuilder;
+            this.builder = pipelineBuilder;
         }
 
-        public override void AddDependency(string filename) { pipelineBuilder.ResolveExternalReference(filename); }
+        public override void AddDependency(string filename) { builder.ResolveExternalReference(filename); }
         public override void AddOutputFile(string filename) { }
 
         public override TOutput BuildAndLoadAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName)
         {
-            var builder = pipelineBuilder.Clone();
-            return builder.BuildAndLoad<TOutput>(pipelineBuilder.ResolveExternalReference(sourceAsset.Filename), processorName, processorParameters, importerName);
+            return builder.BuildAndLoad<TOutput>(builder.ResolveExternalReference(sourceAsset.Filename), processorName, processorParameters, importerName);
         }
 
         public override ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName, string fileName)
         {
-            var builder = pipelineBuilder.Clone();
-            return new ExternalReference<TOutput>(builder.Build(pipelineBuilder.ResolveExternalReference(sourceAsset.Filename), processorName, processorParameters, importerName, fileName));
+            return new ExternalReference<TOutput>(builder.ResolveExternalReference(sourceAsset.Filename) + ".xnb");
         }
 
         public override TOutput Convert<TInput, TOutput>(TInput input, string processorName, OpaqueDataDictionary processorParameters)
         {
-            var builder = pipelineBuilder.Clone();
             return builder.Convert<TInput, TOutput>(input, processorName, processorParameters);
         }
         
@@ -41,7 +38,7 @@
 
         public override string IntermediateDirectory
         {
-            get { return pipelineBuilder.IntermediateDirectory; }
+            get { return ContentPipeline.IntermediateDirectory; }
         }
 
         public override ContentBuildLogger Logger
@@ -51,12 +48,12 @@
 
         public override string OutputDirectory
         {
-            get { return pipelineBuilder.OutputDirectory; }
+            get { return ContentPipeline.OutputDirectory; }
         }
 
         public override string OutputFilename
         {
-            get { return pipelineBuilder.OutputFilename; }
+            get { return builder.OutputFilename; }
         }
 
         public override OpaqueDataDictionary Parameters

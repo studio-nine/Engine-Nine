@@ -18,7 +18,7 @@
 
         public override string IntermediateDirectory
         {
-            get { return pipelineBuilder.IntermediateDirectory; }
+            get { return ContentPipeline.IntermediateDirectory; }
         }
 
         public override ContentBuildLogger Logger
@@ -28,7 +28,7 @@
 
         public override string OutputDirectory
         {
-            get { return pipelineBuilder.OutputDirectory; }
+            get { return ContentPipeline.OutputDirectory; }
         }
     }
 }

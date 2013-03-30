@@ -12,7 +12,7 @@ namespace Nine.Serialization
         {
             if (loader == null)
                 loader = new PipelineContentManager(serviceProvider);
-            return loader.LoadUnique(input.BaseStream);
+            return loader.Create<object>(input.BaseStream);
         }
 
         class PipelineContentManager : ContentManager
@@ -23,6 +23,25 @@ namespace Nine.Serialization
                 : base(serviceProvider)
             { }
 
+            public T Create<T>(Stream stream)
+            {
+                try
+                {
+                    currentStream = stream;
+                    return ReadAsset<T>("?", null);
+                }
+                finally
+                {
+                    currentStream = null;
+                }
+            }
+
+            public override T Load<T>(string assetName)
+            {
+                // This should only be called during ContentReader.ReadExternalReference
+                return ServiceProvider.GetService<ContentLoader>().Load<T>(assetName);
+            }
+
             protected override Stream OpenStream(string fileName)
             {
                 if (currentStream != null)
@@ -32,19 +51,6 @@ namespace Nine.Serialization
                     return result;
                 }
                 return base.OpenStream(fileName);
-            }
-
-            public object LoadUnique(Stream stream)
-            {
-                try
-                {
-                    currentStream = stream;
-                    return Load<object>(Guid.NewGuid().ToString("N"));
-                }
-                finally
-                {
-                    currentStream = null;
-                }
             }
         }
     }
