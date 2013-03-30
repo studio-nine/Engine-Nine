@@ -1,8 +1,8 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
- * Copyright (c) 2012 Yufei Huang
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,6 @@ namespace Nine.Graphics.UI
     using System.Linq;
     using System.Xaml;
     using Microsoft.Xna.Framework;
-    using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Media;
@@ -154,48 +153,13 @@ namespace Nine.Graphics.UI
             IsMouseCaptured = true;
         }
 
-        internal void NotifyGesture(Gesture gesture)
-        {
-            OnNextGesture(gesture);
-        }
-
-        public bool CaptureMouse()
-        {
-            Window rootElement;
-            if (!this.IsMouseCaptured && this.TryGetRootElement(out rootElement))
-            {
-                this.IsMouseCaptured = rootElement.CaptureMouse(this);
-            }
-            return this.IsMouseCaptured;
-        }
-
-        public void ReleaseMouseCapture()
-        {
-            Window rootElement;
-            if (this.IsMouseCaptured && this.TryGetRootElement(out rootElement))
-            {
-                rootElement.ReleaseMouseCapture(this);
-                this.IsMouseCaptured = false;
-            }
-        }
-
         public virtual void OnApplyTemplate() { }
 
         public virtual IList<UIElement> GetChildren() { return null; }
 
         public bool HitTest(Vector2 point)
         {
-            Vector2 absoluteOffset = Vector2.Zero;
-            UIElement currentElement = this;
-
-            while (currentElement != null)
-            {
-                absoluteOffset += currentElement.VisualOffset;
-                currentElement = currentElement.Parent;
-            }
-
-            var hitTestRect = new BoundingRectangle(absoluteOffset.X, absoluteOffset.Y, this.ActualWidth, this.ActualHeight);            
-            return hitTestRect.Contains(point.X, point.Y) == ContainmentType.Contains;
+            return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
         }
 
         protected internal virtual void OnRender(SpriteBatch spriteBatch) 
@@ -292,8 +256,6 @@ namespace Nine.Graphics.UI
             
             return clipRect;
         }
-
-        protected virtual void OnNextGesture(Gesture gesture) { }
 
         private Vector2 ComputeAlignmentOffset(Vector2 clientSize, Vector2 inkSize)
         {

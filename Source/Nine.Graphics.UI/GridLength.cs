@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,7 +37,7 @@ namespace Nine.Graphics.UI
         private readonly float value;
 
         /// <summary>
-        /// Gets a <see cref = "GridLength">GridLength</see> whose <see cref = "GridUnitType">GridUnitType</see> is set to <see cref = "Nine.Graphics.UI.GridUnitType.Auto">GridUnitType.Auto</see>.
+        /// Gets a <see cref="GridLength">GridLength</see> whose <see cref="GridUnitType">GridUnitType</see> is set to <see cref="Nine.Graphics.UI.GridUnitType.Auto">GridUnitType.Auto</see>.
         /// </summary>
         public static GridLength Auto
         {
@@ -73,14 +74,10 @@ namespace Nine.Graphics.UI
         public GridLength(float value, GridUnitType gridUnitType)
         {
             if (float.IsNaN(value))
-            {
                 throw new ArgumentException();
-            }
 
             if (float.IsInfinity(value))
-            {
                 throw new ArgumentException();
-            }
 
             this.value = gridUnitType == GridUnitType.Auto ? 1 : value;
             this.gridUnitType = gridUnitType;

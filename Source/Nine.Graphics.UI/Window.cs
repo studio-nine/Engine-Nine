@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,21 +31,19 @@ namespace Nine.Graphics.UI
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Primitives;
-    using Nine.Graphics.UI.Input;
 
     /// <summary>
-    /// RootElement is the main host for all <see cref = "UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
+    /// RootElement is the main host for all <see cref="UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
     /// </summary>
     [ContentProperty("Content")]
-    public class Window : Pass, IGraphicsObject, IDebugDrawable
+    public class Window : Pass, IGraphicsObject, Nine.IUpdateable
     {
         internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
         internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
         
-        private readonly IInputManager inputManager;
-        private UIElement elementWithMouseCapture;
         private SpriteBatch spriteBatch;
 
         public UIElement Content 
@@ -64,30 +63,15 @@ namespace Nine.Graphics.UI
         }
         private UIElement content;
 
-        public IInputManager InputManager
-        {
-            get { return this.inputManager; }
-        }
-
         /// <summary>
-        /// Gets or sets the viewport used by <see cref = "Window">RootElement</see> to layout its content.
+        /// Gets or sets the viewport used by <see cref="Window">RootElement</see> to layout its content.
         /// </summary>
         public Rectangle Viewport { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "Window">RootElement</see> class.
+        /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
         /// </summary> 
         public Window() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref = "Window">RootElement</see> class.
-        /// </summary>
-        /// <param name = "inputManager">An implementation of <see cref = "IInputManager">IInputManager</see> that can be used to respond to user input.</param>
-        public Window(IInputManager inputManager)
-        {
-            if ((this.inputManager = inputManager) != null)
-                this.inputManager.GestureSampled += g => NotifyGesture(content, g);
-        }
 
         #region Methods
 
@@ -124,52 +108,21 @@ namespace Nine.Graphics.UI
             }
         }
 
-        internal bool CaptureMouse(UIElement element)
-        {
-            if (this.elementWithMouseCapture == null)
-            {
-                this.elementWithMouseCapture = element;
-                return true;
-            }
-            return false;
-        }
+        #endregion
 
-        internal void ReleaseMouseCapture(UIElement element)
+        #region Input
+
+        public void Update(float elapsedTime)
         {
-            if (this.elementWithMouseCapture == element)
+            var mouse = Mouse.GetState();
+
+            if (content.HitTest(new Vector2(mouse.X, mouse.Y)))
             {
-                this.elementWithMouseCapture = null;
+
             }
         }
 
-        private static bool NotifyGesture(UIElement element, Gesture gesture)
-        {
-            if (element == null)
-                return false;
-
-            var children = element.GetChildren();
-            if (children != null)
-            {
-                var handled = false;
-                for (int i = children.Count - 1; i >= 0; i++)
-                {
-                    if (NotifyGesture(children[i], gesture))
-                    {
-                        handled = true;
-                        break;
-                    }
-                }
-
-                if (!handled && element is IInputElement && element.HitTest(gesture.Vector2))
-                {
-                    element.NotifyGesture(gesture);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-#endregion
+        #endregion
 
         #region IGraphicsObject
 
@@ -182,17 +135,6 @@ namespace Nine.Graphics.UI
         void IGraphicsObject.OnRemoved(DrawingContext context)
         {
             context.Passes.Remove(this);
-        }
-
-        #endregion
-
-        #region IDebugDrawable
-
-        bool IDebugDrawable.Visible { get { return true; } }
-        void IDebugDrawable.Draw(DrawingContext context, DynamicPrimitive primitive)
-        {
-            if (content != null)
-                content.OnDebugRender(primitive);
         }
 
         #endregion

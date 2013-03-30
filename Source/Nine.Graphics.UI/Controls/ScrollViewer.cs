@@ -27,9 +27,8 @@ namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Controls.Primitives;
-    using Nine.Graphics.UI.Input;
 
-    public class ScrollViewer : ContentControl, IInputElement
+    public class ScrollViewer : ContentControl //, IInputElement
     {
         #region Properties
 
@@ -117,6 +116,7 @@ namespace Nine.Graphics.UI.Controls
             }
         }
 
+        /*
         protected override void OnNextGesture(Gesture gesture)
         {
             switch (gesture.Type)
@@ -141,5 +141,6 @@ namespace Nine.Graphics.UI.Controls
                     break;
             }
         }
+        */
     }
 }

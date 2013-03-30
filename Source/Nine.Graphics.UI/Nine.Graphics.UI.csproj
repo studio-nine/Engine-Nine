@@ -89,6 +89,7 @@
     <Compile Include="Controls\MediaElement.cs" />
     <Compile Include="Controls\Other\ColumnDefinition.cs" />
     <Compile Include="Controls\EventArgs\SelectionChangedEventArgs.cs" />
+    <Compile Include="Controls\Other\ViewBase.cs" />
     <Compile Include="Controls\Primitives\Selector.cs" />
     <Compile Include="Controls\RangeBase.cs" />
     <Compile Include="Controls\Shapes\Rectangle.cs" />
@@ -136,8 +137,6 @@
     <Compile Include="Controls\ScrollContentPresenter.cs" />
     <Compile Include="Controls\ScrollViewer.cs" />
     <Compile Include="Controls\VirtualizingStackPanel.cs" />
-    <Compile Include="Input\IInputElement.cs" />
-    <Compile Include="Input\IInputManager.cs" />
     <Compile Include="Internal\FloatExtensions.cs" />
     <Compile Include="Internal\MinMax.cs" />
     <Compile Include="Internal\ThicknessExtensions.cs" />
@@ -148,8 +147,6 @@
     <Compile Include="Controls\Other\StretchDirection.cs" />
     <Compile Include="Internal\Controls\Viewbox.cs" />
     <Compile Include="Controls\Other\Orientation.cs" />
-    <Compile Include="Input\GestureType.cs" />
-    <Compile Include="Input\Gesture.cs" />
     <Compile Include="Media\Stretch.cs" />
     <Compile Include="Media\Brushes\Brush.cs" />
     <Compile Include="Media\Brushes\SolidColorBrush.cs" />

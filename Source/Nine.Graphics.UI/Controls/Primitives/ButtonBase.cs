@@ -26,9 +26,8 @@
 namespace Nine.Graphics.UI.Controls.Primitives
 {
     using System;
-    using Nine.Graphics.UI.Input;
 
-    public abstract class ButtonBase : ContentControl, IInputElement
+    public abstract class ButtonBase : ContentControl //, IInputElement
     {
         #region Fields
 
@@ -50,12 +49,11 @@ namespace Nine.Graphics.UI.Controls.Primitives
             }
         }
 
+        /*
         protected override void OnNextGesture(Gesture gesture)
         {
             if (!this.IsEnabled)
-            {
                 return;
-            }
 
             switch (gesture.Type)
             {
@@ -87,7 +85,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
 
                     break;
             }
-        }
+        }*/
 
         #endregion 
     }

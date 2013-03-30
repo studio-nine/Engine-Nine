@@ -23,9 +23,10 @@
 */
 #endregion
 
-using Microsoft.Xna.Framework;
 namespace Nine.Graphics.UI.Internal
 {
+    using Microsoft.Xna.Framework;
+
     internal static class ThicknessExtensions
     {
         public static Vector2 Collapse(this Thickness thickness)
