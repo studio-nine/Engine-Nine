@@ -29,13 +29,17 @@ namespace Nine.Graphics.UI
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Xaml;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Media;
 
-    public abstract class UIElement : IContainer, IComponent
+    using Nine.Graphics.Primitives;
+
+    [Nine.Serialization.BinarySerializable]
+    public abstract class UIElement : Nine.Object, IContainer, IComponent
     {
         #region Properties
 
@@ -98,18 +102,16 @@ namespace Nine.Graphics.UI
 
         #region Fields
 
-        internal Dictionary<string, object> ExternalProperties = new Dictionary<string, object>();
-
         internal bool isArrangeValid;
         internal bool isMeasureValid;
 
-        public Brush Background = null;
+        public Brush Background { get; set; }
 
-        public float Width = float.NaN;
-        public float Height = float.NaN;
+        public float Width { get; set; }
+        public float Height { get; set; }
 
-        public float MaxHeight = float.PositiveInfinity;
-        public float MaxWidth = float.PositiveInfinity;
+        public float MaxWidth { get; set; }
+        public float MaxHeight { get; set; }
 
         public float MinHeight { get; set; }
         public float MinWidth { get; set; }
@@ -123,9 +125,13 @@ namespace Nine.Graphics.UI
         public float ActualWidth { get { return RenderSize.X; } }
         public float ActualHeight { get { return RenderSize.Y; } }
 
-        public object DataContext { get; set; }
+        public object DataContext;
         public bool IsMouseCaptured { get; set; }
         public Thickness Margin { get; set; }
+
+        public UIElement Parent { get; internal set; }
+
+        internal Window Window;
 
         private Vector2 previousAvailableSize;
         private BoundingRectangle previousFinalRect;
@@ -134,11 +140,19 @@ namespace Nine.Graphics.UI
         private Vector2 unclippedSize;
         private Vector2 visualOffset;
 
-        public UIElement Parent { get; internal set; }
-
         #endregion
-
+        
         #region Methods
+
+        protected UIElement()
+        {
+            Width = float.NaN;
+            Height = float.NaN;
+            MaxWidth = float.PositiveInfinity;
+            MaxHeight = float.PositiveInfinity;
+
+            IsMouseCaptured = true;
+        }
 
         internal void NotifyGesture(Gesture gesture)
         {
@@ -202,21 +216,29 @@ namespace Nine.Graphics.UI
                 spriteBatch.Draw(AbsoluteRenderTransform, Background);
             }
         }
+        protected internal virtual void OnDebugRender(DynamicPrimitive primitive)
+        {
+            primitive.AddRectangle(
+                new Vector2(AbsoluteRenderTransform.X, AbsoluteRenderTransform.Y),
+                new Vector2(AbsoluteRenderTransform.X + AbsoluteRenderTransform.Width,
+                    AbsoluteRenderTransform.Y + AbsoluteRenderTransform.Height),
+                null, Color.LightBlue, 2);
+
+            var Children = GetChildren();
+            if (Children != null)
+                foreach (var Child in Children)
+                    Child.OnDebugRender(primitive);
+        }
 
         public bool TryGetRootElement(out Window rootElement)
         {
-            if (Parent != null)
+            UIElement element = this;
+            while ((rootElement = element.Window) == null)
             {
-                if (Parent is Window)
-                {
-                    rootElement = Parent as Window;
-                    return true;
-                }
-                else
-                    return Parent.TryGetRootElement(out rootElement);
+                if ((element = element.Parent) == null)
+                    return false;
             }
-            rootElement = null;
-            return false;
+            return true;
         }
 
         protected virtual BoundingRectangle? GetClippingRect(Vector2 finalSize)

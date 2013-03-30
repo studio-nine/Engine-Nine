@@ -5,6 +5,7 @@
 
     public class Rectangle : Shape
     {
+        public Rectangle() : this(0,0) { }
         public Rectangle(float w, float h)
         {
             this.Width = w;

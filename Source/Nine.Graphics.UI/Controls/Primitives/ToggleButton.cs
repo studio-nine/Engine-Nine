@@ -73,6 +73,12 @@ namespace Nine.Graphics.UI.Controls.Primitives
 
         #region Methods
 
+        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        {
+            base.OnRender(spriteBatch);
+            // TODO: Rendering
+        }
+
         protected internal virtual void OnToggle()
         {
             bool? isChecked = this.IsChecked;

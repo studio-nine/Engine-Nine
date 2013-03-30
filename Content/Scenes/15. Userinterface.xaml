@@ -1,36 +1,25 @@
-﻿<Scene xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-    <Camera2D />
-
+<Scene xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Window>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinitions Height="400" />
-                <RowDefinitions Height="20" />
-                <RowDefinitions Height="400" />
-                <RowDefinitions Height="20" />
-                <RowDefinitions Height="400" />
+           <Grid.RowDefinitions>
+                <RowDefinition Height="50*" />
+                <RowDefinition Height="50*" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinition>
-                <ColumnDefinition Width="400" />
-                <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="400" />
-                <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="400" />
-                <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="400" />
-            </Grid.ColumnDefinition>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="25*" />
+            </Grid.ColumnDefinitions>
 
-            <!-- Borders -->
             <Grid Grid.Column="0" Grid.Row="0">
                 <Grid.RowDefinitions>
-                    <RowDefinitions Height="50*" />
-                    <RowDefinitions Height="50*" />
+                    <RowDefinition Height="50*" />
+                    <RowDefinition Height="50*" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinition>
+                <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="50*" />
-                </Grid.ColumnDefinition>
+                </Grid.ColumnDefinitions>
                 <Border Grid.Row="0" Grid.Column="0" BorderBrush="Red" BorderThickness="4" />
                 <Border Grid.Row="1" Grid.Column="0" BorderBrush="Green" BorderThickness="4">
                     <Border.Background>
@@ -41,12 +30,13 @@
                 <Border Grid.Row="1" Grid.Column="1" BorderBrush="Orange" BorderThickness="4" />
             </Grid>
           
-            <!-- StackPanel -->
             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
                 <StackPanel.Background>
                     <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
                 </StackPanel.Background>
-                <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2" />
+                <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2">
+                    <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Inside a StackPanel" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
                 <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
                     <Button Margin="2" Background="LightGray" />
                 </Border>
@@ -54,11 +44,14 @@
                     <ProgressBar Margin="2" Value="50" />
                 </Border>
             </StackPanel>
+
+            <Grid Grid.Column="1" Grid.Row="0" >
+                <!-- There are no audio in the Video anyways :) -->
+                <MediaElement Loop="True" IsMuted="True" Source="{ContentReference ../EngineNine.wmv}" />
+                <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Low Quality Video Test (Pre-Rendered)" />
+            </Grid>
           
-            <!-- Image -->
             <Image Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
-        
         </Grid>
     </Window>  
-
 </Scene>

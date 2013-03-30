@@ -27,6 +27,7 @@ namespace Nine.Graphics.UI.Controls
 {
     using System;
 
+    [Nine.Serialization.BinarySerializable]
     public abstract class DefinitionBase
     {
         protected enum DefinitionType { Column, Row }

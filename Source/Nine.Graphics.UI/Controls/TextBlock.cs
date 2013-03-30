@@ -33,35 +33,31 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    ///     Control to display a flow of Content
+    /// Control to display a flow of Content
     /// </summary>
     public class TextBlock : UIElement
     {
-        #region Properties
-
-        #endregion
-
         #region Fields
 
         private static readonly Regex WhiteSpaceRegEx = new Regex(@"\s+", RegexOptions.Compiled);
-        private readonly SpriteFont spriteFont;
 
+        public SpriteFont Font { get; set; }
         public SolidColorBrush Foreground { get; set; }
-
         public Thickness Padding { get; set; }
         public string Text { get; set; }
         public TextWrapping Wrapping { get; set; }
+
         private string formattedText;
 
         #endregion
 
-        public TextBlock(SpriteFont spriteFont)
+        public TextBlock() { }
+        public TextBlock(SpriteFont Font)
         {
-            if (spriteFont == null)
+            if (Font == null)
                 throw new ArgumentNullException("spriteFont");
 
-            this.spriteFont = spriteFont;
-            this.Text = "";
+            this.Font = Font;
         }
 
         #region Methods
@@ -71,7 +67,7 @@ namespace Nine.Graphics.UI.Controls
             base.OnRender(spriteBatch);
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
-            spriteBatch.DrawString(spriteFont, formattedText, new Vector2(this.Padding.Left, this.Padding.Top), TextColor.Color);
+            spriteBatch.DrawString(Font, formattedText, new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset, TextColor.ToColor());
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
@@ -82,12 +78,12 @@ namespace Nine.Graphics.UI.Controls
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
             this.formattedText = this.Text;
-            Vector2 measureString = this.spriteFont.MeasureString(this.formattedText);
+            Vector2 measureString = this.Font.MeasureString(this.formattedText);
 
             if (this.Wrapping == TextWrapping.Wrap && measureString.X > availableSize.X)
             {
-                this.formattedText = WrapText(this.spriteFont, this.formattedText, availableSize.X);
-                measureString = this.spriteFont.MeasureString(this.formattedText);
+                this.formattedText = WrapText(this.Font, this.formattedText, availableSize.X);
+                measureString = this.Font.MeasureString(this.formattedText);
             }
 
             return new Vector2(

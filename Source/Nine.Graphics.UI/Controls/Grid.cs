@@ -26,36 +26,38 @@
 namespace Nine.Graphics.UI.Controls
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Collections.Generic;
 
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Media;
 
+    using Nine.Graphics.Primitives;
+    using System.Xaml;
+
     /// <summary>
-    ///     A Grid layout panel consisting of columns and rows.
+    /// A Grid layout panel consisting of columns and rows.
     /// </summary>
     public class Grid : Panel
     {
         private enum Dimension { X, Y }
         private enum UpdateMinLengths { SkipHeights, SkipWidths, WidthsAndHeights }
 
-        private readonly LinkedList<Cell> allStars = new LinkedList<Cell>();
-        private readonly LinkedList<Cell> autoPixelHeightStarWidth = new LinkedList<Cell>();
-        private readonly IList<ColumnDefinition> columnDefinitions = new List<ColumnDefinition>();
-
         private readonly bool[] hasAuto = new bool[2];
         private readonly bool[] hasStar = new bool[2];
 
         private readonly LinkedList<Cell> noStars = new LinkedList<Cell>();
-        private readonly IList<RowDefinition> rowDefinitions = new List<RowDefinition>();
+        private readonly LinkedList<Cell> allStars = new LinkedList<Cell>();
         private readonly LinkedList<Cell> starHeightAutoPixelWidth = new LinkedList<Cell>();
+        private readonly LinkedList<Cell> autoPixelHeightStarWidth = new LinkedList<Cell>();
+        private readonly IList<ColumnDefinition> columnDefinitions = new List<ColumnDefinition>();
+        private readonly IList<RowDefinition> rowDefinitions = new List<RowDefinition>();
 
         #region Properties
 
         /// <summary>
-        ///     Gets the collection of column definitions.
+        /// Gets the collection of column definitions.
         /// </summary>
         /// <value>The column definitions collection.</value>
         public IList<ColumnDefinition> ColumnDefinitions
@@ -64,7 +66,7 @@ namespace Nine.Graphics.UI.Controls
         }
 
         /// <summary>
-        ///     Gets the collection of row definitions.
+        /// Gets the collection of row definitions.
         /// </summary>
         /// <value>The row definitions collection.</value>
         public IList<RowDefinition> RowDefinitions
@@ -73,6 +75,11 @@ namespace Nine.Graphics.UI.Controls
         }
 
         #endregion
+
+        public Grid()
+        {
+
+        }
 
         #region Fields
 
@@ -329,9 +336,34 @@ namespace Nine.Graphics.UI.Controls
             }
         }
 
+        protected internal override void OnDebugRender(DynamicPrimitive primitive)
+        {
+            base.OnDebugRender(primitive);
+            /*
+            for (int x = 0; x < this.columns.Length; x++)
+                for (int y = 0; y < this.rows.Length; y++)
+                {
+                    int columnIndex = this.cells[x].ColumnIndex;
+                    int rowIndex = this.cells[y].RowIndex;
+
+                    primitive.AddRectangle(
+                        new Vector2(
+                            this.columns[columnIndex].FinalOffset,
+                            this.rows[rowIndex].FinalOffset),
+                        new Vector2(
+                            this.columns[columnIndex].FinalLength,
+                            this.rows[rowIndex].FinalLength), 
+                        null, Color.Red, 2);
+
+                }*/
+        }
+
         #endregion
 
         #region Static Methods
+
+        static readonly AttachableMemberIdentifier RowMember = new AttachableMemberIdentifier(typeof(int), "Row");
+        static readonly AttachableMemberIdentifier ColumnMember = new AttachableMemberIdentifier(typeof(int), "Column");
 
         /// <summary>
         ///     Gets the value of the Column attached property for the specified element.
@@ -342,8 +374,8 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            if (element.ExternalProperties.ContainsKey("Column"))
-                return (int)element.ExternalProperties["Column"];
+            if (element.AttachedProperties.ContainsKey(ColumnMember))
+                return (int)element.AttachedProperties[ColumnMember];
             else
                 return 0; // Default Value
         }
@@ -357,8 +389,8 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            if (element.ExternalProperties.ContainsKey("Row"))
-                return (int)element.ExternalProperties["Row"];
+            if (element.AttachedProperties.ContainsKey(RowMember))
+                return (int)element.AttachedProperties[RowMember];
             else
                 return 0; // Default Value
         }
@@ -372,7 +404,7 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            element.ExternalProperties["Column"] = value;
+            element.AttachedProperties[ColumnMember] = value;
         }
 
         /// <summary>
@@ -384,7 +416,7 @@ namespace Nine.Graphics.UI.Controls
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            element.ExternalProperties["Row"] = value;
+            element.AttachedProperties[RowMember] = value;
         }
 
         private static void AllocateProportionalSpace(IEnumerable<DefinitionBase> definitions, float availableLength)
@@ -565,13 +597,9 @@ namespace Nine.Graphics.UI.Controls
         private struct Cell
         {
             public UIElement Child;
-
             public int ColumnIndex;
-
             public GridUnitType HeightType;
-
             public int RowIndex;
-
             public GridUnitType WidthType;
         }
     }
