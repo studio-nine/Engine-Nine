@@ -12,6 +12,9 @@ namespace Nine.Serialization
         {
             if (loader == null)
                 loader = new PipelineContentManager(serviceProvider);
+            var contentLoader = serviceProvider.TryGetService<ContentLoader>();
+            loader.RootDirectory = contentLoader == null ? "" :
+                Extensions.MakeRelativePath(Directory.GetCurrentDirectory() + "\\", Path.GetDirectoryName(contentLoader.CurrentFileName));
             return loader.Create<object>(input.BaseStream);
         }
 

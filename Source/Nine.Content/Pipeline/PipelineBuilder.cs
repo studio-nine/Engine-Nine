@@ -56,8 +56,6 @@
             if (contentImporter == null)
                 throw new InvalidOperationException(string.Format("Cannot find content importer for {0}", sourceAssetFile));
             var content = contentImporter.Import(sourceAssetFile, ImporterContext);
-            
-            contentProcessor = contentProcessor ?? FindDefaultProcessor(contentImporter);
             if (contentProcessor != null)
             {
                 try

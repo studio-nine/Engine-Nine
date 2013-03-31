@@ -1,5 +1,6 @@
 ﻿namespace Nine.Graphics.Primitives
 {
+    using System;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -11,37 +12,38 @@
     {
         public static void AddRectangle(this DynamicPrimitive dynamicPrimitive, BoundingRectangle bound, Brush brush, Matrix? world)
         {
-            var color = Color.White;
-            var texture = Nine.Graphics.GraphicsResources<BlankTexture>.GetInstance(dynamicPrimitive.GraphicsDevice).Texture;
-
-            if (brush.GetType().Equals(typeof(SolidColorBrush)))
+            var solidColorBrush = brush as SolidColorBrush;
+            if (solidColorBrush != null)
             {
-                color = (brush as SolidColorBrush).ToColor();
+                var color = solidColorBrush.ToColor();
+
+                dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world);
+                {
+                    dynamicPrimitive.AddVertex(new Vector3(bound.X, bound.Y, 0), color);
+                    dynamicPrimitive.AddVertex(new Vector3(bound.X, bound.Y + bound.Height, 0), color);
+                    dynamicPrimitive.AddVertex(new Vector3(bound.X + bound.Width, bound.Y + bound.Height, 0), color);
+                    dynamicPrimitive.AddVertex(new Vector3(bound.X + bound.Width, bound.Y, 0), color);
+
+                    dynamicPrimitive.AddIndex(0);
+                    dynamicPrimitive.AddIndex(1);
+                    dynamicPrimitive.AddIndex(1);
+                    dynamicPrimitive.AddIndex(2);
+                    dynamicPrimitive.AddIndex(2);
+                    dynamicPrimitive.AddIndex(3);
+                    dynamicPrimitive.AddIndex(3);
+                    dynamicPrimitive.AddIndex(0);
+                }
+                dynamicPrimitive.EndPrimitive();
+                return;
             }
-            else if (brush.GetType().Equals(typeof(ImageBrush)))
+
+            var imageBrush = brush as ImageBrush;
+            if (imageBrush != null)
             {
-
+                return;
             }
-            else
-                throw new System.ArgumentNullException("brush");
-
-            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, texture, world);
-            {
-                dynamicPrimitive.AddVertex(new Vector3(bound.X, bound.Y, 0), color);
-                dynamicPrimitive.AddVertex(new Vector3(bound.X, bound.Y + bound.Height, 0), color);
-                dynamicPrimitive.AddVertex(new Vector3(bound.X + bound.Width, bound.Y + bound.Height, 0), color);
-                dynamicPrimitive.AddVertex(new Vector3(bound.X + bound.Width, bound.Y, 0), color);
-
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(1);
-                dynamicPrimitive.AddIndex(1);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(0);
-            }
-            dynamicPrimitive.EndPrimitive();
+            
+            throw new NotSupportedException("brush");
         }
     }
 }

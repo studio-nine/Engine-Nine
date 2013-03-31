@@ -100,13 +100,10 @@
                 if (content == null)
                     return default(T);
 
-                SaveContent(cachedFileName, content);
-            }
-            
-            foreach (var invalidCache in Directory.GetFiles(CacheDirectory, fileNameHash + "-*"))
-            {
-                if (!string.Equals(Path.GetFileName(invalidCache), fileSignature, StringComparison.OrdinalIgnoreCase))
+                foreach (var invalidCache in Directory.GetFiles(CacheDirectory, fileNameHash + "-*"))
                     File.Delete(invalidCache);
+
+                SaveContent(cachedFileName, content);
             }
 
             using (var stream = File.OpenRead(cachedFileName))

@@ -6,11 +6,15 @@ namespace Nine.Serialization.Importers
     using System;
     using System.IO;
 
-    public class VideoImporter : VideoProcessor, Nine.Serialization.IContentImporter
+    /// <remarks>
+    /// Due to the limitation of XNA video content pipeline, videos cannot be loaded
+    /// from binary packages. The .wmv file has to be placed into the file system.
+    /// </remarks>
+    public class VideoImporter : Nine.Serialization.IContentImporter
     {
         public object Import(Stream stream, IServiceProvider serviceProvider)
         {
-            return ContentPipeline.Load<Microsoft.Xna.Framework.Media.Video>(stream, new Microsoft.Xna.Framework.Content.Pipeline.WmvImporter(), this, serviceProvider);
+            return ContentPipeline.Load<Microsoft.Xna.Framework.Media.Video>(stream, new Microsoft.Xna.Framework.Content.Pipeline.WmvImporter(), null, serviceProvider);
         }
 
         public string[] SupportedFileExtensions
