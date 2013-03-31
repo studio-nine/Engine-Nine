@@ -5,6 +5,5 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public abstract class ViewBase
     {
-        // This is going to hold "ListViewItem" style managment
     }
 }

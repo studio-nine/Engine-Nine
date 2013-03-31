@@ -27,23 +27,36 @@
 namespace Nine.Graphics.UI.Controls
 {
     using System.Collections.Generic;
-    using System.Windows.Markup;
-
-    using Nine.Graphics.UI.Internal;
-    using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.UI.Internal;
+    using Nine.Graphics.Primitives;
 
-    [ContentProperty("Content")]
+    /// <summary>
+    /// Draws a border and/or background around another element.
+    /// </summary>
+    [System.Windows.Markup.ContentProperty("Content")]
     public class Border : UIElement
     {
         private readonly IList<BoundingRectangle> borders = new List<BoundingRectangle>();
 
-        public SolidColorBrush BorderBrush { get; set; }
+        /// <summary>
+        /// Gets or sets the border color.
+        /// </summary>
+        public Nine.Graphics.UI.Media.SolidColorBrush BorderBrush { get; set; }
 
+        /// <summary>
+        /// Gets or sets the borders thickness.
+        /// </summary>
         public Thickness BorderThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the padding between the border and the Content.
+        /// </summary>
         public Thickness Padding { get; set; }
         
+        /// <summary>
+        /// Gets or sets the single child element.
+        /// </summary>
         public UIElement Content 
         {
             get { return content; }
@@ -57,9 +70,9 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
         {
-            base.OnRender(spriteBatch);
+            base.OnRender(dynamicPrimitive);
 
             if (BorderThickness != Thickness.Empty && BorderBrush != null)
             {
@@ -69,12 +82,12 @@ namespace Nine.Graphics.UI.Controls
                     var Rect = border;
                     Rect.X += AbsoluteVisualOffset.X;
                     Rect.Y += AbsoluteVisualOffset.Y;
-                    spriteBatch.Draw(Rect, BorderBrush);
+                    dynamicPrimitive.AddRectangle(Rect, BorderBrush, null);
                 }
             }
 
             if (Content != null)
-                Content.OnRender(spriteBatch);
+                Content.OnRender(dynamicPrimitive);
         }
 
         public override IList<UIElement> GetChildren()

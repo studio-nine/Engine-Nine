@@ -30,17 +30,13 @@ namespace Nine.Graphics.UI.Controls.Primitives
     public interface IScrollInfo
     {
         bool CanHorizontallyScroll { get; set; }
-
         bool CanVerticallyScroll { get; set; }
 
         Vector2 Extent { get; }
-
         Vector2 Offset { get; }
-
         Vector2 Viewport { get; }
 
         void SetHorizontalOffset(float offset);
-
         void SetVerticalOffset(float offset);
     }
 }

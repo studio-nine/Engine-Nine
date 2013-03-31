@@ -31,8 +31,15 @@ namespace Nine.Graphics.UI.Controls
     using Nine.Graphics.UI.Media;
 
     // TODO: Expand on Button
+
+    /// <summary>
+    /// A Control that represent a clickable button.
+    /// </summary>
     public class Button : ButtonBase
     {
+        /// <summary>
+        /// Gets or sets the Padding.
+        /// </summary>
         public Thickness Padding { get; set; }
 
         public override void OnApplyTemplate()
@@ -41,11 +48,6 @@ namespace Nine.Graphics.UI.Controls
             {
                 this.Content.Margin = this.Padding;
             }
-        }
-
-        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
-        {
-            base.OnRender(spriteBatch);
         }
     }
 }

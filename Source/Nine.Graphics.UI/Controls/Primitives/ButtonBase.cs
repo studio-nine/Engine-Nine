@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,66 +28,22 @@ namespace Nine.Graphics.UI.Controls.Primitives
 {
     using System;
 
-    public abstract class ButtonBase : ContentControl //, IInputElement
+    public abstract class ButtonBase : ContentControl
     {
-        #region Fields
-
         public event EventHandler<EventArgs> Click;
+
+        /// <summary>
+        /// Gets or sets, if the button is pressed.
+        /// </summary>
         public bool IsPressed { get; set; }
 
         private bool isLeftButtonDown;
-
-        #endregion
-
-        #region Methods
 
         protected virtual void OnClick()
         {
             EventHandler<EventArgs> handler = this.Click;
             if (handler != null)
-            {
                 handler(this, new EventArgs());
-            }
         }
-
-        /*
-        protected override void OnNextGesture(Gesture gesture)
-        {
-            if (!this.IsEnabled)
-                return;
-
-            switch (gesture.Type)
-            {
-                case GestureType.LeftButtonDown:
-                    this.isLeftButtonDown = true;
-
-                    if (this.CaptureMouse())
-                    {
-                        this.IsPressed = true;
-                    }
-
-                    break;
-                case GestureType.LeftButtonUp:
-                    this.isLeftButtonDown = false;
-
-                    if (this.IsPressed)
-                    {
-                        this.OnClick();
-                    }
-
-                    this.ReleaseMouseCapture();
-                    this.IsPressed = false;
-                    break;
-                case GestureType.Move:
-                    if (this.isLeftButtonDown && this.IsMouseCaptured)
-                    {
-                        this.IsPressed = this.HitTest(gesture.Vector2);
-                    }
-
-                    break;
-            }
-        }*/
-
-        #endregion 
     }
 }

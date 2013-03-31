@@ -43,8 +43,8 @@ namespace Nine.Graphics.UI
     {
         internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
         internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
-        
-        private SpriteBatch spriteBatch;
+
+        private DynamicPrimitive dynamicPrimitive;
 
         public UIElement Content 
         {
@@ -99,12 +99,13 @@ namespace Nine.Graphics.UI
 
             if (content != null)
             {
-                // TODO: We might want to render using PrimitiveBatch to allow non-rectangular shapes.
-                if (spriteBatch == null)
-                    spriteBatch = new SpriteBatch(context.GraphicsDevice);
-                spriteBatch.Begin();
-                content.OnRender(spriteBatch);
-                spriteBatch.End();
+                if (dynamicPrimitive == null)
+                    dynamicPrimitive = new DynamicPrimitive(context.GraphicsDevice);
+
+                content.OnRender(dynamicPrimitive);
+
+                dynamicPrimitive.Draw(context, null);
+                dynamicPrimitive.Clear();
             }
         }
 

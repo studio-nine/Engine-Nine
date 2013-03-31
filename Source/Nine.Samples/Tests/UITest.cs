@@ -182,6 +182,8 @@ namespace Nine.Samples
             Grid.SetColumn(ControlGrid, 1);
             MainGrid.Children.Add(ControlGrid);
 
+            /*
+
             { // #MediaElement
                 var MediaElement = new MediaElement(content.Load<Microsoft.Xna.Framework.Media.Video>("test.wmv"))
                 {
@@ -223,6 +225,8 @@ namespace Nine.Samples
                 ControlGrid.Children.Add(PlayButton);
                 ControlGrid.Children.Add(PauseButton);
             }
+
+            */
             
 
             window.Content = MainGrid;

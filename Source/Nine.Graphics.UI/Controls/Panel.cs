@@ -28,13 +28,12 @@ namespace Nine.Graphics.UI.Controls
 {
     using System.Linq;
     using System.Collections.Generic;
-    using System.Windows.Markup;
-
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Media;
+    using Nine.Graphics.Primitives;
 
-    [ContentProperty("Children")]
+    [System.Windows.Markup.ContentProperty("Children")]
     public abstract class Panel : UIElement
     {
         public IList<UIElement> Children
@@ -57,12 +56,12 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
         {
-            base.OnRender(spriteBatch);
+            base.OnRender(dynamicPrimitive);
 
             foreach (var child in children)
-                child.OnRender(spriteBatch);
+                child.OnRender(dynamicPrimitive);
         }
 
         public override IList<UIElement> GetChildren()

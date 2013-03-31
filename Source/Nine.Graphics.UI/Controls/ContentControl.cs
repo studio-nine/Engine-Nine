@@ -28,6 +28,7 @@ namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
     using System.Collections.Generic;
+    using Nine.Graphics.Primitives;
 
     /// <summary>
     /// Represents a control with a single piece of content.
@@ -53,11 +54,11 @@ namespace Nine.Graphics.UI.Controls
             return null;
         }
 
-        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
         {
-            base.OnRender(spriteBatch);
+            base.OnRender(dynamicPrimitive);
             if (Content != null)
-                Content.OnRender(spriteBatch);
+                Content.OnRender(dynamicPrimitive);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

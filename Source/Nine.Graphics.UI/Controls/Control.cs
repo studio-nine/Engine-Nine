@@ -25,8 +25,6 @@
 
 namespace Nine.Graphics.UI.Controls
 {
-    using Microsoft.Xna.Framework.Graphics;
-
     public class Control : UIElement
     {
         public bool IsEnabled { get; set; }

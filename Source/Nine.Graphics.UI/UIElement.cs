@@ -162,26 +162,28 @@ namespace Nine.Graphics.UI
             return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
         }
 
-        protected internal virtual void OnRender(SpriteBatch spriteBatch) 
+        protected internal virtual void OnRender(DynamicPrimitive dynamicPrimitive) 
         {
-            if (spriteBatch.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
+            if (dynamicPrimitive.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
             {
-                spriteBatch.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
+                dynamicPrimitive.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
             }
             if (isClippingRequired)
             {
                 var ClippingRect = GetClippingRect(RenderSize);
                 if (ClippingRect.HasValue)
-                    spriteBatch.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
+                    dynamicPrimitive.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
             }
 
             if (Background != null)
             {
-                spriteBatch.Draw(AbsoluteRenderTransform, Background);
+                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Background, null);
             }
         }
+
         protected internal virtual void OnDebugRender(DynamicPrimitive primitive)
         {
+            // TODO: If we are going to keep Debug Rendering, then this needs to be in 2D Space.
             primitive.AddRectangle(
                 new Vector2(AbsoluteRenderTransform.X, AbsoluteRenderTransform.Y),
                 new Vector2(AbsoluteRenderTransform.X + AbsoluteRenderTransform.Width,

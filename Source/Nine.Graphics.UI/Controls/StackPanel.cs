@@ -34,6 +34,9 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class StackPanel : Panel
     {
+        /// <summary>
+        /// Gets or sets the Orientation of the Childrens Arrangement.
+        /// </summary>
         public Orientation Orientation { get; set; }
 
         protected override Vector2 ArrangeOverride(Vector2 arrangeSize)

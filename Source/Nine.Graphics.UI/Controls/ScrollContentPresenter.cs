@@ -27,38 +27,55 @@
 namespace Nine.Graphics.UI.Controls
 {
     using System;
-
+    using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Controls.Primitives;
     using Nine.Graphics.UI.Internal;
     using Nine.Graphics.UI.Internal.Controls;
-    using Microsoft.Xna.Framework;
 
+    /// <summary>
+    /// Displays the content of a <see cref="Nine.Graphics.UI.Controls.ScrollViewer">ScrollViewer</see> control.
+    /// </summary>
     public class ScrollContentPresenter : ContentControl, IScrollInfo
     {
         #region Properties
 
+        /// <summary>
+        /// Gets or sets, if you can scroll Horizontally.
+        /// </summary>
         public bool CanHorizontallyScroll
         {
             get { return this.scrollData.CanHorizontallyScroll; }
             set { this.scrollData.CanHorizontallyScroll = value; }
         }
 
+        /// <summary>
+        /// Gets or sets, if you can scroll Vertically.
+        /// </summary>
         public bool CanVerticallyScroll
         {
             get { return this.scrollData.CanVerticallyScroll; }
             set { this.scrollData.CanVerticallyScroll = value; }
         }
 
+        /// <summary>
+        /// Gets how much there is to display.
+        /// </summary>
         public Vector2 Extent
         {
             get { return this.scrollData.Extent; }
         }
 
+        /// <summary>
+        /// Gets the current scroll offset.
+        /// </summary>
         public Vector2 Offset
         {
             get { return this.scrollData.Offset; }
         }
 
+        /// <summary>
+        /// Gets the current viewport.
+        /// </summary>
         public Vector2 Viewport
         {
             get { return this.scrollData.Viewport; }
@@ -66,13 +83,12 @@ namespace Nine.Graphics.UI.Controls
 
         #endregion
 
-        #region Fields
-
         private bool isClippingRequired;
         private ScrollData scrollData;
 
-        #endregion
-
+        /// <summary>
+        /// Initializes a new instance.
+        /// </summary>
         public ScrollContentPresenter()
         {
             this.scrollData.CanHorizontallyScroll = true;
@@ -81,6 +97,10 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
+        /// <summary>
+        /// Sets the Horizontal Scroll Offset.
+        /// </summary>
+        /// <param name="offset">Scroll Offset</param>
         public void SetHorizontalOffset(float offset)
         {
             if (!this.CanHorizontallyScroll)
@@ -98,6 +118,10 @@ namespace Nine.Graphics.UI.Controls
             }
         }
 
+        /// <summary>
+        /// Sets the Vertical Scroll Offset.
+        /// </summary>
+        /// <param name="offset">Scroll Offset</param>
         public void SetVerticalOffset(float offset)
         {
             if (!this.CanVerticallyScroll)

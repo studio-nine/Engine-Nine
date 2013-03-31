@@ -29,22 +29,22 @@ namespace Nine.Graphics.UI.Controls.Primitives
     using System;
 
     /// <summary>
-    ///     Base class for all controls with toggling functionality.
+    /// Base class for all controls with toggling functionality.
     /// </summary>
     public class ToggleButton : ButtonBase
     {
         #region Properties / Fields
 
         /// <summary>
-        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> is in a checked, unchecked or indeterminate state.
+        /// Gets or sets a value indicating whether a <see cref="ToggleButton">ToggleButton</see> is in a checked, unchecked or indeterminate state.
         /// </summary>
         public bool? IsChecked { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether a <see cref = "ToggleButton">ToggleButton</see> supports two or three states.
+        /// Gets or sets a value indicating whether a <see cref="ToggleButton">ToggleButton</see> supports two or three states.
         /// </summary>
         /// <remarks>
-        ///     If false, <see cref = "IsChecked">IsChecked</see> can only be true or false.  If true, <see cref = "IsChecked">IsChecked</see> can enter a third null state.
+        /// If false, <see cref="IsChecked">IsChecked</see> can only be true or false.  If true, <see cref="IsChecked">IsChecked</see> can enter a third null state.
         /// </remarks>
         public bool IsThreeState { get; set; }
 
@@ -53,20 +53,20 @@ namespace Nine.Graphics.UI.Controls.Primitives
         #region Events
 
         /// <summary>
-        ///     Occurs when a <see cref = "ToggleButton">ToggleButton</see> is checked.
+        /// Occurs when a <see cref="ToggleButton">ToggleButton</see> is checked.
         /// </summary>
         public event EventHandler<EventArgs> Checked;
 
         /// <summary>
-        ///     Occurs when the state of a <see cref = "ToggleButton">ToggleButton</see> is neither checked nor unchecked.
+        /// Occurs when the state of a <see cref="ToggleButton">ToggleButton</see> is neither checked nor unchecked.
         /// </summary>
         /// <remarks>
-        ///     This can only occur when <see cref = "IsThreeState">IsThreeState</see> is true.
+        /// This can only occur when <see cref="IsThreeState">IsThreeState</see> is true.
         /// </remarks>
         public event EventHandler<EventArgs> Indeterminate;
 
         /// <summary>
-        ///     Occurs when a <see cref = "ToggleButton">ToggleButton</see> is unchecked.
+        /// Occurs when a <see cref="ToggleButton">ToggleButton</see> is unchecked.
         /// </summary>
         public event EventHandler<EventArgs> Unchecked;
 
@@ -74,11 +74,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
 
         #region Methods
 
-        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
-        {
-            base.OnRender(spriteBatch);
-            // TODO: Rendering
-        }
+        // TODO: Rendering
 
         protected internal virtual void OnToggle()
         {
@@ -98,9 +94,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
         {
             EventHandler<EventArgs> eventHandler = this.Checked;
             if (eventHandler != null)
-            {
                 eventHandler(this, EventArgs.Empty);
-            }
         }
 
         protected override void OnClick()
@@ -113,18 +107,14 @@ namespace Nine.Graphics.UI.Controls.Primitives
         {
             EventHandler<EventArgs> eventHandler = this.Indeterminate;
             if (eventHandler != null)
-            {
                 eventHandler(this, EventArgs.Empty);
-            }
         }
 
         protected virtual void OnUnchecked()
         {
             EventHandler<EventArgs> eventHandler = this.Unchecked;
             if (eventHandler != null)
-            {
                 eventHandler(this, EventArgs.Empty);
-            }
         }
 
         #endregion

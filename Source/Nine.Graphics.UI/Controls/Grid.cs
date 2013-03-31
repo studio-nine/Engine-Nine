@@ -29,13 +29,10 @@ namespace Nine.Graphics.UI.Controls
     using System;
     using System.Linq;
     using System.Collections.Generic;
-
-    using Nine.Graphics.UI.Internal;
-    using Microsoft.Xna.Framework;
-    using Nine.Graphics.UI.Media;
-
-    using Nine.Graphics.Primitives;
     using System.Xaml;
+
+    using Microsoft.Xna.Framework;
+    using Nine.Graphics.UI.Internal;
 
     /// <summary>
     /// A Grid layout panel consisting of columns and rows.
@@ -337,28 +334,6 @@ namespace Nine.Graphics.UI.Controls
             }
         }
 
-        protected internal override void OnDebugRender(DynamicPrimitive primitive)
-        {
-            base.OnDebugRender(primitive);
-            /*
-            for (int x = 0; x < this.columns.Length; x++)
-                for (int y = 0; y < this.rows.Length; y++)
-                {
-                    int columnIndex = this.cells[x].ColumnIndex;
-                    int rowIndex = this.cells[y].RowIndex;
-
-                    primitive.AddRectangle(
-                        new Vector2(
-                            this.columns[columnIndex].FinalOffset,
-                            this.rows[rowIndex].FinalOffset),
-                        new Vector2(
-                            this.columns[columnIndex].FinalLength,
-                            this.rows[rowIndex].FinalLength), 
-                        null, Color.Red, 2);
-
-                }*/
-        }
-
         #endregion
 
         #region Static Methods
@@ -367,9 +342,9 @@ namespace Nine.Graphics.UI.Controls
         static readonly AttachableMemberIdentifier ColumnMember = new AttachableMemberIdentifier(typeof(int), "Column");
 
         /// <summary>
-        ///     Gets the value of the Column attached property for the specified element.
+        /// Gets the value of the Column attached property for the specified element.
         /// </summary>
-        /// <param name = "element">The element for which to read the proerty value.</param>
+        /// <param name="element">The element for which to read the proerty value.</param>
         /// <returns>The value of the Column attached property.</returns>
         public static int GetColumn(UIElement element)
         {
@@ -382,9 +357,9 @@ namespace Nine.Graphics.UI.Controls
         }
 
         /// <summary>
-        ///     Gets the value of the Row attached property for the specified element.
+        /// Gets the value of the Row attached property for the specified element.
         /// </summary>
-        /// <param name = "element">The element for which to read the proerty value.</param>
+        /// <param name="element">The element for which to read the proerty value.</param>
         /// <returns>The value of the Row attached property.</returns>
         public static int GetRow(UIElement element)
         {
@@ -397,10 +372,10 @@ namespace Nine.Graphics.UI.Controls
         }
 
         /// <summary>
-        ///     Sets the value of the Column attached property for the specified element.
+        /// Sets the value of the Column attached property for the specified element.
         /// </summary>
-        /// <param name = "element">The element for which to write the proerty value.</param>
-        /// <param name = "value">The value of the Column attached property.</param>
+        /// <param name="element">The element for which to write the proerty value.</param>
+        /// <param name="value">The value of the Column attached property.</param>
         public static void SetColumn(UIElement element, int value)
         {
             if (element == null)
@@ -409,10 +384,10 @@ namespace Nine.Graphics.UI.Controls
         }
 
         /// <summary>
-        ///     Sets the value of the Row attached property for the specified element.
+        /// Sets the value of the Row attached property for the specified element.
         /// </summary>
-        /// <param name = "element">The element for which to write the proerty value.</param>
-        /// <param name = "value">The value of the Row attached property.</param>
+        /// <param name="element">The element for which to write the proerty value.</param>
+        /// <param name="value">The value of the Row attached property.</param>
         public static void SetRow(UIElement element, int value)
         {
             if (element == null)

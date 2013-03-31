@@ -28,7 +28,7 @@ namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.UI.Internal.Controls;
+    using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Media;
 
     /// <summary>
@@ -36,22 +36,44 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class Image : UIElement
     {
+        /// <summary>
+        /// Gets or sets the represented Image.
+        /// </summary>
         public Texture2D Source { get; set; }
-        public Stretch Stretch = Stretch.Fill;
+
+        /// <summary>
+        /// Gets or sets how the image should be stretched.
+        /// </summary>
+        public Stretch Stretch { get; set; }
+
+        /// <summary>
+        /// Gets or sets how the image is scaled.
+        /// </summary>
         public StretchDirection StretchDirection { get; set; }
 
-        public Image() { }
+        /// <summary>
+        /// Initializes a new instance of <see cref="Image">Image</see> with <see cref="Image.Source">Source</see> empty.
+        /// </summary>
+        public Image() : this(null) { }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="Image">Image</see>.
+        /// </summary>
+        /// <param name="Source">Image</param>
         public Image(Texture2D Source)
         {
-            this.Source = Source;
+            if (Source != null)
+                this.Source = Source;
+
+            Stretch = Stretch.Fill;
         }
 
-        protected internal override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
         {
-            base.OnRender(spriteBatch);
+            base.OnRender(dynamicPrimitive);
             if (this.Source != null)
-            {
-                spriteBatch.Draw(this.Source, AbsoluteRenderTransform, Color.White);
+            { // TODO: ImageBrush
+                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, new ImageBrush() { Source = Source }, null);
             }
         }
 
@@ -70,7 +92,7 @@ namespace Nine.Graphics.UI.Controls
             if (Source == null)
                 return new Vector2();
             Vector2 contentSize = new Vector2(Source.Width, Source.Height);
-            Vector2 scale = Viewbox.ComputeScaleFactor(givenSize, contentSize, this.Stretch, this.StretchDirection);
+            Vector2 scale = Nine.Graphics.UI.Internal.Controls.Viewbox.ComputeScaleFactor(givenSize, contentSize, this.Stretch, this.StretchDirection);
             return new Vector2(contentSize.X * scale.X, contentSize.Y * scale.Y);
         }
     }

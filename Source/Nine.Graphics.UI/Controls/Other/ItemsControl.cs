@@ -32,6 +32,7 @@ namespace Nine.Graphics.UI.Controls
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Windows.Markup;
+    using Nine.Graphics.Primitives;
 
     /// <summary>
     /// <see cref="ItemsControl">ItemsControl</see> allows you to represent a collection of items and provides scaffolding to generate the UI for each item.
@@ -72,10 +73,10 @@ namespace Nine.Graphics.UI.Controls
             return new UIElement[] { ItemsPanel };
         }
 
-        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
         {
-            base.OnRender(spriteBatch);
-            this.ItemsPanel.OnRender(spriteBatch);
+            base.OnRender(dynamicPrimitive);
+            this.ItemsPanel.OnRender(dynamicPrimitive);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
