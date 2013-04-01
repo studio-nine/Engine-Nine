@@ -89,6 +89,7 @@
 
         #endregion
 
+        // There might be an issue when looping that the buffer is slow.
         private VideoPlayer player;
         private Texture2D Texture;
 

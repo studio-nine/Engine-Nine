@@ -42,6 +42,8 @@ namespace Nine.Graphics.UI
     {
         #region Properties
 
+        // TODO: Element Visibility
+
         public bool Visible
         {
             get { return visible; }
@@ -101,9 +103,6 @@ namespace Nine.Graphics.UI
 
         #region Fields
 
-        internal bool isArrangeValid;
-        internal bool isMeasureValid;
-
         public Brush Background { get; set; }
 
         public float Width { get; set; }
@@ -124,13 +123,18 @@ namespace Nine.Graphics.UI
         public float ActualWidth { get { return RenderSize.X; } }
         public float ActualHeight { get { return RenderSize.Y; } }
 
-        public object DataContext;
-        public bool IsMouseCaptured { get; set; }
         public Thickness Margin { get; set; }
+
+        public bool Focusable { get; set; }
+
+        public bool IsFocused { get; internal set; }
 
         public UIElement Parent { get; internal set; }
 
         internal Window Window;
+
+        internal bool isArrangeValid;
+        internal bool isMeasureValid;
 
         private Vector2 previousAvailableSize;
         private BoundingRectangle previousFinalRect;
@@ -150,51 +154,12 @@ namespace Nine.Graphics.UI
             MaxWidth = float.PositiveInfinity;
             MaxHeight = float.PositiveInfinity;
 
-            IsMouseCaptured = true;
+            Focusable = true;
         }
 
         public virtual void OnApplyTemplate() { }
 
         public virtual IList<UIElement> GetChildren() { return null; }
-
-        public bool HitTest(Vector2 point)
-        {
-            return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
-        }
-
-        protected internal virtual void OnRender(DynamicPrimitive dynamicPrimitive) 
-        {
-            if (dynamicPrimitive.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
-            {
-                dynamicPrimitive.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
-            }
-            if (isClippingRequired)
-            {
-                var ClippingRect = GetClippingRect(RenderSize);
-                if (ClippingRect.HasValue)
-                    dynamicPrimitive.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
-            }
-
-            if (Background != null)
-            {
-                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Background, null);
-            }
-        }
-
-        protected internal virtual void OnDebugRender(DynamicPrimitive primitive)
-        {
-            // TODO: If we are going to keep Debug Rendering, then this needs to be in 2D Space.
-            primitive.AddRectangle(
-                new Vector2(AbsoluteRenderTransform.X, AbsoluteRenderTransform.Y),
-                new Vector2(AbsoluteRenderTransform.X + AbsoluteRenderTransform.Width,
-                    AbsoluteRenderTransform.Y + AbsoluteRenderTransform.Height),
-                null, Color.LightBlue, 2);
-
-            var Children = GetChildren();
-            if (Children != null)
-                foreach (var Child in Children)
-                    Child.OnDebugRender(primitive);
-        }
 
         public bool TryGetRootElement(out Window rootElement)
         {
@@ -306,39 +271,89 @@ namespace Nine.Graphics.UI
             return vector;
         }
 
-        private object GetNearestDataContext()
+        #endregion
+
+        #region Draw
+
+        protected internal virtual void OnRender(DynamicPrimitive dynamicPrimitive)
         {
-            UIElement curentElement = this;
-            object dataContext;
-
-            do
+            if (dynamicPrimitive.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
             {
-                dataContext = curentElement.DataContext;
-                curentElement = curentElement.Parent;
+                dynamicPrimitive.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
             }
-            while (dataContext == null && curentElement != null);
+            if (isClippingRequired)
+            {
+                var ClippingRect = GetClippingRect(RenderSize);
+                if (ClippingRect.HasValue)
+                    dynamicPrimitive.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
+            }
 
-            return dataContext;
+            if (Background != null)
+            {
+                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Background, null);
+            }
         }
 
-        private void InvalidateMeasureOnDataContextInheritors()
+        protected internal virtual void OnDebugRender(DynamicPrimitive primitive)
         {
-            IEnumerable<UIElement> children = this.GetChildren();
-            if (children.Count() == 0)
+            // TODO: If we are going to keep Debug Rendering, then this needs to be in 2D Space.
+            primitive.AddRectangle(
+                new Vector2(AbsoluteRenderTransform.X, AbsoluteRenderTransform.Y),
+                new Vector2(AbsoluteRenderTransform.X + AbsoluteRenderTransform.Width,
+                    AbsoluteRenderTransform.Y + AbsoluteRenderTransform.Height),
+                null, Color.LightBlue, 2);
+
+            var Children = GetChildren();
+            if (Children != null)
+                foreach (var Child in Children)
+                    Child.OnDebugRender(primitive);
+        }
+
+        #endregion
+
+        #region Input
+
+        public bool HitTest(Vector2 point)
+        {
+            return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
+        }
+
+        /// <summary>
+        /// Try getting an element from a point in space.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns>If element is found</returns>
+        public bool TryGetElement(Vector2 point, out UIElement element)
+        {
+            if (HitTest(point))
             {
-                this.InvalidateMeasure();
+                var Children = GetChildren();
+                if (Children != null)
+                {
+                    foreach (var Child in Children)
+                    {
+                        if (Child.TryGetElement(point, out element))
+                        {
+                            return true;
+                        }
+                    }
+                    element = null;
+                    return false;
+                }
+                else
+                {
+                    element = this;
+                    return true;
+                }
             }
             else
             {
-                IEnumerable<UIElement> childrenInheritingDataContext =
-                    children.OfType<UIElement>().Where(element => element.DataContext == null);
-
-                foreach (UIElement element in childrenInheritingDataContext)
-                {
-                    element.InvalidateMeasureOnDataContextInheritors();
-                }
+                element = null;
+                return false;
             }
         }
+
+        #endregion
 
         #region Measure and Arrange
 
@@ -550,8 +565,6 @@ namespace Nine.Graphics.UI
             this.unclippedSize = isClippingRequired ? unclippedSize : Vector2.Zero;
             return desiredSizeWithMargins;
         }
-
-        #endregion
 
         #endregion
     }

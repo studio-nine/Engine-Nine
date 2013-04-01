@@ -76,7 +76,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
 
         // TODO: Rendering
 
-        protected internal virtual void OnToggle()
+        internal protected virtual void OnToggle()
         {
             bool? isChecked = this.IsChecked;
 
@@ -97,7 +97,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
                 eventHandler(this, EventArgs.Empty);
         }
 
-        protected override void OnClick()
+        internal protected override void OnClick()
         {
             this.OnToggle();
             base.OnClick();

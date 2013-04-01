@@ -32,14 +32,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
     {
         public event EventHandler<EventArgs> Click;
 
-        /// <summary>
-        /// Gets or sets, if the button is pressed.
-        /// </summary>
-        public bool IsPressed { get; set; }
-
-        private bool isLeftButtonDown;
-
-        protected virtual void OnClick()
+        internal protected virtual void OnClick()
         {
             EventHandler<EventArgs> handler = this.Click;
             if (handler != null)

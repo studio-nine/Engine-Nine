@@ -33,6 +33,8 @@ namespace Nine.Samples
         {
             var graphics = new GraphicsDeviceManager(this);
 
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
+
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 800;

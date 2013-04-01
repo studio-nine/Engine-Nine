@@ -56,6 +56,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
@@ -100,6 +101,8 @@
     <Compile Include="Design\ThicknessConverter.cs" />
     <Compile Include="Extensions\DynamicPrimitiveExtensions.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
+    <Compile Include="FrameworkElement.cs" />
+    <Compile Include="Input\IInputElement.cs" />
     <Compile Include="Internal\BoundingRectangleExtensions.cs" />
     <Compile Include="Media\BlankTexture.cs" />
     <Compile Include="Media\Brushes\GradientBrush.cs" />

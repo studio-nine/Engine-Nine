@@ -28,18 +28,19 @@ namespace Nine.Graphics.UI
 {
     using System;
     using System.Collections.Generic;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
+    using Microsoft.Xna.Framework.Input.Touch;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Controls;
 
     /// <summary>
     /// RootElement is the main host for all <see cref="UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
     /// </summary>
-    [ContentProperty("Content")]
-    public class Window : Pass, IGraphicsObject, Nine.IUpdateable
+    [System.Windows.Markup.ContentProperty("Content")]
+    public class Window : Pass, IGraphicsObject
     {
         internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
         internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
@@ -63,6 +64,8 @@ namespace Nine.Graphics.UI
         }
         private UIElement content;
 
+        public Nine.Input Input { get; internal set; }
+
         /// <summary>
         /// Gets or sets the viewport used by <see cref="Window">RootElement</see> to layout its content.
         /// </summary>
@@ -71,7 +74,21 @@ namespace Nine.Graphics.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
         /// </summary> 
-        public Window() { }
+        public Window()
+            : this(new Nine.Input()) 
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
+        /// </summary> 
+        public Window(Nine.Input input)
+        {
+            if ((Input = input) == null)
+                throw new ArgumentNullException("input");
+
+            Input.MouseMove += MouseMove;
+            Input.MouseDown += MouseDown;
+        }
 
         #region Methods
 
@@ -113,9 +130,49 @@ namespace Nine.Graphics.UI
 
         #region Input
 
-        public void Update(float elapsedTime)
+        // I am not sure on the design of the input yet!
+        // Tho it is not going to work like this
+
+        public UIElement FocusedElement
         {
-            // Currently thinking of the design on input
+            get { return focusedElement; }
+            private set
+            {
+                if (focusedElement != null)
+                    focusedElement.IsFocused = false;
+                focusedElement = value;
+                if (value != null)
+                    value.IsFocused = true;
+            }
+        }
+        private UIElement focusedElement = null;
+
+        void MouseMove(object sender, MouseEventArgs e)
+        {
+            UIElement element = null;
+            if (content.TryGetElement(e.Position.ToVector2(), out element))
+            {
+                // Events Enter, Hover and Exit?
+            }
+        }
+
+        void MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                UIElement element = null;
+                if (content.TryGetElement(e.Position.ToVector2(), out element))
+                {
+                    if (element.Focusable)
+                        FocusedElement = element;
+                    
+                    var tryButton = element as Button;
+                    if (tryButton != null)
+                        tryButton.OnClick();
+                }
+                else
+                    FocusedElement = null;
+            }
         }
 
         #endregion
