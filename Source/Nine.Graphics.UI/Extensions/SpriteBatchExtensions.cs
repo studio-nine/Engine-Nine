@@ -1,4 +1,6 @@
-﻿namespace Nine.Graphics
+﻿
+/*
+namespace Nine.Graphics
 {
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
@@ -39,3 +41,4 @@
         }
     }
 }
+*/

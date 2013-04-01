@@ -1,46 +1,42 @@
 ﻿namespace Nine.Graphics.UI.Media
 {
-    using System;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-
     public abstract class TileBrush : Brush
     {
-        /* public HorizontalAlignment HorizontalAlignment { get; set; }
-        public VerticalAlignment VerticalAlignment { get; set; } */
-
-        public Stretch Stretch = Stretch.Fill;
-        public SpriteEffects Effects = SpriteEffects.None;
-
-        internal Rectangle Calculate(Texture2D Texture, Rectangle RenderTransform)
+        /// <summary>
+        /// Gets or sets how the image should be stretched.
+        /// </summary>
+        public Stretch Stretch
         {
-            // TODO: Remove
-            switch (Stretch)
-            {
-                case Media.Stretch.None:
-                    {
-                        var Result = RenderTransform;
-                        if (Texture.Width > RenderTransform.Width)
-                            ;
-                        else if (Texture.Width < RenderTransform.Width)
-                            Result.Width = Texture.Width;
-
-                        if (Texture.Height > RenderTransform.Height)
-                            ;
-                        else if (Texture.Height < RenderTransform.Height)
-                            Result.Height = Texture.Height;
-                        return Result;
-                    }
-
-                case Media.Stretch.Uniform:
-                    throw new NotImplementedException();
-                case Media.Stretch.UniformToFill:
-                    throw new NotImplementedException();
-
-                case Media.Stretch.Fill:
-                    return RenderTransform;
-            }
-            throw new ArgumentNullException("Stretch");
+            get { return stretch; }
+            set { stretch = value; }
         }
+        private Stretch stretch = Stretch.Fill;
+
+        /// <summary>
+        /// Gets or sets how the image is scaled.
+        /// </summary>
+        public StretchDirection StretchDirection
+        {
+            get { return stretchDirection; }
+            set { stretchDirection = value; }
+        }
+        public StretchDirection stretchDirection = StretchDirection.Both;
+
+        /// <summary>
+        /// Gets or sets, if the Image should be flipped.
+        /// </summary>
+        public Flip Flip
+        {
+            get { return flip; }
+            set { flip = value; }
+        }
+        private Flip flip = Flip.None;
+
+        /* 
+         - Should I add this?
+        public HorizontalAlignment HorizontalAlignment { get; set; }
+        public VerticalAlignment VerticalAlignment { get; set; }
+
+         */
     }
 }

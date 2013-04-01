@@ -115,12 +115,7 @@ namespace Nine.Graphics.UI
 
         public void Update(float elapsedTime)
         {
-            var mouse = Mouse.GetState();
-
-            if (content.HitTest(new Vector2(mouse.X, mouse.Y)))
-            {
-
-            }
+            // Currently thinking of the design on input
         }
 
         #endregion

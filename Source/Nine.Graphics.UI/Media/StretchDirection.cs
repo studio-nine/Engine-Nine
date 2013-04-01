@@ -23,7 +23,7 @@
 */
 #endregion
 
-namespace Nine.Graphics.UI.Controls
+namespace Nine.Graphics.UI.Media
 {
     public enum StretchDirection
     {

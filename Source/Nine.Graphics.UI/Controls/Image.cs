@@ -72,8 +72,8 @@ namespace Nine.Graphics.UI.Controls
         {
             base.OnRender(dynamicPrimitive);
             if (this.Source != null)
-            { // TODO: ImageBrush
-                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, new ImageBrush() { Source = Source }, null);
+            {
+                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Source, Color.White, null);
             }
         }
 

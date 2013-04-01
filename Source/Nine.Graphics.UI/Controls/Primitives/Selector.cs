@@ -27,10 +27,17 @@ namespace Nine.Graphics.UI.Controls.Primitives
             set
             {
                 var Children = this.GetChildren();
+
                 if (Children.Count > selectedIndex)
-                    throw new IndexOutOfRangeException();
+                    throw new IndexOutOfRangeException("value");
+
+                if (SelectionChanged != null)
+                    SelectionChanged(this, new SelectionChangedEventArgs(Children[value], Children[selectedIndex]));
+
+                if (value < -1)
+                    selectedIndex = -1;
                 else
-                    selectedIndex = (int)MathHelper.Clamp(value, -1, int.MaxValue); ;
+                    selectedIndex = value;
             }
         }
         private int selectedIndex = 0;

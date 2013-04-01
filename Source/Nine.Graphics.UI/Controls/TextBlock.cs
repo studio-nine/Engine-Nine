@@ -95,8 +95,17 @@ namespace Nine.Graphics.UI.Controls
         {
             base.OnRender(dynamicPrimitive);
 
+            if (Font == null)
+                throw new ArgumentNullException("Font");
+
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
             // TODO: Draw Text
+
+            // Added a PlaceHolder for now
+            var position = new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset;
+            var size = Font.MeasureString(Text);
+            dynamicPrimitive.AddRectangle(new BoundingRectangle(position.X, position.Y, size.X, size.Y), TextColor, null);
+
             //spriteBatch.DrawString(Font, formattedText, new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset, TextColor.ToColor());
         }
 
