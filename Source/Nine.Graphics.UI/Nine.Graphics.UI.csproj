@@ -93,6 +93,9 @@
     <Compile Include="Controls\Other\ViewBase.cs" />
     <Compile Include="Controls\Primitives\Selector.cs" />
     <Compile Include="Controls\RangeBase.cs" />
+    <Compile Include="Controls\Shapes\Ellipse.cs" />
+    <Compile Include="Controls\Shapes\Line.cs" />
+    <Compile Include="Controls\Shapes\Path.cs" />
     <Compile Include="Controls\Shapes\Rectangle.cs" />
     <Compile Include="Controls\Shapes\Shape.cs" />
     <Compile Include="Controls\ProgressBar.cs" />
@@ -100,15 +103,13 @@
     <Compile Include="Design\SolidColorBrushConverter.cs" />
     <Compile Include="Design\ThicknessConverter.cs" />
     <Compile Include="Extensions\DynamicPrimitiveExtensions.cs" />
-    <Compile Include="Extensions\SpriteBatchExtensions.cs" />
-    <Compile Include="FrameworkElement.cs" />
+    <Compile Include="Extensions\UIExtensions.cs" />
     <Compile Include="Input\IInputElement.cs" />
     <Compile Include="Internal\BoundingRectangleExtensions.cs" />
-    <Compile Include="Media\BlankTexture.cs" />
     <Compile Include="Media\Brushes\GradientBrush.cs" />
     <Compile Include="Media\Brushes\ImageBrush.cs" />
-    <Compile Include="Media\Brushes\LinearGradientBrush.cs" />
     <Compile Include="Media\Brushes\TileBrush.cs" />
+    <Compile Include="Media\Brushes\VisualBrush.cs" />
     <Compile Include="Media\Flip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -62,8 +62,7 @@ namespace Nine.Graphics.UI.Controls
             get { return content; }
             set 
             {
-                content = value;
-                content.Parent = this;
+                content = Register(value);
             }
         }
         private UIElement content;
@@ -72,6 +71,9 @@ namespace Nine.Graphics.UI.Controls
 
         protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
         {
+            if (!Visible)
+                return;
+
             base.OnRender(dynamicPrimitive);
 
             if (BorderThickness != Thickness.Empty && BorderBrush != null)

@@ -1,4 +1,5 @@
 <Scene xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Camera2D InputEnabled="True" />
     <Window>
         <Grid>
            <Grid.RowDefinitions>
@@ -11,6 +12,10 @@
                 <ColumnDefinition Width="25*" />
             </Grid.ColumnDefinitions>
 
+          <Grid.Background>
+            <GradientBrush G1="1, 0.25, 0" G2="1, 0.25, 0" G3="1, 0.494, 0" G4="1, 0.494, 0" />
+          </Grid.Background>
+          
             <Grid Grid.Column="0" Grid.Row="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50*" />
@@ -23,7 +28,7 @@
                 <Border Grid.Row="0" Grid.Column="0" BorderBrush="Red" BorderThickness="4" />
                 <Border Grid.Row="1" Grid.Column="0" BorderBrush="Green" BorderThickness="4">
                     <Border.Background>
-                        <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
+                      <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
                     </Border.Background>
                 </Border>
                 <Border Grid.Row="0" Grid.Column="1" BorderBrush="Blue" BorderThickness="4" />
@@ -45,7 +50,7 @@
                 </Border>
             </StackPanel>
 
-            <Image Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
+            <Image Margin="20" Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
         </Grid>
     </Window>  
 </Scene>

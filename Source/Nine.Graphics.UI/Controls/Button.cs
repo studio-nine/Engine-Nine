@@ -30,8 +30,6 @@ namespace Nine.Graphics.UI.Controls
     using Nine.Graphics.UI.Controls.Primitives;
     using Nine.Graphics.UI.Media;
 
-    // TODO: Expand on Button
-
     /// <summary>
     /// A Control that represent a clickable button.
     /// </summary>
@@ -42,12 +40,9 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         public Thickness Padding { get; set; }
 
-        public override void OnApplyTemplate()
-        {
-            if (this.Content != null)
-            {
-                this.Content.Margin = this.Padding;
-            }
-        }
+
+        // TODO: Expand on Button
+        //      + Fix Padding
+
     }
 }

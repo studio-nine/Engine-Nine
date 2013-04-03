@@ -52,6 +52,11 @@ namespace Nine.Graphics.UI.Controls
         public StretchDirection StretchDirection { get; set; }
 
         /// <summary>
+        /// Gets or sets if the Image should be flipped.
+        /// </summary>
+        public Flip Flip { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of <see cref="Image">Image</see> with <see cref="Image.Source">Source</see> empty.
         /// </summary>
         public Image() : this(null) { }
@@ -66,6 +71,7 @@ namespace Nine.Graphics.UI.Controls
                 this.Source = Source;
 
             Stretch = Stretch.Fill;
+            Flip = Media.Flip.None;
         }
 
         protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
@@ -73,7 +79,7 @@ namespace Nine.Graphics.UI.Controls
             base.OnRender(dynamicPrimitive);
             if (this.Source != null)
             {
-                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Source, Color.White, null);
+                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Source, Color.White, Flip, null);
             }
         }
 

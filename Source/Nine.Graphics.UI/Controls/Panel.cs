@@ -26,37 +26,50 @@
 
 namespace Nine.Graphics.UI.Controls
 {
-    using System.Linq;
     using System.Collections.Generic;
-    using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework;
-    using Nine.Graphics.UI.Media;
-    using Nine.Graphics.Primitives;
 
     [System.Windows.Markup.ContentProperty("Children")]
     public abstract class Panel : UIElement
     {
+        public Panel()
+        {
+            children = new NotificationCollection<UIElement>();
+            children.Sender = this;
+            children.Added += Child_Added;
+            children.Removed += Child_Removed;
+        }
+
+        #region Children
+
         public IList<UIElement> Children
         {
             get { return this.children; }
         }
         private NotificationCollection<UIElement> children;
 
-        public Panel()
-        {
-            children = new NotificationCollection<UIElement>();
-            children.Sender = this;
-            children.Added += Child_Added;
-        }
-
         void Child_Added(object value)
         {
-            (value as UIElement).Parent = this;
+            var element = value as UIElement;
+            if (element != null)
+            {
+                Register(element);
+            }
         }
+
+        void Child_Removed(object value)
+        {
+            var element = value as UIElement;
+            if (element != null)
+            {
+                Unregister(element);
+            }
+        }
+
+        #endregion
 
         #region Methods
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.Primitives.DynamicPrimitive dynamicPrimitive)
         {
             base.OnRender(dynamicPrimitive);
 

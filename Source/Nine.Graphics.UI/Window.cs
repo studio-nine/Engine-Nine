@@ -64,7 +64,7 @@ namespace Nine.Graphics.UI
         }
         private UIElement content;
 
-        public Nine.Input Input { get; internal set; }
+        public Nine.Input Input { get; private set; }
 
         /// <summary>
         /// Gets or sets the viewport used by <see cref="Window">RootElement</see> to layout its content.
@@ -133,20 +133,6 @@ namespace Nine.Graphics.UI
         // I am not sure on the design of the input yet!
         // Tho it is not going to work like this
 
-        public UIElement FocusedElement
-        {
-            get { return focusedElement; }
-            private set
-            {
-                if (focusedElement != null)
-                    focusedElement.IsFocused = false;
-                focusedElement = value;
-                if (value != null)
-                    value.IsFocused = true;
-            }
-        }
-        private UIElement focusedElement = null;
-
         void MouseMove(object sender, MouseEventArgs e)
         {
             UIElement element = null;
@@ -163,15 +149,10 @@ namespace Nine.Graphics.UI
                 UIElement element = null;
                 if (content.TryGetElement(e.Position.ToVector2(), out element))
                 {
-                    if (element.Focusable)
-                        FocusedElement = element;
-                    
                     var tryButton = element as Button;
                     if (tryButton != null)
                         tryButton.OnClick();
                 }
-                else
-                    FocusedElement = null;
             }
         }
 

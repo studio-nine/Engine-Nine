@@ -19,14 +19,12 @@
         /// </summary>
         public Video Source
         {
-            get { return video; }
+            get { return player.Video; }
             set 
             { 
-                video = value; 
-                Play(); // Not sure if this should be placed here.
+                Play(value);
             }
         }
-        private Video video;
 
         /// <summary>
         /// Gets or sets, if the video should loop.
@@ -59,7 +57,7 @@
         /// </summary>
         public TimeSpan VideoLength
         {
-            get { return PlayerVideo.Duration; }
+            get { return Source.Duration; }
         }
 
         /// <summary>
@@ -71,14 +69,6 @@
         }
 
         /// <summary>
-        /// Gets the Current Playing Video.
-        /// </summary>
-        public Video PlayerVideo
-        {
-            get { return player.Video; }
-        }
-
-        /// <summary>
         /// Gets or sets the video Volume.
         /// </summary>
         public float Volume
@@ -86,6 +76,11 @@
             get { return player.Volume; }
             set { player.Volume = value; }
         }
+
+        /// <summary>
+        /// Gets or sets if the Video should be flipped.
+        /// </summary>
+        public Flip Flip { get; set; }
 
         #endregion
 
@@ -107,6 +102,8 @@
             player = new VideoPlayer();
             if (video != null)
                 this.Source = video;
+
+            Flip = Media.Flip.None;
         }
 
         #region Methods
@@ -114,11 +111,11 @@
         /// <summary>
         /// Plays the Video.
         /// </summary>
-        public void Play()
+        public void Play(Video video)
         {
             if (Source == null)
                 throw new ArgumentNullException();
-            player.Play(Source);
+            player.Play(video);
         }
         
         /// <summary>
@@ -150,6 +147,9 @@
 
         protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
         {
+            if (!Visible)
+                return;
+
             base.OnRender(dynamicPrimitive);
 
             if (player.State != MediaState.Stopped)
@@ -157,7 +157,7 @@
 
             if (Texture != null)
             {
-                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, new ImageBrush() { Source = Texture }, null);
+                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Texture, Color.White, Flip, null);
             }
         }
 

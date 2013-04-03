@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel;
     using System.Globalization;
+    using System.Reflection;
     using System.Xaml;
 
     class SolidColorBrushConverter : TypeConverter
@@ -38,10 +39,19 @@
                     {
                         case 1:
                             var ColorClass = typeof(Microsoft.Xna.Framework.Color);
-                            var Color = (Microsoft.Xna.Framework.Color)ColorClass.GetProperty(Values[0]).GetValue(null, null);
-                            return new Nine.Graphics.UI.Media.SolidColorBrush((Microsoft.Xna.Framework.Color)Color);
+                            var Color = (Microsoft.Xna.Framework.Color)ColorClass.GetProperty(Values[0], BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase).GetValue(null, null);
+                            return new Nine.Graphics.UI.Media.SolidColorBrush((Microsoft.Xna.Framework.Color)Color);return new Nine.Graphics.UI.Media.SolidColorBrush((Microsoft.Xna.Framework.Color)Color);
                         case 3:
-                            return new Nine.Graphics.UI.Media.SolidColorBrush(float.Parse(Values[0]), float.Parse(Values[1]), float.Parse(Values[2]));
+                            return new Nine.Graphics.UI.Media.SolidColorBrush(
+                                float.Parse(Values[0].Replace('.', ',')),
+                                float.Parse(Values[1].Replace('.', ',')),
+                                float.Parse(Values[2].Replace('.', ',')));
+                        case 4:
+                            return new Nine.Graphics.UI.Media.SolidColorBrush(
+                                float.Parse(Values[0].Replace('.', ',')),
+                                float.Parse(Values[1].Replace('.', ',')),
+                                float.Parse(Values[2].Replace('.', ',')),
+                                float.Parse(Values[3].Replace('.', ',')));
                     }
                 }
                 catch (Exception e)

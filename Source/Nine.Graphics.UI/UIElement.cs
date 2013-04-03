@@ -38,12 +38,11 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.Primitives;
 
     [Nine.Serialization.BinarySerializable]
-    public abstract class UIElement : Nine.Object, IContainer, IComponent
+    public abstract class UIElement : Nine.Object, IContainer, INotifyCollectionChanged<UIElement>, IComponent, IDisposable
     {
         #region Properties
 
-        // TODO: Element Visibility
-
+        // TODO: Make it work with Parent/s
         public bool Visible
         {
             get { return visible; }
@@ -88,17 +87,6 @@ namespace Nine.Graphics.UI
             get { return this.visualOffset; }
         }
 
-        IContainer IComponent.Parent
-        {
-            get { return Parent; }
-            set { Parent = value as UIElement; }
-        }
-
-        System.Collections.IList IContainer.Children
-        {
-            get { return GetChildren() as System.Collections.IList; }
-        }
-
         #endregion 
 
         #region Fields
@@ -125,10 +113,6 @@ namespace Nine.Graphics.UI
 
         public Thickness Margin { get; set; }
 
-        public bool Focusable { get; set; }
-
-        public bool IsFocused { get; internal set; }
-
         public UIElement Parent { get; internal set; }
 
         internal Window Window;
@@ -144,7 +128,54 @@ namespace Nine.Graphics.UI
         private Vector2 visualOffset;
 
         #endregion
-        
+
+        #region Children
+
+        IContainer IComponent.Parent
+        {
+            get { return Parent; }
+            set { Parent = value as UIElement; }
+        }
+
+        public bool HasChildren
+        {
+            get
+            {
+                if (GetChildren() != null)
+                    return true;
+                return false;
+            }
+        }
+
+        System.Collections.IList IContainer.Children
+        {
+            get { return GetChildren() as System.Collections.IList; }
+        }
+
+        public event Action<UIElement> Removed;
+        public event Action<UIElement> Added;
+
+        // Should I use Register? Hm
+        internal void Unregister(UIElement element)
+        {
+            var removed = Removed;
+            if (removed != null)
+                removed(element);
+        }
+
+        internal UIElement Register(UIElement element)
+        {
+            var added = Added;
+            if (added != null)
+                added(element);
+
+            element.Parent = this;
+
+            return element;
+        }
+
+        #endregion
+
         #region Methods
 
         protected UIElement()
@@ -153,11 +184,7 @@ namespace Nine.Graphics.UI
             Height = float.NaN;
             MaxWidth = float.PositiveInfinity;
             MaxHeight = float.PositiveInfinity;
-
-            Focusable = true;
         }
-
-        public virtual void OnApplyTemplate() { }
 
         public virtual IList<UIElement> GetChildren() { return null; }
 
@@ -519,7 +546,7 @@ namespace Nine.Graphics.UI
         private Vector2 MeasureCore(Vector2 availableSize)
         {
             //this.ResolveDeferredBindings(this.GetNearestDataContext());
-            this.OnApplyTemplate();
+            //this.OnApplyTemplate();
 
             Thickness margin = this.Margin;
             Vector2 availableSizeWithoutMargins = availableSize.Deflate(margin);
@@ -564,6 +591,30 @@ namespace Nine.Graphics.UI
 
             this.unclippedSize = isClippingRequired ? unclippedSize : Vector2.Zero;
             return desiredSizeWithMargins;
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                var Children = GetChildren();
+                for (var i = 0; i < Children.Count; ++i)
+                {
+                    IDisposable disposable = Children[i] as IDisposable;
+                    if (disposable != null)
+                        disposable.Dispose();
+                }
+            }
         }
 
         #endregion

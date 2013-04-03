@@ -72,12 +72,9 @@ namespace Nine.Graphics.UI.Controls
             get { return this.rowDefinitions; }
         }
 
+        public bool ShowGridLines { get; set; }
+
         #endregion
-
-        public Grid()
-        {
-
-        }
 
         #region Fields
 
@@ -88,6 +85,12 @@ namespace Nine.Graphics.UI.Controls
         #endregion
 
         #region Methods
+
+        protected internal override void OnRender(Graphics.Primitives.DynamicPrimitive dynamicPrimitive)
+        {
+            base.OnRender(dynamicPrimitive);
+            // TODO: Render GridLines
+        }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
