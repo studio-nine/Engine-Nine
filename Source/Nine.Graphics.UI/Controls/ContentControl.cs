@@ -54,11 +54,11 @@ namespace Nine.Graphics.UI.Controls
             return null;
         }
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
+            base.OnRender(renderer);
             if (Content != null)
-                Content.OnRender(dynamicPrimitive);
+                Content.OnRender(renderer);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

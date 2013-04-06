@@ -145,19 +145,19 @@
                 player.Stop();
         }
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
             if (!Visible)
                 return;
 
-            base.OnRender(dynamicPrimitive);
+            base.OnRender(renderer);
 
             if (player.State != MediaState.Stopped)
                 Texture = player.GetTexture();
 
             if (Texture != null)
             {
-                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Texture, Color.White, Flip, null);
+                renderer.Draw(AbsoluteRenderTransform, null, Texture, Color.White, Flip);
             }
         }
 

@@ -32,6 +32,12 @@
         }
         private Flip flip = Flip.None;
 
+        public Microsoft.Xna.Framework.Rectangle? SourceRectangle
+        {
+            get;
+            set;
+        }
+
         /* 
          - Should I add this?
         public HorizontalAlignment HorizontalAlignment { get; set; }

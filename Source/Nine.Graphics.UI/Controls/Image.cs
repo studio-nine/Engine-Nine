@@ -74,12 +74,12 @@ namespace Nine.Graphics.UI.Controls
             Flip = Media.Flip.None;
         }
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
+            base.OnRender(renderer);
             if (this.Source != null)
             {
-                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Source, Color.White, Flip, null);
+                renderer.Draw(AbsoluteRenderTransform, null, Source, Color.White, Flip);
             }
         }
 

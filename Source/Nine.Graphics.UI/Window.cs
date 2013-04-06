@@ -35,6 +35,8 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Controls;
+    using Nine.Graphics.UI.Input;
+    using Nine.Graphics.UI.Renderer;
 
     /// <summary>
     /// RootElement is the main host for all <see cref="UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
@@ -65,6 +67,8 @@ namespace Nine.Graphics.UI
         private UIElement content;
 
         public Nine.Input Input { get; private set; }
+
+        public IRenderer Renderer { get; private set; }
 
         /// <summary>
         /// Gets or sets the viewport used by <see cref="Window">RootElement</see> to layout its content.
@@ -116,14 +120,24 @@ namespace Nine.Graphics.UI
 
             if (content != null)
             {
-                if (dynamicPrimitive == null)
-                    dynamicPrimitive = new DynamicPrimitive(context.GraphicsDevice);
+                if (Renderer == null)
+                    Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
 
-                content.OnRender(dynamicPrimitive);
-
-                dynamicPrimitive.Draw(context, null);
-                dynamicPrimitive.Clear();
+                Renderer.Begin(context);
+                content.OnRender(Renderer);
+                Renderer.End(context);
             }
+        }
+
+        #endregion
+
+        #region Find
+
+        public IList<T> FindAll<T>() where T : class
+        {
+            List<T> result = new List<T>();
+            ContainerTraverser.Traverse<T>(content, result);
+            return result;
         }
 
         #endregion

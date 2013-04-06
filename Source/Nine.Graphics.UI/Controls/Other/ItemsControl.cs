@@ -73,10 +73,10 @@ namespace Nine.Graphics.UI.Controls
             return new UIElement[] { ItemsPanel };
         }
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
-            this.ItemsPanel.OnRender(dynamicPrimitive);
+            base.OnRender(renderer);
+            this.ItemsPanel.OnRender(renderer);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

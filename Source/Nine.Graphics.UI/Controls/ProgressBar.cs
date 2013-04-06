@@ -36,22 +36,22 @@
             Padding = new Thickness(4);
         }
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
+            base.OnRender(renderer);
             switch (Orientation)
             {
                 case Controls.Orientation.Horizontal:
                     var HorzBar = AbsoluteRenderTransform;
                     HorzBar = HorzBar.Deflate(Padding);
                     HorzBar.Width = HorzBar.Width * ((Value - Minimum) / (Maximum - Minimum));
-                    dynamicPrimitive.AddRectangle(HorzBar, BarBrush, null);
+                    renderer.Draw(HorzBar, BarBrush);
                     break;
                 case Controls.Orientation.Vertical: // Should I make this top to down?
                     var VertBar = AbsoluteRenderTransform;
                     VertBar = VertBar.Deflate(Padding);
                     VertBar.Height = VertBar.Height * ((Value - Minimum) / (Maximum - Minimum));
-                    dynamicPrimitive.AddRectangle(VertBar, BarBrush, null);
+                    renderer.Draw(VertBar, BarBrush);
                     break;
             }
         }

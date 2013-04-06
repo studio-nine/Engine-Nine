@@ -34,8 +34,8 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Media;
-
     using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Renderer;
 
     [Nine.Serialization.BinarySerializable]
     public abstract class UIElement : Nine.Object, IContainer, INotifyCollectionChanged<UIElement>, IComponent, IDisposable
@@ -302,38 +302,23 @@ namespace Nine.Graphics.UI
 
         #region Draw
 
-        protected internal virtual void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal virtual void OnRender(IRenderer renderer)
         {
-            if (dynamicPrimitive.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
+            if (renderer.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
             {
-                dynamicPrimitive.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
+                renderer.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
             }
             if (isClippingRequired)
             {
                 var ClippingRect = GetClippingRect(RenderSize);
                 if (ClippingRect.HasValue)
-                    dynamicPrimitive.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
+                    renderer.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
             }
 
             if (Background != null)
             {
-                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Background, null);
+                renderer.Draw(AbsoluteRenderTransform, Background);
             }
-        }
-
-        protected internal virtual void OnDebugRender(DynamicPrimitive primitive)
-        {
-            // TODO: If we are going to keep Debug Rendering, then this needs to be in 2D Space.
-            primitive.AddRectangle(
-                new Vector2(AbsoluteRenderTransform.X, AbsoluteRenderTransform.Y),
-                new Vector2(AbsoluteRenderTransform.X + AbsoluteRenderTransform.Width,
-                    AbsoluteRenderTransform.Y + AbsoluteRenderTransform.Height),
-                null, Color.LightBlue, 2);
-
-            var Children = GetChildren();
-            if (Children != null)
-                foreach (var Child in Children)
-                    Child.OnDebugRender(primitive);
         }
 
         #endregion

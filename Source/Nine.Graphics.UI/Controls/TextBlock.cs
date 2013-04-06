@@ -91,22 +91,16 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
+            base.OnRender(renderer);
 
             if (Font == null)
                 throw new ArgumentNullException("Font");
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
-            // TODO: Draw Text
-
-            // Added a PlaceHolder for now
             var position = new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset;
-            var size = Font.MeasureString(Text);
-            dynamicPrimitive.AddRectangle(new BoundingRectangle(position.X, position.Y, size.X, size.Y), TextColor, null);
-
-            //spriteBatch.DrawString(Font, formattedText, new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset, TextColor.ToColor());
+            renderer.DrawString(Font, formattedText, position, TextColor.ToColor());
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

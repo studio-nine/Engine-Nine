@@ -28,11 +28,12 @@ namespace Nine.Graphics.UI.Controls.Primitives
             {
                 var Children = this.GetChildren();
 
-                if (Children.Count > selectedIndex)
+                if (selectedIndex > Children.Count)
                     throw new IndexOutOfRangeException("value");
 
-                if (SelectionChanged != null)
-                    SelectionChanged(this, new SelectionChangedEventArgs(Children[value], Children[selectedIndex]));
+                // TODO: Event
+                //if (SelectionChanged != null)
+                //    SelectionChanged(this, new SelectionChangedEventArgs(Children[value], Children[selectedIndex]));
 
                 if (value < -1)
                     selectedIndex = -1;
@@ -43,23 +44,20 @@ namespace Nine.Graphics.UI.Controls.Primitives
         private int selectedIndex = 0;
 
         /// <summary>
-        /// Gets the current selected element.
+        /// returns the current selected element.
         /// </summary>
-        public object SelectedItem 
+        public virtual UIElement SelectedItem()
         {
-            get
-            {
-                var Children = this.GetChildren();
-                if (Children.Count > SelectedIndex)
-                    return null;
-                else
-                    return Children[SelectedIndex];
-            }
+            var Children = this.GetChildren();
+            if (Children.Count > SelectedIndex)
+                return null;
+            else
+                return Children[SelectedIndex];
         }
 
         /// <summary>
         /// Occurs when the selection changes.
         /// </summary>
-        public event SelectionChangedEventHandler SelectionChanged;
+        //public event SelectionChangedEventHandler SelectionChanged;
     }
 }

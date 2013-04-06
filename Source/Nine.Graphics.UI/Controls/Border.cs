@@ -30,6 +30,7 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Internal;
     using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Renderer;
 
     /// <summary>
     /// Draws a border and/or background around another element.
@@ -69,12 +70,12 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(IRenderer renderer)
         {
             if (!Visible)
                 return;
 
-            base.OnRender(dynamicPrimitive);
+            base.OnRender(renderer);
 
             if (BorderThickness != Thickness.Empty && BorderBrush != null)
             {
@@ -84,12 +85,12 @@ namespace Nine.Graphics.UI.Controls
                     var Rect = border;
                     Rect.X += AbsoluteVisualOffset.X;
                     Rect.Y += AbsoluteVisualOffset.Y;
-                    dynamicPrimitive.AddRectangle(Rect, BorderBrush, null);
+                    renderer.Draw(Rect, BorderBrush);
                 }
             }
 
             if (Content != null)
-                Content.OnRender(dynamicPrimitive);
+                Content.OnRender(renderer);
         }
 
         public override IList<UIElement> GetChildren()

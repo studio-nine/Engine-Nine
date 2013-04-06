@@ -69,12 +69,11 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(Nine.Graphics.Primitives.DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
-
+            base.OnRender(renderer);
             foreach (var child in children)
-                child.OnRender(dynamicPrimitive);
+                child.OnRender(renderer);
         }
 
         public override IList<UIElement> GetChildren()

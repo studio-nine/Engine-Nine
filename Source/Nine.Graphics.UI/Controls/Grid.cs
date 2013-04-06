@@ -86,9 +86,9 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(Graphics.Primitives.DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
+            base.OnRender(renderer);
             // TODO: Render GridLines
         }
 

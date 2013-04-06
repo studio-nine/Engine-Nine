@@ -28,6 +28,7 @@ namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Controls.Primitives;
+    using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Media;
 
     /// <summary>
