@@ -43,9 +43,17 @@
             if (imageBrush != null)
             {
                 var texture = imageBrush.Source;
-                // TODO: Use 'Viewbox.ComputeScaleFactor(...)' to calculate
-                // var Rect = ImageBrush.Calculate(texture, bound);
-                this.Draw(bound, imageBrush.SourceRectangle, texture, Color.White, imageBrush.Flip);
+                // This don't really work, make own math function
+                var Scale = Nine.Graphics.UI.Internal.Controls.Viewbox.ComputeScaleFactor(
+                        new Vector2(bound.Width, bound.Height), new Vector2(texture.Width, texture.Height), imageBrush.Stretch, imageBrush.StretchDirection);
+
+                SpriteEffects Effects = SpriteEffects.None;
+                if (imageBrush.Flip != Flip.None & imageBrush.Flip != Flip.Both)
+                    Effects = (SpriteEffects)imageBrush.Flip;
+                else if (imageBrush.Flip == Flip.Both)
+                    Effects = SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally;
+
+                spriteBatch.Draw(texture, new Vector2(bound.X, bound.Y), imageBrush.SourceRectangle, Color.White, 0, Vector2.Zero, Scale, Effects, 0);
                 return;
             }
 

@@ -38,7 +38,7 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.UI.Renderer;
 
     [Nine.Serialization.BinarySerializable]
-    public abstract class UIElement : Nine.Object, IContainer, INotifyCollectionChanged<UIElement>, IComponent, IDisposable
+    public abstract class UIElement : Nine.Object, IContainer, INotifyCollectionChanged<UIElement>, IComponent, Nine.Graphics.UI.Input.IInputElement, IDisposable
     {
         #region Properties
 
@@ -312,7 +312,7 @@ namespace Nine.Graphics.UI
             {
                 var ClippingRect = GetClippingRect(RenderSize);
                 if (ClippingRect.HasValue)
-                    renderer.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
+                    ; // renderer.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
             }
 
             if (Background != null)
@@ -324,6 +324,17 @@ namespace Nine.Graphics.UI
         #endregion
 
         #region Input
+
+        public event EventHandler<KeyboardEventArgs> KeyDown;
+        public event EventHandler<KeyboardEventArgs> KeyUp;
+        public event EventHandler<MouseEventArgs> MouseMove;
+        public event EventHandler<MouseEventArgs> MouseWheel;
+
+        internal void InvokeMouseMove(object sender, MouseEventArgs e)
+        {
+            if (MouseMove != null)
+                MouseMove(sender, e);
+        }
 
         public bool HitTest(Vector2 point)
         {

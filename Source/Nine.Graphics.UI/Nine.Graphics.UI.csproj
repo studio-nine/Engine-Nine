@@ -86,18 +86,11 @@
     </Compile>
     <Compile Include="Controls\CheckBox.cs" />
     <Compile Include="Controls\ListBox.cs" />
-    <Compile Include="Controls\ListView.cs" />
     <Compile Include="Controls\MediaElement.cs" />
     <Compile Include="Controls\Other\ColumnDefinition.cs" />
     <Compile Include="Controls\EventArgs\SelectionChangedEventArgs.cs" />
-    <Compile Include="Controls\Other\ViewBase.cs" />
     <Compile Include="Controls\Primitives\Selector.cs" />
     <Compile Include="Controls\RangeBase.cs" />
-    <Compile Include="Controls\Shapes\Ellipse.cs" />
-    <Compile Include="Controls\Shapes\Line.cs" />
-    <Compile Include="Controls\Shapes\Path.cs" />
-    <Compile Include="Controls\Shapes\Rectangle.cs" />
-    <Compile Include="Controls\Shapes\Shape.cs" />
     <Compile Include="Controls\ProgressBar.cs" />
     <Compile Include="Design\GridLengthConverter.cs" />
     <Compile Include="Design\SolidColorBrushConverter.cs" />
@@ -130,7 +123,6 @@
   <ItemGroup>
     <Compile Include="Controls\Primitives\ToggleButton.cs" />
     <Compile Include="Internal\Controls\ScrollData.cs" />
-    <Compile Include="Controls\Canvas.cs" />
     <Compile Include="Extensions\IElementExtensions.cs" />
     <Compile Include="Renderer\DynamicPrimitiveRenderer.cs" />
     <Compile Include="Renderer\IRenderer.cs" />

@@ -3,20 +3,14 @@ namespace Nine.Graphics.UI.Controls.Primitives
     using System;
     using Microsoft.Xna.Framework;
 
-    /// <summary>
-    /// A method that will handle <see cref="Nine.Graphics.UI.Controls.Primitives.Selector">Selector.SelectionChanged</see> event.
-    /// </summary>
-    /// <param name="sender">Selector</param>
-    /// <param name="e">Event Data</param>
-    public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
+    // TODO: Error when the SelectedIndex is set before the children ,"Out Of Range"
+    // TODO: Allow multiple selections
 
     /// <summary>
     /// A control that allows the user to select items from among its child elements.
     /// </summary>
     public abstract class Selector : ItemsControl
     {
-        // TODO: Allow multiple selections
-
         /// <summary>
         /// Gets or sets the index of the current selected item or 
         /// returns negative one (-1) if the selection is empty.
@@ -26,19 +20,15 @@ namespace Nine.Graphics.UI.Controls.Primitives
             get { return selectedIndex; }
             set
             {
-                var Children = this.GetChildren();
-
-                if (selectedIndex > Children.Count)
-                    throw new IndexOutOfRangeException("value");
-
-                // TODO: Event
-                //if (SelectionChanged != null)
-                //    SelectionChanged(this, new SelectionChangedEventArgs(Children[value], Children[selectedIndex]));
-
-                if (value < -1)
-                    selectedIndex = -1;
-                else
-                    selectedIndex = value;
+                var Children = this.Children();
+                if (SelectionChanged != null)
+                {
+                    var NewChild = Children.Count > value ? Children[value] : null;
+                    var PrevChild = Children.Count > value ? Children[selectedIndex] : null;
+                    SelectionChanged(this, new SelectionChangedEventArgs(NewChild, PrevChild));
+                }
+                // I would like to have this some other way
+                selectedIndex = (int)MathHelper.Clamp(value, -1, Children.Count);
             }
         }
         private int selectedIndex = 0;
@@ -56,8 +46,17 @@ namespace Nine.Graphics.UI.Controls.Primitives
         }
 
         /// <summary>
+        /// Get Children
+        /// </summary>
+        /// <returns>Children's</returns>
+        protected virtual System.Collections.Generic.IList<UIElement> Children()
+        {
+            return this.GetChildren();
+        }
+
+        /// <summary>
         /// Occurs when the selection changes.
         /// </summary>
-        //public event SelectionChangedEventHandler SelectionChanged;
+        public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
     }
 }

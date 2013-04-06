@@ -26,11 +26,15 @@
 
 namespace Nine.Graphics.UI.Controls
 {
+    using System;
     using System.Collections.Generic;
 
     [System.Windows.Markup.ContentProperty("Children")]
-    public abstract class Panel : UIElement
+    public abstract class Panel : UIElement, INotifyCollectionChanged<UIElement>
     {
+        public event Action<UIElement> Added;
+        public event Action<UIElement> Removed;
+
         public Panel()
         {
             children = new NotificationCollection<UIElement>();
@@ -53,6 +57,8 @@ namespace Nine.Graphics.UI.Controls
             if (element != null)
             {
                 Register(element);
+                if (Added != null)
+                    Added.Invoke(element);
             }
         }
 
@@ -62,6 +68,8 @@ namespace Nine.Graphics.UI.Controls
             if (element != null)
             {
                 Unregister(element);
+                if (Removed != null)
+                    Removed(element);
             }
         }
 

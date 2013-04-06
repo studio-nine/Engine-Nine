@@ -1,9 +1,12 @@
 ﻿namespace Nine.Graphics.UI.Controls
 {
+    using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Media;
+
+    // TODO: Input Selection
 
     /// <summary>
     /// A Control that display's a list of selectable elements.
@@ -19,8 +22,12 @@
         public Orientation Orientation { get { return panel.Orientation; } set { panel.Orientation = value; } }
         public IList<UIElement> Children { get { return panel.Children; } }
 
+        // Is there a better way doing this?
+        public event Action<UIElement> ChildAdded;
+        public event Action<UIElement> ChildRemoved;
+
         public SolidColorBrush SelectorBrush { get; set; }
-        public float SelectorBrushThickness { get; set; }
+        public bool DisplaySelected = true;
 
         private StackPanel panel;
 
@@ -28,10 +35,10 @@
         {
             panel = (StackPanel)this.Register(new StackPanel());
             SelectorBrush = new SolidColorBrush(Color.Blue);
-            SelectorBrushThickness = 2;
-        }
 
-        // TODO: Input Selection
+            panel.Added += (e) => { if (ChildAdded != null) { ChildAdded(e); }; };
+            panel.Removed += (e) => { if (ChildRemoved != null) { ChildRemoved(e); }; }; 
+        }
 
         public override UIElement SelectedItem()
         {
@@ -40,6 +47,11 @@
                 return null;
             else
                 return Children[SelectedIndex];
+        }
+
+        public override IList<UIElement> GetChildren()
+        {
+            return Children;
         }
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
@@ -58,10 +70,13 @@
         {
             base.OnRender(renderer);
 
-            var selectedItem = SelectedItem();
-            if (selectedItem != null)
-            { // This design is going to be changed in a later release
-                renderer.Draw(selectedItem.AbsoluteRenderTransform, SelectorBrush);
+            if (DisplaySelected)
+            {
+                var selectedItem = SelectedItem();
+                if (selectedItem != null)
+                { // This design is going to be changed in a later release
+                    renderer.Draw(selectedItem.AbsoluteRenderTransform, SelectorBrush);
+                }
             }
             panel.OnRender(renderer);
         }

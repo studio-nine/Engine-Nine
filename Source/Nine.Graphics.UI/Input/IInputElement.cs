@@ -4,15 +4,15 @@ namespace Nine.Graphics.UI.Input
 
     public interface IInputElement
     {
-        bool IsEnabled { get; }
-        bool Focusable { get; set; }
+        //bool IsEnabled { get; }
+        //bool Focusable { get; set; }
 
-        bool Focus();
+        //bool Focus();
 
         event EventHandler<KeyboardEventArgs> KeyDown;
         event EventHandler<KeyboardEventArgs> KeyUp;
-        event EventHandler<MouseEventArgs> MouseEnter;
-        event EventHandler<MouseEventArgs> MouseLeave;
+        //event EventHandler<MouseEventArgs> MouseEnter;
+        //event EventHandler<MouseEventArgs> MouseLeave;
         event EventHandler<MouseEventArgs> MouseMove;
         event EventHandler<MouseEventArgs> MouseWheel;
     }

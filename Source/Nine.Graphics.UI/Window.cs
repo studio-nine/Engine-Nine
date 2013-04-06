@@ -47,8 +47,6 @@ namespace Nine.Graphics.UI
         internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
         internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
 
-        private DynamicPrimitive dynamicPrimitive;
-
         public UIElement Content 
         {
             get { return content; }
@@ -149,15 +147,21 @@ namespace Nine.Graphics.UI
 
         void MouseMove(object sender, MouseEventArgs e)
         {
+            if (content == null)
+                return;
+
             UIElement element = null;
             if (content.TryGetElement(e.Position.ToVector2(), out element))
             {
-                // Events Enter, Hover and Exit?
+                element.InvokeMouseMove(this, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
             }
         }
 
         void MouseDown(object sender, MouseEventArgs e)
         {
+            if (content == null)
+                return;
+
             if (e.Button == MouseButtons.Left)
             {
                 UIElement element = null;

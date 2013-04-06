@@ -20,7 +20,7 @@
             get { return stretchDirection; }
             set { stretchDirection = value; }
         }
-        public StretchDirection stretchDirection = StretchDirection.Both;
+        private StretchDirection stretchDirection = StretchDirection.Both;
 
         /// <summary>
         /// Gets or sets, if the Image should be flipped.

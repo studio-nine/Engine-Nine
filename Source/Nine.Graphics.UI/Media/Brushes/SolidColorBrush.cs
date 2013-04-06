@@ -35,7 +35,7 @@ namespace Nine.Graphics.UI.Media
     /// which can be used to paint an area with a solid color.
     /// </summary>
     [ContentProperty("Color")]
-    public class SolidColorBrush : Brush
+    public sealed class SolidColorBrush : Brush
     {
         /// <summary>
         /// The Color of the SolidColorBrush.
