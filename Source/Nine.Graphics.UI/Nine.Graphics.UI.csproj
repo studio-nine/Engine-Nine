@@ -132,7 +132,7 @@
     <Compile Include="GridLength.cs" />
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="HorizontalAlignment.cs" />
-    <Compile Include="Controls\Other\ItemsControl.cs" />
+    <Compile Include="Controls\ItemsControl.cs" />
     <Compile Include="Controls\Primitives\IScrollInfo.cs" />
     <Compile Include="Controls\ScrollContentPresenter.cs" />
     <Compile Include="Controls\ScrollViewer.cs" />

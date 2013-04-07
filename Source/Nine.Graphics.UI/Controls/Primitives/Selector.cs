@@ -27,8 +27,12 @@ namespace Nine.Graphics.UI.Controls.Primitives
                     var PrevChild = Children.Count > value ? Children[selectedIndex] : null;
                     SelectionChanged(this, new SelectionChangedEventArgs(NewChild, PrevChild));
                 }
-                // I would like to have this some other way
-                selectedIndex = (int)MathHelper.Clamp(value, -1, Children.Count);
+
+                // This has a change of creating a issue
+                if (Children != null)
+                    selectedIndex = (int)MathHelper.Clamp(value, -1, Children.Count);
+                else
+                    selectedIndex = value;
             }
         }
         private int selectedIndex = 0;
@@ -36,9 +40,9 @@ namespace Nine.Graphics.UI.Controls.Primitives
         /// <summary>
         /// returns the current selected element.
         /// </summary>
-        public virtual UIElement SelectedItem()
+        public UIElement SelectedItem()
         {
-            var Children = this.GetChildren();
+            var Children = this.Children();
             if (Children.Count > SelectedIndex)
                 return null;
             else
@@ -51,7 +55,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
         /// <returns>Children's</returns>
         protected virtual System.Collections.Generic.IList<UIElement> Children()
         {
-            return this.GetChildren();
+            return ItemsSource;
         }
 
         /// <summary>

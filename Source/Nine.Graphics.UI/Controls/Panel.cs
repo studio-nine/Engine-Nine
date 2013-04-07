@@ -30,11 +30,8 @@ namespace Nine.Graphics.UI.Controls
     using System.Collections.Generic;
 
     [System.Windows.Markup.ContentProperty("Children")]
-    public abstract class Panel : UIElement, INotifyCollectionChanged<UIElement>
+    public abstract class Panel : UIElement, IContainer, INotifyCollectionChanged<UIElement>
     {
-        public event Action<UIElement> Added;
-        public event Action<UIElement> Removed;
-
         public Panel()
         {
             children = new NotificationCollection<UIElement>();
@@ -44,6 +41,11 @@ namespace Nine.Graphics.UI.Controls
         }
 
         #region Children
+
+        public event Action<UIElement> Added;
+        public event Action<UIElement> Removed;
+
+        System.Collections.IList IContainer.Children { get { return (System.Collections.IList)Children; } }
 
         public IList<UIElement> Children
         {
@@ -56,7 +58,7 @@ namespace Nine.Graphics.UI.Controls
             var element = value as UIElement;
             if (element != null)
             {
-                Register(element);
+                element.Parent = this;
                 if (Added != null)
                     Added.Invoke(element);
             }
@@ -67,7 +69,7 @@ namespace Nine.Graphics.UI.Controls
             var element = value as UIElement;
             if (element != null)
             {
-                Unregister(element);
+                element.Parent = this;
                 if (Removed != null)
                     Removed(element);
             }
@@ -82,11 +84,6 @@ namespace Nine.Graphics.UI.Controls
             base.OnRender(renderer);
             foreach (var child in children)
                 child.OnRender(renderer);
-        }
-
-        public override IList<UIElement> GetChildren()
-        {
-            return this.children;
         }
 
         #endregion

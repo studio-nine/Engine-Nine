@@ -93,6 +93,9 @@ namespace Nine.Graphics.UI.Controls
 
         protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
+            if (!Visible)
+                return;
+
             base.OnRender(renderer);
 
             if (Font == null)

@@ -38,7 +38,7 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.UI.Renderer;
 
     [Nine.Serialization.BinarySerializable]
-    public abstract class UIElement : Nine.Object, IContainer, INotifyCollectionChanged<UIElement>, IComponent, Nine.Graphics.UI.Input.IInputElement, IDisposable
+    public abstract class UIElement : Nine.Object, IComponent
     {
         #region Properties
 
@@ -113,10 +113,6 @@ namespace Nine.Graphics.UI
 
         public Thickness Margin { get; set; }
 
-        public UIElement Parent { get; internal set; }
-
-        internal Window Window;
-
         internal bool isArrangeValid;
         internal bool isMeasureValid;
 
@@ -127,51 +123,14 @@ namespace Nine.Graphics.UI
         private Vector2 unclippedSize;
         private Vector2 visualOffset;
 
-        #endregion
+        internal Window Window;
 
-        #region Children
+        public UIElement Parent { get; internal set; }
 
         IContainer IComponent.Parent
         {
-            get { return Parent; }
+            get { return Parent as IContainer; }
             set { Parent = value as UIElement; }
-        }
-
-        public bool HasChildren
-        {
-            get
-            {
-                if (GetChildren() != null)
-                    return true;
-                return false;
-            }
-        }
-
-        System.Collections.IList IContainer.Children
-        {
-            get { return GetChildren() as System.Collections.IList; }
-        }
-
-        public event Action<UIElement> Removed;
-        public event Action<UIElement> Added;
-
-        // Should I use Register? Hm
-        internal void Unregister(UIElement element)
-        {
-            var removed = Removed;
-            if (removed != null)
-                removed(element);
-        }
-
-        internal UIElement Register(UIElement element)
-        {
-            var added = Added;
-            if (added != null)
-                added(element);
-
-            element.Parent = this;
-
-            return element;
         }
 
         #endregion
@@ -186,14 +145,12 @@ namespace Nine.Graphics.UI
             MaxHeight = float.PositiveInfinity;
         }
 
-        public virtual IList<UIElement> GetChildren() { return null; }
-
         public bool TryGetRootElement(out Window rootElement)
         {
             UIElement element = this;
             while ((rootElement = element.Window) == null)
             {
-                if ((element = element.Parent) == null)
+                if ((element = element.Parent as UIElement) == null)
                     return false;
             }
             return true;
@@ -327,53 +284,42 @@ namespace Nine.Graphics.UI
 
         public event EventHandler<KeyboardEventArgs> KeyDown;
         public event EventHandler<KeyboardEventArgs> KeyUp;
+        public event EventHandler<MouseEventArgs> MouseDown;
         public event EventHandler<MouseEventArgs> MouseMove;
         public event EventHandler<MouseEventArgs> MouseWheel;
 
+
+        // Is there a better way to do this?
         internal void InvokeMouseMove(object sender, MouseEventArgs e)
         {
             if (MouseMove != null)
                 MouseMove(sender, e);
         }
+        internal void InvokeMouseDown(object sender, MouseEventArgs e)
+        {
+            if (MouseDown != null)
+                MouseDown(sender, e);
+        }
+        internal void InvokeMouseWheel(object sender, MouseEventArgs e)
+        {
+            if (MouseWheel != null)
+                MouseWheel(sender, e);
+        }
+
+        internal void InvokeKeyDown(object sender, KeyboardEventArgs e)
+        {
+            if (KeyDown != null)
+                KeyDown(sender, e);
+        }
+        internal void InvokeKeyUp(object sender, KeyboardEventArgs e)
+        {
+            if (KeyUp != null)
+                KeyUp(sender, e);
+        }
 
         public bool HitTest(Vector2 point)
         {
             return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
-        }
-
-        /// <summary>
-        /// Try getting an element from a point in space.
-        /// </summary>
-        /// <param name="point"></param>
-        /// <returns>If element is found</returns>
-        public bool TryGetElement(Vector2 point, out UIElement element)
-        {
-            if (HitTest(point))
-            {
-                var Children = GetChildren();
-                if (Children != null)
-                {
-                    foreach (var Child in Children)
-                    {
-                        if (Child.TryGetElement(point, out element))
-                        {
-                            return true;
-                        }
-                    }
-                    element = null;
-                    return false;
-                }
-                else
-                {
-                    element = this;
-                    return true;
-                }
-            }
-            else
-            {
-                element = null;
-                return false;
-            }
         }
 
         #endregion
@@ -386,7 +332,7 @@ namespace Nine.Graphics.UI
             while (visualParent != null)
             {
                 visualParent.isArrangeValid = false;
-                visualParent = visualParent.Parent;
+                visualParent = visualParent.Parent as UIElement;
             }
         }
 
@@ -397,7 +343,7 @@ namespace Nine.Graphics.UI
             {
                 visualParent.isMeasureValid = false;
                 visualParent.isArrangeValid = false;
-                visualParent = visualParent.Parent;
+                visualParent = visualParent.Parent as UIElement;
             }
         }
 
@@ -587,30 +533,6 @@ namespace Nine.Graphics.UI
 
             this.unclippedSize = isClippingRequired ? unclippedSize : Vector2.Zero;
             return desiredSizeWithMargins;
-        }
-
-        #endregion
-
-        #region IDisposable
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                var Children = GetChildren();
-                for (var i = 0; i < Children.Count; ++i)
-                {
-                    IDisposable disposable = Children[i] as IDisposable;
-                    if (disposable != null)
-                        disposable.Dispose();
-                }
-            }
         }
 
         #endregion

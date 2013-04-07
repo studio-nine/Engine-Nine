@@ -90,6 +90,7 @@ namespace Nine.Graphics.UI
 
             Input.MouseMove += MouseMove;
             Input.MouseDown += MouseDown;
+            Input.MouseWheel += MouseWheel;
         }
 
         #region Methods
@@ -143,17 +144,17 @@ namespace Nine.Graphics.UI
         #region Input
 
         // I am not sure on the design of the input yet!
-        // Tho it is not going to work like this
+        // TODO: Control Tabbing with Focus
 
         void MouseMove(object sender, MouseEventArgs e)
         {
             if (content == null)
                 return;
 
-            UIElement element = null;
-            if (content.TryGetElement(e.Position.ToVector2(), out element))
+            UIElement result = null;
+            if (TryGetElement(new Vector2(e.X, e.Y), out result))
             {
-                element.InvokeMouseMove(this, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
+                result.InvokeMouseMove(this, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
             }
         }
 
@@ -162,16 +163,49 @@ namespace Nine.Graphics.UI
             if (content == null)
                 return;
 
-            if (e.Button == MouseButtons.Left)
+            UIElement result = null;
+            if (TryGetElement(new Vector2(e.X, e.Y), out result))
             {
-                UIElement element = null;
-                if (content.TryGetElement(e.Position.ToVector2(), out element))
-                {
-                    var tryButton = element as Button;
-                    if (tryButton != null)
-                        tryButton.OnClick();
-                }
+                result.InvokeMouseDown(this, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
             }
+        }
+
+        void MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (content == null)
+                return;
+
+            UIElement result = null;
+            if (TryGetElement(new Vector2(e.X, e.Y), out result))
+            {
+                result.InvokeMouseWheel(this, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
+            }
+        }
+
+        private bool TryGetElement(Vector2 point, out UIElement output)
+        {
+            UIElement result = null;
+            ContainerTraverser.Traverse<UIElement>(content,
+                (d) =>
+                {
+                    if (d.HitTest(point))
+                    {
+                        result = d;
+                        var container = d as IContainer;
+                        if (container != null)
+                            if (container.Children.Count > 0)
+                                return TraverseOptions.Continue;
+                        return TraverseOptions.Stop;
+                    }
+                    else
+                        return TraverseOptions.Skip;
+                });
+
+            output = result;
+            if (result != null)
+                return true;
+            else
+                return false;
         }
 
         #endregion

@@ -28,5 +28,8 @@ namespace Nine.Graphics.UI.Controls
     public class Control : UIElement
     {
         public bool IsEnabled { get; set; }
+
+        public bool IsTabStop { get; set; }
+        public int TabIndex { get; set; }
     }
 }

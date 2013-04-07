@@ -12,7 +12,6 @@ namespace Nine.Samples
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI;
     using Nine.Graphics.UI.Controls;
-    using Nine.Graphics.UI.Controls.Shapes;
     using Nine.Graphics.UI.Media;
 
     public class UITest : Sample

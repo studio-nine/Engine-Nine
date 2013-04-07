@@ -36,7 +36,7 @@ namespace Nine.Graphics.UI.Controls
     /// Draws a border and/or background around another element.
     /// </summary>
     [System.Windows.Markup.ContentProperty("Content")]
-    public class Border : UIElement
+    public class Border : UIElement, IContainer
     {
         private readonly IList<BoundingRectangle> borders = new List<BoundingRectangle>();
 
@@ -63,10 +63,13 @@ namespace Nine.Graphics.UI.Controls
             get { return content; }
             set 
             {
-                content = Register(value);
+                content = value;
+                content.Parent = this;
             }
         }
         private UIElement content;
+
+        System.Collections.IList IContainer.Children { get { return new UIElement[] { Content }; } }
 
         #region Methods
 
@@ -91,13 +94,6 @@ namespace Nine.Graphics.UI.Controls
 
             if (Content != null)
                 Content.OnRender(renderer);
-        }
-
-        public override IList<UIElement> GetChildren()
-        {
-            if (Content != null)
-                return new UIElement[] { Content };
-            return null;
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

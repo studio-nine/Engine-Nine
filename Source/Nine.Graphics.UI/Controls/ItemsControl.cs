@@ -38,12 +38,21 @@ namespace Nine.Graphics.UI.Controls
     /// <see cref="ItemsControl">ItemsControl</see> allows you to represent a collection of items and provides scaffolding to generate the UI for each item.
     /// </summary>
     [ContentProperty("ItemsSource")]
-    public class ItemsControl : Control
+    public class ItemsControl : Control, IContainer, INotifyCollectionChanged<UIElement>
     {
         /// <summary>
         /// Gets of sets the <see cref="Panel">Panel</see> used to control the layout of items.
         /// </summary>
-        public Panel ItemsPanel { get; set; }
+        public StackPanel ItemsPanel 
+        {
+            get { return itemsPanel; }
+            set
+            {
+                itemsPanel = value;
+                itemsPanel.Parent = this;
+            }
+        }
+        private StackPanel itemsPanel;
 
         /// <summary>
         /// Gets the collection of items to be displayed.
@@ -53,6 +62,11 @@ namespace Nine.Graphics.UI.Controls
             get { return ItemsPanel.Children; }
         }
 
+        public event Action<UIElement> Added;
+        public event Action<UIElement> Removed;
+
+        IList IContainer.Children { get { return (IList)ItemsSource; } }
+
         #region Constructor
 
         /// <summary>
@@ -60,18 +74,14 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         public ItemsControl()
         {
-            this.ItemsPanel = new StackPanel();
-            this.ItemsPanel.Parent = this;
+            ItemsPanel = new StackPanel();
+            ItemsPanel.Added += (e) => { if (Added != null) { Added(e); }; };
+            ItemsPanel.Removed += (e) => { if (Removed != null) { Removed(e); }; }; 
         }
 
         #endregion
 
         #region Methods
-
-        public override IList<UIElement> GetChildren()
-        {
-            return new UIElement[] { ItemsPanel };
-        }
 
         protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {

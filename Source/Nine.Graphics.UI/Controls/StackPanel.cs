@@ -45,7 +45,7 @@ namespace Nine.Graphics.UI.Controls
             var finalRect = new BoundingRectangle(0, 0, arrangeSize.X, arrangeSize.Y);
             float width = 0;
             float height = 0;
-            foreach (UIElement child in this.GetChildren())
+            foreach (UIElement child in Children)
             {
                 if (child != null)
                 {
@@ -79,7 +79,7 @@ namespace Nine.Graphics.UI.Controls
             else
                 availableSize.Y = float.PositiveInfinity;
 
-            foreach (UIElement child in this.GetChildren())
+            foreach (UIElement child in Children)
             {
                 child.Measure(availableSize);
                 Vector2 desiredSize = child.DesiredSize;
