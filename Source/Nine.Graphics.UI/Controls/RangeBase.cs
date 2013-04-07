@@ -2,10 +2,13 @@
 {
     using Microsoft.Xna.Framework;
 
+    /// <summary>
+    /// Base of a Range Slider.
+    /// </summary>
     public abstract class RangeBase : Control
     {
         /// <summary>
-        /// The Maximum Value
+        /// Gets or sets the Maximum Value.
         /// </summary>
         public float Maximum 
         {
@@ -20,7 +23,7 @@
         private float maximum = 100;
 
         /// <summary>
-        /// The Minimum Value
+        /// Gets or sets the Minimum Value
         /// </summary>
         public float Minimum 
         {
@@ -34,12 +37,18 @@
         }
         private float minimum = 0;
 
+        /// <summary>
+        /// Gets or sets the largets value change.
+        /// </summary>
         public float LargeChange 
         { 
             get; 
             set; 
         }
 
+        /// <summary>
+        /// Gets or sets the smallest valye change.
+        /// </summary>
         public float SmallChange 
         { 
             get; 
@@ -47,7 +56,7 @@
         }
 
         /// <summary>
-        /// Current Value
+        /// Gets or sets the current Value
         /// </summary>
         public float Value
         {
@@ -59,6 +68,9 @@
         }
         private float value = 0;
 
+        /// <summary>
+        /// Initializes a new instance.
+        /// </summary>
         protected RangeBase()
         {
             this.LargeChange = 10;

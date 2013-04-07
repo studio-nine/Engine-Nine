@@ -112,6 +112,17 @@ namespace Nine
             return Path.GetFullPath(Path.Combine("N:\\", path)).Substring(3);
         }
 
+        public static string MakeRelativePath(string fromPath, string toPath)
+        {
+            var fromUri = new Uri(fromPath);
+            var toUri = new Uri(toPath);
+
+            var relativeUri = fromUri.MakeRelativeUri(toUri);
+            var relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+            return relativePath.Replace('/', Path.DirectorySeparatorChar);
+        }
+
         public static int UpperPowerOfTwo(int v)
         {
             v--;

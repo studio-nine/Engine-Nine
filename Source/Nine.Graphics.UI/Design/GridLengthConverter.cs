@@ -33,13 +33,15 @@
             {
                 try
                 {
-                    var Values = value.ToString().Trim().Split(',');
-
                     if (value.ToString().ToLower().Contains("auto"))
                         return new GridLength(0, GridUnitType.Auto);
                     else if (value.ToString().Contains("*"))
                     {
-                        return new GridLength(float.Parse(value.ToString().Replace("*", "")), GridUnitType.Star);
+                        if (value.ToString().Equals("*"))
+                            return new GridLength(1, GridUnitType.Star);
+
+                        var nv = value.ToString().Replace("*", "").Replace(".", ",");
+                        return new GridLength(float.Parse(nv), GridUnitType.Star);
                     }
                     else
                     {

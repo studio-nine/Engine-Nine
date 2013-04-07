@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,24 +28,22 @@ namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Controls.Primitives;
+    using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Media;
 
-    // TODO: Expand on Button
+    /// <summary>
+    /// A Control that represent a clickable button.
+    /// </summary>
     public class Button : ButtonBase
     {
+        /// <summary>
+        /// Gets or sets the Padding.
+        /// </summary>
         public Thickness Padding { get; set; }
 
-        public override void OnApplyTemplate()
-        {
-            if (this.Content != null)
-            {
-                this.Content.Margin = this.Padding;
-            }
-        }
 
-        protected internal override void OnRender(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
-        {
-            base.OnRender(spriteBatch);
-        }
+        // TODO: Expand on Button
+        //      + Fix Padding
+
     }
 }

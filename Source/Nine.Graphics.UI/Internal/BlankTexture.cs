@@ -1,4 +1,4 @@
-﻿namespace Nine.Graphics.UI.Media
+﻿namespace Nine.Graphics.UI.Internal
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;

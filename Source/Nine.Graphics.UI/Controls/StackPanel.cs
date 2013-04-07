@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,6 +34,9 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class StackPanel : Panel
     {
+        /// <summary>
+        /// Gets or sets the Orientation of the Childrens Arrangement.
+        /// </summary>
         public Orientation Orientation { get; set; }
 
         protected override Vector2 ArrangeOverride(Vector2 arrangeSize)

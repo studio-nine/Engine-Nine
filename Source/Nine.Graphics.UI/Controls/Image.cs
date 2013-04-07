@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,7 +28,7 @@ namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.UI.Internal.Controls;
+    using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Media;
 
     /// <summary>
@@ -35,22 +36,50 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class Image : UIElement
     {
+        /// <summary>
+        /// Gets or sets the represented Image.
+        /// </summary>
         public Texture2D Source { get; set; }
-        public Stretch Stretch = Stretch.Fill;
+
+        /// <summary>
+        /// Gets or sets how the image should be stretched.
+        /// </summary>
+        public Stretch Stretch { get; set; }
+
+        /// <summary>
+        /// Gets or sets how the image is scaled.
+        /// </summary>
         public StretchDirection StretchDirection { get; set; }
 
-        public Image() { }
+        /// <summary>
+        /// Gets or sets if the Image should be flipped.
+        /// </summary>
+        public Flip Flip { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="Image">Image</see> with <see cref="Image.Source">Source</see> empty.
+        /// </summary>
+        public Image() : this(null) { }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="Image">Image</see>.
+        /// </summary>
+        /// <param name="Source">Image</param>
         public Image(Texture2D Source)
         {
-            this.Source = Source;
+            if (Source != null)
+                this.Source = Source;
+
+            Stretch = Stretch.Fill;
+            Flip = Media.Flip.None;
         }
 
-        protected internal override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(spriteBatch);
+            base.OnRender(renderer);
             if (this.Source != null)
             {
-                spriteBatch.Draw(this.Source, AbsoluteRenderTransform, Color.White);
+                renderer.Draw(AbsoluteRenderTransform, null, Source, Color.White, Flip);
             }
         }
 
@@ -69,7 +98,7 @@ namespace Nine.Graphics.UI.Controls
             if (Source == null)
                 return new Vector2();
             Vector2 contentSize = new Vector2(Source.Width, Source.Height);
-            Vector2 scale = Viewbox.ComputeScaleFactor(givenSize, contentSize, this.Stretch, this.StretchDirection);
+            Vector2 scale = Nine.Graphics.UI.Internal.Controls.Viewbox.ComputeScaleFactor(givenSize, contentSize, this.Stretch, this.StretchDirection);
             return new Vector2(contentSize.X * scale.X, contentSize.Y * scale.Y);
         }
     }

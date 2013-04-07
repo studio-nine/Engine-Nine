@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,39 +27,55 @@
 namespace Nine.Graphics.UI.Controls
 {
     using System.Collections.Generic;
-    using System.Windows.Markup;
-
-    using Nine.Graphics.UI.Internal;
-    using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.UI.Internal;
+    using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Renderer;
 
-    [ContentProperty("Content")]
+    /// <summary>
+    /// Draws a border and/or background around another element.
+    /// </summary>
+    [System.Windows.Markup.ContentProperty("Content")]
     public class Border : UIElement
     {
         private readonly IList<BoundingRectangle> borders = new List<BoundingRectangle>();
 
-        public SolidColorBrush BorderBrush { get; set; }
+        /// <summary>
+        /// Gets or sets the border color.
+        /// </summary>
+        public Nine.Graphics.UI.Media.SolidColorBrush BorderBrush { get; set; }
 
+        /// <summary>
+        /// Gets or sets the borders thickness.
+        /// </summary>
         public Thickness BorderThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the padding between the border and the Content.
+        /// </summary>
         public Thickness Padding { get; set; }
         
+        /// <summary>
+        /// Gets or sets the single child element.
+        /// </summary>
         public UIElement Content 
         {
             get { return content; }
             set 
             {
-                content = value;
-                content.Parent = this;
+                content = Register(value);
             }
         }
         private UIElement content;
 
         #region Methods
 
-        protected internal override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(IRenderer renderer)
         {
-            base.OnRender(spriteBatch);
+            if (!Visible)
+                return;
+
+            base.OnRender(renderer);
 
             if (BorderThickness != Thickness.Empty && BorderBrush != null)
             {
@@ -68,12 +85,12 @@ namespace Nine.Graphics.UI.Controls
                     var Rect = border;
                     Rect.X += AbsoluteVisualOffset.X;
                     Rect.Y += AbsoluteVisualOffset.Y;
-                    spriteBatch.Draw(Rect, BorderBrush);
+                    renderer.Draw(Rect, BorderBrush);
                 }
             }
 
             if (Content != null)
-                Content.OnRender(spriteBatch);
+                Content.OnRender(renderer);
         }
 
         public override IList<UIElement> GetChildren()

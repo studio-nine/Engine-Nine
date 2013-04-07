@@ -11,7 +11,7 @@
     /// <summary>
     /// Defines a generic binary object writer that writes xna content.
     /// </summary>
-    public class PipelineObjectWriter<T> : IBinaryObjectWriter
+    class PipelineObjectWriter<T> : IBinaryObjectWriter
     {
         public Type ReaderType
         {
@@ -32,8 +32,7 @@
                 if (serializationOverride != null && serializationOverride.TryGetOverride(value, out overrideObject))
                     value = overrideObject;
             }
-            var builder = Nine.Graphics.GraphicsResources<PipelineBuilder>.GetInstance(serviceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice);
-            builder.Compile(output.BaseStream, value);
+            ContentPipeline.SaveContent(output.BaseStream, value);
         }
     }
 }

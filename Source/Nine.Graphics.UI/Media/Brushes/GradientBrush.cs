@@ -1,19 +1,21 @@
 ﻿namespace Nine.Graphics.UI.Media
 {
     using System;
-    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    [Obsolete("Not Implemented Gradient Brushes")]
-    public abstract class GradientBrush : Brush
+    /// <summary>
+    /// Simple gradient brush.
+    /// </summary>
+    public class GradientBrush : Brush
     {
-        public List<GradientStop> GradientStops { get; set; }
-    }
-
-    public class GradientStop
-    {
-        public Color Color { get; set; }
-        public float Offset { get; set; }
+        // TopRight
+        public SolidColorBrush G1 { get; set; }
+        // TopLeft
+        public SolidColorBrush G2 { get; set; }
+        // BottomRight
+        public SolidColorBrush G3 { get; set; }
+        // BottomLeft
+        public SolidColorBrush G4 { get; set; }
     }
 }

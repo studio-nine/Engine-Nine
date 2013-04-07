@@ -17,53 +17,21 @@
     
     class PipelineBuilder
     {
-        public string IntermediateDirectory { get; private set; }
-        public string OutputDirectory { get; private set; }
-        public string OutputFilename { get; private set; }
+        public string OutputFilename
+        {
+            get { return outputFilenames.Count > 0 ? outputFilenames.Peek() : null; }
+        }
+        private Stack<string> outputFilenames = new Stack<string>();
+
+        public string LastFilename { get; private set; }
 
         public ContentImporterContext ImporterContext { get; private set; }
         public ContentProcessorContext ProcessorContext { get; private set; }
 
-        public PipelineBuilder(string intermediateDirectory = null, string outputDirectory = null)
+        public PipelineBuilder()
         {
             ImporterContext = new PipelineImporterContext(this);
             ProcessorContext = new PipelineProcessorContext(this);
-
-            if (intermediateDirectory == null || outputDirectory == null)
-            {
-                var guid = Guid.NewGuid().ToString("N").ToUpper();
-                var version = Assembly.GetExecutingAssembly().GetName().Version;
-                var versionString = string.Format("v{0}.{1}", version.Major, version.Minor);
-                var baseDirectory = Path.Combine(Path.GetTempPath(), "Engine Nine", versionString, "PipelineBuilder");
-                IntermediateDirectory = Path.Combine(baseDirectory, "Intermediate");
-                OutputDirectory = Path.Combine(baseDirectory, "Bin");
-            }
-
-            IntermediateDirectory = intermediateDirectory ?? IntermediateDirectory;
-            OutputDirectory = outputDirectory ?? OutputDirectory;
-        }
-
-        public string Build(string sourceAssetFile, string processorName, OpaqueDataDictionary processorParameters, string importerName, string fileName)
-        {
-            var importer = FindImporter(importerName, sourceAssetFile);
-            if (importer == null)
-                throw new InvalidContentException(string.Format("Cannot find importer {0} for file {1}", importerName, sourceAssetFile));
-
-            var processor = PipelineBuilder.ContentProcessors.FirstOrDefault(p => p.GetType().Name == processorName);
-            ApplyParameters(processor, processorParameters);
-            return Build(sourceAssetFile, importer, processor, fileName);
-        }
-
-        public string Build(string sourceAssetFile, IImporter contentImporter, IProcessor contentProcessor)
-        {
-            return Build(sourceAssetFile, contentImporter, contentProcessor, null);
-        }
-
-        public string Build(string sourceAssetFile, IImporter contentImporter, IProcessor contentProcessor, string fileName)
-        {
-            var content = BuildAndLoad<object>(sourceAssetFile, contentImporter, contentProcessor, fileName);
-            Compile(OutputFilename, content);
-            return OutputFilename;
         }
 
         public TContent BuildAndLoad<TContent>(string sourceAssetFile, string processorName, OpaqueDataDictionary processorParameters, string importerName)
@@ -84,83 +52,35 @@
 
         public TContent BuildAndLoad<TContent>(string sourceAssetFile, IImporter contentImporter, IProcessor contentProcessor, string fileName)
         {
-            try
+            contentImporter = contentImporter ?? FindImporter(null, sourceAssetFile);
+            if (contentImporter == null)
+                throw new InvalidOperationException(string.Format("Cannot find content importer for {0}", sourceAssetFile));
+            var content = contentImporter.Import(sourceAssetFile, ImporterContext);
+            if (contentProcessor != null)
             {
-                OutputFilename = FindNextValidAssetName(fileName ?? Path.GetFileNameWithoutExtension(sourceAssetFile), ".xnb");
-                
-                var outputDirectory = Path.GetDirectoryName(OutputFilename);
-                if (!Directory.Exists(outputDirectory))
-                    Directory.CreateDirectory(outputDirectory);
-
-                // Create a dummy file in case a nested build uses the same name
-                File.WriteAllText(OutputFilename, "");
-
-                contentImporter = contentImporter ?? FindImporter(null, sourceAssetFile);
-                if (contentImporter == null)
-                    throw new InvalidOperationException(string.Format("Cannot find content importer for {0}", sourceAssetFile));
-
-                contentProcessor = contentProcessor ?? FindDefaultProcessor(contentImporter);
-
-                Trace.TraceInformation("Building {0} -> {1} with {2} and {3}", 
-                        sourceAssetFile, OutputFilename,
-                        contentImporter != null ? contentImporter.GetType().Name : "<No Importer>",
-                        contentProcessor != null ? contentProcessor.GetType().Name : "<No Processor>");
-                                
-                object content = contentImporter.Import(sourceAssetFile, ImporterContext);
-
-                if (contentProcessor != null)
+                try
                 {
+                    outputFilenames.Push(sourceAssetFile);
                     content = contentProcessor.Process(content, ProcessorContext);
                 }
-                return (TContent)content;
+                finally
+                {
+                    LastFilename = outputFilenames.Pop();
+                }
             }
-            catch (Exception e)
-            {
-                Trace.TraceError("Error importing {0} with asset name {1}", sourceAssetFile, fileName ?? "[Unspecified]");
-                Trace.WriteLine(e);
-                throw;
-            }
+            return (TContent)content;
         }
 
         public TOutput Convert<TInput, TOutput>(TInput input, string processorName, OpaqueDataDictionary processorParameters)
         {
-            try
-            {
-                var processor = ContentProcessors.FirstOrDefault(p => p.GetType().Name == processorName);
-                if (processor == null)
-                    throw new InvalidOperationException(string.Format("Cannot find processor {0}", processorName));
+            var processor = ContentProcessors.FirstOrDefault(p => p.GetType().Name == processorName);
+            if (processor == null)
+                throw new InvalidOperationException(string.Format("Cannot find processor {0}", processorName));
 
-                ApplyParameters(processor, processorParameters);
-                return (TOutput)processor.Process(input, ProcessorContext);
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError("Error converting {0} with processor {1}", input.GetType().Name, processorName);
-                Trace.WriteLine(e);
-                throw new InvalidContentException("", e);
-            }
+            ApplyParameters(processor, processorParameters);
+            return (TOutput)processor.Process(input, ProcessorContext);
         }
-
-        public ContentManager Content
-        {
-            get { return contentManager; }
-        }
-        private PipelineContentManager contentManager;
-
-        public TRuntime Load<TRuntime>(string sourceAssetFile)
-        {
-            return Load<TRuntime>(sourceAssetFile, null, null);
-        }
-
-        public TRuntime Load<TRuntime>(string sourceAssetFile, IImporter importer, IProcessor processor)
-        {
-            var content = BuildAndLoad<object>(sourceAssetFile, importer, processor, null);
-            if (content == null)
-                return default(TRuntime);
-            Compile(OutputFilename, content);
-            return Content.Load<TRuntime>(OutputFilename);
-        }
-
+        
         public event Func<string, string> ExternalReferenceResolve;
 
         internal string ResolveExternalReference(string reference)
@@ -175,13 +95,6 @@
                         result = current;
                 }
             }
-            return result;
-        }
-
-        public PipelineBuilder Clone()
-        {
-            var result = new PipelineBuilder(IntermediateDirectory, OutputDirectory);
-            result.ExternalReferenceResolve = this.ExternalReferenceResolve;
             return result;
         }
 
@@ -209,14 +122,6 @@
             {
                 return ".";
             }
-        }
-
-        private string FindRuntimeType(object content)
-        {
-            if (content == null)
-                return null;
-            var contentWriter = ContentWriters.FirstOrDefault(writer => writer.TargetType == content.GetType());
-            return contentWriter != null ? contentWriter.GetRuntimeType(TargetPlatform.Windows) : content.GetType().AssemblyQualifiedName;
         }
 
         private static IProcessor FindDefaultProcessor(IImporter importer)
@@ -255,57 +160,6 @@
             if (!ext2.StartsWith("."))
                 ext2 += ".";
             return StringComparer.OrdinalIgnoreCase.Equals(ext1, ext2);
-        }
-
-        private string FindNextValidAssetName(string fileName, string extension)
-        {
-            int i = 0;
-            string assetFilename;
-            while (File.Exists(assetFilename = GetAssetFilename(fileName, i++, extension))) ;
-            return assetFilename;
-        }
-
-        private string GetAssetFilename(string fileName, int i, string extension)
-        {
-            if (!Path.IsPathRooted(fileName))
-                fileName = Path.Combine(OutputDirectory, fileName);
-
-            if (i > 0)
-                return fileName + i.ToString() + extension;
-            return fileName + extension;
-        }
-
-        public void Compile<T>(string outputFilename, T content)
-        {
-            if (!Directory.Exists(Path.GetDirectoryName(outputFilename)))
-                Directory.CreateDirectory(Path.GetDirectoryName(outputFilename));
-
-            using (var stream = new FileStream(outputFilename, FileMode.Create))
-            {
-                Compile(stream, content);
-            }
-        }
-
-        public void Compile<T>(Stream output, T content)
-        {
-            try
-            {
-                var constructor = typeof(ContentCompiler).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { }, null);
-                var contentCompiler = (ContentCompiler)constructor.Invoke(null);
-
-                var method = contentCompiler.GetType().GetMethod("Compile", BindingFlags.NonPublic | BindingFlags.Instance);
-                method.Invoke(contentCompiler, new object[] 
-                {
-                    output, content, TargetPlatform.Windows, GraphicsProfile.Reach, false, OutputDirectory, ".",
-                });
-                output.Flush();
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError("Error compiling {0}", content.GetType());
-                Trace.WriteLine(e);
-                throw new InvalidContentException("", e);
-            }
         }
 
         private static void FindImportersProcessorAndContentWriters()

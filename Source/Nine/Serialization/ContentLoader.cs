@@ -53,6 +53,12 @@ namespace Nine.Serialization
         private List<string> searchDirectories = new List<string>();
 
         /// <summary>
+        /// Gets the full path to the current asset file name that is being loaded.
+        /// This value is only valid within the within the Load or Create method.
+        /// </summary>
+        internal string CurrentFileName;
+
+        /// <summary>
         /// Gets a list of resolvers that specifies how to resolve a asset name.
         /// </summary>
         public IList<IContentResolver> Resolvers 
@@ -169,9 +175,10 @@ namespace Nine.Serialization
             var searchDirectoryCount = searchDirectories.Count;
             for (int i = 0; i < searchDirectoryCount; i++)
             {
-                var probe = Path.GetFullPath(string.IsNullOrEmpty(searchDirectories[i]) 
-                    ? fileName : Path.Combine(Path.GetFullPath(searchDirectories[i]), fileName));
-                if (FindStreamInternal(probe, out stream, out loader))
+                var searchDirectory = string.IsNullOrEmpty(searchDirectories[i]) 
+                    ? Directory.GetCurrentDirectory() : Path.GetFullPath(searchDirectories[i]);
+                CurrentFileName = Path.Combine(searchDirectory, fileName);
+                if (FindStreamInternal(CurrentFileName, out stream, out loader))
                     return true;
             }
             stream = null;

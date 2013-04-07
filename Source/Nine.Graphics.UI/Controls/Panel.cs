@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,43 +26,54 @@
 
 namespace Nine.Graphics.UI.Controls
 {
-    using System.Linq;
     using System.Collections.Generic;
-    using System.Windows.Markup;
 
-    using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework;
-    using Nine.Graphics.UI.Media;
-
-    [ContentProperty("Children")]
+    [System.Windows.Markup.ContentProperty("Children")]
     public abstract class Panel : UIElement
     {
+        public Panel()
+        {
+            children = new NotificationCollection<UIElement>();
+            children.Sender = this;
+            children.Added += Child_Added;
+            children.Removed += Child_Removed;
+        }
+
+        #region Children
+
         public IList<UIElement> Children
         {
             get { return this.children; }
         }
         private NotificationCollection<UIElement> children;
 
-        public Panel()
-        {
-            children = new NotificationCollection<UIElement>();
-            children.Sender = this;
-            children.Added += Child_Added;
-        }
-
         void Child_Added(object value)
         {
-            (value as UIElement).Parent = this;
+            var element = value as UIElement;
+            if (element != null)
+            {
+                Register(element);
+            }
         }
+
+        void Child_Removed(object value)
+        {
+            var element = value as UIElement;
+            if (element != null)
+            {
+                Unregister(element);
+            }
+        }
+
+        #endregion
 
         #region Methods
 
-        protected internal override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(spriteBatch);
-
+            base.OnRender(renderer);
             foreach (var child in children)
-                child.OnRender(spriteBatch);
+                child.OnRender(renderer);
         }
 
         public override IList<UIElement> GetChildren()

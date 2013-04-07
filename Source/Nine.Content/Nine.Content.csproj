@@ -151,7 +151,6 @@
     <Compile Include="Pipeline\Processors\CustomEffectProcessor.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />
     <Compile Include="Graphics\ProceduralTextureGenerator.cs" />
-    <Compile Include="Pipeline\PipelineExtensions.cs" />
     <Compile Include="Pipeline\Processors\ManifestProcessor.cs" />
     <Compile Include="Pipeline\Processors\ModelCollisionProcessor.cs" />
     <Compile Include="Pipeline\Processors\NormalTextureProcessor.cs" />

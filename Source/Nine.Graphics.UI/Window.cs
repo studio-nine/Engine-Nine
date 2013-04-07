@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,25 +28,26 @@ namespace Nine.Graphics.UI
 {
     using System;
     using System.Collections.Generic;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+    using Microsoft.Xna.Framework.Input.Touch;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Controls;
     using Nine.Graphics.UI.Input;
+    using Nine.Graphics.UI.Renderer;
 
     /// <summary>
-    /// RootElement is the main host for all <see cref = "UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
+    /// RootElement is the main host for all <see cref="UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
     /// </summary>
-    [ContentProperty("Content")]
-    public class Window : Pass, IGraphicsObject, IDebugDrawable
+    [System.Windows.Markup.ContentProperty("Content")]
+    public class Window : Pass, IGraphicsObject
     {
         internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
         internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
-        
-        private readonly IInputManager inputManager;
-        private UIElement elementWithMouseCapture;
-        private SpriteBatch spriteBatch;
+
+        private DynamicPrimitive dynamicPrimitive;
 
         public UIElement Content 
         {
@@ -64,29 +66,32 @@ namespace Nine.Graphics.UI
         }
         private UIElement content;
 
-        public IInputManager InputManager
-        {
-            get { return this.inputManager; }
-        }
+        public Nine.Input Input { get; private set; }
+
+        public IRenderer Renderer { get; private set; }
 
         /// <summary>
-        /// Gets or sets the viewport used by <see cref = "Window">RootElement</see> to layout its content.
+        /// Gets or sets the viewport used by <see cref="Window">RootElement</see> to layout its content.
         /// </summary>
         public Rectangle Viewport { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "Window">RootElement</see> class.
+        /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
         /// </summary> 
-        public Window() { }
+        public Window()
+            : this(new Nine.Input()) 
+        { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "Window">RootElement</see> class.
-        /// </summary>
-        /// <param name = "inputManager">An implementation of <see cref = "IInputManager">IInputManager</see> that can be used to respond to user input.</param>
-        public Window(IInputManager inputManager)
+        /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
+        /// </summary> 
+        public Window(Nine.Input input)
         {
-            if ((this.inputManager = inputManager) != null)
-                this.inputManager.GestureSampled += g => NotifyGesture(content, g);
+            if ((Input = input) == null)
+                throw new ArgumentNullException("input");
+
+            Input.MouseMove += MouseMove;
+            Input.MouseDown += MouseDown;
         }
 
         #region Methods
@@ -115,61 +120,57 @@ namespace Nine.Graphics.UI
 
             if (content != null)
             {
-                // TODO: We might want to render using PrimitiveBatch to allow non-rectangular shapes.
-                if (spriteBatch == null)
-                    spriteBatch = new SpriteBatch(context.GraphicsDevice);
-                spriteBatch.Begin();
-                content.OnRender(spriteBatch);
-                spriteBatch.End();
+                if (Renderer == null)
+                    Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
+
+                Renderer.Begin(context);
+                content.OnRender(Renderer);
+                Renderer.End(context);
             }
         }
 
-        internal bool CaptureMouse(UIElement element)
+        #endregion
+
+        #region Find
+
+        public IList<T> FindAll<T>() where T : class
         {
-            if (this.elementWithMouseCapture == null)
-            {
-                this.elementWithMouseCapture = element;
-                return true;
-            }
-            return false;
+            List<T> result = new List<T>();
+            ContainerTraverser.Traverse<T>(content, result);
+            return result;
         }
 
-        internal void ReleaseMouseCapture(UIElement element)
+        #endregion
+
+        #region Input
+
+        // I am not sure on the design of the input yet!
+        // Tho it is not going to work like this
+
+        void MouseMove(object sender, MouseEventArgs e)
         {
-            if (this.elementWithMouseCapture == element)
+            UIElement element = null;
+            if (content.TryGetElement(e.Position.ToVector2(), out element))
             {
-                this.elementWithMouseCapture = null;
+                // Events Enter, Hover and Exit?
             }
         }
 
-        private static bool NotifyGesture(UIElement element, Gesture gesture)
+        void MouseDown(object sender, MouseEventArgs e)
         {
-            if (element == null)
-                return false;
-
-            var children = element.GetChildren();
-            if (children != null)
+            if (e.Button == MouseButtons.Left)
             {
-                var handled = false;
-                for (int i = children.Count - 1; i >= 0; i++)
+                UIElement element = null;
+                if (content.TryGetElement(e.Position.ToVector2(), out element))
                 {
-                    if (NotifyGesture(children[i], gesture))
-                    {
-                        handled = true;
-                        break;
-                    }
-                }
-
-                if (!handled && element is IInputElement && element.HitTest(gesture.Vector2))
-                {
-                    element.NotifyGesture(gesture);
-                    return true;
+                    var tryButton = element as Button;
+                    if (tryButton != null)
+                        tryButton.OnClick();
                 }
             }
-            return false;
         }
 
-#endregion
+        #endregion
 
         #region IGraphicsObject
 
@@ -182,17 +183,6 @@ namespace Nine.Graphics.UI
         void IGraphicsObject.OnRemoved(DrawingContext context)
         {
             context.Passes.Remove(this);
-        }
-
-        #endregion
-
-        #region IDebugDrawable
-
-        bool IDebugDrawable.Visible { get { return true; } }
-        void IDebugDrawable.Draw(DrawingContext context, DynamicPrimitive primitive)
-        {
-            if (content != null)
-                content.OnDebugRender(primitive);
         }
 
         #endregion

@@ -3,13 +3,12 @@
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Media;
 
+    [System.Obsolete()]
     public class Rectangle : Shape
     {
-        public Rectangle() : this(0,0) { }
-        public Rectangle(float w, float h)
+        protected internal override void OnRender(Graphics.Primitives.DynamicPrimitive dynamicPrimitive)
         {
-            this.Width = w;
-            this.Height = h;
+            base.OnRender(dynamicPrimitive);
         }
     }
 }

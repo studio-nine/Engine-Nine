@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,15 +37,16 @@ namespace Nine.Graphics.UI.Internal.Controls
         {
             float scaleX = 1.0f;
             float scaleY = 1.0f;
+
             bool isWidthContrained = !float.IsPositiveInfinity(availableSize.X);
             bool isHeightConstrained = !float.IsPositiveInfinity(availableSize.Y);
+
             if (stretch == Stretch.None || (!isWidthContrained && !isHeightConstrained))
-            {
                 return new Vector2(scaleX, scaleY);
-            }
 
             scaleX = contentSize.X.IsCloseTo(0) ? 0 : (availableSize.X / contentSize.X);
             scaleY = contentSize.Y.IsCloseTo(0) ? 0 : (availableSize.Y / contentSize.Y);
+
             if (!isWidthContrained)
             {
                 scaleX = scaleY;
@@ -74,28 +76,16 @@ namespace Nine.Graphics.UI.Internal.Controls
             {
                 case StretchDirection.UpOnly:
                     if (scaleX < 1.0f)
-                    {
                         scaleX = 1.0f;
-                    }
-
                     if (scaleY < 1.0f)
-                    {
                         scaleY = 1.0f;
-                    }
-
                     break;
 
                 case StretchDirection.DownOnly:
                     if (scaleX > 1.0f)
-                    {
                         scaleX = 1.0f;
-                    }
-
                     if (scaleY > 1.0f)
-                    {
                         scaleY = 1.0f;
-                    }
-
                     break;
             }
 

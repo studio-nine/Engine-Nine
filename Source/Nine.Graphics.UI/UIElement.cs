@@ -1,8 +1,8 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
- * Copyright (c) 2012 Yufei Huang
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,18 +31,18 @@ namespace Nine.Graphics.UI
     using System.Linq;
     using System.Xaml;
     using Microsoft.Xna.Framework;
-    using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Media;
-
     using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Renderer;
 
     [Nine.Serialization.BinarySerializable]
-    public abstract class UIElement : Nine.Object, IContainer, IComponent
+    public abstract class UIElement : Nine.Object, IContainer, INotifyCollectionChanged<UIElement>, IComponent, IDisposable
     {
         #region Properties
 
+        // TODO: Make it work with Parent/s
         public bool Visible
         {
             get { return visible; }
@@ -87,23 +87,9 @@ namespace Nine.Graphics.UI
             get { return this.visualOffset; }
         }
 
-        IContainer IComponent.Parent
-        {
-            get { return Parent; }
-            set { Parent = value as UIElement; }
-        }
-
-        System.Collections.IList IContainer.Children
-        {
-            get { return GetChildren() as System.Collections.IList; }
-        }
-
         #endregion 
 
         #region Fields
-
-        internal bool isArrangeValid;
-        internal bool isMeasureValid;
 
         public Brush Background { get; set; }
 
@@ -125,13 +111,14 @@ namespace Nine.Graphics.UI
         public float ActualWidth { get { return RenderSize.X; } }
         public float ActualHeight { get { return RenderSize.Y; } }
 
-        public object DataContext;
-        public bool IsMouseCaptured { get; set; }
         public Thickness Margin { get; set; }
 
         public UIElement Parent { get; internal set; }
 
         internal Window Window;
+
+        internal bool isArrangeValid;
+        internal bool isMeasureValid;
 
         private Vector2 previousAvailableSize;
         private BoundingRectangle previousFinalRect;
@@ -141,7 +128,54 @@ namespace Nine.Graphics.UI
         private Vector2 visualOffset;
 
         #endregion
-        
+
+        #region Children
+
+        IContainer IComponent.Parent
+        {
+            get { return Parent; }
+            set { Parent = value as UIElement; }
+        }
+
+        public bool HasChildren
+        {
+            get
+            {
+                if (GetChildren() != null)
+                    return true;
+                return false;
+            }
+        }
+
+        System.Collections.IList IContainer.Children
+        {
+            get { return GetChildren() as System.Collections.IList; }
+        }
+
+        public event Action<UIElement> Removed;
+        public event Action<UIElement> Added;
+
+        // Should I use Register? Hm
+        internal void Unregister(UIElement element)
+        {
+            var removed = Removed;
+            if (removed != null)
+                removed(element);
+        }
+
+        internal UIElement Register(UIElement element)
+        {
+            var added = Added;
+            if (added != null)
+                added(element);
+
+            element.Parent = this;
+
+            return element;
+        }
+
+        #endregion
+
         #region Methods
 
         protected UIElement()
@@ -150,85 +184,9 @@ namespace Nine.Graphics.UI
             Height = float.NaN;
             MaxWidth = float.PositiveInfinity;
             MaxHeight = float.PositiveInfinity;
-
-            IsMouseCaptured = true;
         }
-
-        internal void NotifyGesture(Gesture gesture)
-        {
-            OnNextGesture(gesture);
-        }
-
-        public bool CaptureMouse()
-        {
-            Window rootElement;
-            if (!this.IsMouseCaptured && this.TryGetRootElement(out rootElement))
-            {
-                this.IsMouseCaptured = rootElement.CaptureMouse(this);
-            }
-            return this.IsMouseCaptured;
-        }
-
-        public void ReleaseMouseCapture()
-        {
-            Window rootElement;
-            if (this.IsMouseCaptured && this.TryGetRootElement(out rootElement))
-            {
-                rootElement.ReleaseMouseCapture(this);
-                this.IsMouseCaptured = false;
-            }
-        }
-
-        public virtual void OnApplyTemplate() { }
 
         public virtual IList<UIElement> GetChildren() { return null; }
-
-        public bool HitTest(Vector2 point)
-        {
-            Vector2 absoluteOffset = Vector2.Zero;
-            UIElement currentElement = this;
-
-            while (currentElement != null)
-            {
-                absoluteOffset += currentElement.VisualOffset;
-                currentElement = currentElement.Parent;
-            }
-
-            var hitTestRect = new BoundingRectangle(absoluteOffset.X, absoluteOffset.Y, this.ActualWidth, this.ActualHeight);            
-            return hitTestRect.Contains(point.X, point.Y) == ContainmentType.Contains;
-        }
-
-        protected internal virtual void OnRender(SpriteBatch spriteBatch) 
-        {
-            if (spriteBatch.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
-            {
-                spriteBatch.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
-            }
-            if (isClippingRequired)
-            {
-                var ClippingRect = GetClippingRect(RenderSize);
-                if (ClippingRect.HasValue)
-                    spriteBatch.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
-            }
-
-            if (Background != null)
-            {
-                spriteBatch.Draw(AbsoluteRenderTransform, Background);
-            }
-        }
-        protected internal virtual void OnDebugRender(DynamicPrimitive primitive)
-        {
-            primitive.AddRectangle(
-                new Vector2(AbsoluteRenderTransform.X, AbsoluteRenderTransform.Y),
-                new Vector2(AbsoluteRenderTransform.X + AbsoluteRenderTransform.Width,
-                    AbsoluteRenderTransform.Y + AbsoluteRenderTransform.Height),
-                null, Color.LightBlue, 2);
-
-            var Children = GetChildren();
-            if (Children != null)
-                foreach (var Child in Children)
-                    Child.OnDebugRender(primitive);
-        }
 
         public bool TryGetRootElement(out Window rootElement)
         {
@@ -252,6 +210,7 @@ namespace Nine.Graphics.UI
             float maxWidth = float.IsPositiveInfinity(max.MaxWidth) ? renderSize.X : max.MaxWidth;
             float maxHeight = float.IsPositiveInfinity(max.MaxHeight) ? renderSize.Y : max.MaxHeight;
 
+            // TODO: Clamp to Viewport
             bool isClippingRequiredDueToMaxSize = maxWidth.IsLessThan(renderSize.X) ||
                                                   maxHeight.IsLessThan(renderSize.Y);
 
@@ -291,8 +250,6 @@ namespace Nine.Graphics.UI
             
             return clipRect;
         }
-
-        protected virtual void OnNextGesture(Gesture gesture) { }
 
         private Vector2 ComputeAlignmentOffset(Vector2 clientSize, Vector2 inkSize)
         {
@@ -341,39 +298,74 @@ namespace Nine.Graphics.UI
             return vector;
         }
 
-        private object GetNearestDataContext()
+        #endregion
+
+        #region Draw
+
+        protected internal virtual void OnRender(IRenderer renderer)
         {
-            UIElement curentElement = this;
-            object dataContext;
-
-            do
+            if (renderer.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
             {
-                dataContext = curentElement.DataContext;
-                curentElement = curentElement.Parent;
+                renderer.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
             }
-            while (dataContext == null && curentElement != null);
+            if (isClippingRequired)
+            {
+                var ClippingRect = GetClippingRect(RenderSize);
+                if (ClippingRect.HasValue)
+                    renderer.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
+            }
 
-            return dataContext;
+            if (Background != null)
+            {
+                renderer.Draw(AbsoluteRenderTransform, Background);
+            }
         }
 
-        private void InvalidateMeasureOnDataContextInheritors()
+        #endregion
+
+        #region Input
+
+        public bool HitTest(Vector2 point)
         {
-            IEnumerable<UIElement> children = this.GetChildren();
-            if (children.Count() == 0)
+            return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
+        }
+
+        /// <summary>
+        /// Try getting an element from a point in space.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns>If element is found</returns>
+        public bool TryGetElement(Vector2 point, out UIElement element)
+        {
+            if (HitTest(point))
             {
-                this.InvalidateMeasure();
+                var Children = GetChildren();
+                if (Children != null)
+                {
+                    foreach (var Child in Children)
+                    {
+                        if (Child.TryGetElement(point, out element))
+                        {
+                            return true;
+                        }
+                    }
+                    element = null;
+                    return false;
+                }
+                else
+                {
+                    element = this;
+                    return true;
+                }
             }
             else
             {
-                IEnumerable<UIElement> childrenInheritingDataContext =
-                    children.OfType<UIElement>().Where(element => element.DataContext == null);
-
-                foreach (UIElement element in childrenInheritingDataContext)
-                {
-                    element.InvalidateMeasureOnDataContextInheritors();
-                }
+                element = null;
+                return false;
             }
         }
+
+        #endregion
 
         #region Measure and Arrange
 
@@ -539,7 +531,7 @@ namespace Nine.Graphics.UI
         private Vector2 MeasureCore(Vector2 availableSize)
         {
             //this.ResolveDeferredBindings(this.GetNearestDataContext());
-            this.OnApplyTemplate();
+            //this.OnApplyTemplate();
 
             Thickness margin = this.Margin;
             Vector2 availableSizeWithoutMargins = availableSize.Deflate(margin);
@@ -587,6 +579,28 @@ namespace Nine.Graphics.UI
         }
 
         #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                var Children = GetChildren();
+                for (var i = 0; i < Children.Count; ++i)
+                {
+                    IDisposable disposable = Children[i] as IDisposable;
+                    if (disposable != null)
+                        disposable.Dispose();
+                }
+            }
+        }
 
         #endregion
     }

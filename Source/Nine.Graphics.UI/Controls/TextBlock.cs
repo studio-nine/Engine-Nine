@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,6 +32,7 @@ namespace Nine.Graphics.UI.Controls
     using Nine.Graphics.UI.Media;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Primitives;
 
     /// <summary>
     /// Control to display a flow of Content
@@ -41,17 +43,44 @@ namespace Nine.Graphics.UI.Controls
 
         private static readonly Regex WhiteSpaceRegEx = new Regex(@"\s+", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Gets or sets the Current Font.
+        /// </summary>
         public SpriteFont Font { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Font Color.
+        /// </summary>
         public SolidColorBrush Foreground { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Padding.
+        /// </summary>
         public Thickness Padding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Current Displaying Text.
+        /// </summary>
         public string Text { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Current Text Wrapping.
+        /// </summary>
         public TextWrapping Wrapping { get; set; }
 
         private string formattedText;
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="TextBlock">TextBlock</see> without font.
+        /// </summary>
         public TextBlock() { }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="TextBlock">TextBlock</see> with font.
+        /// </summary>
+        /// <param name="Font">Font</param>
         public TextBlock(SpriteFont Font)
         {
             if (Font == null)
@@ -62,12 +91,16 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(SpriteBatch spriteBatch)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(spriteBatch);
+            base.OnRender(renderer);
+
+            if (Font == null)
+                throw new ArgumentNullException("Font");
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
-            spriteBatch.DrawString(Font, formattedText, new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset, TextColor.ToColor());
+            var position = new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset;
+            renderer.DrawString(Font, formattedText, position, TextColor.ToColor());
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
