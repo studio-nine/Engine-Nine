@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="Animations\AnimationReference.cs" />
     <Compile Include="Animations\TweenAnimations.cs" />
+    <Compile Include="Design\SystemTypeConverter.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Serialization\ContentLoaderExtensions.cs" />
     <Compile Include="Serialization\ZipArchive.cs" />

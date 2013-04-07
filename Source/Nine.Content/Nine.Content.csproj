@@ -147,8 +147,6 @@
     <Compile Include="Graphics\Materials\MaterialGroupBuilder.cs" />
     <Compile Include="Graphics\Materials\CustomEffectContent.cs" />
     <Compile Include="Pipeline\PipelineGraphics.cs" />
-    <Compile Include="Navigation\PathGridBuilder.cs" />
-    <Compile Include="Navigation\PathGridContent.cs" />
     <Compile Include="Pipeline\Processors\CustomMaterialProcessor.cs" />
     <Compile Include="Pipeline\Processors\CustomEffectProcessor.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />

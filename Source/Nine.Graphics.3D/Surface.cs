@@ -9,6 +9,7 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
+    using Nine.Serialization;
 
     /// <summary>
     /// Defines how the triangles of the surface are organized.
@@ -42,9 +43,10 @@
     /// A triangle mesh constructed from heightmap to represent game surface. 
     /// The up axis of the surface is Vector.UnitY.
     /// </summary>
-    [Nine.Serialization.BinarySerializable]
+    [BinarySerializable]
     [ContentProperty("Material")]
-    public class Surface : Transformable, Nine.IContainer, IGraphicsObject, IDrawableObject, ISurface, IPickable, INotifyCollectionChanged<object>, IDisposable
+    public class Surface : Transformable, Nine.IContainer, INotifyCollectionChanged<object>
+                         , IDrawableObject, ISurface, IPickable, ISupportInitialize, IDisposable
     {
         #region Properties
         /// <summary>
@@ -55,12 +57,39 @@
         /// <summary>
         /// Gets the patches that made up this surface.
         /// </summary>
-        [Nine.Serialization.NotBinarySerializable]
-        public SurfacePatchCollection Patches
-        {
-            get { EnsureHeightmapUpToDate(); return patches; }
-        }
+        [NotBinarySerializable]
+        public SurfacePatchCollection Patches { get { return patches; } }
         private SurfacePatchCollection patches;
+        
+        /// <summary>
+        /// Gets the count of patches along the x axis.
+        /// </summary>
+        public int PatchCountX { get { return patchCountX; } }
+        internal int patchCountX;
+
+        /// <summary>
+        /// Gets the count of patches along the z axis.
+        /// </summary>
+        public int PatchCountZ { get { return patchCountZ; } }
+        internal int patchCountZ;
+
+        /// <summary>
+        /// Gets the number of the smallest square block in X axis, or heightmap texture U axis.
+        /// </summary>
+        public int SegmentCountX { get { return segmentCountX; } }
+        private int segmentCountX;
+
+        /// <summary>
+        /// Gets the number of the smallest square block in Z axis, or heightmap texture V axis.
+        /// </summary>
+        public int SegmentCountZ { get { return segmentCountZ; } }
+        private int segmentCountZ;
+        
+        /// <summary>
+        /// Gets the step of the surface heightmap.
+        /// </summary>
+        public float Step { get { return step; } }
+        private float step;
 
         /// <summary>
         /// Gets the number of segments of each patch.
@@ -68,69 +97,9 @@
         public int PatchSegmentCount
         {
             get { return patchSegmentCount; }
-            set
-            {
-                if (patchSegmentCount != value)
-                {
-                    patchSegmentCount = value;
-                    geometryNeedsUpdate = true;
-                    heightmapNeedsUpdate = true;
-                }
-            }
+            set { if (patchSegmentCount != value) { patchSegmentCount = value; EnsureInitialized(); } }
         }
         private int patchSegmentCount = 32;
-        
-        /// <summary>
-        /// Gets the count of patches along the x axis.
-        /// </summary>
-        public int PatchCountX
-        {
-            get { EnsureHeightmapUpToDate(); return patchCountX; }
-        }
-        internal int patchCountX;
-
-        /// <summary>
-        /// Gets the count of patches along the z axis.
-        /// </summary>
-        public int PatchCountZ
-        {
-            get { EnsureHeightmapUpToDate(); return patchCountZ; }
-        }
-        internal int patchCountZ;
-
-        /// <summary>
-        /// Gets the number of the smallest square block in X axis, or heightmap texture U axis.
-        /// </summary>
-        public int SegmentCountX
-        {
-            get { EnsureHeightmapUpToDate(); return segmentCountX; }
-        }
-        private int segmentCountX;
-
-        /// <summary>
-        /// Gets the number of the smallest square block in Z axis, or heightmap texture V axis.
-        /// </summary>
-        public int SegmentCountZ
-        {
-            get { EnsureHeightmapUpToDate(); return segmentCountZ; }
-        }
-        private int segmentCountZ;
-
-        /// <summary>
-        /// Gets the size of the surface geometry in 3 axis.
-        /// </summary>
-        public Vector3 Size
-        {
-            get { return heightmap.Size; } 
-        }
-
-        /// <summary>
-        /// Gets the step of the surface heightmap.
-        /// </summary>
-        public float Step
-        {
-            get { return heightmap.Step; }
-        }
 
         /// <summary>
         /// Gets or sets the transform matrix for vertex uv coordinates.
@@ -138,16 +107,9 @@
         public Matrix TextureTransform 
         {
             get { return textureTransform; }
-            set 
-            {
-                textureTransform = value;
-                if (heightmap != null)
-                    Invalidate();
-                else
-                    heightmapNeedsUpdate = true;
-            }        
+            set { textureTransform = value; EnsureInitialized(); }
         }
-        Matrix textureTransform = Matrix.Identity;
+        private Matrix textureTransform = Matrix.Identity;
 
         /// <summary>
         /// Gets or sets the topology of the surface triangles.
@@ -155,58 +117,32 @@
         public SurfaceTopology Topology
         {
             get { return topology; }
-            set
-            {
-                if (topology != value)
-                {
-                    geometryNeedsUpdate = true;
-                    heightmapNeedsUpdate = true;
-                    topology = value;
-                }
-            }
+            set { if (topology != value) { topology = value; EnsureInitialized(); } }
         }
         private SurfaceTopology topology;
 
         /// <summary>
         /// Gets the current vertex type used by this surface.
         /// </summary>
-        [Nine.Serialization.NotBinarySerializable]
         public Type VertexType
         {
             get { return vertexType; }
             set
             {
-                if (vertexType == null)
-                    vertexType = typeof(VertexPositionNormalTexture);
+                value = value ?? typeof(VertexPositionNormalTexture);
                 if (vertexType != value)
                 {
                     vertexType = value;
-                    heightmapNeedsUpdate = true;
+                    EnsureInitialized();
                 }
             }
         }
         private Type vertexType = typeof(VertexPositionNormalTexture);
 
-        [Nine.Serialization.BinarySerializable]
-        internal string VertexTypeSerializer
-        {
-            get { return vertexType.AssemblyQualifiedName; }
-            set 
-            {
-                var type = Type.GetType(value) ?? 
-                           Type.GetType(string.Format("Nine.Graphics.{0}, Nine.Graphics", value)) ?? 
-                           Type.GetType(string.Format("Microsoft.Xna.Framework.Graphics.{0}, Microsoft.Xna.Framework.Graphics", value));
-                if (type == null)
-                    throw new InvalidOperationException("Unknown vertex type " + value);
-                VertexType = type;
-            }
-        }
-
         /// <summary>
         /// Gets the underlying heightmap that contains height, normal, tangent data.
         /// </summary>
-        [Nine.Serialization.BinarySerializable]
-        public Heightmap Heightmap
+        public IHeightmap Heightmap
         {
             get { return heightmap; }
             set
@@ -214,24 +150,15 @@
                 if (heightmap != value)
                 {
                     if (heightmap != null)
-                        heightmap.Invalidate -= Heightmap_Invalidate;
+                        heightmap.HeightmapChanged -= OnHeightmapHeightChanged;
                     heightmap = value;
                     if (heightmap != null)
-                        heightmap.Invalidate += Heightmap_Invalidate;
-                    UpdateHeightmap();
+                        heightmap.HeightmapChanged += OnHeightmapHeightChanged;
+                    EnsureInitialized();
                 }
             }
         }
-        internal Heightmap heightmap;
-        private bool heightmapNeedsUpdate = true;
-
-        /// <summary>
-        /// Gets the max level of detail of this surface.
-        /// </summary>
-        public int MaxLevelOfDetail 
-        {
-            get { return Geometry.MaxLevelOfDetail; } 
-        }
+        internal IHeightmap heightmap;
 
         /// <summary>
         /// Gets or sets the distance at which the surface starts to switch to a lower resolution geometry.
@@ -248,9 +175,10 @@
         /// </summary>
         public bool LevelOfDetailEnabled
         {
-            get { return Geometry.LevelOfDetailEnabled; }
-            set { if (value) { Geometry.EnableLevelOfDetail(); } }
+            get { return lodEnabled; }
+            set { if (lodEnabled != value) { lodEnabled = value; EnsureInitialized(); } }
         }
+        private bool lodEnabled;
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Surface"/> is visible.
@@ -276,19 +204,24 @@
         /// Gets or sets a value indicating whether this object casts shadow.
         /// </summary>
         public bool CastShadow { get; set; }
+
+        /// <summary>
+        /// Gets the underlying geometry.
+        /// </summary>
+        internal SurfaceGeometry Geometry;
         #endregion
         
         #region ISpatialQueryable
         /// <summary>
         /// Gets or sets the local bottom left position of the surface.
         /// </summary>
-        [Nine.Serialization.NotBinarySerializable]
+        [NotBinarySerializable]
         public Vector3 Position
         {
-            get { return Transform.Translation; }
+            get { return transform.Translation; }
             set
             {
-                var transform = Transform;
+                var transform = this.transform;
                 transform.M41 = value.X;
                 transform.M42 = value.Y;
                 transform.M43 = value.Z;
@@ -299,17 +232,15 @@
         /// <summary>
         /// Gets the absolute bottom left position of the surface.
         /// </summary>
-        public Vector3 AbsolutePosition
-        {
-            get { return AbsoluteTransform.Translation; }
-        }
+        public Vector3 AbsolutePosition { get { return absolutePosition; } }
+        internal Vector3 absolutePosition;
 
         /// <summary>
         /// Gets the local center position of the surface.
         /// </summary>
-        public Vector3 Center
+        public Vector3 Center 
         {
-            get { return Position + Size * 0.5f; }
+            get { return new Vector3(transform.M41 + size.X * 0.5f, transform.M42, transform.M43 + size.Z * 0.5f); } 
         }
 
         /// <summary>
@@ -317,7 +248,7 @@
         /// </summary>
         public Vector3 AbsoluteCenter
         {
-            get { return AbsolutePosition + Size * 0.5f; }
+            get { return new Vector3(absolutePosition.X + size.X * 0.5f, absolutePosition.Y, absolutePosition.Z + size.Z * 0.5f); }
         }
 
         /// <summary>
@@ -325,6 +256,11 @@
         /// </summary>
         protected override void OnTransformChanged()
         {
+            absolutePosition = AbsoluteTransform.Translation;
+
+            worldBounds.Min = localBounds.Min + absolutePosition - boundingBoxPadding;
+            worldBounds.Max = localBounds.Max + absolutePosition + boundingBoxPadding;
+
             if (patches != null)
                 for (int i = 0; i < patches.Count; ++i)
                     patches[i].UpdatePosition();
@@ -333,19 +269,10 @@
         /// <summary>
         /// Gets the axis aligned bounding box of this surface.
         /// </summary>
-        public BoundingBox BoundingBox
-        {
-            get
-            {
-                EnsureHeightmapUpToDate();
-                BoundingBox box;
-                Vector3 absolutePosition = AbsolutePosition;
-                box.Min = boundingBox.Min + absolutePosition;
-                box.Max = boundingBox.Max + absolutePosition;
-                return box;
-            }
-        }
-        private BoundingBox boundingBox;
+        public BoundingBox BoundingBox { get { return worldBounds; } }
+        private BoundingBox worldBounds;
+        private BoundingBox localBounds;
+        private Vector3 size;
         
         /// <summary>
         /// Gets or sets a value that is appended to the computed bounding box
@@ -356,27 +283,7 @@
             get { return boundingBoxPadding; }
             set { boundingBoxPadding = value; OnTransformChanged(); }
         }
-        private Vector3 boundingBoxPadding;
-        #endregion
-
-        #region Members
-        /// <summary>
-        /// Gets the underlying geometry.
-        /// </summary>
-        internal SurfaceGeometry Geometry
-        {
-            get
-            {
-                if (geometry == null || geometryNeedsUpdate)
-                {
-                    geometry = SurfaceGeometry.GetInstance(GraphicsDevice, patchSegmentCount, topology);
-                    geometryNeedsUpdate = false;
-                }
-                return geometry;
-            }
-        }
-        private SurfaceGeometry geometry;
-        private bool geometryNeedsUpdate;
+        internal Vector3 boundingBoxPadding;
         #endregion
 
         #region Initialization
@@ -392,7 +299,6 @@
             LevelOfDetailStart = 100;
             LevelOfDetailEnd = 1000;
             Visible = true;
-            Material = null;
         }
 
         /// <summary>
@@ -405,7 +311,7 @@
         /// <param name="segmentCountY">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
         /// <param name="patchSegmentCount">Number of the smallest square block that made up the surface patch.</param>
         public Surface(GraphicsDevice graphics, float step, int segmentCountX, int segmentCountY, int patchSegmentCount)
-            : this(graphics, new Heightmap(step, segmentCountX, segmentCountY), patchSegmentCount)
+            : this(graphics, new FlatHeightmap { Step = step, Width = segmentCountX, Height = segmentCountY }, patchSegmentCount)
         { }
         
         /// <summary>
@@ -414,7 +320,7 @@
         /// </summary>
         /// <param name="graphics">Graphics device.</param>
         /// <param name="heightmap">The heightmap geometry to create from.</param>
-        public Surface(GraphicsDevice graphics, Heightmap heightmap)
+        public Surface(GraphicsDevice graphics, IHeightmap heightmap)
             : this(graphics, heightmap, 32)
         { }
 
@@ -425,7 +331,7 @@
         /// <param name="graphics">Graphics device.</param>
         /// <param name="heightmap">The heightmap geometry to create from.</param>
         /// <param name="patchSegmentCount">Number of the smallest square block that made up the surface patch.</param>
-        public Surface(GraphicsDevice graphics, Heightmap heightmap, int patchSegmentCount)
+        public Surface(GraphicsDevice graphics, IHeightmap heightmap, int patchSegmentCount)
             : this(graphics, heightmap, patchSegmentCount, null)
         { }
 
@@ -436,37 +342,29 @@
         /// <param name="graphics">Graphics device.</param>
         /// <param name="heightmap">The heightmap geometry to create from.</param>
         /// <param name="patchSegmentCount">Number of the smallest square block that made up the surface patch.</param>
-        public Surface(GraphicsDevice graphics, Heightmap heightmap, int patchSegmentCount, Type vertexType)
+        public Surface(GraphicsDevice graphics, IHeightmap heightmap, int patchSegmentCount, Type vertexType)
             : this(graphics)
         {
-            if (heightmap == null)
-                throw new ArgumentNullException("heightmap");
-
-            PatchSegmentCount = patchSegmentCount;
-            VertexType = VertexType;
-
-            if (heightmap != null)
-                heightmap.Invalidate += Heightmap_Invalidate;
-            this.heightmap = heightmap;
-            this.heightmapNeedsUpdate = true;
-        }
-
-        internal void EnsureHeightmapUpToDate()
-        {
-            if (heightmapNeedsUpdate)
+            var supportInitialize = (ISupportInitialize)this;
+            supportInitialize.BeginInit();
             {
-                heightmapNeedsUpdate = false;
-                UpdateHeightmap();
+                PatchSegmentCount = patchSegmentCount;
+                VertexType = VertexType;
+                Heightmap = heightmap;
             }
+            supportInitialize.EndInit();
         }
 
-        private void UpdateHeightmap()
+        /// <summary>
+        /// This method is called either when the surface is batch initialized using ISupportInitialize interface
+        /// or when a property has modified that needs the surface to be re-initialized.
+        /// </summary>
+        private void OnInitialized()
         {
             var removedPatches = patches;
-
             if (heightmap == null)
             {
-                boundingBox = new BoundingBox();
+                localBounds = new BoundingBox();
                 patchCountX = patchCountZ = 0;
                 segmentCountX = segmentCountZ = 0;
                 patches = null;
@@ -485,9 +383,7 @@
                     "patchSegmentCount must be a even number, " +
                     "segmentCountX/segmentCountY must be a multiple of patchSegmentCount.");
             }
-
-            boundingBox = heightmap.BoundingBox;
-
+            
             // Create patches
             var newPatchCountX = heightmap.Width / patchSegmentCount;
             var newPatchCountZ = heightmap.Height / patchSegmentCount;
@@ -508,6 +404,14 @@
             segmentCountX = heightmap.Width;
             segmentCountZ = heightmap.Height;
 
+            step = heightmap.Step;
+            size = new Vector3(heightmap.Width * step, 0, heightmap.Height * step);
+
+            // Initialize geometry
+            Geometry = SurfaceGeometry.GetInstance(GraphicsDevice, patchSegmentCount, topology);
+            if (lodEnabled)
+                Geometry.EnableLevelOfDetail();
+
             // Convert vertex type
             if (vertexType == null || vertexType == typeof(VertexPositionNormalTexture))
                 ConvertVertexType<VertexPositionNormalTexture>(PopulateVertex);
@@ -525,8 +429,6 @@
                 ConvertVertexType<VertexPositionColorNormalTexture>(PopulateVertex);
             else
                 throw new NotSupportedException("Vertex type not supported. Try using Surface.ConvertVertexType<T> instead.");
-
-            heightmapNeedsUpdate = false;
         }
 
         /// <summary>
@@ -568,25 +470,44 @@
             foreach (SurfacePatch<T> patch in patches)
                 patch.FillVertex = fillVertex;
 
-            Invalidate();
+            Invalidate(null);
         }
 
-        private void Heightmap_Invalidate(object sender, EventArgs args)
+        private void OnHeightmapHeightChanged(Rectangle? dirtyRegion)
         {
-            Invalidate();
+            Invalidate(dirtyRegion);
         }
 
-        /// <summary>
-        /// TODO: Passes dirty rectangle during heightmap invalidation.
-        /// </summary>
-        private void Invalidate()
+        private void Invalidate(Rectangle? dirtyRegion)
         {
             if (heightmap != null)
             {
-                boundingBox = heightmap.BoundingBox;
+                localBounds.Min.X = localBounds.Min.Y = localBounds.Min.Z = float.MaxValue;
+                localBounds.Max.X = localBounds.Max.Y = localBounds.Max.Z = float.MinValue;
+
                 if (patches != null)
+                {
                     foreach (SurfacePatch patch in patches)
+                    {
                         patch.Invalidate();
+
+                        if (localBounds.Min.X > patch.localBounds.Min.X)
+                            localBounds.Min.X = patch.localBounds.Min.X;
+                        if (localBounds.Min.Y > patch.localBounds.Min.Y)
+                            localBounds.Min.Y = patch.localBounds.Min.Y;
+                        if (localBounds.Min.Z > patch.localBounds.Min.Z)
+                            localBounds.Min.Z = patch.localBounds.Min.Z;
+
+                        if (localBounds.Max.X < patch.localBounds.Max.X)
+                            localBounds.Max.X = patch.localBounds.Max.X;
+                        if (localBounds.Max.Y < patch.localBounds.Max.Y)
+                            localBounds.Max.Y = patch.localBounds.Max.Y;
+                        if (localBounds.Max.Z < patch.localBounds.Max.Z)
+                            localBounds.Max.Z = patch.localBounds.Max.Z;
+                    }
+                }
+
+                OnTransformChanged();
             }
         }
 
@@ -604,7 +525,7 @@
             uv.X = 1.0f * xSurface / segmentCountX;
             uv.Y = 1.0f * zSurface / segmentCountZ;
 
-            vertex.Position = heightmap.GetPosition(xSurface, zSurface);
+            vertex.Position = new Vector3(xSurface * step, heightmap.GetHeight(xSurface, zSurface), zSurface * step);
             vertex.Normal = heightmap.GetNormal(xSurface, zSurface);
             vertex.TextureCoordinate = Nine.Graphics.TextureTransform.Transform(textureTransform, uv);
         }
@@ -667,29 +588,28 @@
         /// </remarks>
         public void UpdateLevelOfDetail(Vector3 eyePosition)
         {
-            EnsureHeightmapUpToDate();
-
             if (!LevelOfDetailEnabled || heightmap == null)
                 return;
 
-            float start = Math.Min(LevelOfDetailStart, LevelOfDetailEnd);
-            float end = Math.Max(LevelOfDetailStart, LevelOfDetailEnd);
+            var start = Math.Min(LevelOfDetailStart, LevelOfDetailEnd);
+            var end = Math.Max(LevelOfDetailStart, LevelOfDetailEnd);
 
             // Ensure the lod difference between adjacent patches does not exceeds 1.
-            float distanceBetweenPatches = heightmap.Step * patchSegmentCount;
-            float lodDistance = Math.Max(end - start, distanceBetweenPatches * MaxLevelOfDetail * 1.414f);
+            var maxDetailLevels = Geometry.MaxLevelOfDetail;
+            var distanceBetweenPatches = heightmap.Step * patchSegmentCount;
+            var lodDistance = Math.Max(end - start, distanceBetweenPatches * maxDetailLevels * 1.414f);
 
             float patchDistance;
 
             for (int i = 0; i < patches.Count; ++i)
             {
                 Vector3.Distance(ref patches[i].center, ref eyePosition, out patchDistance);
-                
-                int patchLod = (int)(MaxLevelOfDetail * (patchDistance - start) / lodDistance);
+
+                int patchLod = (int)(maxDetailLevels * (patchDistance - start) / lodDistance);
                 if (patchLod < 0)
                     patchLod = 0;
-                else if (patchLod > MaxLevelOfDetail)
-                    patchLod = MaxLevelOfDetail;
+                else if (patchLod > maxDetailLevels)
+                    patchLod = maxDetailLevels;
                 
                 patches[i].DetailLevel = patchLod;
             }
@@ -703,83 +623,130 @@
 
         #region ISurface Members
         /// <summary>
-        /// Gets the height.
+        /// Gets the height of the terrain at a given location.
         /// </summary>
-        public float GetHeight(Vector3 position)
-        {
-            return GetHeight(position.X, position.Z);
-        }
-
-        /// <summary>
-        /// Gets the height.
-        /// </summary>
+        /// <returns>NaN if the location is outside the boundary of the terrain.</returns>
         public float GetHeight(float x, float z)
         {
-            if (heightmap == null)
-                return 0;
-            return AbsolutePosition.Y + heightmap.GetHeight(x - AbsolutePosition.X, z - AbsolutePosition.Z);
+            var height = 0.0f;
+            var normal = new Vector3();
+            var absolutePosition = AbsolutePosition;
+            if (TryGetHeightAndNormal(x - absolutePosition.X, z - absolutePosition.Z, true, false, out height, out normal))
+                return height + absolutePosition.Y;
+
+            return float.NaN;
         }
 
         /// <summary>
-        /// Gets the normal.
+        /// Gets the normal of the terrain at a given location.
         /// </summary>
-        public Vector3 GetNormal(Vector3 position)
-        {
-            return GetNormal(position.X, position.Z);
-        }
-
-        /// <summary>
-        /// Gets the normal.
-        /// </summary>
+        /// <returns>NaN if the location is outside the boundary of the terrain.</returns>
         public Vector3 GetNormal(float x, float z)
         {
-            if (heightmap == null)
-                return Vector3.Zero;
-            return heightmap.GetNormal(x - AbsolutePosition.X, z - AbsolutePosition.Z);
+            var height = 0.0f;
+            var normal = new Vector3();
+            var absolutePosition = AbsolutePosition;
+            if (TryGetHeightAndNormal(x - absolutePosition.X, z - absolutePosition.Z, false, true, out height, out normal))
+                return normal;
+
+            return new Vector3(float.NaN, float.NaN, float.NaN);
         }
 
         /// <summary>
-        /// Gets the height and normal of the surface at a given location.
+        /// Gets the height and normal of the terrain at a given location.
         /// </summary>
-        /// <returns>False if the location is outside the boundary of the surface.</returns>
+        /// <returns>False if the location is outside the boundary of the terrain.</returns>
         public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
         {
             return TryGetHeightAndNormal(position.X, position.Z, out height, out normal);
         }
 
         /// <summary>
-        /// Gets the height and normal of the surface at a given location.
+        /// Gets the height and normal of the terrain at a given location.
         /// </summary>
-        /// <returns>False if the location is outside the boundary of the surface.</returns>
+        /// <returns>False if the location is outside the boundary of the terrain.</returns>
         public bool TryGetHeightAndNormal(float x, float z, out float height, out Vector3 normal)
         {
-            float baseHeight;
-            if (heightmap != null && heightmap.TryGetHeightAndNormal(x - AbsolutePosition.X, z - AbsolutePosition.Z, out baseHeight, out normal))
+            var absolutePosition = AbsolutePosition;
+            if (TryGetHeightAndNormal(x - absolutePosition.X, z - absolutePosition.Z, true, true, out height, out normal))
             {
-                height = baseHeight + AbsolutePosition.Y;
+                height += absolutePosition.Y;
                 return true;
             }
-            normal = Vector3.Zero;
-            height = float.MinValue;
             return false;
         }
 
-
         /// <summary>
-        /// Gets the height of the surface at a given location.
+        /// Gets the height and normal of a given point in heightmap local space.
         /// </summary>
-        /// <returns>False if the location is outside the boundary of the surface.</returns>
-        public bool TryGetHeight(float x, float z, out float height)
+        private bool TryGetHeightAndNormal(float x, float z, bool getHeight, bool getNormal, out float height, out Vector3 normal)
         {
-            Vector3 normal;
-            float baseHeight;
-            if (heightmap != null && heightmap.TryGetHeightAndNormal(x - AbsolutePosition.X, z - AbsolutePosition.Z, true, false, out baseHeight, out normal))
+            // first we'll figure out where on the heightmap "position" is...
+            if (x == size.X)
+                x -= float.Epsilon;
+            if (z == size.Z)
+                z -= float.Epsilon;
+
+            // ... and then check to see if that value goes outside the bounds of the
+            // heightmap.
+            if (heightmap == null || !(x >= 0 && x < size.X && z >= 0 && z < size.Z))
             {
-                height = baseHeight + AbsolutePosition.Y;
-                return true;
+                height = float.MinValue;
+                normal = Vector3.Up;
+                return false;
             }
-            height = float.MinValue;
-            return false;
+
+            // we'll use integer division to figure out where in the "heights" array
+            // positionOnHeightmap is. Remember that integer division always rounds
+            // down, so that the result of these divisions is the indices of the "upper
+            // left" of the 4 corners of that cell.
+            var left = (int)Math.Floor(x / step);
+            var top = (int)Math.Floor(z / step);
+
+            // next, we'll use modulus to find out how far away we are from the upper
+            // left corner of the cell. Mod will give us a value from 0 to terrainScale,
+            // which we then divide by terrainScale to normalize 0 to 1.
+            var xNormalized = (x - left * step) / step;
+            var zNormalized = (z - top * step) / step;
+
+            if (getHeight)
+            {
+                // Now that we've calculated the indices of the corners of our cell, and
+                // where we are in that cell, we'll use bilinear interpolation to calculate
+                // our height. This process is best explained with a diagram, so please see
+                // the accompanying doc for more information.
+                // First, calculate the heights on the bottom and top edge of our cell by
+                // interpolating from the left and right sides.
+                float topHeight = MathHelper.Lerp(
+                    heightmap.GetHeight(left, top), heightmap.GetHeight(left + 1, top), xNormalized);
+                float bottomHeight = MathHelper.Lerp(
+                    heightmap.GetHeight(left, top + 1), heightmap.GetHeight(left + 1, top + 1), xNormalized);
+
+                // next, interpolate between those two values to calculate the height at our
+                // position.
+                height = MathHelper.Lerp(topHeight, bottomHeight, zNormalized);
+            }
+            else
+            {
+                height = 0;
+            }
+
+            if (getNormal)
+            {
+                // We'll repeat the same process to calculate the normal.
+                Vector3 topNormal = Vector3.Lerp(
+                    heightmap.GetNormal(left, top), heightmap.GetNormal(left + 1, top), xNormalized);
+                Vector3 bottomNormal = Vector3.Lerp(
+                    heightmap.GetNormal(left, top + 1), heightmap.GetNormal(left + 1, top + 1), xNormalized);
+
+                Vector3.Lerp(ref topNormal, ref bottomNormal, zNormalized, out normal);                
+                normal.Normalize();
+            }
+            else
+            {
+                normal = Vector3.Up;
+            }
+            return true;
         }
         #endregion
 
@@ -814,7 +781,7 @@
             {
                 if (ray.Direction.X == 0 && ray.Direction.Z == 0)
                 {
-                    if (TryGetHeight(ray.Position.X, ray.Position.Z, out height))
+                    if (!float.IsNaN(height = GetHeight(ray.Position.X, ray.Position.Z)))
                     {
                         float distance = ray.Position.Y - height;
                         if (distance * ray.Direction.Y < 0)
@@ -827,7 +794,7 @@
                 start += ray.Direction * intersection.Value;
                 while (true)
                 {
-                    if (!TryGetHeight(start.X, start.Z, out height))
+                    if (float.IsNaN(height = GetHeight(start.X, start.Z)))
                         return null;
 
                     bool isAbove = (height <= start.Y);
@@ -899,12 +866,11 @@
         }
         #endregion
 
-        #region ISceneObject
-        void IGraphicsObject.OnAdded(DrawingContext context) 
-        {
-            EnsureHeightmapUpToDate();
-        }
-        void IGraphicsObject.OnRemoved(DrawingContext context) { }
+        #region ISupportInitialize
+        void ISupportInitialize.BeginInit() { initializing = true; }
+        void ISupportInitialize.EndInit() { if (initializing) { initializing = false; OnInitialized(); } }
+        void EnsureInitialized() { if (!initializing) OnInitialized(); }
+        private bool initializing = false;
         #endregion
 
         #region IDisposable

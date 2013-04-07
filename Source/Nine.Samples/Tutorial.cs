@@ -10,12 +10,12 @@ namespace Nine.Samples
      
         public Tutorial(string assetName) 
         {
-            this.assetName = assetName; 
+            this.assetName = assetName;
         }
 
         public override string Title
         {
-            get { return assetName; }
+            get { return assetName.Replace(".xaml", ""); }
         }
 
         public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)

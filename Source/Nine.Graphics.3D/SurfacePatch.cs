@@ -44,19 +44,6 @@
         public int Z { get; private set; }
 
         /// <summary>
-        /// Gets the level of detail of this surface patch.
-        /// </summary>
-        public int DetailLevel
-        {
-            get { return detailLevel; }
-
-            // Do not allow set by externals since we need to make sure
-            // lod difference between adjacent patches do not exceed 1.
-            internal set { detailLevel = value; }
-        }
-        private int detailLevel = 0;
-
-        /// <summary>
         /// Gets vertex buffer of this patch.
         /// </summary>
         public VertexBuffer VertexBuffer { get; internal set; }
@@ -104,20 +91,18 @@
         internal Surface surface;
 
         /// <summary>
-        /// Gets or sets any user data.
+        /// Gets the level of detail of this surface patch.
         /// </summary>
-        public object Tag { get; set; }
+        internal int DetailLevel = 0;
         #endregion
 
         #region BoundingBox & Position
         /// <summary>
         /// Gets the axis aligned bounding box of this surface patch.
         /// </summary>
-        public BoundingBox BoundingBox
-        {
-            get { surface.EnsureHeightmapUpToDate(); return boundingBox; }
-        }
-        private BoundingBox boundingBox;
+        public BoundingBox BoundingBox { get { return worldBounds; } }
+        internal BoundingBox worldBounds;
+        internal BoundingBox localBounds;
 
         /// <summary>
         /// Occurs when the bounding box changed.
@@ -139,14 +124,10 @@
         /// <summary>
         /// Gets or sets the center position of the surface patch.
         /// </summary>
-        public Vector3 Center
-        {
-            get { return center; }
-        }
+        public Vector3 Center { get { return center; } }
         internal Vector3 center;
 
-        private BoundingBox baseBounds;
-        private Heightmap heightmap;
+        private IHeightmap heightmap;
         private float distanceToCamera;
         #endregion
 
@@ -184,7 +165,8 @@
         {
             if (this.geometryPositions == null)
             {
-                int i = 0;
+                var i = 0;
+                var step = heightmap.Step;
                 this.geometryPositions = new Vector3[(segmentCount + 1) * (segmentCount + 1)];
                 for (int z = 0; z <= segmentCount; z++)
                 {
@@ -192,8 +174,8 @@
                     {
                         int xSurface = (x + (X * segmentCount));
                         int zSurface = (z + (Z * segmentCount));
-
-                        geometryPositions[i++] = surface.heightmap.GetPosition(xSurface, zSurface);
+                        
+                        geometryPositions[i++] = new Vector3(xSurface * step, surface.heightmap.GetHeight(xSurface, zSurface), zSurface * step);
                     }
                 }
 
@@ -228,10 +210,6 @@
             this.segmentCount = patchSegmentCount;
             this.X = xPatch;
             this.Z = zPatch;
-
-            // Compute bounding box
-            baseBounds = BoundingBox.CreateFromPoints(EnumeratePositions());
-            UpdatePosition();
         }
 
         private bool IsPowerOfTwo(int number)
@@ -239,24 +217,17 @@
             return (number > 0) && (number & (number - 1)) == 0;
         }
 
-        private IEnumerable<Vector3> EnumeratePositions()
-        {
-            for (int x = X * segmentCount; x <= (X + 1) * segmentCount; ++x)
-                for (int y = Z * segmentCount; y <= (Z + 1) * segmentCount; ++y)
-                    yield return heightmap.GetPosition(x, y);
-        }
-
         internal void UpdatePosition()
         {
-            boundingBox.Min = baseBounds.Min + surface.AbsolutePosition - surface.BoundingBoxPadding;
-            boundingBox.Max = baseBounds.Max + surface.AbsolutePosition + surface.BoundingBoxPadding;
+            worldBounds.Min = localBounds.Min + surface.absolutePosition - surface.boundingBoxPadding;
+            worldBounds.Max = localBounds.Max + surface.absolutePosition + surface.boundingBoxPadding;
             
             var offset = new Vector3();
             offset.X = X * heightmap.Step * segmentCount;
             offset.Z = Z * heightmap.Step * segmentCount;
             offset.Y = 0;
 
-            Position = surface.AbsolutePosition + offset;
+            Position = surface.absolutePosition + offset;
 
             offset.X = 0.5f * heightmap.Step * segmentCount;
             offset.Z = 0.5f * heightmap.Step * segmentCount;
@@ -397,8 +368,12 @@
             }
 
             // Fill vertices
-            int i = 0;
-            VertexPositionNormalTexture vertex = new VertexPositionNormalTexture();
+            var i = 0;
+            var vertex = new VertexPositionNormalTexture();
+
+            localBounds.Min.X = localBounds.Min.Y = localBounds.Min.Z = float.MaxValue;
+            localBounds.Max.X = localBounds.Max.Y = localBounds.Max.Z = float.MinValue;
+
             for (int z = 0; z <= segmentCount; z++)
             {
                 for (int x = 0; x <= segmentCount; ++x)
@@ -406,9 +381,27 @@
                     surface.PopulateVertex(X, Z, x, z, ref vertex, ref vertex);
                     if (FillVertex != null)
                         FillVertex(X, Z, x, z, ref vertex, ref vertices[i]);
+
+                    if (localBounds.Min.X > vertex.Position.X)
+                        localBounds.Min.X = vertex.Position.X;
+                    if (localBounds.Min.Y > vertex.Position.Y)
+                        localBounds.Min.Y = vertex.Position.Y;
+                    if (localBounds.Min.Z > vertex.Position.Z)
+                        localBounds.Min.Z = vertex.Position.Z;
+
+                    if (localBounds.Max.X < vertex.Position.X)
+                        localBounds.Max.X = vertex.Position.X;
+                    if (localBounds.Max.Y < vertex.Position.Y)
+                        localBounds.Max.Y = vertex.Position.Y;
+                    if (localBounds.Max.Z < vertex.Position.Z)
+                        localBounds.Max.Z = vertex.Position.Z;
+
                     i++;
                 }
             }
+
+            worldBounds.Min = localBounds.Min + surface.AbsolutePosition - surface.BoundingBoxPadding;
+            worldBounds.Max = localBounds.Max + surface.AbsolutePosition + surface.BoundingBoxPadding;
 
             if (VertexBuffer == null)
                 VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(T), VertexCount, BufferUsage.WriteOnly);
