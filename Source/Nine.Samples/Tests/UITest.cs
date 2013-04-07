@@ -102,10 +102,10 @@ namespace Nine.Samples
                 var StackPanel = new StackPanel() { Orientation = Orientation.Vertical, Background = new ImageBrush(content.Load<Texture2D>("Textures/checker.bmp")) };
                 StackPanel.Children.Add(new Border() { Margin = new Thickness(8), Height = 50, BorderBrush = new SolidColorBrush(Color.Red), BorderThickness = new Thickness(6) });
                 StackPanel.Children.Add(new Button()
-                { 
-                    Height = 50, 
+                {
+                    Height = 50,
                     Margin = new Thickness(4),
-                        Background = new SolidColorBrush(Color.LightGray),
+                    Background = new SolidColorBrush(Color.LightGray),
                 });
 
                 // #ProgressBar
@@ -181,8 +181,6 @@ namespace Nine.Samples
             Grid.SetColumn(ControlGrid, 1);
             MainGrid.Children.Add(ControlGrid);
 
-            /*
-
             { // #MediaElement
                 var MediaElement = new MediaElement(content.Load<Microsoft.Xna.Framework.Media.Video>("test.wmv"))
                 {
@@ -224,8 +222,6 @@ namespace Nine.Samples
                 ControlGrid.Children.Add(PlayButton);
                 ControlGrid.Children.Add(PauseButton);
             }
-
-            */
             
 
             window.Content = MainGrid;

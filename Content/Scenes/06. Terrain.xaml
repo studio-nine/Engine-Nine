@@ -14,8 +14,7 @@
         A surface is uniformly divided into square patches, the size of each patch is determined by 
         PatchSegmentCount, so Width and Height must be multiples of PatchSegmentCount.
     -->
-    <Surface Heightmap.Width="16" Heightmap.Height="16" Heightmap.Step="2" 
-             PatchSegmentCount="4" Transform.Position="-16, 0, 0" />
+    <Surface Heightmap ="{FlatHeightmap Width=16, Height=16, Step=2}" PatchSegmentCount="4" Transform.Position="-16, 0, 0" />
     
     <!-- 
         A surface can also be created from heightmap.
@@ -28,13 +27,13 @@
         In this tutorial, a basic material is applied to the terrain. The texture will map across the entire
         terrain by default. This behavior can be changed by setting the TextureScale and TextureOffset.
     -->
+    <!--
     <Surface Heightmap="{ContentReference ../Terrain/MountainHeightmap.bmp}" 
              Transform.Position="0, -20, 0" TextureTransform.Scale="0.2, 0.2"
              LevelOfDetailEnabled="True" LevelOfDetailStart="20" LevelOfDetailEnd="200">
         <BasicMaterial Texture="{ContentReference ../Terrain/grass.dds}" />
     </Surface>
 
-    <!--
         MaterialPaintGroup can be used to create materials with multiple layers. Each layer has its own texture, 
         normal map and color properties. A grayscale alpha map is used to determine which part of the layer
         is visible and how the layer blends with other layers.
