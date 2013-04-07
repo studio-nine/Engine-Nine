@@ -124,6 +124,7 @@
         /// <summary>
         /// Gets the current vertex type used by this surface.
         /// </summary>
+        [TypeConverter(typeof(Nine.Design.SystemTypeConverter))]
         public Type VertexType
         {
             get { return vertexType; }
