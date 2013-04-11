@@ -157,7 +157,7 @@
 
             if (Texture != null)
             {
-                renderer.Draw(AbsoluteRenderTransform, null, Texture, Color.White, Flip);
+                renderer.Draw(Texture, AbsoluteRenderTransform, null, Color.White, Flip);
             }
         }
 

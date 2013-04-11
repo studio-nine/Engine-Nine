@@ -103,7 +103,8 @@ namespace Nine.Graphics.UI.Controls
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
             var position = new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset;
-            renderer.DrawString(Font, formattedText, position, TextColor.ToColor());
+            var text = formattedText != null ? formattedText : Text;
+            renderer.DrawString(Font, text, position, TextColor.ToColor());
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

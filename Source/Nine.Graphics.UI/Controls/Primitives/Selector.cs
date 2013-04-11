@@ -1,6 +1,7 @@
 namespace Nine.Graphics.UI.Controls.Primitives
 {
     using System;
+    using System.Linq;
     using Microsoft.Xna.Framework;
 
     // TODO: Error when the SelectedIndex is set before the children ,"Out Of Range"
@@ -20,7 +21,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
             get { return selectedIndex; }
             set
             {
-                var Children = this.Children();
+                var Children = ItemsSource;
                 if (SelectionChanged != null)
                 {
                     var NewChild = Children.Count > value ? Children[value] : null;
@@ -38,24 +39,30 @@ namespace Nine.Graphics.UI.Controls.Primitives
         private int selectedIndex = 0;
 
         /// <summary>
-        /// returns the current selected element.
+        /// Gets or sets the current selected element.
         /// </summary>
-        public UIElement SelectedItem()
+        public UIElement SelectedItem
         {
-            var Children = this.Children();
-            if (Children.Count > SelectedIndex)
-                return null;
-            else
-                return Children[SelectedIndex];
-        }
-
-        /// <summary>
-        /// Get Children
-        /// </summary>
-        /// <returns>Children's</returns>
-        protected virtual System.Collections.Generic.IList<UIElement> Children()
-        {
-            return ItemsSource;
+            get
+            {
+                var Children = ItemsSource;
+                if (SelectedIndex >= Children.Count)
+                    return null;
+                else
+                    return Children[SelectedIndex];
+            }
+            set
+            {
+                var children = ItemsSource;
+                if (children.Contains(value))
+                {
+                    var index = children.IndexOf(value);
+                    selectedIndex = index;
+                }
+                else
+                    // Right Exception?
+                    throw new NullReferenceException("value");
+            }
         }
 
         /// <summary>

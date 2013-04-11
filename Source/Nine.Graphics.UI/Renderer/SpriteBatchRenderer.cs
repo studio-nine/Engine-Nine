@@ -9,6 +9,7 @@
     public class SpriteBatchRenderer : IRenderer
     {
         public GraphicsDevice GraphicsDevice { get { return spriteBatch.GraphicsDevice; } }
+        public float ElapsedTime { get; set; }
 
         private SpriteBatch spriteBatch;
 
@@ -66,6 +67,9 @@
             var visualBrush = brush as VisualBrush;
             if (visualBrush != null)
             {
+                visualBrush.Visual.Measure(new Vector2(bound.Width, bound.Height));
+                visualBrush.Visual.Arrange(bound);
+                visualBrush.Visual.OnRender(this);
                 return;
             }
 
@@ -78,17 +82,17 @@
             spriteBatch.Draw(texture.Texture, bound, color);
         }
 
-        public void Draw(BoundingRectangle bound, Rectangle? Source, Texture2D texture)
+        public void Draw(Texture2D texture, BoundingRectangle bound, Rectangle? Source)
         {
-            this.Draw(bound, Source, texture, Color.White, Flip.None);
+            this.Draw(texture, bound, Source, Color.White, Flip.None);
         }
 
-        public void Draw(BoundingRectangle bound, Rectangle? Source, Texture2D texture, Color color)
+        public void Draw(Texture2D texture, BoundingRectangle bound, Rectangle? Source, Color color)
         {
-            this.Draw(bound, Source, texture, color, Flip.None);
+            this.Draw(texture, bound, Source, color, Flip.None);
         }
 
-        public void Draw(BoundingRectangle bound, Rectangle? Source, Texture2D texture, Color color, Flip flip)
+        public void Draw(Texture2D texture, BoundingRectangle bound, Rectangle? Source, Color color, Flip flip)
         {
             SpriteEffects Effects = SpriteEffects.None;
             if (flip != Flip.None & flip != Flip.Both)

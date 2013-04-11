@@ -9,7 +9,7 @@ namespace Nine.Graphics.UI.Controls
         /// <summary>
         /// Selects when the Cursor moves over or the controls changes.
         /// </summary>
-        Game,
+        GameMode,
         /// <summary>
         /// Can only select one.
         /// </summary>

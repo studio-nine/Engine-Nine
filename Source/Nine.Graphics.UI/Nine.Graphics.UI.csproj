@@ -86,9 +86,12 @@
     </Compile>
     <Compile Include="Controls\CheckBox.cs" />
     <Compile Include="Controls\ListBox.cs" />
+    <Compile Include="Controls\ListBoxItem.cs" />
     <Compile Include="Controls\MediaElement.cs" />
     <Compile Include="Controls\Other\ColumnDefinition.cs" />
     <Compile Include="Controls\EventArgs\SelectionChangedEventArgs.cs" />
+    <Compile Include="Controls\Page.cs" />
+    <Compile Include="Controls\PageNavigator.cs" />
     <Compile Include="Controls\Primitives\Selector.cs" />
     <Compile Include="Controls\RangeBase.cs" />
     <Compile Include="Controls\ProgressBar.cs" />

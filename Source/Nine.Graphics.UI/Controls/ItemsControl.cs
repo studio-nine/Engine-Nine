@@ -74,6 +74,7 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         public ItemsControl()
         {
+            // TODO: A better way of sending Parent
             ItemsPanel = new StackPanel();
             ItemsPanel.Added += (e) => { if (Added != null) { Added(e); }; };
             ItemsPanel.Removed += (e) => { if (Removed != null) { Removed(e); }; }; 
