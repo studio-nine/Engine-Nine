@@ -1,68 +1,75 @@
 <Scene xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Window>
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="50*" />
-        <RowDefinition Height="50*" />
-      </Grid.RowDefinitions>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="25*" />
-        <ColumnDefinition Width="25*" />
-        <ColumnDefinition Width="25*" />
-      </Grid.ColumnDefinitions>
+    <PageNavigator SelectedIndex="0">
+      <Page Name="ControlsPage">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="50*" />
+            <RowDefinition Height="50*" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="25*" />
+          </Grid.ColumnDefinitions>
 
-      <Grid.Background>
-        <!-- This will not render when using SpriteBatch Renderer -->
-        <GradientBrush G1="1, 0.25, 0" G2="1, 0.25, 0" G3="1, 0.494, 0" G4="1, 0.494, 0" />
-      </Grid.Background>
-          
-      <Grid Grid.Column="0" Grid.Row="0">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="50*" />
-          <RowDefinition Height="50*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="50*" />
-          <ColumnDefinition Width="50*" />
-        </Grid.ColumnDefinitions>
-        <Border Grid.Row="0" Grid.Column="0" BorderBrush="Red" BorderThickness="4" />
-        <Border Grid.Row="1" Grid.Column="0" BorderBrush="Green" BorderThickness="4">
-          <Border.Background>
-            <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
-          </Border.Background>
-        </Border>
-        <Border Grid.Row="0" Grid.Column="1" BorderBrush="Blue" BorderThickness="4" />
-        <Border Grid.Row="1" Grid.Column="1" BorderBrush="Orange" BorderThickness="4" />
-      </Grid>
-          
-      <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
-        <StackPanel.Background>
-          <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
-        </StackPanel.Background>
-        <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2">
-          <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Inside a StackPanel" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        </Border>
-        <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
-          <Button Margin="2" Background="LightGray" />
-        </Border>
-        <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
-          <ProgressBar Margin="2" Value="50" />
-        </Border>
-      </StackPanel>
+          <Grid.Background>
+            <!-- This will not render when using SpriteBatch Renderer -->
+            <GradientBrush G1="1, 0.25, 0" G2="1, 0.25, 0" G3="1, 0.494, 0" G4="1, 0.494, 0" />
+          </Grid.Background>
 
-      <Grid Grid.Column="2" Grid.Row="1">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="50*" />
-          <ColumnDefinition Width="50*" />
-        </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" SelectedIndex="1" Orientation="Vertical" SelectorBrush="Blue">
-          <Button Margin="2" Height="26" Background="LightGray" />
-          <Button Margin="2" Height="26" Background="LightGray" />
-          <Button Margin="2" Height="26" Background="LightGray" />
-        </ListBox>
-      </Grid>
+          <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="50*" />
+              <RowDefinition Height="50*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="50*" />
+              <ColumnDefinition Width="50*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Red" BorderThickness="4" />
+            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Green" BorderThickness="4">
+              <Border.Background>
+                <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
+              </Border.Background>
+            </Border>
+            <Border Grid.Row="0" Grid.Column="1" BorderBrush="Blue" BorderThickness="4" />
+            <Border Grid.Row="1" Grid.Column="1" BorderBrush="Orange" BorderThickness="4" />
+          </Grid>
+
+          <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
+            <StackPanel.Background>
+              <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
+            </StackPanel.Background>
+            <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2">
+              <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Inside a StackPanel" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+              <Button Margin="2" Background="LightGray" />
+            </Border>
+            <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
+              <ProgressBar Margin="2" Value="50" />
+            </Border>
+          </StackPanel>
+
+          <Grid Grid.Column="2" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="50*" />
+              <ColumnDefinition Width="50*" />
+            </Grid.ColumnDefinitions>
+            <ListBox Grid.Column="0" SelectedIndex="1" Orientation="Vertical">
+              <Button Margin="2" Height="26" Background="LightGray" IsTabStop="True" TabIndex="2" />
+              <Button Margin="2" Height="26" Background="LightGray" IsTabStop="True" TabIndex="-2" />
+              <Button Margin="2" Height="26" Background="LightGray" />
+            </ListBox>
+          </Grid>
+
+          <Image Margin="20" Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
+        </Grid>
+      </Page>
+      <Page Name="EmptyPage">
         
-      <Image Margin="20" Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
-    </Grid>
-  </Window>  
+      </Page>
+    </PageNavigator>
+  </Window>
 </Scene>

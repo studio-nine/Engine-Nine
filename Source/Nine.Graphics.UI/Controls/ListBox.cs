@@ -6,9 +6,6 @@
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Media;
 
-    // TODO: Input Selection
-    // TODO: Clean up this Control
-
     /// <summary>
     /// A Control that display's a list of selectable elements.
     /// </summary>
@@ -20,6 +17,9 @@
         /// </summary>
         public SelectionMode SelectionMode { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Orientation of the <see cref="ListBox"/>.
+        /// </summary>
         public Orientation Orientation 
         { 
             get { return ItemsPanel.Orientation; }
@@ -27,5 +27,41 @@
         }
 
         public IList<UIElement> Children { get { return this.ItemsSource; } }
+ 
+        // Should the input be more changable?
+        protected override void OnKeyDown(KeyboardEventArgs e)
+        {
+            switch (Orientation)
+            {
+                case Controls.Orientation.Vertical:
+                    {
+                        if (e.Key == Microsoft.Xna.Framework.Input.Keys.Down)
+                        {
+                            if (SelectedIndex < (Children.Count - 1))
+                                SelectedIndex++;
+                        }
+                        else if (e.Key == Microsoft.Xna.Framework.Input.Keys.Up)
+                        {
+                            if (SelectedIndex > 0)
+                                SelectedIndex--;
+                        }
+                        break;
+                    }
+                case Controls.Orientation.Horizontal:
+                    {
+                        if (e.Key == Microsoft.Xna.Framework.Input.Keys.Right)
+                        {
+                            if (SelectedIndex < (Children.Count - 1))
+                                SelectedIndex++;
+                        }
+                        else if (e.Key == Microsoft.Xna.Framework.Input.Keys.Left)
+                        {
+                            if (SelectedIndex > 0)
+                                SelectedIndex--;
+                        }
+                        break;
+                    }
+            }
+        }
     }
 }

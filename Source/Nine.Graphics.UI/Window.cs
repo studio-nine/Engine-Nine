@@ -27,6 +27,7 @@
 namespace Nine.Graphics.UI
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -59,6 +60,8 @@ namespace Nine.Graphics.UI
                     content = value;
                     if (content != null)
                         content.Window = this;
+
+                    NextFocus();
                 }
             }
         }
@@ -91,6 +94,8 @@ namespace Nine.Graphics.UI
             Input.MouseMove += MouseMove;
             Input.MouseDown += MouseDown;
             Input.MouseWheel += MouseWheel;
+            Input.KeyDown += Input_KeyDown;
+            Input.KeyUp += Input_KeyUp;
         }
 
         #region Methods
@@ -100,6 +105,7 @@ namespace Nine.Graphics.UI
             if (content == null)
                 return;
 
+            // Use SafeArea?
             if (this.Viewport != context.GraphicsDevice.Viewport.Bounds)
                 this.Viewport = context.GraphicsDevice.Viewport.Bounds;
 
@@ -122,6 +128,8 @@ namespace Nine.Graphics.UI
                 if (Renderer == null)
                     Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
 
+                // Should I pass in Time?, if so how?
+                Renderer.ElapsedTime = context.ElapsedTime;
                 Renderer.Begin(context);
                 content.OnRender(Renderer);
                 Renderer.End(context);
@@ -139,6 +147,20 @@ namespace Nine.Graphics.UI
             return result;
         }
 
+        public T Find<T>() where T : class
+        {
+            T result = null;
+            ContainerTraverser.Traverse<Object>(this, desendant =>
+            {
+                result = desendant as T;
+                if (result != null)
+                    return TraverseOptions.Stop;
+                result = null;
+                return TraverseOptions.Continue;
+            });
+            return result;
+        }
+
         #endregion
 
         #region Input
@@ -146,44 +168,92 @@ namespace Nine.Graphics.UI
         // I am not sure on the design of the input yet!
         // TODO: Control Tabbing with Focus
 
+        Control CurrentFocuesdControl = null;
+
         void MouseMove(object sender, MouseEventArgs e)
         {
-            if (content == null)
-                return;
-
             UIElement result = null;
             if (TryGetElement(new Vector2(e.X, e.Y), out result))
             {
-                result.InvokeMouseMove(this, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
+                result.InvokeMouseMove(sender, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
             }
         }
-
         void MouseDown(object sender, MouseEventArgs e)
         {
-            if (content == null)
-                return;
-
             UIElement result = null;
             if (TryGetElement(new Vector2(e.X, e.Y), out result))
             {
-                result.InvokeMouseDown(this, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
+                result.InvokeMouseDown(sender, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
+            }
+        }
+        void MouseWheel(object sender, MouseEventArgs e)
+        {
+            UIElement result = null;
+            if (TryGetElement(new Vector2(e.X, e.Y), out result))
+            {
+                result.InvokeMouseWheel(sender, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
             }
         }
 
-        void MouseWheel(object sender, MouseEventArgs e)
+        void Input_KeyDown(object sender, KeyboardEventArgs e)
         {
-            if (content == null)
-                return;
-
-            UIElement result = null;
-            if (TryGetElement(new Vector2(e.X, e.Y), out result))
+            if (e.Key == Keys.Tab)
             {
-                result.InvokeMouseWheel(this, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
+                NextFocus();
             }
+            if (CurrentFocuesdControl != null)
+            {
+                CurrentFocuesdControl.InvokeKeyDown(sender, e);
+            }
+        }
+        void Input_KeyUp(object sender, KeyboardEventArgs e)
+        {
+            if (CurrentFocuesdControl != null)
+            {
+                CurrentFocuesdControl.InvokeKeyUp(sender, e);
+            }
+        }
+
+        protected void NextFocus()
+        {
+            // TODO: Rework this algoritm
+
+            var Controls = FindAll<Control>();
+            if (CurrentFocuesdControl == null)
+            {
+                var NextControls = Controls.Where(o => o.IsTabStop == true).ToList().OrderBy(o => o.TabIndex);
+                CurrentFocuesdControl = NextControls.First();
+            }
+            //else
+            //{
+            //    var NextControls = Controls.Where(o => o.TabIndex > CurrentFocuesdControl.TabIndex && o.IsTabStop == true).ToList();
+            //    Control NextControl = null;
+            //    while (NextControl != null)
+            //    {
+            //        if (NextControls.Count() > 0)
+            //        {
+            //            if (NextControls[0] != CurrentFocuesdControl)
+            //                NextControl = NextControls.First();
+            //            else
+            //            {
+            //                NextControls.RemoveAt(0);
+            //            }
+            //        }
+            //        else
+            //            // Check backwards, select the lowest value
+            //            break;
+            //    }
+            //}
         }
 
         private bool TryGetElement(Vector2 point, out UIElement output)
         {
+            if (content == null)
+            {
+                output = null;
+                return false;
+            }
+
             UIElement result = null;
             ContainerTraverser.Traverse<UIElement>(content,
                 (d) =>
