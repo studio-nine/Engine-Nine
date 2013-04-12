@@ -50,6 +50,7 @@ namespace Nine.Graphics.Materials
         var compiler = new EffectCompiler();
         compiler.Build(fxFile);
 #>
+    [Nine.Serialization.NotBinarySerializable]
     partial class <#= materialName #> : Material
     {
         public GraphicsDevice GraphicsDevice { get; private set; }

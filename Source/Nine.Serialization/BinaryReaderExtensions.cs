@@ -35,8 +35,12 @@ namespace Nine.Serialization
             var binaryObjectSerializer = serviceProvider.GetService(typeof(IBinaryObjectSerializer)) as IBinaryObjectSerializer;
             if (binaryObjectSerializer == null)
                 throw new InvalidOperationException("Cannot find IBinaryObjectSerializer service.");
-            return binaryObjectSerializer.ReadObject(input, existingInstance, serviceProvider);
+            var result = binaryObjectSerializer.ReadObject(input, existingInstance, serviceProvider);
+            AfterReadObject(ref result, serviceProvider);
+            return result;
         }
+
+        static partial void AfterReadObject(ref object value, IServiceProvider serviceProvider);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static T[] ReadArray<T>(this BinaryReader input, T[] existingInstance, Func<T, T> read)

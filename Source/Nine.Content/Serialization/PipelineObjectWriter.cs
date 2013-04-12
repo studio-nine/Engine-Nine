@@ -11,7 +11,7 @@
     /// <summary>
     /// Defines a generic binary object writer that writes xna content.
     /// </summary>
-    class PipelineObjectWriter<T> : IBinaryObjectWriter
+    public class PipelineObjectWriter<T> : IBinaryObjectWriter
     {
         public Type ReaderType
         {
@@ -25,14 +25,12 @@
         
         public void Write(BinaryWriter output, object value, IServiceProvider serviceProvider)
         {
-            if (value != null)
-            {
-                object overrideObject;
-                var serializationOverride = serviceProvider.TryGetService<ISerializationOverride>();
-                if (serializationOverride != null && serializationOverride.TryGetOverride(value, out overrideObject))
-                    value = overrideObject;
-            }
-            ContentPipeline.SaveContent(output.BaseStream, value);
+            string cachedFileName;
+            if (!ContentPipeline.ObjectCache.TryGetValue(new WeakReference(value), out cachedFileName))
+                throw new InvalidOperationException();
+
+            var bytes = File.ReadAllBytes(cachedFileName);
+            output.Write(bytes, 0, bytes.Length);
         }
     }
 }

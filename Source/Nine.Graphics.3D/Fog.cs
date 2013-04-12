@@ -4,11 +4,12 @@ namespace Nine.Graphics
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
+    using Nine.Serialization;
 
     /// <summary>
     /// Defines an area of fog.
     /// </summary>
-    [Nine.Serialization.BinarySerializable]
+    [BinarySerializable]
     public class Fog : Object, IGraphicsObject
     {
         public float FogStart { get; set; }

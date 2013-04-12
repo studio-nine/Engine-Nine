@@ -12,7 +12,6 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Represents a type of material that are build from custom shader files.
     /// </summary>
-    [Nine.Serialization.NotBinarySerializable]
     [ContentProperty("ShaderCode")]
     public class CustomMaterial : Material, IEffectParameterProvider
     {

@@ -450,17 +450,19 @@ namespace Nine.Serialization
         public override long Seek(long offset, SeekOrigin origin)
         {
             if (origin == SeekOrigin.Begin)
-                return stream.Seek(basePosition + offset, SeekOrigin.Begin) - basePosition;
+                return position = stream.Seek(basePosition + offset, SeekOrigin.Begin) - basePosition;
             if (origin == SeekOrigin.Current)
-                return stream.Seek(basePosition + position + offset, SeekOrigin.Begin) - basePosition;
-            return stream.Seek(basePosition + length + offset, SeekOrigin.Begin) - basePosition;
+                return position = stream.Seek(basePosition + position + offset, SeekOrigin.Begin) - basePosition;
+            return position = stream.Seek(basePosition + length + offset, SeekOrigin.Begin) - basePosition;
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
             if (stream.Position != basePosition + position)
                 stream.Seek(basePosition + position, SeekOrigin.Begin);
-            return stream.Read(buffer, offset, count);
+            var result = stream.Read(buffer, offset, (int)Math.Min(count, length - position));
+            position += result;
+            return result;
         }
 
         public override void Write(byte[] buffer, int offset, int count)

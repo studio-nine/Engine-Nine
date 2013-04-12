@@ -202,7 +202,7 @@ namespace Nine.Samples
                         VerticalAlignment = VerticalAlignment.Center
                     }
                 };
-                PlayButton.Click += (s, e) => { MediaElement.Play(); };
+                //PlayButton.Click += (s, e) => { MediaElement.Play(); };
                 Grid.SetColumn(PlayButton, 0);
 
                 var PauseButton = new Button()

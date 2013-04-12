@@ -18,4 +18,6 @@ namespace Nine.Serialization.Importers
             get { return ContentPipeline.GetSupportedFileExtensions(typeof(FbxImporter)); }
         }
     }
+    
+    class ModelWriter : PipelineObjectWriter<Microsoft.Xna.Framework.Graphics.Model> { }
 }

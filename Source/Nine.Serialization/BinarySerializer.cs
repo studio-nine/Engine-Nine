@@ -5,6 +5,7 @@ namespace Nine.Serialization
     using System.IO;
     using System.Reflection;
     using System.Text;
+    using System.Linq;
 
     /// <summary>
     /// Forces a type or member to be serializable by the BinarySerializer.
@@ -80,56 +81,21 @@ namespace Nine.Serialization
     /// </summary>
     public partial class BinarySerializer: IBinaryObjectSerializer, IServiceProvider
     {
-        /// <summary>
-        /// Gets a collection of binary object reader types.
-        /// </summary>
-        public IList<Type> ReaderTypes { get { return readerTypes; } }
-
-        /// <summary>
-        /// Gets a collection of binary object writer types.
-        /// </summary>     
-        public IList<Type> WriterTypes { get { return writerTypes; } }
-        
-        private bool readersNeedsUpdate;
-        private bool writersNeedsUpdate;
-        private List<Type> readerTypes = new List<Type>();
-        private List<Type> writerTypes = new List<Type>();
-        private Dictionary<int, IBinaryObjectReader> readers = new Dictionary<int, IBinaryObjectReader>();
-        private Dictionary<Type, IBinaryObjectWriter> writers = new Dictionary<Type, IBinaryObjectWriter>();
-        private Dictionary<Type, int> typeToHash = new Dictionary<Type, int>();
-        private Stack<IServiceProvider> serviceProviderStack = new Stack<IServiceProvider>();
         private Writer binaryWriter = new Writer();
         private Reader binaryReader = new Reader();
+        private IServiceProvider currentServiceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BinarySerializer"/> class.
         /// </summary>
-        public BinarySerializer() : this(true)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BinarySerializer"/> class.
-        /// </summary>
-        public BinarySerializer(bool createReadersAndWriters)
-        {
-            if (createReadersAndWriters)
-            {
-                this.readerTypes.AddRange(FindImplementations(typeof(IBinaryObjectReader)));
-                this.writerTypes.AddRange(FindImplementations(typeof(IBinaryObjectWriter)));
-            }
-            this.readersNeedsUpdate = true;
-            this.writersNeedsUpdate = true;
-        }
+        public BinarySerializer() { }
 
         /// <summary>
         /// Loads from the specified input stream.
         /// </summary>
         public object Load(Stream input)
         {
-            binaryReader.SetStream(input);
-            return ((IBinaryObjectSerializer)this).ReadObject(binaryReader, null, this);
+            return Load(input, null, null);
         }
         
         /// <summary>
@@ -145,15 +111,20 @@ namespace Nine.Serialization
         /// </summary>
         public object Load(Stream input, object existingIntance, IServiceProvider serviceProvider)
         {
+            var lastStream = binaryReader.GetStream();
+            var lastServiceProvider = currentServiceProvider;
+
             try
             {
-                serviceProviderStack.Push(serviceProvider);
+                currentServiceProvider = serviceProvider;
                 binaryReader.SetStream(input);
+
                 return ((IBinaryObjectSerializer)this).ReadObject(binaryReader, existingIntance, this);
             }
             finally
             {
-                serviceProviderStack.Pop();
+                binaryReader.SetStream(lastStream);
+                currentServiceProvider = lastServiceProvider;
             }
         }
 
@@ -162,8 +133,7 @@ namespace Nine.Serialization
         /// </summary>
         public void Save(Stream output, object value)
         {
-            binaryWriter.SetStream(output);
-            WriteObject(binaryWriter, value, this);
+            Save(output, value, null);
         }
 
         /// <summary>
@@ -171,97 +141,34 @@ namespace Nine.Serialization
         /// </summary>
         public void Save(Stream output, object value, IServiceProvider serviceProvider)
         {
+            var lastStream = binaryWriter.GetStream();
+            var lastServiceProvider = currentServiceProvider;
+
             try
             {
-                serviceProviderStack.Push(serviceProvider);
+                currentServiceProvider = serviceProvider;
                 binaryWriter.SetStream(output);
+  
                 WriteObject(binaryWriter, value, this);
             }
             finally
             {
-                serviceProviderStack.Pop();
+                binaryWriter.SetStream(lastStream);
+                currentServiceProvider = lastServiceProvider;
             }
-        }
-
-        private void UpdateReaders()
-        {
-            readers.Clear();
-            foreach (var readerType in readerTypes)
-            {
-                var key = ComputeHash(readerType);
-                if (key == 0)
-                {
-                    throw new InvalidOperationException(
-                        string.Format("{0} conflicts with NullReader", readerType));
-                }
-
-                IBinaryObjectReader existingReader;
-                if (readers.TryGetValue(key, out existingReader))
-                {
-                    throw new InvalidOperationException(string.Format(
-                        "{0} conflicts with {1}", readerType, existingReader.GetType()));
-                }
-                readers[key] = (IBinaryObjectReader)Activator.CreateInstance(readerType);
-            }
-        }
-
-        private void UpdateWriters()
-        {
-            writers.Clear();
-            foreach (var writerType in writerTypes)
-            {
-                var writer = (IBinaryObjectWriter)Activator.CreateInstance(writerType);
-                var key = writer.TargetType;
-                IBinaryObjectWriter existingWriter;
-                
-                if (writers.TryGetValue(key, out existingWriter))
-                    throw new InvalidOperationException(string.Format(
-                        "{0} conflicts with {1}", writer.GetType(), existingWriter.GetType()));
-
-                writers[key] = writer;
-            }
-        }
-
-        private int ComputeHash(Type type)
-        {
-            int result;
-            if (typeToHash.TryGetValue(type, out result))
-                return result;
-
-            var binarySerializableAttributes = type.GetCustomAttributes(typeof(BinarySerializableAttribute), false);
-            if (binarySerializableAttributes.Length > 0)
-            {
-                var token = ((BinarySerializableAttribute)binarySerializableAttributes[0]).Token;
-                if (token.HasValue)
-                    return typeToHash[type] = token.Value;
-            }
-            return typeToHash[type] = GetHashCode(type.AssemblyQualifiedName);
-        }
-
-        /// <summary>
-        /// djb2 hash with Xor
-        /// http://www.cse.yorku.ca/~oz/hash.html
-        /// </summary>
-        private static int GetHashCode(string str)
-        {
-            int hash = 5381;
-            foreach (char c in str)
-                hash = ((hash << 5) + hash) ^ c; // hash * 33 + c
-            return hash;
         }
 
         object IBinaryObjectSerializer.ReadObject(BinaryReader input, object existingInstance, IServiceProvider services)
         {
-            if (readersNeedsUpdate)
-            {
-                UpdateReaders();
-                readersNeedsUpdate = false;
-            }
-
             var hash = input.ReadInt32();
             if (hash == 0)
                 return null;
-            return readers[hash].Read(input, existingInstance, this);
+
+            IBinaryObjectReader reader;
+            if (!Readers.TryGetValue(hash, out reader))
+                throw new NotSupportedException("Don't know how to read: " + hash);
+
+            return reader.Read(input, existingInstance, this);
         }
 
         void IBinaryObjectSerializer.WriteObject(BinaryWriter output, object value, IServiceProvider services)
@@ -277,14 +184,8 @@ namespace Nine.Serialization
             }
             else
             {
-                if (writersNeedsUpdate)
-                {
-                    UpdateWriters();
-                    writersNeedsUpdate = false;
-                }
-
                 IBinaryObjectWriter writer;
-                if (!writers.TryGetValue(value.GetType(), out writer))
+                if (!Writers.TryGetValue(value.GetType(), out writer))
                     throw new NotSupportedException("Don't know how to write: " + value.GetType());
 
                 output.Write(ComputeHash(writer.ReaderType));
@@ -295,43 +196,152 @@ namespace Nine.Serialization
         object IServiceProvider.GetService(Type serviceType)
         {
             object result;
-            var serviceProvider = serviceProviderStack.Count > 0 ? serviceProviderStack.Peek() : null;
-            if (serviceProvider != null && (result = serviceProvider.GetService(serviceType)) != null)
+            if (currentServiceProvider != null && (result = currentServiceProvider.GetService(serviceType)) != null)
                 return result;
             if (serviceType == typeof(IBinaryObjectSerializer))
                 return this;
             return null;
         }
 
-        private static IEnumerable<Type> FindImplementations(Type baseType)
+        #region Static readers and writers
+        static BinarySerializer()
         {
-            Type[] types;
-            Assembly[] assemblies;
+            UpdateReaders(FindImplementations<IBinaryObjectReader>());
+            UpdateWriters(FindImplementations<IBinaryObjectWriter>());
 
-            try { assemblies = AppDomain.CurrentDomain.GetAssemblies(); }
-            catch { yield break; }
-
-            foreach (var assembly in assemblies)
+            AppDomain.CurrentDomain.AssemblyLoad += (sender, e) =>
             {
-                try { types = assembly.GetTypes(); }
-                catch { continue; }
+                UpdateReaders(FindImplementations<IBinaryObjectReader>(e.LoadedAssembly));
+                UpdateWriters(FindImplementations<IBinaryObjectWriter>(e.LoadedAssembly));
+            };
+        }
 
-                foreach (var type in types)
+        static Dictionary<int, IBinaryObjectReader> Readers = new Dictionary<int, IBinaryObjectReader>();
+        static Dictionary<Type, IBinaryObjectWriter> Writers = new Dictionary<Type, IBinaryObjectWriter>();
+        static Dictionary<Type, int> TypeToHash = new Dictionary<Type, int>();
+
+        private static void UpdateReaders(IEnumerable<IBinaryObjectReader> readers)
+        {
+            foreach (var reader in readers)
+            {
+                if (reader == null)
+                    continue;
+
+                var key = ComputeHash(reader.GetType());
+                if (key == 0)
                 {
-                    if (!type.IsAbstract && !type.IsInterface &&
-                        !type.IsGenericType && !type.IsGenericTypeDefinition &&
-                        baseType.IsAssignableFrom(type))
-                    {
-                        yield return type;
-                    }
+                    throw new InvalidOperationException(
+                        string.Format("{0} conflicts with NullReader", reader.GetType()));
                 }
+
+                IBinaryObjectReader existingReader;
+                if (Readers.TryGetValue(key, out existingReader))
+                {
+                    throw new InvalidOperationException(string.Format(
+                        "{0} conflicts with {1}", reader.GetType(), existingReader.GetType()));
+                }
+                Readers[key] = reader;
             }
         }
-        
+
+        private static void UpdateWriters(IEnumerable<IBinaryObjectWriter> writers)
+        {
+            foreach (var writer in writers)
+            {
+                if (writer == null)
+                    continue;
+
+                var key = writer.TargetType;
+                IBinaryObjectWriter existingWriter;
+
+                if (Writers.TryGetValue(key, out existingWriter))
+                    throw new InvalidOperationException(string.Format(
+                        "{0} conflicts with {1}", writer.GetType(), existingWriter.GetType()));
+
+                Writers[key] = writer;
+            }
+        }
+
+        private static int ComputeHash(Type type)
+        {
+            int result;
+            if (TypeToHash.TryGetValue(type, out result))
+                return result;
+
+            var binarySerializableAttributes = type.GetCustomAttributes(typeof(BinarySerializableAttribute), false);
+            if (binarySerializableAttributes.Length > 0)
+            {
+                var token = ((BinarySerializableAttribute)binarySerializableAttributes[0]).Token;
+                if (token.HasValue)
+                    return TypeToHash[type] = token.Value;
+            }
+            return TypeToHash[type] = GetHashCode(type.AssemblyQualifiedName);
+        }
+
+        /// <summary>
+        /// djb2 hash with Xor
+        /// http://www.cse.yorku.ca/~oz/hash.html
+        /// </summary>
+        private static int GetHashCode(string str)
+        {
+            int hash = 5381;
+            foreach (char c in str)
+                hash = ((hash << 5) + hash) ^ c; // hash * 33 + c
+            return hash;
+        }
+
+        private static IEnumerable<T> FindImplementations<T>()
+        {
+            try
+            {
+                return from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                       from type in FindImplementations<T>(assembly)
+                       select type;
+            }
+            catch
+            {
+                return Enumerable.Empty<T>();
+            }
+        }
+
+        private static IEnumerable<T> FindImplementations<T>(Assembly assembly)
+        {
+            try
+            {
+                return from type in assembly.GetTypes()
+                       where !type.IsAbstract && !type.IsInterface && !type.IsGenericType && 
+                             !type.IsGenericTypeDefinition && typeof(T).IsAssignableFrom(type)
+                       select CreateInstance<T>(type);
+            }
+            catch
+            {
+                return Enumerable.Empty<T>();
+            }
+        }
+
+        private static T CreateInstance<T>(Type type)
+        {
+            try
+            {
+                return (T)Activator.CreateInstance(type);
+            }
+            catch
+            {
+                return default(T);
+            }
+        }
+        #endregion
+
+        #region Stream abstraction
         static Encoding Encoding = new UTF8Encoding();
 
         class Writer : BinaryWriter
         {
+            public Stream GetStream()
+            {
+                return base.OutStream;
+            }
+
             public void SetStream(Stream stream)
             {
                 base.OutStream = stream;
@@ -347,9 +357,15 @@ namespace Nine.Serialization
                 this.stream = (StreamWrapper)base.BaseStream;
             }
 
+            public Stream GetStream()
+            {
+                return this.stream.InnerStream;
+            }
+
             public void SetStream(Stream stream)
             {
-                this.stream.InnerStream = stream;
+                if (stream != this.stream)
+                    this.stream.InnerStream = stream;
             }
         }
 
@@ -369,5 +385,6 @@ namespace Nine.Serialization
             public override void SetLength(long value) { InnerStream.SetLength(value); }
             public override void Write(byte[] buffer, int offset, int count) { InnerStream.Write(buffer, offset, count); }
         }
+        #endregion
     }
 }

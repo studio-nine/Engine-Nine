@@ -7,7 +7,6 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Defines a material to show object depth.
     /// </summary>
-    [Nine.Serialization.NotBinarySerializable]
     public partial class DepthMaterial : IEffectSkinned
     {
         #region Properties
