@@ -35,7 +35,7 @@ namespace Nine.Graphics.Materials
         {
             get { return materialParts; }
         }
-        private MaterialPartCollection materialParts;
+        internal MaterialPartCollection materialParts;
         private Dictionary<Type, MaterialPart> materialPartDictionary;
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace Nine.Graphics.Materials
         private void UpdateShader()
         {
             if (Effect == null)
-                TryInvokeContentPipelineMethod<Effect>("MaterialGroupBuilder", "Build", this);
+                Extensions.TryInvokeContentPipelineMethod<Effect>("MaterialGroupBuilder", "Build", this);
         }
 
         void ISupportInitialize.BeginInit() { initializing = true; }
@@ -237,19 +237,6 @@ namespace Nine.Graphics.Materials
                 initializing = false;
             }
         }
-
-        internal static T TryInvokeContentPipelineMethod<T>(string className, string methodName, params object[] paramters)
-        {
-#if WINDOWS
-            if (PipelineAssembly == null)
-                return default(T);
-            var flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
-            return (T)PipelineAssembly.GetTypes().Single(type => type.Name == className).InvokeMember(methodName, flags, null, null, paramters);
-#else
-            return default(T);
-#endif
-        }
-        static Assembly PipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "Nine.Content");
     }
 
     class MaterialPartCollection : Collection<MaterialPart>

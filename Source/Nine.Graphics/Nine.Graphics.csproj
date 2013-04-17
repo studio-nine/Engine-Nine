@@ -91,6 +91,7 @@
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="Materials\CustomMaterialParameterCollection.cs" />
     <Compile Include="Materials\TextureMaterial.cs" />
     <Compile Include="PostEffects\BloomMaterial.cs" />
     <Compile Include="TextSprite.cs" />
@@ -116,7 +117,7 @@
     <Compile Include="PostEffects\ToneMappingMaterial.cs" />
     <Compile Include="Materials\VertexPassThroughMaterial.cs" />
     <Compile Include="PostEffects\LuminanceChain.cs" />
-    <Compile Include="Materials\CustomMaterialSemantics.cs" />
+    <Compile Include="Materials\CustomMaterialParameterBinding.cs" />
     <Compile Include="Materials\MaterialLevelOfDetail.cs" />
     <Compile Include="Materials\MaterialUsage.cs" />
     <Compile Include="Interface.cs" />

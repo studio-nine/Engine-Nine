@@ -80,7 +80,6 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="ContentBuilder.cs" />
-    <Compile Include="Content\PipelineBuilderTest.cs" />
     <Compile Include="ErrorLogger.cs" />
     <Compile Include="ExpressionTest.cs" />
     <Compile Include="ContentPipelineTest.cs" />

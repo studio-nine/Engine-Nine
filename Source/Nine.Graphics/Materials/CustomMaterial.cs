@@ -1,5 +1,6 @@
 namespace Nine.Graphics.Materials
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
@@ -7,12 +8,12 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using Nine.Serialization;
 
-    #region CustomMaterial
     /// <summary>
     /// Represents a type of material that are build from custom shader files.
     /// </summary>
-    [Nine.Serialization.NotBinarySerializable]
+    [BinarySerializable]
     [ContentProperty("ShaderCode")]
     public class CustomMaterial : Material, IEffectParameterProvider
     {
@@ -36,9 +37,27 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets or sets the shader code for this custom material.
         /// </summary>
-        [Nine.Serialization.NotBinarySerializable]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public string ShaderCode { get; set; }
+        [NotBinarySerializable]
+        public string ShaderCode
+        {
+            get { return shaderCode; }
+            set
+            {
+                if (!string.IsNullOrEmpty(shaderCode = value) && serviceProvider != null)
+                {
+                    Source = new Effect(
+                        serviceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice,
+                        Extensions.TryInvokeContentPipelineMethod<byte[]>(
+                            "EffectCompiler", "Compile", new object[] { shaderCode }));
+
+                    var serializationSharing = serviceProvider.TryGetService<ISerializationSharing>();
+                    if (serializationSharing != null)
+                        serializationSharing.Share(Source, null);
+                }
+            }
+        }
+        private string shaderCode;
+        private IServiceProvider serviceProvider;
 
         /// <summary>
         /// Gets the parameters unique to this custom material instance.
@@ -56,13 +75,13 @@ namespace Nine.Graphics.Materials
         [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
 #endif
         public SamplerState SamplerState { get; set; }
-
+                
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomMaterial"/> class for serialization.
         /// </summary>
-        internal CustomMaterial()
+        internal CustomMaterial(IServiceProvider serviceProvider) 
         {
-            
+            this.serviceProvider = serviceProvider; 
         }
 
         /// <summary>
@@ -99,7 +118,24 @@ namespace Nine.Graphics.Materials
                 context.graphics.SamplerStates[0] = context.SamplerState;
         }
 
-        #region IEffectParameterProvider
+        /// <summary>
+        /// Assigns an event handler to a custom material semantics to setup
+        /// the shader parameter for each instance.
+        /// </summary>
+        public static void Bind(string semantics, Action<EffectParameter, DrawingContext, Material> onApply)
+        {
+            CustomMaterialParameterBinding.Bindings.Add(semantics, CustomMaterialParameterBinding.Bind(onApply));
+        }
+
+        /// <summary>
+        /// Assigns an event handler to a custom material semantics to setup
+        /// the shader global parameter that are shared across the drawing context.
+        /// </summary>
+        public static void BindGlobal(string semantics, Action<EffectParameter, DrawingContext, Material> onApply)
+        {
+            CustomMaterialParameterBinding.Bindings.Add(semantics, CustomMaterialParameterBinding.BindGlobal(onApply));
+        }
+
         IEnumerable<EffectParameter> IEffectParameterProvider.GetParameters()
         {
             return source != null ? source.Parameters : Enumerable.Empty<EffectParameter>();
@@ -109,53 +145,5 @@ namespace Nine.Graphics.Materials
         {
             return source != null ? source.Parameters[name] : null;
         }
-        #endregion
     }
-    #endregion
-
-    #region CustomEffectReader
-    class CustomEffectReader : ContentTypeReader
-    {
-        // To avoid conflict with the built-in effect reader, we walkaround this 
-        // by setting the target type of something unique.
-        public CustomEffectReader() : base(typeof(CustomEffectReader)) { }
-
-        protected override object Read(ContentReader input, object existingInstance)
-        {
-            var graphicsDevice = input.ContentManager.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
-            var effect = new Effect(graphicsDevice, input.ReadBytes(input.ReadInt32()));
-
-            var parameters = input.ReadObject<Dictionary<string, object>>();
-            if (parameters != null)
-                foreach (var pair in parameters)
-                    EffectExtensions.SetValue(effect.Parameters[pair.Key], pair.Value);
-            return effect;
-        }
-    }
-    #endregion
-
-    #region CustomMaterialReader
-    class CustomMaterialReader : ContentTypeReader<CustomMaterial>
-    {
-        protected override CustomMaterial Read(ContentReader input, CustomMaterial existingInstance)
-        {
-            return null;
-            /*
-            if (existingInstance == null)
-                existingInstance = new CustomMaterial();
-            existingInstance.AttachedProperties = input.ReadObject<AttachableMemberIdentifierCollection>();
-            existingInstance.IsTransparent = input.ReadBoolean();
-            existingInstance.Source = input.ReadObject<Effect>();
-            existingInstance.texture = input.ReadObject<Texture2D>();
-            existingInstance.IsTransparent = input.ReadBoolean();
-            existingInstance.TwoSided = input.ReadBoolean();
-            existingInstance.SamplerState = input.ReadObject<SamplerState>();
-            var dictionary = input.ReadRawObject<Dictionary<string, object>>();
-            if (dictionary != null)
-                existingInstance.Parameters.AddRange(dictionary);
-            return existingInstance;
-             */
-        }
-    }
-    #endregion
 }

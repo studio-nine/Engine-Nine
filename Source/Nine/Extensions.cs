@@ -192,5 +192,19 @@ namespace Nine
 
         private static BindingFlags BindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.Instance;
         public static Type[] ServiceProviderTypes = new Type[] { typeof(IServiceProvider) };
+        
+        
+        internal static T TryInvokeContentPipelineMethod<T>(string className, string methodName, params object[] paramters)
+        {
+#if WINDOWS
+            if (PipelineAssembly == null)
+                return default(T);
+            var flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
+            return (T)PipelineAssembly.GetTypes().Single(type => type.Name == className).InvokeMember(methodName, flags, null, null, paramters);
+#else
+            return default(T);
+#endif
+        }
+        static Assembly PipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "Nine.Content");
     }
 }

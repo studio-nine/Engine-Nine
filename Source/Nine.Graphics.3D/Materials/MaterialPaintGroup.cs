@@ -140,7 +140,7 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return MaterialGroup.TryInvokeContentPipelineMethod<string>("MaterialPaintGroupBuilder", "Build", this, usage);
+            return Extensions.TryInvokeContentPipelineMethod<string>("MaterialPaintGroupBuilder", "Build", this, usage);
         }
 
         /// <summary>
@@ -173,6 +173,7 @@ namespace Nine.Graphics.Materials
         public static void SetMaskTextureScale(MaterialGroup materialGroup, Vector2 value)
         {
             AttachablePropertyServices.SetProperty(materialGroup, MaskTextureScaleProperty, value);
+            BindMaskTextureParameters(materialGroup);
         }
         #endregion
 
@@ -198,6 +199,20 @@ namespace Nine.Graphics.Materials
             if (value == null)
                 throw new ArgumentNullException("value");
             AttachablePropertyServices.SetProperty(materialGroup, MaskTexturesProperty, value);
+            BindMaskTextureParameters(materialGroup);
+        }
+
+        private static void BindMaskTextureParameters(MaterialGroup materialGroup)
+        {
+            if (materialGroup != null && materialGroup.materialParts != null)
+            {
+                for (int i = 0; i < materialGroup.materialParts.Count; i++)
+                {
+                    var beginPaintGroup = materialGroup.materialParts[i] as Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart;
+                    if (beginPaintGroup != null)
+                        beginPaintGroup.OnBind();
+                }
+            }
         }
         #endregion
     }

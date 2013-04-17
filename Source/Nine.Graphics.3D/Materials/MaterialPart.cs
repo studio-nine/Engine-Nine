@@ -151,8 +151,7 @@ namespace Nine.Graphics.Materials
         internal static string GetShaderCode(string resourceKey)
         {
             return System.Text.Encoding.UTF8.GetString(
-                MaterialGroup.TryInvokeContentPipelineMethod<byte[]>(
-                "MaterialPartShaders", "get_" + resourceKey));
+                Extensions.TryInvokeContentPipelineMethod<byte[]>("MaterialPartShaders", "get_" + resourceKey));
         }
         #endregion
     }
