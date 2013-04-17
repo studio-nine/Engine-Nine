@@ -118,7 +118,6 @@
     <Compile Include="Pipeline\ContentPipeline.cs" />
     <Compile Include="Serialization\PipelineObjectWriter.cs" />
     <Compile Include="Serialization\FileSystemResolver.cs" />
-    <Compile Include="Serialization\SerializationOverride.cs" />
     <Compile Include="EmbeddedAssemblies.cs" />
     <Compile Include="EmbeddedAssemblies.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -146,15 +145,12 @@
     <Compile Include="Graphics\Splatter.cs" />
     <Compile Include="Graphics\Materials\MaterialGroupBuilder.cs" />
     <Compile Include="Pipeline\PipelineGraphics.cs" />
-    <Compile Include="Navigation\PathGridBuilder.cs" />
-    <Compile Include="Navigation\PathGridContent.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />
     <Compile Include="Graphics\ProceduralTextureGenerator.cs" />
     <Compile Include="Pipeline\Processors\ManifestProcessor.cs" />
     <Compile Include="Pipeline\Processors\ModelCollisionProcessor.cs" />
     <Compile Include="Pipeline\Processors\NormalTextureProcessor.cs" />
     <Compile Include="Degrees.cs" />
-    <Compile Include="ExternalReference.cs" />
     <Compile Include="TextureTransform.cs" />
     <Compile Include="Transform.cs" />
     <Compile Include="Serialization\TreeWriter.cs" />
@@ -169,7 +165,6 @@
     <Compile Include="Pipeline\Processors\HeightmapProcessor.cs" />
     <Compile Include="Pipeline\Processors\GeometryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ContentReference.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nine.Graphics.3D\Nine.Graphics.3D.csproj">

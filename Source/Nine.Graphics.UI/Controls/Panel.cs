@@ -26,47 +26,64 @@
 
 namespace Nine.Graphics.UI.Controls
 {
-    using System.Linq;
+    using System;
     using System.Collections.Generic;
-    using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework;
-    using Nine.Graphics.UI.Media;
-    using Nine.Graphics.Primitives;
 
     [System.Windows.Markup.ContentProperty("Children")]
-    public abstract class Panel : UIElement
+    public abstract class Panel : UIElement, IContainer, INotifyCollectionChanged<UIElement>
     {
+        public Panel()
+        {
+            children = new NotificationCollection<UIElement>();
+            children.Sender = this;
+            children.Added += Child_Added;
+            children.Removed += Child_Removed;
+        }
+
+        #region Children
+
+        public event Action<UIElement> Added;
+        public event Action<UIElement> Removed;
+
+        System.Collections.IList IContainer.Children { get { return (System.Collections.IList)Children; } }
+
         public IList<UIElement> Children
         {
             get { return this.children; }
         }
         private NotificationCollection<UIElement> children;
 
-        public Panel()
-        {
-            children = new NotificationCollection<UIElement>();
-            children.Sender = this;
-            children.Added += Child_Added;
-        }
-
         void Child_Added(object value)
         {
-            (value as UIElement).Parent = this;
+            var element = value as UIElement;
+            if (element != null)
+            {
+                element.Parent = this;
+                if (Added != null)
+                    Added.Invoke(element);
+            }
         }
+
+        void Child_Removed(object value)
+        {
+            var element = value as UIElement;
+            if (element != null)
+            {
+                element.Parent = this;
+                if (Removed != null)
+                    Removed(element);
+            }
+        }
+
+        #endregion
 
         #region Methods
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
-
+            base.OnRender(renderer);
             foreach (var child in children)
-                child.OnRender(dynamicPrimitive);
-        }
-
-        public override IList<UIElement> GetChildren()
-        {
-            return this.children;
+                child.OnRender(renderer);
         }
 
         #endregion

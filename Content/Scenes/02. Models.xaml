@@ -50,13 +50,24 @@
         You can apply different materials to each part of the model and toggle their visibility separately.
     -->
     <Model Source="{ContentReference ../Models/Palm/AlphaPalm.x}" Transform.Position="10,0,20">
-        <Model.Material>
-            <CustomMaterial IsTransparent="true" TwoSided="true" Source="{ContentReference ../Materials/Cage.fx}">
-                <CustomMaterial.Parameters>
-                    <xna:Vector4 x:Key="BrightColor">1,1,1,1</xna:Vector4>
-                </CustomMaterial.Parameters>
-            </CustomMaterial>
-        </Model.Material>
+        <Model.Meshes>
+            <!-- Hide the trunk -->
+            <ModelMesh Visible="False" />
+            <!--
+                You can write your own .fx shaders and apply them to the models.
+                The shader should use the standard annotations to bind to the current graphics settings.
+                You should not modify any render states in the shader.
+            -->
+            <ModelMesh>
+                <ModelMesh.Material>
+                    <CustomMaterial IsTransparent="true" TwoSided="true" Source="{ContentReference ../Materials/Cage.fx}">
+                        <CustomMaterial.Parameters>
+                            <xna:Vector4 x:Key="BrightColor">0,1,1,1</xna:Vector4>
+                        </CustomMaterial.Parameters>
+                    </CustomMaterial>
+                </ModelMesh.Material>
+            </ModelMesh>
+        </Model.Meshes>
     </Model>
     
     <!--

@@ -5,7 +5,6 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [Nine.Serialization.BinarySerializable]
     public class EnvironmentMapMaterial : Material
     {
         #region Properties

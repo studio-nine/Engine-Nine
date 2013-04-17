@@ -3,6 +3,7 @@
     using Microsoft.Xna.Framework;
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Media;
+    using Nine.Graphics.UI.Internal;
 
     /// <summary>
     /// A Control that can show progress of an operation.
@@ -35,32 +36,22 @@
             Padding = new Thickness(4);
         }
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
+            base.OnRender(renderer);
             switch (Orientation)
             {
                 case Controls.Orientation.Horizontal:
                     var HorzBar = AbsoluteRenderTransform;
-
-                    HorzBar.X += Padding.Left;
-                    HorzBar.Y += Padding.Top;
-                    HorzBar.Width -= Padding.Right * 2;
-                    HorzBar.Height -= Padding.Bottom * 2;
-
+                    HorzBar = HorzBar.Deflate(Padding);
                     HorzBar.Width = HorzBar.Width * ((Value - Minimum) / (Maximum - Minimum));
-                    dynamicPrimitive.AddRectangle(HorzBar, BarBrush, null);
+                    renderer.Draw(HorzBar, BarBrush);
                     break;
                 case Controls.Orientation.Vertical: // Should I make this top to down?
                     var VertBar = AbsoluteRenderTransform;
-
-                    VertBar.X += Padding.Left;
-                    VertBar.Y += Padding.Top;
-                    VertBar.Width -= Padding.Right * 2;
-                    VertBar.Height -= Padding.Bottom * 2;
-
+                    VertBar = VertBar.Deflate(Padding);
                     VertBar.Height = VertBar.Height * ((Value - Minimum) / (Maximum - Minimum));
-                    dynamicPrimitive.AddRectangle(VertBar, BarBrush, null);
+                    renderer.Draw(VertBar, BarBrush);
                     break;
             }
         }

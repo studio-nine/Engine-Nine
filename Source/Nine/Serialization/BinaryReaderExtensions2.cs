@@ -6,14 +6,22 @@ namespace Nine.Serialization
     using System.IO;
     using System.Linq;
     using System.Text;
-    using Microsoft.Xna.Framework;
     using System.Collections;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
 
     /// <summary>
     /// Contains extension methods for BinaryReader.
     /// </summary>
     public static partial class BinaryReaderExtensions
     {
+        static partial void AfterReadObject(ref object value, IServiceProvider serviceProvider)
+        {
+            var markupExtension = value as MarkupExtension;
+            if (markupExtension != null)
+                value = markupExtension.ProvideValue(serviceProvider);
+        }
+
         public static Color ReadColor(this BinaryReader input)
         {
             return new Color { PackedValue = input.ReadUInt32() };

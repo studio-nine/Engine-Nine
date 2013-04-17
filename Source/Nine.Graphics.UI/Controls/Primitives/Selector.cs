@@ -1,22 +1,17 @@
 namespace Nine.Graphics.UI.Controls.Primitives
 {
     using System;
+    using System.Linq;
     using Microsoft.Xna.Framework;
 
-    /// <summary>
-    /// A method that will handle <see cref="Nine.Graphics.UI.Controls.Primitives.Selector">Selector.SelectionChanged</see> event.
-    /// </summary>
-    /// <param name="sender">Selector</param>
-    /// <param name="e">Event Data</param>
-    public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
+    // TODO: Error when the SelectedIndex is set before the children ,"Out Of Range"
+    // TODO: Allow multiple selections
 
     /// <summary>
     /// A control that allows the user to select items from among its child elements.
     /// </summary>
     public abstract class Selector : ItemsControl
     {
-        // TODO: Allow multiple selections
-
         /// <summary>
         /// Gets or sets the index of the current selected item or 
         /// returns negative one (-1) if the selection is empty.
@@ -26,33 +21,53 @@ namespace Nine.Graphics.UI.Controls.Primitives
             get { return selectedIndex; }
             set
             {
-                var Children = this.GetChildren();
-                if (Children.Count > selectedIndex)
-                    throw new IndexOutOfRangeException();
+                var Children = ItemsSource;
+                if (SelectionChanged != null)
+                {
+                    var NewChild = Children.Count > value ? Children[value] : null;
+                    var PrevChild = Children.Count > value ? Children[selectedIndex] : null;
+                    SelectionChanged(this, new SelectionChangedEventArgs(NewChild, PrevChild));
+                }
+
+                // This has a change of creating a issue
+                if (Children != null)
+                    selectedIndex = (int)MathHelper.Clamp(value, -1, Children.Count);
                 else
-                    selectedIndex = (int)MathHelper.Clamp(value, -1, int.MaxValue); ;
+                    selectedIndex = value;
             }
         }
         private int selectedIndex = 0;
 
         /// <summary>
-        /// Gets the current selected element.
+        /// Gets or sets the current selected element.
         /// </summary>
-        public object SelectedItem 
+        public UIElement SelectedItem
         {
             get
             {
-                var Children = this.GetChildren();
-                if (Children.Count > SelectedIndex)
+                var Children = ItemsSource;
+                if (SelectedIndex >= Children.Count)
                     return null;
                 else
                     return Children[SelectedIndex];
+            }
+            set
+            {
+                var children = ItemsSource;
+                if (children.Contains(value))
+                {
+                    var index = children.IndexOf(value);
+                    selectedIndex = index;
+                }
+                else
+                    // Right Exception?
+                    throw new NullReferenceException("value");
             }
         }
 
         /// <summary>
         /// Occurs when the selection changes.
         /// </summary>
-        public event SelectionChangedEventHandler SelectionChanged;
+        public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
     }
 }

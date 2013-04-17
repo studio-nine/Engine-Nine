@@ -46,10 +46,7 @@ namespace Nine.Serialization
         /// <summary>
         /// Gets a list of search directories that stores the content files.
         /// </summary>
-        public IList<string> SearchDirectories
-        {
-            get { return searchDirectories; }
-        }
+        public IList<string> SearchDirectories { get { return searchDirectories; } }
         private List<string> searchDirectories = new List<string>();
 
         /// <summary>
@@ -61,20 +58,14 @@ namespace Nine.Serialization
         /// <summary>
         /// Gets a list of resolvers that specifies how to resolve a asset name.
         /// </summary>
-        public IList<IContentResolver> Resolvers 
-        {
-            get { return resolvers; }
-        }
+        public IList<IContentResolver> Resolvers { get { return resolvers; } }
         private List<IContentResolver> resolvers = new List<IContentResolver>();
 
         /// <summary>
         /// Gets a collection of additional service objects exposed though the IServiceProvider interface.
         /// </summary>
-        public IList<object> Services
-        {
-            get { return services ?? (services = new List<object>()); }
-        }
-        private List<object> services;
+        public IList<object> Services { get { return services; } }
+        private List<object> services = new List<object>();
 
         private IServiceProvider serviceProvider;
         private Dictionary<string, object> cachedContents;
@@ -88,6 +79,7 @@ namespace Nine.Serialization
             this.serviceProvider = serviceProvider;
             this.resolvers.Add(new PackageResolver());
             this.searchDirectories.Add("");
+            this.services.Add(new SerializationOverride());
         }
 
         /// <summary>

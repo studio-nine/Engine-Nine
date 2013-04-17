@@ -29,7 +29,7 @@
         bool RemoveOverride(object target);
 
         /// <summary>
-        /// Sets the override object of the target value.
+        /// Sets the override object of the target value, override the existing value if one already exists.
         /// </summary>
         void SetOverride(object target, object targetOverride);
 

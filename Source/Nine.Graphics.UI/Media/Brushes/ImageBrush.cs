@@ -8,7 +8,7 @@
     /// A Brush that draws a Image.
     /// </summary>
     [ContentProperty("Source")]
-    public class ImageBrush : TileBrush
+    public sealed class ImageBrush : TileBrush
     {
         /// <summary>
         /// Gets or sets the represented image.

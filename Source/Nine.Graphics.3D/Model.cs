@@ -35,7 +35,8 @@ namespace Nine.Graphics
     /// property will also update the skeleton, animations and materials.
     /// </remarks>
     [ContentProperty("Attachments")]
-    public class Model : Transformable, Nine.IContainer, Nine.IUpdateable, ISpatialQueryable, IPickable, IGeometry, ISupportInstancing, INotifyCollectionChanged<object>
+    public class Model : Transformable, Nine.IContainer, Nine.IUpdateable, INotifyCollectionChanged<object>
+                       , ISpatialQueryable, IPickable, IGeometry, ISupportInstancing, ISupportInitialize
     {
         #region Source
         /// <summary>
@@ -46,34 +47,19 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the model meshes that made up of this model.
         /// </summary>
-        public IList<ModelMesh> Meshes
-        {
-            get { return modelMeshes; }
-        }
-
-        IList Nine.IContainer.Children
-        {
-            get { return children; }
-        }
-
+        public IList<ModelMesh> Meshes { get { return modelMeshes; } }
         private List<ModelMesh> modelMeshes;
+
+        IList Nine.IContainer.Children { get { return children; } }
         internal List<object> children;
 
         /// <summary>
         /// Gets or sets the underlying model.
         /// </summary>
-        [DependsOn("Meshes")]
         public Microsoft.Xna.Framework.Graphics.Model Source
         {
             get { return source; }
-            set
-            {
-                if (source != value)
-                {
-                    source = value;
-                    UpdateModel();
-                }
-            }
+            set { if (source != value) { source = value; EnsureInitialized(); } }
         }
         private Microsoft.Xna.Framework.Graphics.Model source;
         #endregion
@@ -285,8 +271,13 @@ namespace Nine.Graphics
             if (source == null)
                 throw new ArgumentNullException("source");
 
-            this.Source = source;
-            this.Material = material;
+            var supportInitialize = (ISupportInitialize)this;
+            supportInitialize.BeginInit();
+            {
+                this.Source = source;
+                this.Material = material;
+            }
+            supportInitialize.EndInit();
         }
 
         /// <summary>
@@ -297,7 +288,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Refresh the internal states when a model changes.
         /// </summary>
-        private void UpdateModel()
+        private void OnInitialized()
         {
             skeleton = null;
             geometryPositions = null;
@@ -558,6 +549,13 @@ namespace Nine.Graphics
             mesh.ApplyTextures(material);
             mesh.ApplySkinTransform(material);
         }
+        #endregion
+
+        #region ISupportInitialize
+        void ISupportInitialize.BeginInit() { initializing = true; }
+        void ISupportInitialize.EndInit() { if (initializing) { initializing = false; OnInitialized(); } }
+        void EnsureInitialized() { if (!initializing) OnInitialized(); }
+        private bool initializing = false;
         #endregion
         
         #region INotifyCollectionChanged

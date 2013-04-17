@@ -18,7 +18,7 @@ namespace Nine.Serialization
     public class FileSystemResolver : IContentResolver
     {
         private XamlSerializer xaml = new XamlSerializer();
-        private Dictionary<string, IContentImporter> importers = new Dictionary<string, IContentImporter>();
+        private Dictionary<string, IContentImporter> importers = new Dictionary<string, IContentImporter>(StringComparer.OrdinalIgnoreCase);
 
         public FileSystemResolver()
         {

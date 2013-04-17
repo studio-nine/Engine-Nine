@@ -5,6 +5,7 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Serialization;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -21,10 +22,16 @@
         static MD5 md5 = MD5.Create();
         static PipelineBuilder builder = new PipelineBuilder();
         static PipelineObjectReader reader = new PipelineObjectReader();
+        static XamlSerializer xamlSerializer = new XamlSerializer();
 
         internal static readonly string OutputDirectory;
         internal static readonly string IntermediateDirectory;
         internal static readonly string CacheDirectory;
+
+        /// <summary>
+        /// Stores a mapping from the runtime model (E.g. Texture) to a cached .xnb file name.
+        /// </summary>
+        internal static Dictionary<WeakReference, string> ObjectCache = new Dictionary<WeakReference, string>(new WeakReferenceEqualtyComparer());
 
         static ContentPipeline()
         {
@@ -63,10 +70,7 @@
             var referenceDirectory = Path.GetDirectoryName(builder.LastFilename) + "\\";
 
             var method = contentCompiler.GetType().GetMethod("Compile", BindingFlags.NonPublic | BindingFlags.Instance);
-            method.Invoke(contentCompiler, new object[] 
-            {
-                output, content, TargetPlatform.Windows, GraphicsProfile.Reach, false, referenceDirectory, referenceDirectory
-            });
+            method.Invoke(contentCompiler, new object[] { output, content, TargetPlatform.Windows, GraphicsProfile.Reach, true, referenceDirectory, referenceDirectory });
             output.Flush();
         }
 
@@ -87,28 +91,22 @@
 
         public static T Load<T>(string fileName, IImporter importer, IProcessor processor = null, IServiceProvider serviceProvider = null)
         {
-            fileName = Extensions.CleanPath(fileName).ToLowerInvariant();
-            
-            var fileNameHash = new Guid(md5.ComputeHash(Encoding.UTF8.GetBytes(fileName))).ToString("N").ToUpper();
-            var lastModified = File.GetLastWriteTimeUtc(fileName);
-            var fileSignature = fileNameHash + "-" + lastModified.Ticks;
-            var cachedFileName = Path.Combine(CacheDirectory, fileSignature);
-            
+            // TODO: Race conditions when 2 processes tried to access the file at the same time?
+            var cachedFileName = GetCachedFileName(fileName, processor);
             if (!File.Exists(cachedFileName))
             {
                 var content = LoadContent<object>(fileName, importer, processor);
                 if (content == null)
                     return default(T);
 
-                foreach (var invalidCache in Directory.GetFiles(CacheDirectory, fileNameHash + "-*"))
-                    File.Delete(invalidCache);
-
                 SaveContent(cachedFileName, content);
             }
 
             using (var stream = File.OpenRead(cachedFileName))
             {
-                return (T)(reader.Read(new BinaryReader(stream), null, serviceProvider));
+                var result = (T)(reader.Read(new BinaryReader(stream), null, serviceProvider));
+                ObjectCache.Add(new WeakReference(result), cachedFileName);
+                return result;
             }
         }
 
@@ -117,6 +115,26 @@
             return importerType.GetCustomAttributes(true)
                                .OfType<ContentImporterAttribute>()
                                .SelectMany(x => x.FileExtensions).ToArray();
+        }
+
+        private static string GetCachedFileName(string fileName, IProcessor processor = null)
+        {
+            fileName = Extensions.CleanPath(fileName).ToLowerInvariant();
+
+            var memoryStream = new MemoryStream(1024);
+            var bytes = Encoding.UTF8.GetBytes(fileName);
+            memoryStream.Write(bytes, 0, bytes.Length);
+            bytes = BitConverter.GetBytes(File.GetLastWriteTimeUtc(fileName).Ticks);
+            memoryStream.Write(bytes, 0, bytes.Length);
+
+            if (processor != null)
+            {
+                xamlSerializer.Save(memoryStream, processor, null);
+            }
+
+            return Path.Combine(CacheDirectory, string.Concat(
+                   Path.GetFileNameWithoutExtension(fileName), "-",
+                   new Guid(md5.ComputeHash(memoryStream.ToArray())).ToString("N").ToUpper()));
         }
 
         private static string ValidateFileStream(Stream input)

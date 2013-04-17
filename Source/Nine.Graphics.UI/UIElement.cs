@@ -34,14 +34,15 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Media;
-
     using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Renderer;
 
     [Nine.Serialization.BinarySerializable]
-    public abstract class UIElement : Nine.Object, IContainer, IComponent
+    public abstract class UIElement : Nine.Object, IComponent
     {
         #region Properties
 
+        // TODO: Make it work with Parent/s
         public bool Visible
         {
             get { return visible; }
@@ -86,23 +87,9 @@ namespace Nine.Graphics.UI
             get { return this.visualOffset; }
         }
 
-        IContainer IComponent.Parent
-        {
-            get { return Parent; }
-            set { Parent = value as UIElement; }
-        }
-
-        System.Collections.IList IContainer.Children
-        {
-            get { return GetChildren() as System.Collections.IList; }
-        }
-
         #endregion 
 
         #region Fields
-
-        internal bool isArrangeValid;
-        internal bool isMeasureValid;
 
         public Brush Background { get; set; }
 
@@ -124,13 +111,10 @@ namespace Nine.Graphics.UI
         public float ActualWidth { get { return RenderSize.X; } }
         public float ActualHeight { get { return RenderSize.Y; } }
 
-        public object DataContext;
-        public bool IsMouseCaptured { get; set; }
         public Thickness Margin { get; set; }
 
-        public UIElement Parent { get; internal set; }
-
-        internal Window Window;
+        internal bool isArrangeValid;
+        internal bool isMeasureValid;
 
         private Vector2 previousAvailableSize;
         private BoundingRectangle previousFinalRect;
@@ -139,8 +123,18 @@ namespace Nine.Graphics.UI
         private Vector2 unclippedSize;
         private Vector2 visualOffset;
 
+        internal Window Window;
+
+        public UIElement Parent { get; internal set; }
+
+        IContainer IComponent.Parent
+        {
+            get { return Parent as IContainer; }
+            set { Parent = value as UIElement; }
+        }
+
         #endregion
-        
+
         #region Methods
 
         protected UIElement()
@@ -149,51 +143,6 @@ namespace Nine.Graphics.UI
             Height = float.NaN;
             MaxWidth = float.PositiveInfinity;
             MaxHeight = float.PositiveInfinity;
-
-            IsMouseCaptured = true;
-        }
-
-        public virtual void OnApplyTemplate() { }
-
-        public virtual IList<UIElement> GetChildren() { return null; }
-
-        public bool HitTest(Vector2 point)
-        {
-            return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
-        }
-
-        protected internal virtual void OnRender(DynamicPrimitive dynamicPrimitive) 
-        {
-            if (dynamicPrimitive.GraphicsDevice.RasterizerState.ScissorTestEnable != isClippingRequired)
-            {
-                dynamicPrimitive.GraphicsDevice.RasterizerState = isClippingRequired ? Window.WithClipping : Window.WithoutClipping;
-            }
-            if (isClippingRequired)
-            {
-                var ClippingRect = GetClippingRect(RenderSize);
-                if (ClippingRect.HasValue)
-                    dynamicPrimitive.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
-            }
-
-            if (Background != null)
-            {
-                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, Background, null);
-            }
-        }
-
-        protected internal virtual void OnDebugRender(DynamicPrimitive primitive)
-        {
-            // TODO: If we are going to keep Debug Rendering, then this needs to be in 2D Space.
-            primitive.AddRectangle(
-                new Vector2(AbsoluteRenderTransform.X, AbsoluteRenderTransform.Y),
-                new Vector2(AbsoluteRenderTransform.X + AbsoluteRenderTransform.Width,
-                    AbsoluteRenderTransform.Y + AbsoluteRenderTransform.Height),
-                null, Color.LightBlue, 2);
-
-            var Children = GetChildren();
-            if (Children != null)
-                foreach (var Child in Children)
-                    Child.OnDebugRender(primitive);
         }
 
         public bool TryGetRootElement(out Window rootElement)
@@ -201,7 +150,7 @@ namespace Nine.Graphics.UI
             UIElement element = this;
             while ((rootElement = element.Window) == null)
             {
-                if ((element = element.Parent) == null)
+                if ((element = element.Parent as UIElement) == null)
                     return false;
             }
             return true;
@@ -306,39 +255,138 @@ namespace Nine.Graphics.UI
             return vector;
         }
 
-        private object GetNearestDataContext()
+        #endregion
+
+        #region Draw
+
+        protected internal virtual void OnRender(IRenderer renderer)
         {
-            UIElement curentElement = this;
-            object dataContext;
-
-            do
-            {
-                dataContext = curentElement.DataContext;
-                curentElement = curentElement.Parent;
-            }
-            while (dataContext == null && curentElement != null);
-
-            return dataContext;
+            ToggleClipping(renderer.GraphicsDevice, isClippingRequired);
+            if (Background != null)
+                renderer.Draw(AbsoluteRenderTransform, Background);
         }
 
-        private void InvalidateMeasureOnDataContextInheritors()
-        {
-            IEnumerable<UIElement> children = this.GetChildren();
-            if (children.Count() == 0)
-            {
-                this.InvalidateMeasure();
-            }
-            else
-            {
-                IEnumerable<UIElement> childrenInheritingDataContext =
-                    children.OfType<UIElement>().Where(element => element.DataContext == null);
 
-                foreach (UIElement element in childrenInheritingDataContext)
-                {
-                    element.InvalidateMeasureOnDataContextInheritors();
-                }
+        protected void ToggleClipping(GraphicsDevice graphics, bool value)
+        {
+            graphics.RasterizerState = value ? Window.WithClipping : Window.WithoutClipping;
+
+            if (value)
+            {
+                var ClippingRect = GetClippingRect(RenderSize);
+                if (ClippingRect.HasValue)
+                    ; // renderer.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
             }
         }
+
+        #endregion
+
+        #region Input
+
+        /// <summary>
+        /// Occurs when a key is been pressed.
+        /// </summary>
+        public event EventHandler<KeyboardEventArgs> KeyDown;
+
+        /// <summary>
+        /// Occurs when a key is been released.
+        /// </summary>
+        public event EventHandler<KeyboardEventArgs> KeyUp;
+
+        /// <summary>
+        /// Occurs when a mouse button is been pressed.
+        /// </summary>
+        public event EventHandler<MouseEventArgs> MouseDown;
+
+        /// <summary>
+        /// Occurs when a mouse button is been released.
+        /// </summary>
+        public event EventHandler<MouseEventArgs> MouseUp;
+
+        /// <summary>
+        /// Occurs when the mouse scrolled.
+        /// </summary>
+        public event EventHandler<MouseEventArgs> MouseMove;
+
+        /// <summary>
+        /// Occurs when the mouse moved.
+        /// </summary>
+        public event EventHandler<MouseEventArgs> MouseWheel;
+
+        /// <summary>
+        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been pressed.
+        /// </summary>
+        public event EventHandler<GamePadEventArgs> ButtonDown;
+
+        /// <summary>
+        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been released.
+        /// </summary>
+        public event EventHandler<GamePadEventArgs> ButtonUp;
+
+        internal void InvokeKeyDown(object sender, KeyboardEventArgs e)
+        {
+            OnKeyDown(e);
+            if (KeyDown != null)
+                KeyDown(sender, e);
+        }
+        internal void InvokeKeyUp(object sender, KeyboardEventArgs e)
+        {
+            OnKeyUp(e);
+            if (KeyUp != null)
+                KeyUp(sender, e);
+        }
+        internal void InvokeMouseMove(object sender, MouseEventArgs e)
+        {
+            OnMouseMove(e);
+            if (MouseMove != null)
+                MouseMove(sender, e);
+        }
+        internal void InvokeOnMouseUp(object sender, MouseEventArgs e)
+        {
+            OnMouseUp(e);
+            if (MouseUp != null)
+                MouseUp(sender, e);
+        }
+        internal void InvokeMouseDown(object sender, MouseEventArgs e)
+        {
+            OnMouseDown(e);
+            if (MouseDown != null)
+                MouseDown(sender, e);
+        }
+        internal void InvokeMouseWheel(object sender, MouseEventArgs e)
+        {
+            OnMouseWheel(e);
+            if (MouseWheel != null)
+                MouseWheel(sender, e);
+        }
+        internal void InvokeButtonDown(object sender, GamePadEventArgs e)
+        {
+            OnButtonDown(e);
+            if (ButtonDown != null)
+                ButtonDown(sender, e);
+        }
+        internal void InvokeButtonUp(object sender, GamePadEventArgs e)
+        {
+            OnButtonUp(e);
+            if (ButtonUp != null)
+                ButtonUp(sender, e);
+        }
+
+        protected virtual void OnKeyDown(KeyboardEventArgs e) { }
+        protected virtual void OnKeyUp(KeyboardEventArgs e) { }
+        protected virtual void OnMouseMove(MouseEventArgs e) { }
+        protected virtual void OnMouseUp(MouseEventArgs e) { }
+        protected virtual void OnMouseDown(MouseEventArgs e) { }
+        protected virtual void OnMouseWheel(MouseEventArgs e) { }
+        protected virtual void OnButtonDown(GamePadEventArgs e) { }
+        protected virtual void OnButtonUp(GamePadEventArgs e) { }
+
+        public bool HitTest(Vector2 point)
+        {
+            return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
+        }
+
+        #endregion
 
         #region Measure and Arrange
 
@@ -348,7 +396,7 @@ namespace Nine.Graphics.UI
             while (visualParent != null)
             {
                 visualParent.isArrangeValid = false;
-                visualParent = visualParent.Parent;
+                visualParent = visualParent.Parent as UIElement;
             }
         }
 
@@ -359,7 +407,7 @@ namespace Nine.Graphics.UI
             {
                 visualParent.isMeasureValid = false;
                 visualParent.isArrangeValid = false;
-                visualParent = visualParent.Parent;
+                visualParent = visualParent.Parent as UIElement;
             }
         }
 
@@ -504,7 +552,7 @@ namespace Nine.Graphics.UI
         private Vector2 MeasureCore(Vector2 availableSize)
         {
             //this.ResolveDeferredBindings(this.GetNearestDataContext());
-            this.OnApplyTemplate();
+            //this.OnApplyTemplate();
 
             Thickness margin = this.Margin;
             Vector2 availableSizeWithoutMargins = availableSize.Deflate(margin);
@@ -550,8 +598,6 @@ namespace Nine.Graphics.UI
             this.unclippedSize = isClippingRequired ? unclippedSize : Vector2.Zero;
             return desiredSizeWithMargins;
         }
-
-        #endregion
 
         #endregion
     }

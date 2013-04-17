@@ -7,10 +7,12 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using Nine.Serialization;
 
     /// <summary>
     /// Represents a local copy of settings of the specified effect.
     /// </summary>
+    [BinarySerializable]
     public abstract class Material : Nine.Object
     {
         #region Fields

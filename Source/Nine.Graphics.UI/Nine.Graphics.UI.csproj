@@ -56,6 +56,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
@@ -85,27 +86,28 @@
     </Compile>
     <Compile Include="Controls\CheckBox.cs" />
     <Compile Include="Controls\ListBox.cs" />
-    <Compile Include="Controls\ListView.cs" />
+    <Compile Include="Controls\ListBoxItem.cs" />
     <Compile Include="Controls\MediaElement.cs" />
     <Compile Include="Controls\Other\ColumnDefinition.cs" />
     <Compile Include="Controls\EventArgs\SelectionChangedEventArgs.cs" />
-    <Compile Include="Controls\Other\ViewBase.cs" />
+    <Compile Include="Controls\Page.cs" />
+    <Compile Include="Controls\PageNavigator.cs" />
     <Compile Include="Controls\Primitives\Selector.cs" />
     <Compile Include="Controls\RangeBase.cs" />
-    <Compile Include="Controls\Shapes\Rectangle.cs" />
-    <Compile Include="Controls\Shapes\Shape.cs" />
     <Compile Include="Controls\ProgressBar.cs" />
     <Compile Include="Design\GridLengthConverter.cs" />
     <Compile Include="Design\SolidColorBrushConverter.cs" />
     <Compile Include="Design\ThicknessConverter.cs" />
     <Compile Include="Extensions\DynamicPrimitiveExtensions.cs" />
-    <Compile Include="Extensions\SpriteBatchExtensions.cs" />
+    <Compile Include="Extensions\UIExtensions.cs" />
+    <Compile Include="Input\IInputElement.cs" />
+    <Compile Include="Internal\BlankTexture.cs" />
     <Compile Include="Internal\BoundingRectangleExtensions.cs" />
-    <Compile Include="Media\BlankTexture.cs" />
     <Compile Include="Media\Brushes\GradientBrush.cs" />
     <Compile Include="Media\Brushes\ImageBrush.cs" />
-    <Compile Include="Media\Brushes\LinearGradientBrush.cs" />
     <Compile Include="Media\Brushes\TileBrush.cs" />
+    <Compile Include="Media\Brushes\VisualBrush.cs" />
+    <Compile Include="Media\Flip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -124,14 +126,16 @@
   <ItemGroup>
     <Compile Include="Controls\Primitives\ToggleButton.cs" />
     <Compile Include="Internal\Controls\ScrollData.cs" />
-    <Compile Include="Controls\Canvas.cs" />
     <Compile Include="Extensions\IElementExtensions.cs" />
+    <Compile Include="Renderer\DynamicPrimitiveRenderer.cs" />
+    <Compile Include="Renderer\IRenderer.cs" />
+    <Compile Include="Renderer\SpriteBatchRenderer.cs" />
     <Compile Include="Thickness.cs" />
     <Compile Include="GridUnitType.cs" />
     <Compile Include="GridLength.cs" />
     <Compile Include="VerticalAlignment.cs" />
     <Compile Include="HorizontalAlignment.cs" />
-    <Compile Include="Controls\Other\ItemsControl.cs" />
+    <Compile Include="Controls\ItemsControl.cs" />
     <Compile Include="Controls\Primitives\IScrollInfo.cs" />
     <Compile Include="Controls\ScrollContentPresenter.cs" />
     <Compile Include="Controls\ScrollViewer.cs" />
@@ -143,7 +147,7 @@
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\Primitives\ButtonBase.cs" />
     <Compile Include="Controls\Control.cs" />
-    <Compile Include="Controls\Other\StretchDirection.cs" />
+    <Compile Include="Media\StretchDirection.cs" />
     <Compile Include="Internal\Controls\Viewbox.cs" />
     <Compile Include="Controls\Other\Orientation.cs" />
     <Compile Include="Media\Stretch.cs" />

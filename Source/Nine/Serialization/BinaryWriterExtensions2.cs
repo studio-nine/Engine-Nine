@@ -14,8 +14,8 @@ namespace Nine.Serialization
         static partial void BeforeWriteObject(ref object value, IServiceProvider serviceProvider)
         {
             object serializedObject;
-            var designTimePropertyStore = serviceProvider.TryGetService<ISerializationOverride>();
-            if (designTimePropertyStore != null && designTimePropertyStore.TryGetOverride(value, out serializedObject))
+            var serializationOverride = serviceProvider.TryGetService<ISerializationOverride>();
+            if (serializationOverride != null && serializationOverride.TryGetOverride(value, out serializedObject))
                 value = serializedObject;
         }
 

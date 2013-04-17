@@ -29,37 +29,35 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework;
     using System.Collections.Generic;
     using Nine.Graphics.Primitives;
+    using System.Collections;
 
     /// <summary>
     /// Represents a control with a single piece of content.
     /// </summary>
-    public class ContentControl : Control
+    [System.Windows.Markup.ContentProperty("Content")]
+    public class ContentControl : Control, IContainer
     {
+        /// <summary>
+        /// Gets a value indicating if it contains content
+        /// </summary>
+        public bool HasContent { get { return content != null; } }
+
+        /// <summary>
+        /// Gets or sets the content of <see cref="ContentControl"/>.
+        /// </summary>
         public UIElement Content 
         {
             get { return content; }
             set
             {
+                OnContentChanged(content, value);
                 content = value;
                 content.Parent = this;
             }
         }
         private UIElement content;
 
-        public override IList<UIElement> GetChildren()
-        {
-            var child = Content;
-            if (child != null)
-                return new UIElement[] { Content };
-            return null;
-        }
-
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
-        {
-            base.OnRender(dynamicPrimitive);
-            if (Content != null)
-                Content.OnRender(dynamicPrimitive);
-        }
+        IList IContainer.Children { get { return new UIElement[] { Content }; } }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
@@ -76,6 +74,16 @@ namespace Nine.Graphics.UI.Controls
             return content.DesiredSize;
         }
 
-        protected virtual void OnContentChanged(UIElement oldContent, UIElement newContent) { }
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
+        {
+            base.OnRender(renderer);
+            if (Content != null)
+                Content.OnRender(renderer);
+        }
+
+        protected virtual void OnContentChanged(UIElement oldContent, UIElement newContent) 
+        { 
+        
+        }
     }
 }

@@ -23,8 +23,6 @@
 
         internal IServiceProvider ServiceProvider;
         internal ISerializationOverride SerializationOverride;
-        internal Stack<MarkupExtension> MarkupExtensions = new Stack<MarkupExtension>();
-        internal Stack<XamlMember> Members = new Stack<XamlMember>();
         
         /// <summary>
         /// Initializes a new instance of XamlSerializer.
@@ -71,16 +69,6 @@
             if (result != null)
                 return result;
 
-            if (ServiceProvider != null)
-            {
-                /*
-                var instanceResolver = ServiceProvider.TryGetService<IInstanceResolver>();
-                if (instanceResolver != null &&
-                   (result = instanceResolver.ResolveInstance(type, arguments, ServiceProvider)) != null)
-                    return result;
-                 */
-            }
-
             try
             {
                 return Activator.CreateInstance(type, ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice);
@@ -119,7 +107,6 @@
     #region ObjectWriter
     class ObjectWriter : XamlObjectWriter
     {
-        private object currentObject;
         private XamlSerializer xamlSerializer;
 
         public ObjectWriter(XamlSerializer xamlSerializer, XamlSchemaContext schemaContext) : base(schemaContext)
@@ -132,33 +119,6 @@
             if (xamlType.UnderlyingType == null)
                 throw new InvalidOperationException("Cannot create an object of type " + xamlType.Name);
             base.WriteStartObject(new XamlFactoryType(xamlSerializer, xamlType));
-        }
-
-        public override void WriteStartMember(XamlMember property)
-        {
-            xamlSerializer.Members.Push(property);
-            base.WriteStartMember(property);
-        }
-
-        public override void WriteEndMember()
-        {
-            base.WriteEndMember();
-
-            var member = xamlSerializer.Members.Pop();
-            if (xamlSerializer.MarkupExtensions.Count > 0)
-            {
-                var markupExtension = xamlSerializer.MarkupExtensions.Pop();
-                if (markupExtension != null && 
-                    markupExtension.GetType().IsDefined(typeof(BinarySerializableAttribute), false) &&
-                    xamlSerializer.SerializationOverride != null)
-                    ;// xamlSerializer.SerializationOverride.SetOverride(currentObject, member.Name, markupExtension);
-            }
-        }
-
-        protected override bool OnSetValue(object eventSender, XamlMember member, object value)
-        {
-            currentObject = eventSender;
-            return base.OnSetValue(eventSender, member, value);
         }
     }
     #endregion
@@ -258,8 +218,6 @@
 
             if (result == null)
                 throw new MissingMethodException();
-            if (result is MarkupExtension)
-                xamlSerializer.MarkupExtensions.Push((MarkupExtension)result);
             return result;
         }
     }

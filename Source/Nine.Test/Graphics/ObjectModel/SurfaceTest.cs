@@ -9,18 +9,6 @@
     public class SurfaceTest : GraphicsTest
     {
         [TestMethod()]
-        public void HeightmapTest()
-        {
-            Heightmap heightmap = new Heightmap(1.0f, 2, 2);
-            
-            Assert.AreEqual<Vector3>(new Vector3(2, 0, 2), heightmap.Size);
-
-            Assert.AreEqual<BoundingBox>(
-                new BoundingBox(Vector3.Zero, new Vector3(2, 0, 2)),
-                heightmap.BoundingBox);
-        }
-
-        [TestMethod()]
         public void SurfaceContructorTest()
         {
             Surface surface = new Surface(
@@ -30,7 +18,6 @@
             Assert.AreEqual<int>(1, surface.PatchCountZ);
             Assert.AreEqual<int>(1, surface.Patches.Count);
             Assert.AreEqual<int>(2, surface.PatchSegmentCount);
-            Assert.AreEqual<Vector3>(new Vector3(2, 0, 2), surface.Size);
             Assert.AreEqual<BoundingBox>(surface.BoundingBox, surface.Patches[0].BoundingBox);
 
             surface.Transform = Matrix.CreateTranslation(1, 0, 1);

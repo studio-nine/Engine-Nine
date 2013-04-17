@@ -75,7 +75,7 @@ namespace Nine.Graphics.Materials
         [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
 #endif
         public SamplerState SamplerState { get; set; }
-                
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomMaterial"/> class for serialization.
         /// </summary>
@@ -134,12 +134,12 @@ namespace Nine.Graphics.Materials
         public static void BindGlobal(string semantics, Action<EffectParameter, DrawingContext, Material> onApply)
         {
             CustomMaterialParameterBinding.Bindings.Add(semantics, CustomMaterialParameterBinding.BindGlobal(onApply));
-        }
+    }
 
         IEnumerable<EffectParameter> IEffectParameterProvider.GetParameters()
         {
             return source != null ? source.Parameters : Enumerable.Empty<EffectParameter>();
-        }
+    }
 
         EffectParameter IEffectParameterProvider.GetParameter(string name)
         {

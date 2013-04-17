@@ -19,14 +19,12 @@
         /// </summary>
         public Video Source
         {
-            get { return video; }
+            get { return player.Video; }
             set 
             { 
-                video = value; 
-                Play(); // Not sure if this should be placed here.
+                Play(value);
             }
         }
-        private Video video;
 
         /// <summary>
         /// Gets or sets, if the video should loop.
@@ -59,7 +57,7 @@
         /// </summary>
         public TimeSpan VideoLength
         {
-            get { return PlayerVideo.Duration; }
+            get { return Source.Duration; }
         }
 
         /// <summary>
@@ -71,14 +69,6 @@
         }
 
         /// <summary>
-        /// Gets the Current Playing Video.
-        /// </summary>
-        public Video PlayerVideo
-        {
-            get { return player.Video; }
-        }
-
-        /// <summary>
         /// Gets or sets the video Volume.
         /// </summary>
         public float Volume
@@ -87,8 +77,14 @@
             set { player.Volume = value; }
         }
 
+        /// <summary>
+        /// Gets or sets if the Video should be flipped.
+        /// </summary>
+        public Flip Flip { get; set; }
+
         #endregion
 
+        // There might be an issue when looping that the buffer is slow.
         private VideoPlayer player;
         private Texture2D Texture;
 
@@ -106,6 +102,8 @@
             player = new VideoPlayer();
             if (video != null)
                 this.Source = video;
+
+            Flip = Media.Flip.None;
         }
 
         #region Methods
@@ -113,11 +111,11 @@
         /// <summary>
         /// Plays the Video.
         /// </summary>
-        public void Play()
+        public void Play(Video video)
         {
             if (Source == null)
                 throw new ArgumentNullException();
-            player.Play(Source);
+            player.Play(video);
         }
         
         /// <summary>
@@ -147,16 +145,19 @@
                 player.Stop();
         }
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
+            if (!Visible)
+                return;
+
+            base.OnRender(renderer);
 
             if (player.State != MediaState.Stopped)
                 Texture = player.GetTexture();
 
             if (Texture != null)
             {
-                dynamicPrimitive.AddRectangle(AbsoluteRenderTransform, new ImageBrush() { Source = Texture }, null);
+                renderer.Draw(Texture, AbsoluteRenderTransform, null, Color.White, Flip);
             }
         }
 

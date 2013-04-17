@@ -30,12 +30,13 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Internal;
     using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Renderer;
 
     /// <summary>
     /// Draws a border and/or background around another element.
     /// </summary>
     [System.Windows.Markup.ContentProperty("Content")]
-    public class Border : UIElement
+    public class Border : UIElement, IContainer
     {
         private readonly IList<BoundingRectangle> borders = new List<BoundingRectangle>();
 
@@ -68,11 +69,16 @@ namespace Nine.Graphics.UI.Controls
         }
         private UIElement content;
 
+        System.Collections.IList IContainer.Children { get { return new UIElement[] { Content }; } }
+
         #region Methods
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
+            if (!Visible)
+                return;
+
+            base.OnRender(renderer);
 
             if (BorderThickness != Thickness.Empty && BorderBrush != null)
             {
@@ -82,19 +88,12 @@ namespace Nine.Graphics.UI.Controls
                     var Rect = border;
                     Rect.X += AbsoluteVisualOffset.X;
                     Rect.Y += AbsoluteVisualOffset.Y;
-                    dynamicPrimitive.AddRectangle(Rect, BorderBrush, null);
+                    renderer.Draw(Rect, BorderBrush);
                 }
             }
 
             if (Content != null)
-                Content.OnRender(dynamicPrimitive);
-        }
-
-        public override IList<UIElement> GetChildren()
-        {
-            if (Content != null)
-                return new UIElement[] { Content };
-            return null;
+                Content.OnRender(renderer);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

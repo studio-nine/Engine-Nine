@@ -5,80 +5,92 @@
     using System.Xaml;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
+    using Nine.Serialization;
+using System.ComponentModel;
 
     /// <summary>
-    /// The geometric representation of heightmap. 
-    /// The up axis of the terrain is Vector.UnitY.
+    /// Represents a height field in 3d space.
     /// </summary>
-    [Nine.Serialization.BinarySerializable]
-    public class Heightmap
+    public interface IHeightmap
     {
-        #region Fields
         /// <summary>
-        /// Gets the size of the terrain geometry in 3 axis.
+        /// Gets the number of the smallest square block in Y axis, or heightmap texture V axis.
         /// </summary>
-        [Nine.Serialization.BinarySerializable]
-        public Vector3 Size { get; internal set; }
+        int Width { get; }
+
+        /// <summary>
+        /// Gets the number of the smallest square block in Z axis, or heightmap texture U axis.
+        /// </summary>
+        int Height { get; }
 
         /// <summary>
         /// Gets the size of the smallest square block that made up the terrain.
         /// </summary>
-        [Nine.Serialization.BinarySerializable]
+        float Step { get; }
+
+        /// <summary>
+        /// Gets the height of the terrain on given point.
+        /// </summary>
+        float GetHeight(int x, int z);
+
+        /// <summary>
+        /// Gets the normal of the terrain on given point.
+        /// </summary>
+        Vector3 GetNormal(int x, int z);
+
+        /// <summary>
+        /// Gets the tangent of the terrain on given point.
+        /// </summary>
+        Vector3 GetTangent(int x, int z);
+
+        /// <summary>
+        /// Occured when the heightmap has changed.
+        /// An optional rectangle region parameters is provided with the event
+        /// to indicate the dirty region of heightmap change.
+        /// </summary>
+        event Action<Rectangle?> HeightmapChanged;
+    }
+
+    /// <summary>
+    /// The geometric representation of heightmap. The up axis of the terrain is Vector.UnitY.
+    /// </summary>
+    [BinarySerializable]
+    public class Heightmap : IHeightmap
+    {
+        #region Fields
+        /// <summary>
+        /// Gets the size of the smallest square block that made up the terrain.
+        /// </summary>
+        [BinarySerializable]
         public float Step { get; internal set; }
-
-        /// <summary>
-        /// Gets the heights of all terrain points.
-        /// </summary>
-        [Nine.Serialization.BinarySerializable]
-        public float[] Heights { get; internal set; }
-
-        /// <summary>
-        /// Gets the normals of all terrain points.
-        /// </summary>
-        [Nine.Serialization.BinarySerializable]
-        public Vector3[] Normals { get; internal set; }
-
-        /// <summary>
-        /// Gets the tangents of all terrain points.
-        /// </summary>
-        [Nine.Serialization.BinarySerializable]
-        public Vector3[] Tangents { get; internal set; }
-
+        
         /// <summary>
         /// Gets the number of the smallest square block in X axis, or heightmap texture U axis.
         /// </summary>
-        [Nine.Serialization.BinarySerializable]
         public int Width { get; internal set; }
 
         /// <summary>
-        /// Gets the number of the smallest square block in Y axis, or heightmap texture V axis.
+        /// Gets the number of the smallest square block in Z axis, or heightmap texture V axis.
         /// </summary>
-        [Nine.Serialization.BinarySerializable]
         public int Height { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        [Nine.Serialization.BinarySerializable]
-        public object Tag { get; set; }
-
-        /// <summary>
-        /// Gets the axis aligned bounding box of this terrain.
-        /// </summary>
-        [Nine.Serialization.BinarySerializable]
-        public BoundingBox BoundingBox { get; internal set; }
         
         /// <summary>
-        /// Occured when the heightmap changed.
+        /// Occured when the heightmap has changed.
+        /// An optional rectangle region parameters is provided with the event
+        /// to indicate the dirty region of heightmap change.
         /// </summary>
-        public event EventHandler<EventArgs> Invalidate;
+        public event Action<Rectangle?> HeightmapChanged;
 
+        [BinarySerializable]
+        internal float[] Heights;
+        [BinarySerializable]
+        internal Vector3[] Normals;
+        [BinarySerializable]
+        internal Vector3[] Tangents;
         #endregion
         
         #region Methods
-
         internal Heightmap() { }
-
 
         /// <summary>
         /// Creates a new instance of Heightmap.
@@ -172,18 +184,6 @@
         {
             Heights = heightmap;
 
-            // Find maximun height value
-            float maxheight = float.MinValue;
-
-            foreach (float height in heightmap)
-                if (height > maxheight)
-                    maxheight = height;
-                        
-            Size = new Vector3(Step * Width, maxheight, Step * Height);
-
-            BoundingBox = BoundingBox.CreateFromPoints(EnumeratePositions());
-
-
             // Allocation space for normals and tangents
             int count = (Width + 1) * (Height + 1);
 
@@ -195,20 +195,18 @@
 
             if (Tangents == null || Tangents.Length < count)
                 tangents = new Vector3[count];
-
-
+            
             // Compute normals and tangents
             CalculateNormalsAndTangents(
                 Width + 1, Height + 1, heightmap, 
-                Size.X, Size.Z, ref normals, ref tangents);
+                Step * Width, Step * Height, ref normals, ref tangents);
 
             Normals = normals;
             Tangents = tangents;
 
-
             // Fire invalidate event
-            if (Invalidate != null)
-                Invalidate(this, EventArgs.Empty);
+            if (HeightmapChanged != null)
+                HeightmapChanged(null);
         }
 
         private IEnumerable<Vector3> EnumeratePositions()
@@ -221,6 +219,7 @@
                 }
             }
         }
+        #endregion
 
         #region Terrain Normal & Tangent Data Generation
         private static Vector3 CalculatePosition(int x, int z, int w, int h, float[] heights, float sizeX, float sizeZ)
@@ -300,129 +299,7 @@
         }
 
         #endregion
-
-        #endregion
-
-        #region ISurface Members
-        /// <summary>
-        /// Gets the height of the terrain at a given location.
-        /// </summary>
-        /// <returns>Null if the location is outside the boundary of the terrain.</returns>
-        public float GetHeight(float x, float z)
-        {
-            float result;
-            Vector3 normal = new Vector3();
-
-            if (TryGetHeightAndNormal(x, z, true, false, out result, out normal))
-                return result;
-
-            throw new ArgumentOutOfRangeException();
-        }
-
-        /// <summary>
-        /// Gets the normal of the terrain at a given location.
-        /// </summary>
-        /// <returns>Null if the location is outside the boundary of the terrain.</returns>
-        public Vector3 GetNormal(float x, float z)
-        {
-            float result;
-            Vector3 normal = new Vector3();
-
-            if (TryGetHeightAndNormal(x, z, false, true, out result, out normal))
-                return normal;
-
-            throw new ArgumentOutOfRangeException();
-        }
-
-        /// <summary>
-        /// Gets the height and normal of the terrain at a given location.
-        /// </summary>
-        /// <returns>False if the location is outside the boundary of the terrain.</returns>
-        public bool TryGetHeightAndNormal(float x, float z, out float height, out Vector3 normal)
-        {
-            return TryGetHeightAndNormal(x, z, true, true, out height, out normal);
-        }
         
-        internal bool TryGetHeightAndNormal(float positionX, float positionZ, bool getHeight, bool getNormal, out float height, out Vector3 normal)
-        {
-            // first we'll figure out where on the heightmap "position" is...
-            if (positionX == Size.X)
-                positionX -= float.Epsilon;
-            if (positionZ == Size.Z)
-                positionZ -= float.Epsilon;
-
-            // ... and then check to see if that value goes outside the bounds of the
-            // heightmap.
-            if (!(positionX >= 0 && positionX < Size.X &&
-                  positionZ >= 0 && positionZ < Size.Z))
-            {
-                height = float.MinValue;
-                normal = Vector3.Up;
-
-                return false;
-            }
-
-            // we'll use integer division to figure out where in the "heights" array
-            // positionOnHeightmap is. Remember that integer division always rounds
-            // down, so that the result of these divisions is the indices of the "upper
-            // left" of the 4 corners of that cell.
-            int left = (int)Math.Floor(positionX / Step);
-            int top = (int)Math.Floor(positionZ / Step);
-
-            // next, we'll use modulus to find out how far away we are from the upper
-            // left corner of the cell. Mod will give us a value from 0 to terrainScale,
-            // which we then divide by terrainScale to normalize 0 to 1.
-            float xNormalized = (positionX - left * Step) / Step;
-            float zNormalized = (positionZ - top * Step) / Step;
-
-            if (getHeight)
-            {
-                // Now that we've calculated the indices of the corners of our cell, and
-                // where we are in that cell, we'll use bilinear interpolation to calculate
-                // our height. This process is best explained with a diagram, so please see
-                // the accompanying doc for more information.
-                // First, calculate the heights on the bottom and top edge of our cell by
-                // interpolating from the left and right sides.
-                float topHeight = MathHelper.Lerp(
-                    Heights[GetIndex(left, top)],
-                    Heights[GetIndex(left + 1, top)], xNormalized);
-
-                float bottomHeight = MathHelper.Lerp(
-                    Heights[GetIndex(left, top + 1)],
-                    Heights[GetIndex(left + 1, top + 1)], xNormalized);
-
-                // next, interpolate between those two values to calculate the height at our
-                // position.
-                height = MathHelper.Lerp(topHeight, bottomHeight, zNormalized);
-            }
-            else
-            {
-                height = 0;
-            }
-
-            if (getNormal)
-            {
-                // We'll repeat the same process to calculate the normal.
-                Vector3 topNormal = Vector3.Lerp(
-                    Normals[GetIndex(left, top)],
-                    Normals[GetIndex(left + 1, top)], xNormalized);
-
-                Vector3 bottomNormal = Vector3.Lerp(
-                    Normals[GetIndex(left, top + 1)],
-                    Normals[GetIndex(left + 1, top + 1)], xNormalized);
-
-                normal = Vector3.Lerp(topNormal, bottomNormal, zNormalized);
-                normal.Normalize();
-            }
-            else
-            {
-                normal = Vector3.Up;
-            }
-            return true;
-        }
-
-        #endregion
-
         #region AttachedProperty
         private static AttachableMemberIdentifier SizeProperty = new AttachableMemberIdentifier(typeof(Heightmap), "Size");
 
@@ -498,5 +375,22 @@
             surface.Heightmap = new Heightmap(size.Z, (int)size.X, (int)size.Y);
         }
         #endregion
+    }
+
+    /// <summary>
+    /// Represents a flat heightmap.
+    /// </summary>
+    [BinarySerializable]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class FlatHeightmap : IHeightmap
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public float Step { get; set; }
+
+        float IHeightmap.GetHeight(int x, int z) { return 0; }
+        Vector3 IHeightmap.GetNormal(int x, int z) { return Vector3.Up; }
+        Vector3 IHeightmap.GetTangent(int x, int z) { return Vector3.UnitX; }
+        event Action<Rectangle?> IHeightmap.HeightmapChanged { add { } remove { } }
     }
 }

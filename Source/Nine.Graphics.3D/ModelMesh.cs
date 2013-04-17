@@ -7,11 +7,12 @@ namespace Nine.Graphics
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
+    using Nine.Serialization;
 
     /// <summary>
     /// Defines a part of a model that contains only one material.
     /// </summary>
-    [Nine.Serialization.BinarySerializable]
+    [BinarySerializable]
     public class ModelMesh : Nine.Object, IDrawableObject, ILightable, Nine.IComponent
     {
         #region Properties

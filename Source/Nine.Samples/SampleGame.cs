@@ -31,7 +31,12 @@ namespace Nine.Samples
 
         public SampleGame()
         {
+            //Package.BuildDirectory(@"D:\Git\nine\Content\", @"D:\Git\nine\Content.n", (file, err) => { System.Diagnostics.Trace.TraceError(file + "\n" + err.ToString()); });
+            //Package.BuildFile(@"D:\Git\nine\Content\Scenes\01. Hello World.xaml", @"D:\01.xnb");
+
             var graphics = new GraphicsDeviceManager(this);
+
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
 
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 1280;
@@ -41,15 +46,19 @@ namespace Nine.Samples
             IsFixedTimeStep = false;
 
             Window.AllowUserResizing = true;
+            System.Diagnostics.Trace.WriteLine(typeof(Fog).AssemblyQualifiedName.ToString());
+            System.Diagnostics.Trace.WriteLine(typeof(SkyBox).AssemblyQualifiedName.ToString());
         }
         
         protected override void LoadContent()
         {
             loader = new ContentLoader(Services);
             loader.SearchDirectories.Add("../Content");
+                        
 #if WINDOWS
             loader.Resolvers.Add(new FileSystemResolver());
 #endif
+
             Components.Add(new FrameRate(GraphicsDevice, loader.Load<SpriteFont>("Fonts/Consolas.spritefont")));
             Components.Add(new InputComponent(Window.Handle));  
 

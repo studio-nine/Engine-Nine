@@ -11,19 +11,6 @@ namespace Nine.Serialization.Importers
     {
         public object Import(Stream stream, IServiceProvider serviceProvider)
         {
-            var startPosition = stream.Position;
-            var needContentPipeline = ColorKeyEnabled || GenerateMipmaps || ResizeToPowerOfTwo || TextureFormat == TextureProcessorOutputFormat.DxtCompressed;
-
-            try
-            {
-                if (!needContentPipeline)
-                    return Texture2D.FromStream(serviceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice, stream);
-            }
-            catch
-            {
-                stream.Position = startPosition;
-                return ContentPipeline.Load<Microsoft.Xna.Framework.Graphics.Texture>(stream, new Microsoft.Xna.Framework.Content.Pipeline.TextureImporter(), this, serviceProvider);
-            }
             return ContentPipeline.Load<Microsoft.Xna.Framework.Graphics.Texture>(stream, new Microsoft.Xna.Framework.Content.Pipeline.TextureImporter(), this, serviceProvider);
         }
 
@@ -37,4 +24,8 @@ namespace Nine.Serialization.Importers
             ColorKeyEnabled = false;
         }
     }
+
+    class Texture2DWriter : PipelineObjectWriter<Texture2D> { }
+    class Texture3DWriter : PipelineObjectWriter<Texture3D> { }
+    class TextureCubeWriter : PipelineObjectWriter<TextureCube> { }
 }

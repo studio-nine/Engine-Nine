@@ -15,7 +15,6 @@
 
     class MaterialGroupBuilder
     {
-        static readonly string WorkingPath = "MaterialGroups";
         static readonly MaterialUsage[] MaterialUsages = Enum.GetValues(typeof(MaterialUsage)).Cast<MaterialUsage>().ToArray();
         
         public static void Build(MaterialGroup input)

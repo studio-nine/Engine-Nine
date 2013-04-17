@@ -55,7 +55,7 @@
                 resourceDictionary.Remove(currentKey);
             }
             
-            result = (TValue)Activator.CreateInstance(typeof(TValue), currentKey);
+            result = (TValue)Activator.CreateInstance(typeof(TValue), currentKey.Key);
             resourceDictionary.Add(currentKey, new WeakReference<TValue>(result));
             return result;
         }

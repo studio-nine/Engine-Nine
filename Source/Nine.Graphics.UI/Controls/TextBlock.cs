@@ -91,13 +91,20 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(DynamicPrimitive dynamicPrimitive)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
         {
-            base.OnRender(dynamicPrimitive);
+            if (!Visible)
+                return;
+
+            base.OnRender(renderer);
+
+            if (Font == null)
+                throw new ArgumentNullException("Font");
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
-            // TODO: Draw Text
-            //spriteBatch.DrawString(Font, formattedText, new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset, TextColor.ToColor());
+            var position = new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset;
+            var text = formattedText != null ? formattedText : Text;
+            renderer.DrawString(Font, text, position, TextColor.ToColor());
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
