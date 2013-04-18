@@ -258,7 +258,7 @@ namespace Nine.Navigation
         /// </summary>
         public void MoveTo(Vector3 position)
         {
-            Vector2 target = new Vector2(position.X, position.Y);
+            Vector2 target = new Vector2(position.X, position.Z);
 
             if (Vector2.DistanceSquared(target, steerable.Position) < SoftBoundingRadius * SoftBoundingRadius)
                 return;

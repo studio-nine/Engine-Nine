@@ -68,6 +68,7 @@
             switch (ListBox.SelectionMode)
             {
                 case SelectionMode.None:
+                case SelectionMode.GameMode: 
                     break;
 
                 case SelectionMode.Single:
@@ -76,9 +77,6 @@
 
                 case SelectionMode.Multiple:
                     throw new NotImplementedException();
-
-                case SelectionMode.GameMode: 
-                    break;
             }
         }
     }

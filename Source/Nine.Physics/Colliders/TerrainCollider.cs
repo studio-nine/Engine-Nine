@@ -14,7 +14,7 @@ namespace Nine.Physics.Colliders
         /// <summary>
         /// Gets or sets the heightmap.
         /// </summary>
-        public Heightmap Heightmap
+        public IHeightmap Heightmap
         {
             get { return heightmap; }
             set 
@@ -26,7 +26,7 @@ namespace Nine.Physics.Colliders
                 }
             }
         }
-        private Heightmap heightmap;
+        private IHeightmap heightmap;
         private Terrain terrain;
 
         /// <summary>
@@ -49,12 +49,12 @@ namespace Nine.Physics.Colliders
             base.OnTransformChanged();
         }
 
-        private static Terrain CreateTerrain(Heightmap heightmap)
+        private static Terrain CreateTerrain(IHeightmap heightmap)
         {
             return heightmap != null ? new Terrain(CreateTerrainShape(heightmap), AffineTransform.Identity) : null;
         }
 
-        private static TerrainShape CreateTerrainShape(Heightmap heightmap)
+        private static TerrainShape CreateTerrainShape(IHeightmap heightmap)
         {
             int xLength = heightmap.Width + 1;
             int zLength = heightmap.Height + 1;

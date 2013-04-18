@@ -60,8 +60,6 @@ namespace Nine.Graphics.UI
                     content = value;
                     if (content != null)
                         content.Window = this;
-
-                    NextFocus();
                 }
             }
         }
@@ -219,7 +217,7 @@ namespace Nine.Graphics.UI
             // TODO: Rework this algoritm
 
             var Controls = FindAll<Control>();
-            if (CurrentFocuesdControl == null)
+            if (Controls != null && CurrentFocuesdControl == null)
             {
                 var NextControls = Controls.Where(o => o.IsTabStop == true).ToList().OrderBy(o => o.TabIndex);
                 CurrentFocuesdControl = NextControls.First();
