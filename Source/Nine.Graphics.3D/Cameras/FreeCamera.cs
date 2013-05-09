@@ -24,6 +24,8 @@
         }
         private Vector3 position;
 
+        public bool InputEnabled { get; set; }
+
         public float TurnSpeed { get; set; }
         public float Speed { get; set; }
         public float PrecisionModeSpeed { get; set; }
@@ -59,66 +61,68 @@
 
         public void Update(float elapsedTime)
         {
-            // Assume screen size always greater then 100
-            var move = Vector2.Zero;
-            var speed = Speed;
-            
-            GamePadState gamePad = GamePad.GetState(PlayerIndex.One);
-            if (gamePad.IsConnected)
+            if (InputEnabled)
             {
-                angle.X -= gamePad.ThumbSticks.Right.Y * TurnSpeed * 0.001f;
-                angle.Y += gamePad.ThumbSticks.Right.X * TurnSpeed * 0.001f;
+                // Assume screen size always greater then 100
+                var move = Vector2.Zero;
+                var speed = Speed;
 
-                move.X = gamePad.ThumbSticks.Left.Y * Speed * elapsedTime;
-                move.Y = gamePad.ThumbSticks.Left.X * Speed * elapsedTime;
-            }
-            else
-            {
-                KeyboardState keyboard = Keyboard.GetState();
-                MouseState mouse = Mouse.GetState();
+                GamePadState gamePad = GamePad.GetState(PlayerIndex.One);
+                if (gamePad.IsConnected)
+                {
+                    angle.X -= gamePad.ThumbSticks.Right.Y * TurnSpeed * 0.001f;
+                    angle.Y += gamePad.ThumbSticks.Right.X * TurnSpeed * 0.001f;
 
-                float centerX = mouseDown.X;
-                float centerY = mouseDown.Y;
+                    move.X = gamePad.ThumbSticks.Left.Y * Speed * elapsedTime;
+                    move.Y = gamePad.ThumbSticks.Left.X * Speed * elapsedTime;
+                }
+                else
+                {
+                    KeyboardState keyboard = Keyboard.GetState();
+                    MouseState mouse = Mouse.GetState();
+
+                    float centerX = mouseDown.X;
+                    float centerY = mouseDown.Y;
 
 #if WINDOWS_PHONE
                 if (mouse.LeftButton == ButtonState.Pressed)
 #else
-                if (mouse.RightButton == ButtonState.Pressed)
+                    if (mouse.RightButton == ButtonState.Pressed)
 #endif
-                {
-                    if (mouseDownHasValue)
                     {
-                        angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * elapsedTime) / AspectRatio; // pitch
-                        angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * elapsedTime); // yaw
+                        if (mouseDownHasValue)
+                        {
+                            angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * elapsedTime) / AspectRatio; // pitch
+                            angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * elapsedTime); // yaw
+                        }
+                        mouseDown.X = mouse.X;
+                        mouseDown.Y = mouse.Y;
+                        mouseDownHasValue = true;
                     }
-                    mouseDown.X = mouse.X;
-                    mouseDown.Y = mouse.Y;
-                    mouseDownHasValue = true;
+                    else
+                    {
+                        mouseDownHasValue = false;
+                    }
+
+                    if (keyboard.IsKeyDown(PrecisionModeKey))
+                        speed = PrecisionModeSpeed;
+
+                    if (keyboard.IsKeyDown(ForwardKey))
+                        move.X += speed * elapsedTime;
+                    if (keyboard.IsKeyDown(BackwardKey))
+                        move.X -= speed * elapsedTime;
+                    if (keyboard.IsKeyDown(LeftKey))
+                        move.Y += speed * elapsedTime;
+                    if (keyboard.IsKeyDown(RightKey))
+                        move.Y -= Speed * elapsedTime;
+
+                    if (keyboard.IsKeyDown(DownKey))
+                        position += Vector3.Down * speed * elapsedTime;
+                    if (keyboard.IsKeyDown(UpKey))
+                        position += Vector3.Up * speed * elapsedTime;
                 }
-                else
-                {
-                    mouseDownHasValue = false;
-                }
-
-                if (keyboard.IsKeyDown(PrecisionModeKey))
-                    speed = PrecisionModeSpeed;
-
-                if (keyboard.IsKeyDown(ForwardKey))
-                    move.X += speed * elapsedTime;
-                if (keyboard.IsKeyDown(BackwardKey))
-                    move.X -= speed * elapsedTime;
-                if (keyboard.IsKeyDown(LeftKey))
-                    move.Y += speed * elapsedTime;
-                if (keyboard.IsKeyDown(RightKey))
-                    move.Y -= Speed * elapsedTime;
-
-                if (keyboard.IsKeyDown(DownKey))
-                    position += Vector3.Down * speed * elapsedTime;
-                if (keyboard.IsKeyDown(UpKey))
-                    position += Vector3.Up * speed * elapsedTime;
+                UpdateTransform(move);
             }
-            
-            UpdateTransform(move);
         }
 
         private void UpdateTransform(Vector2 move)

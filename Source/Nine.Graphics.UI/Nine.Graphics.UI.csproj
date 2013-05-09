@@ -95,6 +95,7 @@
     <Compile Include="Controls\Primitives\Selector.cs" />
     <Compile Include="Controls\RangeBase.cs" />
     <Compile Include="Controls\ProgressBar.cs" />
+    <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Design\GridLengthConverter.cs" />
     <Compile Include="Design\SolidColorBrushConverter.cs" />
     <Compile Include="Design\ThicknessConverter.cs" />

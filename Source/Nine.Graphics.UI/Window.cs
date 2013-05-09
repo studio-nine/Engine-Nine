@@ -60,6 +60,7 @@ namespace Nine.Graphics.UI
                     content = value;
                     if (content != null)
                         content.Window = this;
+                    NextFocus();
                 }
             }
         }
@@ -104,8 +105,8 @@ namespace Nine.Graphics.UI
                 return;
 
             // Use SafeArea?
-            if (this.Viewport != context.GraphicsDevice.Viewport.Bounds)
-                this.Viewport = context.GraphicsDevice.Viewport.Bounds;
+            if (this.Viewport != context.GraphicsDevice.Viewport.TitleSafeArea)
+                this.Viewport = context.GraphicsDevice.Viewport.TitleSafeArea;
 
             if (Viewport == null)
                 throw new ArgumentNullException("Viewport");
@@ -164,7 +165,7 @@ namespace Nine.Graphics.UI
         #region Input
 
         // I am not sure on the design of the input yet!
-        // TODO: Control Tabbing with Focus
+        // TODO: Control Tabbing with Focus and make it modifiable
 
         Control CurrentFocuesdControl = null;
 
@@ -215,33 +216,15 @@ namespace Nine.Graphics.UI
         protected void NextFocus()
         {
             // TODO: Rework this algoritm
-
             var Controls = FindAll<Control>();
-            if (Controls != null && CurrentFocuesdControl == null)
+            if (Controls.Count > 0)
             {
-                var NextControls = Controls.Where(o => o.IsTabStop == true).ToList().OrderBy(o => o.TabIndex);
+                var NextControls = Controls.Where(o => 
+                    o.IsTabStop == true &&
+                    o != CurrentFocuesdControl)
+                    .ToList().OrderBy(o => o.TabIndex);
                 CurrentFocuesdControl = NextControls.First();
             }
-            //else
-            //{
-            //    var NextControls = Controls.Where(o => o.TabIndex > CurrentFocuesdControl.TabIndex && o.IsTabStop == true).ToList();
-            //    Control NextControl = null;
-            //    while (NextControl != null)
-            //    {
-            //        if (NextControls.Count() > 0)
-            //        {
-            //            if (NextControls[0] != CurrentFocuesdControl)
-            //                NextControl = NextControls.First();
-            //            else
-            //            {
-            //                NextControls.RemoveAt(0);
-            //            }
-            //        }
-            //        else
-            //            // Check backwards, select the lowest value
-            //            break;
-            //    }
-            //}
         }
 
         private bool TryGetElement(Vector2 point, out UIElement output)

@@ -15,7 +15,7 @@
 
           <Grid.Background>
             <!-- This will not render when using SpriteBatch Renderer -->
-            <GradientBrush G1="1, 0.25, 0" G2="1, 0.25, 0" G3="1, 0.494, 0" G4="1, 0.494, 0" />
+            <GradientBrush G1="0.37,0.47,0.615" G2="0.37,0.47,0.615" G3="0.24,0.3,0.4" G4="0.24,0.3,0.4" />
           </Grid.Background>
 
           <Grid Grid.Column="0" Grid.Row="0">
@@ -27,17 +27,17 @@
               <ColumnDefinition Width="50*" />
               <ColumnDefinition Width="50*" />
             </Grid.ColumnDefinitions>
-            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Red" BorderThickness="4" />
-            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Green" BorderThickness="4">
+            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Red" BorderThickness="6" Margin="2" />
+            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Green" BorderThickness="6" Margin="2">
               <Border.Background>
                 <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
               </Border.Background>
             </Border>
-            <Border Grid.Row="0" Grid.Column="1" BorderBrush="Blue" BorderThickness="4" />
-            <Border Grid.Row="1" Grid.Column="1" BorderBrush="Orange" BorderThickness="4" />
+            <Border Grid.Row="0" Grid.Column="1" BorderBrush="Blue" BorderThickness="6" Margin="2" />
+            <Border Grid.Row="1" Grid.Column="1" BorderBrush="Orange" BorderThickness="6" Margin="2" />
           </Grid>
 
-          <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
+          <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
             <StackPanel.Background>
               <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
             </StackPanel.Background>
@@ -49,6 +49,10 @@
             </Border>
             <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
               <ProgressBar Margin="2" Value="50" />
+            </Border>
+            <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+              <TextBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}" 
+                       Multiline="False" Text="TextBox" Foreground="White" Padding="10" />
             </Border>
           </StackPanel>
 
@@ -68,7 +72,7 @@
         </Grid>
       </Page>
       <Page Name="EmptyPage">
-        
+        <Image Margin="20" Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
       </Page>
     </PageNavigator>
   </Window>

@@ -97,7 +97,6 @@
     <Compile Include="Tests\SkinnedModelTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tests\UITest.cs" />
     <Compile Include="Tests\SpriteTest.cs" />
     <Compile Include="Tests\TransparencyTest.cs" />
     <Compile Include="Tests\TriangleTest.cs" />

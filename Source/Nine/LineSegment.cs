@@ -98,7 +98,7 @@ namespace Nine
         /// <returns></returns>
         public bool Intersect(LineSegment value)
         {
-            return (this.IntersectPoint(value) != null);
+            return (this.IntersectLine(value) != null);
         }
 
         /// <summary>
@@ -106,19 +106,26 @@ namespace Nine
         /// </summary>
         /// <param name="value"></param>
         /// <returns>Collision Point</returns>
-        public Vector2? IntersectPoint(LineSegment value)
+        public Vector2? IntersectLine(LineSegment value)
         {
-            float x1 = End.X - Start.X,
-                y1 = End.Y - Start.Y,
-                x2 = End.X - Start.X,
-                y2 = End.Y - Start.Y;
+            float x1 = End.X - Start.X;
+            float y1 = End.Y - Start.Y;
+            float x2 = value.End.X - value.Start.X;
+            float y2 = value.End.Y - value.Start.Y;
             float d = x1 * y2 - y1 * x2;
-            if (d == 0) return null;
-            float x3 = Start.X - Start.X,
-                y3 = Start.Y - Start.Y;
+
+            if (d == 0) 
+                return null;
+
+            float x3 = value.Start.X - Start.X;
+            float y3 = value.Start.Y - Start.Y;
             float t = (x3 * y2 - y3 * x2) / d;
             float u = (x3 * y1 - y3 * x1) / d;
-            if (t < 0 || t > 1 || u < 0 || u > 1) return null;
+
+            if (t < 0 || t > 1 || 
+                u < 0 || u > 1) 
+                return null;
+
             return new Vector2(Start.X + t * x1, Start.Y + t * y1);
         }
 

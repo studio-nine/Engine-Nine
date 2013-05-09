@@ -125,6 +125,7 @@ namespace Nine.Graphics.UI
 
         internal Window Window;
 
+        [Nine.Serialization.NotBinarySerializable]
         public UIElement Parent { get; internal set; }
 
         IContainer IComponent.Parent
@@ -167,7 +168,6 @@ namespace Nine.Graphics.UI
             float maxWidth = float.IsPositiveInfinity(max.MaxWidth) ? renderSize.X : max.MaxWidth;
             float maxHeight = float.IsPositiveInfinity(max.MaxHeight) ? renderSize.Y : max.MaxHeight;
 
-            // TODO: Clamp to Viewport
             bool isClippingRequiredDueToMaxSize = maxWidth.IsLessThan(renderSize.X) ||
                                                   maxHeight.IsLessThan(renderSize.Y);
 

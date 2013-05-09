@@ -28,6 +28,18 @@
             set { lookAt = value; }
         }
 
+        public bool InputEnabled
+        {
+            get { return input != null && input.Enabled; }
+            set
+            {
+                if (value)
+                    EnsureInput();
+                if (input != null)
+                    input.Enabled = value;
+            }
+        }
+
         private Input input;
         private Vector3 lookAt = Vector3.Zero;
         private Point startPoint = Point.Zero;
@@ -58,6 +70,17 @@
             input.Update += new EventHandler<EventArgs>(Input_Update);
 
             UpdateTransform();
+        }
+
+        private void EnsureInput()
+        {
+            if (input == null)
+            {
+                input = new Input();
+                input.MouseDown += new EventHandler<MouseEventArgs>(Input_MouseDown);
+                input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
+                input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
+            }
         }
 
         private void UpdateTransform()

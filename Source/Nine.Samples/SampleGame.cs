@@ -76,8 +76,8 @@ namespace Nine.Samples
                 where type.IsSubclassOf(typeof(Sample)) && type != typeof(Tutorial)
                 select (Sample)Activator.CreateInstance(type));
             
-            samples = new List<Sample> { new UITest() };
-            samples = new List<Sample> { new Tutorial("Scenes/02. Models.xaml") };
+            //samples = new List<Sample> { new UITest() };
+            samples = new List<Sample> { new Tutorial("Scenes/15. Userinterface.xaml") };
         }
 
         private void LoadNextScene()
@@ -87,7 +87,7 @@ namespace Nine.Samples
                 scenes.Add(currentScene = samples[nextScene].CreateScene(GraphicsDevice, loader));
 
                 // TODO: rework on this design
-                currentScene.Add(new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40)));
+                currentScene.Add(new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40)) { InputEnabled = true });
                 SceneExtensions.SetDrawingContext(currentScene, new DrawingContext3D(GraphicsDevice, currentScene));
             }
 

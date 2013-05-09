@@ -56,18 +56,7 @@
             var imageBrush = brush as ImageBrush;
             if (imageBrush != null)
             {
-                var texture = imageBrush.Source;
-                // This don't really work, make own math function
-                var Scale = Nine.Graphics.UI.Internal.Controls.Viewbox.ComputeScaleFactor(
-                        new Vector2(bound.Width, bound.Height), new Vector2(texture.Width, texture.Height), imageBrush.Stretch, imageBrush.StretchDirection);
-
-                SpriteEffects Effects = SpriteEffects.None;
-                if (imageBrush.Flip != Flip.None & imageBrush.Flip != Flip.Both)
-                    Effects = (SpriteEffects)imageBrush.Flip;
-                else if (imageBrush.Flip == Flip.Both)
-                    Effects = SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally;
-
-                //spriteBatch.Draw(texture, new Vector2(bound.X, bound.Y), imageBrush.SourceRectangle, Color.White, 0, Vector2.Zero, Scale, Effects, 0);
+                // TODO: Image Brush Rendering
                 return;
             }
 
@@ -136,7 +125,6 @@
         public void Draw(Texture2D texture, BoundingRectangle bound, Rectangle? Source, Color color, Flip flip)
         {
             var texCoords = Nine.Graphics.UI.UIExtensions.TextureCoords(flip);
-            // TODO: Calculate Source Rectangle with texCoords
             dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, texture, null);
             {
                 dynamicPrimitive.AddVertex(new Vector3(bound.X, bound.Y, 0), color, texCoords[0]);
@@ -154,9 +142,11 @@
             dynamicPrimitive.EndPrimitive();
         }
 
+        [Obsolete("Not Supported")]
         public void DrawString(SpriteFont Font, string Text, Vector2 position, Color color)
         {
-            throw new NotSupportedException();
+            var Size = Font.MeasureString(Text);
+            dynamicPrimitive.AddRectangle(new BoundingRectangle(position.X, position.Y, Size.X, Size.Y), color, 2, null);
         }
     }
 }

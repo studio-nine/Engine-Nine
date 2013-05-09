@@ -283,5 +283,13 @@
             position = pickRay.Position + pickRay.Direction * distance.Value;
             return true;
         }
+
+        /// <summary>
+        /// Creates a BoundingRectangle from Viewport
+        /// </summary>
+        public static BoundingRectangle ToBoundingRectangle(this Viewport viewport)
+        {
+            return new BoundingRectangle(viewport.X, viewport.Y, viewport.Width, viewport.Height);
+        }
     }
 }

@@ -318,6 +318,8 @@ namespace Nine
         /// </summary>
         internal static char KeyToChar(Keys key, bool shiftPressed)
         {
+            // TODO: Use another way to get input to allow multi-language keyboards.
+
             // If key will not be found, just return space
             char ret = ' ';
             int keyNum = (int)key;
@@ -427,6 +429,34 @@ namespace Nine
             keysPressedLastFrame.Clear();
             keysPressedLastFrame.AddRange(pressedKeys);
         }
+
+        // TODO: Make this more respond changes better
+        internal void EditString(ref string input, Keys key, bool multiline, int selectedIndex, int maxChars)
+        {
+            if (selectedIndex > input.Length)
+                throw new ArgumentOutOfRangeException("selectedIndex");
+
+            if (input.Length >= maxChars)
+                return;
+
+            bool isShiftPressed =
+                KeyboardState.IsKeyDown(Keys.LeftShift) ||
+                KeyboardState.IsKeyDown(Keys.RightShift);
+
+            if (IsSpecialKey(key) == false && input.Length < maxChars)
+            {
+                input = input.Insert(selectedIndex, KeyToChar(key, isShiftPressed).ToString());
+            }
+            else if (multiline && key == Keys.Enter)
+            {
+                input = input.Insert(selectedIndex, Environment.NewLine);
+            }
+            else if (key == Keys.Back && input.Length > 0)
+            {
+                input = input.Remove(selectedIndex - 1);
+            }
+        }
+
         #endregion
     }
 }
