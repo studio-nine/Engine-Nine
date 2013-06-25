@@ -32,6 +32,8 @@ namespace Nine.Graphics.UI.Controls
     [System.Windows.Markup.ContentProperty("Children")]
     public abstract class Panel : UIElement, IContainer, INotifyCollectionChanged<UIElement>
     {
+        #region Constructor
+
         public Panel()
         {
             children = new NotificationCollection<UIElement>();
@@ -39,6 +41,17 @@ namespace Nine.Graphics.UI.Controls
             children.Added += Child_Added;
             children.Removed += Child_Removed;
         }
+
+        public Panel(IEnumerable<UIElement> cchildren)
+        {
+            children = new NotificationCollection<UIElement>();
+            children.AddRange(cchildren);
+            children.Sender = this;
+            children.Added += Child_Added;
+            children.Removed += Child_Removed;
+        }
+
+        #endregion
 
         #region Children
 
@@ -79,7 +92,7 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             base.OnRender(renderer);
             foreach (var child in children)

@@ -27,23 +27,109 @@
 namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Controls.Primitives;
     using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Media;
 
+    // Should a button have Content instead of Text?
+
     /// <summary>
     /// A Control that represent a clickable button.
     /// </summary>
-    public class Button : ButtonBase
+    [System.Windows.Markup.ContentProperty("Text")]
+    public class Button : Control
     {
+        /// <summary>
+        /// Gets or sets the text contents of the button.
+        /// </summary>
+        public string Text
+        {
+            get { return textblock.Text; }
+            set { textblock.Text = value; }
+        }
+
+        /// <summary>
+        /// Get or sets the current font.
+        /// </summary>
+        public SpriteFont Font
+        {
+            get { return textblock.Font; }
+            set { textblock.Font = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the Font Color.
+        /// </summary>
+        public SolidColorBrush Foreground
+        {
+            get { return textblock.Foreground; }
+            set { textblock.Foreground = value; }
+        }
+
         /// <summary>
         /// Gets or sets the Padding.
         /// </summary>
-        public Thickness Padding { get; set; }
+        public Thickness Padding
+        {
+            get { return textblock.Padding; }
+            set { textblock.Padding = value; }
+        }
 
+        /// <summary>
+        /// Gets or sets the Current Text Wrapping.
+        /// </summary>
+        public TextWrapping Wrapping
+        {
+            get { return textblock.Wrapping; }
+            set { textblock.Wrapping = value; }
+        }
 
-        // TODO: Expand on Button
-        //      + Fix Padding
+        /// <summary>
+        /// Inner Text Horizontal Alignment
+        /// </summary>
+        public HorizontalAlignment TextHorizontalAlignment
+        {
+            get { return textblock.HorizontalAlignment; }
+            set { textblock.HorizontalAlignment = value; ; }
+        }
 
+        /// <summary>
+        /// Inner Text Vertical Alignment
+        /// </summary>
+        public VerticalAlignment TextVerticalAlignment
+        {
+            get { return textblock.VerticalAlignment; }
+            set { textblock.VerticalAlignment = value;; }
+        }
+
+        private TextBlock textblock
+        {
+            get { return InnerBrush.Visual as TextBlock; }
+            set { InnerBrush.Visual = value; }
+        }
+        private VisualBrush InnerBrush;
+
+        public Button()
+        {
+            InnerBrush = new VisualBrush();
+            textblock = new TextBlock();
+            textblock.HorizontalAlignment = UI.HorizontalAlignment.Center;
+            textblock.VerticalAlignment = UI.VerticalAlignment.Center;
+        }
+
+        public Button(SpriteFont font)
+        {
+            InnerBrush = new VisualBrush();
+            textblock = new TextBlock(font);
+            textblock.HorizontalAlignment = UI.HorizontalAlignment.Center;
+            textblock.VerticalAlignment = UI.VerticalAlignment.Center;
+        }
+
+        protected internal override void OnRender(Renderer.Renderer renderer)
+        {
+            base.OnRender(renderer);
+            renderer.Draw(AbsoluteRenderTransform, InnerBrush);
+        }
     }
 }

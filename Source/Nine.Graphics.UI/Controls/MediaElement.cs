@@ -145,7 +145,7 @@
                 player.Stop();
         }
 
-        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             if (!Visible)
                 return;

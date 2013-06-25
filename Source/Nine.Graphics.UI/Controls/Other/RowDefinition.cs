@@ -34,10 +34,12 @@ namespace Nine.Graphics.UI.Controls
         public float MaxHeight { get; set; }
         public float MinHeight { get; set; }
 
-        public RowDefinition()
+        public RowDefinition() : this(1, GridUnitType.Star) { }
+        public RowDefinition(float value) : this(value, GridUnitType.Star) { }
+        public RowDefinition(float value, GridUnitType type)
             : base(DefinitionType.Row)
         {
-            Height = new GridLength(1, GridUnitType.Star);
+            Height = new GridLength(value, type);
             MaxHeight = float.PositiveInfinity;
             MinHeight = 0;
         }

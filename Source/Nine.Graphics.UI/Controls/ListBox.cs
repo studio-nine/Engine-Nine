@@ -4,13 +4,14 @@
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.Primitives;
+    using Nine.Graphics.UI.Controls.Primitives;
     using Nine.Graphics.UI.Media;
 
     /// <summary>
     /// A Control that display's a list of selectable elements.
     /// </summary>
     [System.Windows.Markup.ContentProperty("Children")]
-    public class ListBox : Nine.Graphics.UI.Controls.Primitives.Selector
+    public class ListBox : Selector
     {
         /// <summary>
         /// Gets or sets select behavior.

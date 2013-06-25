@@ -24,10 +24,12 @@
 */
 #endregion
 
+/*
 namespace Nine.Graphics.UI.Controls.Primitives
 {
     using System;
 
+                                           // Why is this a ContentControl is Button suppose to hold a object?
     public abstract class ButtonBase : ContentControl
     {
         public event EventHandler<EventArgs> Click;
@@ -40,3 +42,4 @@ namespace Nine.Graphics.UI.Controls.Primitives
         }
     }
 }
+*/

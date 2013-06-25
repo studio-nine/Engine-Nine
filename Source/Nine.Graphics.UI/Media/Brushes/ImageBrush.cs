@@ -28,5 +28,18 @@
         {
             this.Source = Source;
         }
+
+        protected internal override void OnRender(Renderer.Renderer renderer, BoundingRectangle bound)
+        {
+            // TODO: Image Size Calculation
+
+            SpriteEffects Effects = SpriteEffects.None;
+            if (Flip != Flip.None & Flip != Flip.Both)
+                Effects = (SpriteEffects)Flip;
+            else if (Flip == Flip.Both)
+                Effects = SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally;
+
+            renderer.Draw(Source, bound, SourceRectangle, Color.White);
+        }
     }
 }

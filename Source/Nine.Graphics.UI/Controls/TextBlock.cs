@@ -34,6 +34,8 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Primitives;
 
+    // TODO: Marker only work on single Line
+
     /// <summary>
     /// Control to display a flow of Content
     /// </summary>
@@ -61,7 +63,16 @@ namespace Nine.Graphics.UI.Controls
         /// <summary>
         /// Gets or sets the Current Displaying Text.
         /// </summary>
-        public string Text { get; set; }
+        public string Text 
+        {
+            get { return text; }
+            set 
+            { 
+                text = value; 
+                formattedText = null; 
+            }
+        }
+        private string text;
 
         /// <summary>
         /// Gets or sets the Current Text Wrapping.
@@ -70,12 +81,19 @@ namespace Nine.Graphics.UI.Controls
 
         private string formattedText;
 
+        internal Vector2 TextStartPosition { get; private set; }
+
         #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of <see cref="TextBlock">TextBlock</see> without font.
         /// </summary>
-        public TextBlock() { }
+        public TextBlock() 
+        {
+            Text = "";
+        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="TextBlock">TextBlock</see> with font.
@@ -86,12 +104,20 @@ namespace Nine.Graphics.UI.Controls
             if (Font == null)
                 throw new ArgumentNullException("spriteFont");
 
+            Text = "";
             this.Font = Font;
         }
 
+        #endregion
+
         #region Methods
 
-        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            // TODO: Mouse position to character for Marker location
+        }
+
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             if (!Visible)
                 return;
@@ -102,9 +128,9 @@ namespace Nine.Graphics.UI.Controls
                 throw new ArgumentNullException("Font");
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
-            var position = new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset;
+            TextStartPosition = new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset;
             var text = formattedText != null ? formattedText : Text;
-            renderer.DrawString(Font, text, position, TextColor.ToColor());
+            renderer.DrawString(Font, text, TextStartPosition, (Color)TextColor);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
@@ -114,6 +140,8 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
+            if (Font == null)
+                throw new System.ArgumentNullException("Font");
             this.formattedText = this.Text;
             Vector2 measureString = this.Font.MeasureString(this.formattedText);
 
@@ -123,6 +151,7 @@ namespace Nine.Graphics.UI.Controls
                 measureString = this.Font.MeasureString(this.formattedText);
             }
 
+            System.Diagnostics.Debug.WriteLine(formattedText);
             return new Vector2(
                 measureString.X + this.Padding.Left + this.Padding.Right, 
                 measureString.Y + this.Padding.Top + this.Padding.Bottom);

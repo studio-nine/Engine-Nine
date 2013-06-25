@@ -28,6 +28,7 @@ namespace Nine.Graphics.UI
 {
     using System;
     using System.Linq;
+    using System.Collections;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -43,10 +44,9 @@ namespace Nine.Graphics.UI
     /// RootElement is the main host for all <see cref="UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
     /// </summary>
     [System.Windows.Markup.ContentProperty("Content")]
-    public class Window : Pass, IGraphicsObject
+    public class Window : BaseWindow, IContainer
     {
-        internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
-        internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
+        IList IContainer.Children { get { return new UIElement[] { Content }; } }
 
         public UIElement Content 
         {
@@ -66,14 +66,8 @@ namespace Nine.Graphics.UI
         }
         private UIElement content;
 
-        public Nine.Input Input { get; private set; }
-
-        public IRenderer Renderer { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the viewport used by <see cref="Window">RootElement</see> to layout its content.
-        /// </summary>
-        public Rectangle Viewport { get; set; }
+        // TODO: Make this work
+        public bool HasMouse { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
@@ -86,10 +80,8 @@ namespace Nine.Graphics.UI
         /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
         /// </summary> 
         public Window(Nine.Input input)
+            : base(input)
         {
-            if ((Input = input) == null)
-                throw new ArgumentNullException("input");
-
             Input.MouseMove += MouseMove;
             Input.MouseDown += MouseDown;
             Input.MouseWheel += MouseWheel;
@@ -127,7 +119,6 @@ namespace Nine.Graphics.UI
                 if (Renderer == null)
                     Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
 
-                // Should I pass in Time?, if so how?
                 Renderer.ElapsedTime = context.ElapsedTime;
                 Renderer.Begin(context);
                 content.OnRender(Renderer);
@@ -137,30 +128,12 @@ namespace Nine.Graphics.UI
 
         #endregion
 
-        #region Find
-
-        public IList<T> FindAll<T>() where T : class
+        private IList<T> FindAll<T>() where T : class
         {
             List<T> result = new List<T>();
             ContainerTraverser.Traverse<T>(content, result);
             return result;
         }
-
-        public T Find<T>() where T : class
-        {
-            T result = null;
-            ContainerTraverser.Traverse<Object>(this, desendant =>
-            {
-                result = desendant as T;
-                if (result != null)
-                    return TraverseOptions.Stop;
-                result = null;
-                return TraverseOptions.Continue;
-            });
-            return result;
-        }
-
-        #endregion
 
         #region Input
 
@@ -174,7 +147,13 @@ namespace Nine.Graphics.UI
             UIElement result = null;
             if (TryGetElement(new Vector2(e.X, e.Y), out result))
             {
+                HasMouse = true;
+                System.Diagnostics.Debug.WriteLine("MouseOver");
                 result.InvokeMouseMove(sender, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
+            }
+            else
+            {
+                HasMouse = false;
             }
         }
         void MouseDown(object sender, MouseEventArgs e)
@@ -182,6 +161,8 @@ namespace Nine.Graphics.UI
             UIElement result = null;
             if (TryGetElement(new Vector2(e.X, e.Y), out result))
             {
+                if (result is Control)
+                    SetFocus(result as Control);
                 result.InvokeMouseDown(sender, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
             }
         }
@@ -213,7 +194,7 @@ namespace Nine.Graphics.UI
             }
         }
 
-        protected void NextFocus()
+        public void NextFocus()
         {
             // TODO: Rework this algoritm
             var Controls = FindAll<Control>();
@@ -223,8 +204,17 @@ namespace Nine.Graphics.UI
                     o.IsTabStop == true &&
                     o != CurrentFocuesdControl)
                     .ToList().OrderBy(o => o.TabIndex);
-                CurrentFocuesdControl = NextControls.First();
+                if (NextControls.Count<Control>() > 0)
+                    SetFocus(NextControls.First());
             }
+        }
+
+        public void SetFocus(Control control)
+        {
+            if (CurrentFocuesdControl != null)
+                CurrentFocuesdControl.hasFocus = false;
+            CurrentFocuesdControl = control;
+            CurrentFocuesdControl.hasFocus = true;
         }
 
         private bool TryGetElement(Vector2 point, out UIElement output)
@@ -239,7 +229,7 @@ namespace Nine.Graphics.UI
             ContainerTraverser.Traverse<UIElement>(content,
                 (d) =>
                 {
-                    if (d.HitTest(point))
+                    if (d.HitTest(point) && d.Visible)
                     {
                         result = d;
                         var container = d as IContainer;
@@ -257,21 +247,6 @@ namespace Nine.Graphics.UI
                 return true;
             else
                 return false;
-        }
-
-        #endregion
-
-        #region IGraphicsObject
-
-        void IGraphicsObject.OnAdded(DrawingContext context)
-        {
-            context.Passes.Add(this);
-            AddDependency(context.MainPass);
-        }
-
-        void IGraphicsObject.OnRemoved(DrawingContext context)
-        {
-            context.Passes.Remove(this);
         }
 
         #endregion

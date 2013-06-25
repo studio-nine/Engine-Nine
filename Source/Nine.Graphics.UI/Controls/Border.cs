@@ -73,7 +73,7 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(IRenderer renderer)
+        protected internal override void OnRender(Renderer renderer)
         {
             if (!Visible)
                 return;

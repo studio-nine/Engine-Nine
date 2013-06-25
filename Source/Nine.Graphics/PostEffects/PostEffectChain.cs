@@ -27,7 +27,7 @@
         /// <summary>
         /// Gets or sets the texture usage of the result of this chain.
         /// </summary>
-        public TextureUsage TextureUsage { get; set; }
+        public Nine.Graphics.TextureUsage TextureUsage { get; set; }
 
         /// <summary>
         /// Gets or sets the state of the blend of this post effect.
@@ -57,7 +57,7 @@
         /// <summary>
         /// Creates a new instance of ScreenEffect for post processing.
         /// </summary>
-        public PostEffectChain(TextureUsage textureUsage, params Pass[] effects)
+        public PostEffectChain(Nine.Graphics.TextureUsage textureUsage, params Pass[] effects)
         {
             this.BlendState = BlendState.Opaque;
             this.TextureUsage = textureUsage;

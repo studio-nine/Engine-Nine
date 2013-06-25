@@ -1,4 +1,5 @@
-﻿namespace Nine.Graphics.UI.Media
+﻿using Microsoft.Xna.Framework;
+namespace Nine.Graphics.UI.Media
 {
     public abstract class TileBrush : Brush
     {
@@ -32,11 +33,7 @@
         }
         private Flip flip = Flip.None;
 
-        public Microsoft.Xna.Framework.Rectangle? SourceRectangle
-        {
-            get;
-            set;
-        }
+        public Rectangle? SourceRectangle { get; set; }
 
         /* 
          - Should I add this?

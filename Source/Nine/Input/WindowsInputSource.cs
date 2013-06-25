@@ -49,6 +49,7 @@ namespace Nine
 
         public WindowsInputSource(IntPtr handle)
         {
+            // TODO: MonoGame does not 'currently' support this.
             Mouse.WindowHandle = handle;
             control = Form.FromHandle(handle);
             control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);

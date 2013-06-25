@@ -3,18 +3,25 @@
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
     using Nine.Graphics.UI.Media;
 
     [System.Windows.Markup.ContentProperty("Content")]
     public class TextBox : Control
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the text contents of the text box.
         /// </summary>
         public string Text
         {
             get { return textBlock.Text; }
-            set { textBlock.Text = value; }
+            set 
+            { 
+                textBlock.Text = value; 
+                MarkerLocation = value.Length; 
+            }
         }
 
         /// <summary>
@@ -57,15 +64,6 @@
         }
 
         /// <summary>
-        /// Gets or sets the Padding.
-        /// </summary>
-        public Thickness Padding
-        {
-            get { return textBlock.Padding; }
-            set { textBlock.Padding = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the Current Text Wrapping.
         /// </summary>
         public TextWrapping Wrapping
@@ -74,28 +72,127 @@
             set { textBlock.Wrapping = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the Padding.
+        /// </summary>
+        public Thickness Padding
+        {
+            get { return textBlock.Padding; }
+            set { textBlock.Padding = value; }
+        }
+
+        public bool EnableMarker { get; set; }
+
+        public SolidColorBrush MarkerBrush { get; set; }
+
+        /// <summary>
+        /// The Char when the Marker Locations is in the middle of the text.
+        /// </summary>
+        public char MarkerChar1 { get; set; }
+
+        /// <summary>
+        /// The Char when the Marker Locations is at the end of the text.
+        /// </summary>
+        public char MarkerChar2 { get; set; }
+
+        public int MarkerLocation
+        {
+            get { return markerLocation; }
+            set { markerLocation = value; }
+        }
+        private int markerLocation = 0;
+
+        public string Watermark { get; set; }
+        public SolidColorBrush WatermarkBrush { get; set; }
+
+        #endregion
+
         private TextBlock textBlock;
 
         public TextBox()
         {
             textBlock = new TextBlock() { Parent = this };
+            EnableMarker = true;
+            MarkerBrush = Color.Gray;
+            MarkerChar1 = '|';
+            MarkerChar2 = '_';
+            Watermark = "";
+            WatermarkBrush = Color.DarkGray;
+        }
+
+        public TextBox(SpriteFont font)
+        {
+            textBlock = new TextBlock() { Font = font, Parent = this };
+            EnableMarker = true;
+            MarkerBrush = Color.Gray;
+            MarkerChar1 = '|';
+            MarkerChar2 = '_';
+            Watermark = "";
+            WatermarkBrush = Color.DarkGray;
         }
 
         protected override void OnKeyDown(KeyboardEventArgs e)
         {
             Window window;
-            if (TryGetRootElement(out window))
+            if (EnableMarker && e.Key == Keys.Left && MarkerLocation > 0)
             {
+                MarkerLocation--;
+            }
+            else if (EnableMarker && e.Key == Keys.Right && MarkerLocation < Text.Length)
+            {
+                MarkerLocation++;
+            }
+            else if (TryGetRootElement(out window))
+            {
+                // Rewrite some parts of this
                 string text = Text;
-                window.Input.EditString(ref text, e.Key, Multiline, text.Length, MaxChars);
-                Text = text;
+                var prevMarker = markerLocation;
+                if (AllowInput(window.Input.EditString(ref text, e.Key, Multiline, ref markerLocation, MaxChars)))
+                {
+                    textBlock.Text = text;
+                }
+                else
+                {
+                    markerLocation = prevMarker;
+                }
             }
         }
-
-        protected internal override void OnRender(Renderer.IRenderer renderer)
+        
+        protected virtual bool AllowInput(Nine.TextChange change)
         {
-            textBlock.OnRender(renderer);
+            return true;
+        }
+
+        protected internal override void OnRender(Renderer.Renderer renderer)
+        {
             base.OnRender(renderer);
+
+            // not the best way to display watermark text
+            var wt = textBlock.Text;
+            var wb = textBlock.Foreground;
+            if (wt == string.Empty)
+            {
+                textBlock.Text = Watermark;
+                textBlock.Foreground = WatermarkBrush;
+            }
+            textBlock.OnRender(renderer);
+            textBlock.Text = wt;
+            textBlock.Foreground = wb;
+
+            if (EnableMarker && HasFocus)
+            { 
+                // TODO: Marker Flashing with Interval ofc
+                if (MarkerLocation < 0 || MarkerLocation > Text.Length)
+                    throw new IndexOutOfRangeException("MarkerLocation");
+
+                var MarkerText = Text.Substring(0, MarkerLocation);
+                var MarkerPosition = textBlock.TextStartPosition;
+                // (-2), we want it to be closer to the character.
+                MarkerPosition.X += Font.MeasureString(MarkerText).X - 2;
+
+                var mChar = (MarkerLocation == Text.Length) ? MarkerChar2 : MarkerChar1;
+                renderer.DrawString(Font, mChar.ToString(), MarkerPosition, (Color)MarkerBrush);
+            }
         }
     }
 }

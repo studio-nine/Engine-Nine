@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,11 +26,26 @@
 
 namespace Nine.Graphics.UI.Controls
 {
+    using System;
+
     public class Control : UIElement
     {
         public bool IsEnabled { get; set; }
 
         public bool IsTabStop { get; set; }
         public int TabIndex { get; set; }
+
+        public bool HasFocus { get { return hasFocus; } }
+        internal bool hasFocus = false;
+
+        public event EventHandler<MouseEventArgs> Click;
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            // Move to OnMouseDown? then I get the right sender.
+            if (Click != null)
+                Click(this, e);
+            base.OnMouseDown(e);
+        }
     }
 }

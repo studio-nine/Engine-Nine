@@ -31,7 +31,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
     /// <summary>
     /// Base class for all controls with toggling functionality.
     /// </summary>
-    public class ToggleButton : ButtonBase
+    public class ToggleButton : Control
     {
         #region Properties / Fields
 
@@ -74,9 +74,13 @@ namespace Nine.Graphics.UI.Controls.Primitives
 
         #region Methods
 
-        // TODO: Rendering
+        protected internal override void OnRender(Renderer.Renderer renderer)
+        {
+            // TODO: Rendering
+            base.OnRender(renderer);
+        }
 
-        internal protected virtual void OnToggle()
+        protected internal virtual void OnToggle()
         {
             bool? isChecked = this.IsChecked;
 
@@ -97,10 +101,10 @@ namespace Nine.Graphics.UI.Controls.Primitives
                 eventHandler(this, EventArgs.Empty);
         }
 
-        internal protected override void OnClick()
+        protected override void OnMouseDown(MouseEventArgs e)
         {
             this.OnToggle();
-            base.OnClick();
+            base.OnMouseDown(e);
         }
 
         protected virtual void OnIndeterminate()

@@ -259,7 +259,7 @@ namespace Nine.Graphics.UI
 
         #region Draw
 
-        protected internal virtual void OnRender(IRenderer renderer)
+        protected internal virtual void OnRender(Renderer.Renderer renderer)
         {
             ToggleClipping(renderer.GraphicsDevice, isClippingRequired);
             if (Background != null)
@@ -269,7 +269,7 @@ namespace Nine.Graphics.UI
 
         protected void ToggleClipping(GraphicsDevice graphics, bool value)
         {
-            graphics.RasterizerState = value ? Window.WithClipping : Window.WithoutClipping;
+            graphics.RasterizerState = value ? BaseWindow.WithClipping : BaseWindow.WithoutClipping;
 
             if (value)
             {

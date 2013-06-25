@@ -33,7 +33,7 @@
             return base.ArrangeOverride(finalSize);
         }
 
-        protected internal override void OnRender(Renderer.IRenderer renderer)
+        protected internal override void OnRender(Renderer.Renderer renderer)
         {
             base.OnRender(renderer);
             if (Content != null)

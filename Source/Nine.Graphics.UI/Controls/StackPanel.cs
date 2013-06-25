@@ -27,6 +27,7 @@
 namespace Nine.Graphics.UI.Controls
 {
     using System;
+    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
     /// <summary>
@@ -38,6 +39,26 @@ namespace Nine.Graphics.UI.Controls
         /// Gets or sets the Orientation of the Childrens Arrangement.
         /// </summary>
         public Orientation Orientation { get; set; }
+
+        #region Constructor
+
+        public StackPanel() 
+            : this(Orientation.Horizontal) { }
+        public StackPanel(Orientation orientation)
+            : base()
+        {
+            this.Orientation = orientation;
+        }
+
+        public StackPanel(IEnumerable<UIElement> children) 
+            : this(children, Orientation.Horizontal) { }
+        public StackPanel(IEnumerable<UIElement> children, Orientation orientation)
+            : base(children)
+        {
+            this.Orientation = orientation;
+        }
+
+        #endregion
 
         protected override Vector2 ArrangeOverride(Vector2 arrangeSize)
         {

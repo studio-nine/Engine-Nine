@@ -29,6 +29,7 @@ namespace Nine.Graphics.UI.Media
     using System;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
+    using Nine.Graphics.UI.Internal;
 
     /// <summary>
     /// Represents a <see cref="Brush">Brush</see> of the specified <see cref="Vector3">Vector3</see> 
@@ -52,20 +53,31 @@ namespace Nine.Graphics.UI.Media
         public SolidColorBrush(Color color)
         {
             this.Color = color.ToVector3();
+            Alpha = color.A;
         }
         public SolidColorBrush(Vector3 color)
         {
             this.Color = color;
         }
 
-        public Color ToColor()
+        public static implicit operator SolidColorBrush(Color c)
         {
-            return new Color(Color.X, Color.Y, Color.Z, Alpha);
+            return new SolidColorBrush(c.R, c.G, c.B, c.A);
+        }
+
+        public static explicit operator Color(SolidColorBrush c)
+        {
+            return new Color(c.Color.X, c.Color.Y, c.Color.Z, c.Alpha);
+        }
+
+        protected internal override void OnRender(Renderer.Renderer renderer, BoundingRectangle bound)
+        {
+            renderer.Draw(bound, (Color)this);
         }
 
         public override string ToString()
         {
-            return this.Color.ToString();
+            return string.Format("[ R: {0}, G: {2}, B: {3}, A: {4} ]", Color.X, Color.Y, Color.Z, Alpha);
         }
     }
 }

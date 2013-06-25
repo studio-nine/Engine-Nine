@@ -430,14 +430,11 @@ namespace Nine
             keysPressedLastFrame.AddRange(pressedKeys);
         }
 
-        // TODO: Make this more respond changes better
-        internal void EditString(ref string input, Keys key, bool multiline, int selectedIndex, int maxChars)
+        // TODO: Make this more changeable
+        internal TextChange EditString(ref string input, Keys key, bool multiline, ref int selectedIndex, int maxChars)
         {
             if (selectedIndex > input.Length)
                 throw new ArgumentOutOfRangeException("selectedIndex");
-
-            if (input.Length >= maxChars)
-                return;
 
             bool isShiftPressed =
                 KeyboardState.IsKeyDown(Keys.LeftShift) ||
@@ -445,18 +442,56 @@ namespace Nine
 
             if (IsSpecialKey(key) == false && input.Length < maxChars)
             {
-                input = input.Insert(selectedIndex, KeyToChar(key, isShiftPressed).ToString());
+                var Char = KeyToChar(key, isShiftPressed);
+                input = input.Insert(selectedIndex, Char.ToString());
+                selectedIndex++;
+                return new TextChange(TextChange.TextChangeType.CharAdded, Char.ToString());
             }
             else if (multiline && key == Keys.Enter)
             {
                 input = input.Insert(selectedIndex, Environment.NewLine);
+                selectedIndex++;
+                return new TextChange(TextChange.TextChangeType.NewLine, Environment.NewLine);
             }
-            else if (key == Keys.Back && input.Length > 0)
+            else if (key == Keys.Back && selectedIndex > 0)
             {
-                input = input.Remove(selectedIndex - 1);
+                input = input.Remove(selectedIndex - 1, 1);
+                selectedIndex--;
+                return new TextChange(TextChange.TextChangeType.CharRemovedNegative, string.Empty);
             }
+            else if (key == Keys.Delete && selectedIndex < input.Length)
+            {
+                input = input.Remove(selectedIndex, 1);
+                return new TextChange(TextChange.TextChangeType.CharRemovedPositive, string.Empty);
+            }
+            return new TextChange(TextChange.TextChangeType.Blank, "");
         }
 
+
         #endregion
+    }
+
+    /// <summary>
+    /// This is used to get a better return value for <see cref="Input"/>.EditString(...)
+    /// </summary>
+    public struct TextChange
+    {
+        public enum TextChangeType
+        {
+            Blank,
+            CharAdded,
+            // If the character is removed relative to selected index + / -
+            CharRemovedPositive,
+            CharRemovedNegative,
+            NewLine,
+        }
+        public readonly TextChangeType Type;
+        public readonly string Text;
+
+        internal TextChange(TextChangeType type, string text)
+        {
+            Type = type;
+            Text = text;
+        }
     }
 }

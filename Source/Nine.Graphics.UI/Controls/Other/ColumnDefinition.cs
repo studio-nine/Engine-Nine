@@ -34,10 +34,12 @@ namespace Nine.Graphics.UI.Controls
         public float MaxWidth { get; set; }
         public float MinWidth { get; set; }
 
-        public ColumnDefinition()
+        public ColumnDefinition() : this(1, GridUnitType.Star) { }
+        public ColumnDefinition(float value) : this(value, GridUnitType.Star) { }
+        public ColumnDefinition(float value, GridUnitType type)
             : base(DefinitionType.Column)
         {
-            Width = new GridLength(1, GridUnitType.Star);
+            Width = new GridLength(value, type);
             MaxWidth = float.PositiveInfinity;
             MinWidth = 0;
         }

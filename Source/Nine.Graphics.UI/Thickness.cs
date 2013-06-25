@@ -63,6 +63,11 @@ namespace Nine.Graphics.UI
             this.Bottom = bottom;
         }
 
+        public static implicit operator Thickness(int i)
+        {
+            return new Thickness(0);
+        }
+
         /// <summary>
         ///     Adds two <see cref = "Thickness">Thickness</see> instances together (e.g. adds the two <see cref = "Left">Left</see> components, the two <see cref = "Top">Top</see> components etc).
         /// </summary>

@@ -34,8 +34,6 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Internal;
 
-    // Add?; ShowGridLines
-
     /// <summary>
     /// A Grid layout panel consisting of columns and rows.
     /// </summary>
@@ -74,7 +72,7 @@ namespace Nine.Graphics.UI.Controls
             get { return this.rowDefinitions; }
         }
 
-        //public bool ShowGridLines { get; set; }
+        public bool ShowGridLines { get; set; }
 
         #endregion
 
@@ -83,6 +81,17 @@ namespace Nine.Graphics.UI.Controls
         private Cell[] cells;
         private DefinitionBase[] columns;
         private DefinitionBase[] rows;
+
+        #endregion
+
+        #region Constructor
+
+        public Grid() { }
+        public Grid(IList<ColumnDefinition> colums, IList<RowDefinition> rows)
+        {
+            this.columnDefinitions = colums;
+            this.rowDefinitions = rows;
+        }
 
         #endregion
 
@@ -139,6 +148,15 @@ namespace Nine.Graphics.UI.Controls
             return new Vector2(
                 this.columns.Sum(definition => definition.MinLength), 
                 this.rows.Sum(definition => definition.MinLength));
+        }
+
+        protected internal override void OnRender(Renderer.Renderer renderer)
+        {
+            if (ShowGridLines)
+            {
+                // TODO: Render Lines
+            }
+            base.OnRender(renderer);
         }
 
         private void CreateCells()

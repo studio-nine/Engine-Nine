@@ -74,7 +74,7 @@ namespace Nine.Graphics.UI.Controls
             Flip = Media.Flip.None;
         }
 
-        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             base.OnRender(renderer);
             if (this.Source != null)

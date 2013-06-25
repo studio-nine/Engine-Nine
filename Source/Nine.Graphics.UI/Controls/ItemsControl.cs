@@ -62,7 +62,14 @@ namespace Nine.Graphics.UI.Controls
             get { return ItemsPanel.Children; }
         }
 
+        /// <summary>
+        /// Occurs when a Child is Added.
+        /// </summary>
         public event Action<UIElement> Added;
+
+        /// <summary>
+        /// Occurs when a Child is Removed.
+        /// </summary>
         public event Action<UIElement> Removed;
 
         IList IContainer.Children { get { return (IList)ItemsSource; } }
@@ -74,8 +81,8 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         public ItemsControl()
         {
-            // TODO: A better way of sending Parent
             ItemsPanel = new StackPanel();
+            // event calls event, works for now.
             ItemsPanel.Added += (e) => { if (Added != null) { Added(e); }; };
             ItemsPanel.Removed += (e) => { if (Removed != null) { Removed(e); }; }; 
         }
@@ -84,7 +91,7 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(Nine.Graphics.UI.Renderer.IRenderer renderer)
+        protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             base.OnRender(renderer);
             this.ItemsPanel.OnRender(renderer);

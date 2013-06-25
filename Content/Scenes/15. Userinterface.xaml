@@ -45,29 +45,56 @@
               <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Inside a StackPanel" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Border>
             <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
-              <Button Margin="2" Background="LightGray" />
+              <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button1" Margin="2" Background="LightBlue" TextVerticalAlignment="Center" TextHorizontalAlignment="Center" />
             </Border>
             <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
               <ProgressBar Margin="2" Value="50" />
             </Border>
             <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
               <TextBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}" 
-                       Multiline="False" Text="TextBox" Foreground="White" Padding="10" />
+                       Multiline="False" EnableMarker="True" MarkerBrush="Green" Text="" Foreground="White" 
+                       MaxChars="32" Padding="10" Watermark="This is a TextBox! With Watermark." WatermarkBrush="DarkGray" />
+            </Border>
+            <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+              <NumberBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}"
+                       Multiline="False" EnableMarker="True" MarkerBrush="Red" Text="1337" Foreground="White"
+                       MaxChars="32" Padding="10" />
             </Border>
           </StackPanel>
 
           <Grid Grid.Column="2" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="50*" />
-              <ColumnDefinition Width="50*" />
-            </Grid.ColumnDefinitions>
-            <ListBox Grid.Column="0" SelectedIndex="1" Orientation="Vertical">
-              <Button Margin="2" Height="26" Background="LightGray" IsTabStop="True" TabIndex="2" />
-              <Button Margin="2" Height="26" Background="LightGray" IsTabStop="True" TabIndex="-2" />
-              <Button Margin="2" Height="26" Background="LightGray" />
+            <ListBox SelectedIndex="1" Orientation="Vertical">
+              <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}"
+                      Text="SpriteBatch Renderer problem ->" Padding="10" Margin="2" Height="48">
+                <TextBlock.Background>
+                  <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="0,0,64,64" />
+                </TextBlock.Background>
+              </TextBlock>
+              <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}"
+                      Text="Just because it uses Integers" Padding="10" Margin="2" Height="48">
+                <TextBlock.Background>
+                  <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="64,0,64,64" />
+                </TextBlock.Background>
+              </TextBlock>
+              <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}"
+                      Text=" :)" Padding="10" Margin="2" Height="48">
+                <TextBlock.Background>
+                  <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="128,0,64,64" />
+                </TextBlock.Background>
+              </TextBlock>
+              <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button2" Margin="2" Height="48"
+                      TextVerticalAlignment="Center" TextHorizontalAlignment="Center">
+                <Button.Background>
+                  <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="192,0,64,64" />
+                </Button.Background>
+              </Button>
+              <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button3" Margin="2" Height="48" Background="LightGray" TextVerticalAlignment="Center" TextHorizontalAlignment="Center" />
             </ListBox>
           </Grid>
 
+          <TextBox Font="{ContentReference ../Fonts/Consolas.spritefont}" Grid.Column="2" Grid.Row="0" Margin="20" Multiline="True" 
+                   Text="Engine Nine Userinterface&#x0a; - This is a TextBox" />
+          
           <Image Margin="20" Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
         </Grid>
       </Page>
