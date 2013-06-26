@@ -417,7 +417,7 @@ namespace Nine.Graphics
                     Matrix.Multiply(ref BoneTransforms[mesh.parentBoneIndex],
                                     ref absoluteTransform, out mesh.worldTransform);
                 }
-                absoluteTransformDirtyFlags |= ~ModelAbsoluteTransformDirty;
+                absoluteTransformDirtyFlags &= ~ModelAbsoluteTransformDirty;
             }
 
             if (attachments != null)

@@ -64,7 +64,7 @@ namespace Nine.Graphics
                 if ((matricesDirtyMask & ViewProjectionDirty) != 0)
                 {
                     Matrix.Multiply(ref view, ref projection, out viewProjection);
-                    matricesDirtyMask |= ~ViewProjectionDirty;
+                    matricesDirtyMask &= ~ViewProjectionDirty;
                 }
                 return viewProjection;
             }
@@ -82,8 +82,8 @@ namespace Nine.Graphics
                 {
                     Matrix.Multiply(ref view, ref projection, out viewProjection);
                     Matrix.Invert(ref viewProjection, out viewProjectionInverse);
-                    matricesDirtyMask |= ~ViewProjectionInverseDirty;
-                    matricesDirtyMask |= ~ViewProjectionDirty;
+                    matricesDirtyMask &= ~ViewProjectionInverseDirty;
+                    matricesDirtyMask &= ~ViewProjectionDirty;
                 }
                 return viewProjectionInverse;
             }
@@ -110,7 +110,7 @@ namespace Nine.Graphics
                 if ((matricesDirtyMask & ViewTransposeDirty) != 0)
                 {
                     Matrix.Transpose(ref view, out viewTranspose);
-                    matricesDirtyMask |= ~ViewTransposeDirty;
+                    matricesDirtyMask &= ~ViewTransposeDirty;
                 }
                 return viewTranspose;
             }
@@ -128,7 +128,7 @@ namespace Nine.Graphics
                 {
                     Matrix.Invert(ref view, out viewInverseTranspose);
                     Matrix.Transpose(ref viewInverseTranspose, out viewInverseTranspose);
-                    matricesDirtyMask |= ~ViewInverseTransposeDirty;
+                    matricesDirtyMask &= ~ViewInverseTransposeDirty;
                 }
                 return viewInverseTranspose;
             }
@@ -145,7 +145,7 @@ namespace Nine.Graphics
                 if ((matricesDirtyMask & ProjectionInverseDirty) != 0)
                 {
                     Matrix.Invert(ref projection, out projectionInverse);
-                    matricesDirtyMask |= ~ProjectionInverseDirty;
+                    matricesDirtyMask &= ~ProjectionInverseDirty;
                 }
                 return projectionInverse;
             }
@@ -162,7 +162,7 @@ namespace Nine.Graphics
                 if ((matricesDirtyMask & ProjectionTransposeDirty) != 0)
                 {
                     Matrix.Transpose(ref projection, out projectionTranspose);
-                    matricesDirtyMask |= ~ProjectionTransposeDirty;
+                    matricesDirtyMask &= ~ProjectionTransposeDirty;
                 }
                 return projectionTranspose;
             }
@@ -180,7 +180,7 @@ namespace Nine.Graphics
                 {
                     Matrix.Invert(ref projection, out projectionInverseTranspose);
                     Matrix.Transpose(ref projectionInverseTranspose, out projectionInverseTranspose);
-                    matricesDirtyMask |= ~ProjectionInverseTransposeDirty;
+                    matricesDirtyMask &= ~ProjectionInverseTransposeDirty;
                 }
                 return projectionInverseTranspose;
             }
@@ -197,7 +197,7 @@ namespace Nine.Graphics
                 if ((matricesDirtyMask & ViewFrustumDirty) != 0)
                 {
                     frustum.Matrix = ViewProjection;
-                    matricesDirtyMask |= ~ViewFrustumDirty;
+                    matricesDirtyMask &= ~ViewFrustumDirty;
                 }
                 return frustum;
             }

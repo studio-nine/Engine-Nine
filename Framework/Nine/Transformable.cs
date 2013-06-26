@@ -88,7 +88,7 @@ namespace Nine
                         absoluteTransform = transform;
                     else
                         absoluteTransform = transform * Parent.AbsoluteTransform;
-                    absoluteTransformDirtyFlags |= ~AbsoluteTransformDirty;
+                    absoluteTransformDirtyFlags &= ~AbsoluteTransformDirty;
                 }
                 return absoluteTransform; 
             } 
