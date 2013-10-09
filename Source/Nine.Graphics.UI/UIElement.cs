@@ -122,7 +122,7 @@ namespace Nine.Graphics.UI
         private Vector2 unclippedSize;
         private Vector2 visualOffset;
 
-        internal Window Window;
+        internal BaseWindow Window;
 
         [Nine.Serialization.NotBinarySerializable]
         public UIElement Parent { get; internal set; }
@@ -145,7 +145,7 @@ namespace Nine.Graphics.UI
             MaxHeight = float.PositiveInfinity;
         }
 
-        public bool TryGetRootElement(out Window rootElement)
+        public bool TryGetRootElement(out BaseWindow rootElement)
         {
             UIElement element = this;
             while ((rootElement = element.Window) == null)

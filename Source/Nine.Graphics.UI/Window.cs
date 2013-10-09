@@ -40,13 +40,11 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.UI.Renderer;
 
     /// <summary>
-    /// RootElement is the main host for all <see cref="UIElement">UIElement</see>s, it manages the renderer, user input and is the target for Update/Draw calls.
+    /// RootElement is the main host for all <see cref="UIElement">UIElement</see>s, it manages the  user input and is the target for Update/Draw calls.
     /// </summary>
     [System.Windows.Markup.ContentProperty("Content")]
     public class Window : BaseWindow, IContainer
     {
-        IList IContainer.Children { get { return new UIElement[] { Content }; } }
-
         public UIElement Content 
         {
             get { return content; }
@@ -65,6 +63,8 @@ namespace Nine.Graphics.UI
         }
         private UIElement content;
 
+        IList IContainer.Children { get { return new UIElement[] { Content }; } }
+
         // TODO: Make this work
         public bool HasMouse { get; private set; }
 
@@ -72,33 +72,14 @@ namespace Nine.Graphics.UI
         /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
         /// </summary> 
         public Window()
-            : this(new Nine.Input()) 
-        { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
-        /// </summary> 
-        public Window(Nine.Input input)
-            : base(input)
         {
-            Input.MouseMove += MouseMove;
-            Input.MouseDown += MouseDown;
-            Input.MouseWheel += MouseWheel;
-            Input.KeyDown += Input_KeyDown;
-            Input.KeyUp += Input_KeyUp;
+            
         }
 
         #region Methods
 
-        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
+        internal void Messure()
         {
-            if (content == null)
-                return;
-
-            // Use SafeArea?
-            if (this.Viewport != context.GraphicsDevice.Viewport.TitleSafeArea)
-                this.Viewport = context.GraphicsDevice.Viewport.TitleSafeArea;
-
             if (Viewport == null)
                 throw new ArgumentNullException("Viewport");
 
@@ -112,17 +93,25 @@ namespace Nine.Graphics.UI
 
             content.Measure(new Vector2(bounds.Width, bounds.Height));
             content.Arrange(bounds);
+        }
 
-            if (content != null)
-            {
-                if (Renderer == null)
-                    Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
+        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
+        {
+            if (content == null)
+                return;
 
-                Renderer.ElapsedTime = context.ElapsedTime;
-                Renderer.Begin(context);
-                content.OnRender(Renderer);
-                Renderer.End(context);
-            }
+            if (this.Viewport != (BoundingRectangle)context.GraphicsDevice.Viewport.TitleSafeArea)
+                this.Viewport = (BoundingRectangle)context.GraphicsDevice.Viewport.TitleSafeArea;
+
+            Messure();
+
+            if (Renderer == null)
+                Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
+
+            Renderer.ElapsedTime = context.ElapsedTime;
+            Renderer.Begin(context);
+            content.OnRender(Renderer);
+            Renderer.End(context);
         }
 
         #endregion
@@ -133,6 +122,8 @@ namespace Nine.Graphics.UI
             ContainerTraverser.Traverse<T>(content, result);
             return result;
         }
+
+        // TODO: Make a standard for Input
 
         #region Input
 
@@ -147,7 +138,6 @@ namespace Nine.Graphics.UI
             if (TryGetElement(new Vector2(e.X, e.Y), out result))
             {
                 HasMouse = true;
-                System.Diagnostics.Debug.WriteLine("MouseOver");
                 result.InvokeMouseMove(sender, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
             }
             else
@@ -228,7 +218,7 @@ namespace Nine.Graphics.UI
             ContainerTraverser.Traverse<UIElement>(content,
                 (d) =>
                 {
-                    if (d.HitTest(point) && d.Visible == Visibility.Visible)
+                    if (d.Visible == Visibility.Visible & d.HitTest(point))
                     {
                         result = d;
                         var container = d as IContainer;

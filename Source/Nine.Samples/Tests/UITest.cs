@@ -12,7 +12,7 @@
     using Nine.Graphics.UI.Controls.DataVisualization;
     using Nine.Graphics.UI.Media;
     using Nine.Graphics.UI.Renderer;
-/*
+
     public class UITest : Sample
     {
         public override Scene CreateScene(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics, Serialization.ContentLoader content)
@@ -196,5 +196,4 @@
             base.OnRender(renderer);
         }
     }
-*/
 }

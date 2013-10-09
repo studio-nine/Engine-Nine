@@ -135,7 +135,7 @@
 
         protected override void OnKeyDown(KeyboardEventArgs e)
         {
-            Window window;
+            BaseWindow window;
             if (EnableMarker && e.Key == Keys.Left && MarkerLocation > 0)
             {
                 MarkerLocation--;
@@ -146,17 +146,18 @@
             }
             else if (TryGetRootElement(out window))
             {
+                // TODO: !!!
                 // Rewrite some parts of this
                 string text = Text;
                 var prevMarker = markerLocation;
-                if (AllowInput(window.Input.EditString(ref text, e.Key, Multiline, ref markerLocation, MaxChars)))
-                {
-                    textBlock.Text = text;
-                }
-                else
-                {
-                    markerLocation = prevMarker;
-                }
+                // if (AllowInput(window.Input.EditString(ref text, e.Key, Multiline, ref markerLocation, MaxChars)))
+                // {
+                //     textBlock.Text = text;
+                // }
+                // else
+                // {
+                //     markerLocation = prevMarker;
+                // }
             }
         }
         

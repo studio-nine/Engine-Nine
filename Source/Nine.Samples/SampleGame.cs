@@ -7,6 +7,7 @@ namespace Nine.Samples
     using Nine.Components;
     using Nine.Graphics;
     using Nine.Serialization;
+    using Nine.Physics;
     using System;
     using System.IO;
     using System.Collections.Generic;
@@ -75,9 +76,9 @@ namespace Nine.Samples
                 from type in Assembly.GetExecutingAssembly().GetTypes().OrderBy(x => x.Name)
                 where type.IsSubclassOf(typeof(Sample)) && type != typeof(Tutorial)
                 select (Sample)Activator.CreateInstance(type));
-            
-            //samples = new List<Sample> { new UITest() };
-            samples = new List<Sample> { new Tutorial("Scenes/15. Userinterface.xaml") };
+
+            samples = new List<Sample> { new UITest() };
+            //samples = new List<Sample> { new Tutorial("Scenes/03. Materials.xaml") };
         }
 
         private void LoadNextScene()
@@ -130,6 +131,7 @@ namespace Nine.Samples
                 Exit();
 #endif
             currentScene.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            currentScene.UpdatePhysicsAsync((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
 

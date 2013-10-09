@@ -50,14 +50,13 @@
             Grid.SetColumn(border2, 0);
             grid.Children.Add(border2);
 
+            window.Messure();
+
             Assert.AreEqual(new Vector2(100, 100), border1.RenderSize);
             Assert.AreEqual(new Vector2(0, 100), border1.VisualOffset);
-            Assert.AreEqual(new Vector2(0, 100), border1.Content.VisualOffset);
 
             Assert.AreEqual(new Vector2(100, 100), border2.RenderSize);
             Assert.AreEqual(new Vector2(0, 0), border2.VisualOffset);
-            Assert.AreEqual(new Vector2(0, 0), border2.Content.VisualOffset);
-            // I might have made my math wrong
         }
 
         [TestMethod()]
@@ -65,18 +64,21 @@
         {
             StackPanel sp;
             Window window = new Window();
-            window.Viewport = new Rectangle(0, 0, 800, 800);
+            window.Viewport = new Rectangle(0, 0, 200, 800);
 
-            window.Content = sp = new StackPanel() { Orientation = Orientation.Horizontal };
+            window.Content = sp = new StackPanel() { Orientation = Orientation.Vertical };
 
-            Border Border1, Border2, Border21;
+            Border Border1, Border2, Border3;
 
-            sp.Children.Add(Border1 = new Border() { Height = 50 });
-            sp.Children.Add(Border2 = new Border() { Height = 50, Content = Border21 = new Border() });
+            sp.Children.Add(Border1 = new Border() { Height = 100 });
+            sp.Children.Add(Border2 = new Border() { Height = 100 });
+            sp.Children.Add(Border3 = new Border() { Height = 100 });
 
-            Assert.AreEqual(new Vector2(0, 50), Border2.AbsoluteVisualOffset);
-            Assert.AreEqual(new Vector2(0, 50), Border21.AbsoluteVisualOffset);
-            // I might have made my math wrong
+            window.Messure();
+
+            Assert.AreEqual(new Vector2(0, 0), Border1.AbsoluteVisualOffset);
+            Assert.AreEqual(new Vector2(0, 100), Border2.AbsoluteVisualOffset);
+            Assert.AreEqual(new Vector2(0, 200), Border3.AbsoluteVisualOffset);
         }
     }
 }

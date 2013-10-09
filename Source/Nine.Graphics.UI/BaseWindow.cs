@@ -13,30 +13,51 @@
     {
         internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
         internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
+        
+        internal int ZDepth = -1;
 
-        public Nine.Input Input { get; protected set; }
-        public Renderer.Renderer Renderer { get; protected set; }
+        public WindowManager Manager
+        {
+            get { return manager; }
+            set
+            {
+                manager = value;
+            }
+        }
+        internal WindowManager manager;
 
         /// <summary>
-        /// Gets or sets the viewport used by <see cref="Window">RootElement</see> to layout its content.
+        /// Gets or sets the renderer system.
         /// </summary>
-        public Rectangle Viewport { get; set; }
+        public Renderer.Renderer Renderer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the viewport used by <see cref="BaseWindow">RootElement</see> to layout its content.
+        /// </summary>
+        public BoundingRectangle Viewport { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseWindow">RootElement</see> class.
         /// </summary> 
         protected BaseWindow()
-            : this(new Nine.Input()) 
-        { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseWindow">RootElement</see> class.
-        /// </summary> 
-        protected BaseWindow(Nine.Input input)
         {
-            if ((Input = input) == null)
-                throw new ArgumentNullException("input");
+
         }
+
+        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
+        {
+
+        }
+
+        protected internal virtual void MouseMove(object sender, MouseEventArgs e) { }
+        protected internal virtual void MouseUp(object sender, MouseEventArgs e) { }
+        protected internal virtual void MouseDown(object sender, MouseEventArgs e) { }
+        protected internal virtual void MouseWheel(object sender, MouseEventArgs e) { }
+        protected internal virtual void KeyDown(object sender, KeyboardEventArgs e) { }
+        protected internal virtual void KeyUp(object sender, KeyboardEventArgs e) { }
+        protected internal virtual void ButtonUp(object sender, GamePadEventArgs e) { }
+        protected internal virtual void ButtonDown(object sender, GamePadEventArgs e) { }
+        protected internal virtual void GestureSampled(object sender, GestureEventArgs e) { }
 
         #region IGraphicsObject
 
