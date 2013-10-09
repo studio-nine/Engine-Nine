@@ -37,7 +37,6 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Controls;
-    using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Renderer;
 
     /// <summary>
@@ -229,7 +228,7 @@ namespace Nine.Graphics.UI
             ContainerTraverser.Traverse<UIElement>(content,
                 (d) =>
                 {
-                    if (d.HitTest(point) && d.Visible)
+                    if (d.HitTest(point) && d.Visible == Visibility.Visible)
                     {
                         result = d;
                         var container = d as IContainer;
