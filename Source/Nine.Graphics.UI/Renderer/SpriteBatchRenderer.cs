@@ -9,12 +9,12 @@
 
     public class SpriteBatchRenderer : Renderer
     {
-        private SpriteBatch spriteBatch;
+        internal SpriteBatch spriteBatch;
 
         public SpriteBatchRenderer(GraphicsDevice graphics)
             : base(graphics)
         {
-            spriteBatch = new SpriteBatch(graphics);
+            spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(graphics);
         }
 
         public override void Begin(DrawingContext context)
@@ -27,10 +27,23 @@
             spriteBatch.End();
         }
 
+
         public override void Draw(BoundingRectangle bound, Color color)
         {
-            spriteBatch.Draw(bound, color);
+            spriteBatch.Draw(new Vector2(bound.X, bound.Y), new Vector2(bound.Width, bound.Height), color);
         }
+
+        public override void Draw(Vector2 from, Vector2 to, Color color)
+        {
+            spriteBatch.DrawLine(from, to, color, 1);
+        }
+
+        public override void Draw(System.Collections.Generic.IEnumerable<Vector2> poly, Color color, bool join)
+        {
+
+        }
+
+        #region Texture
 
         public override void Draw(Texture2D texture, BoundingRectangle bound, Rectangle? Source)
         {
@@ -51,12 +64,22 @@
                 Effects = SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally;
 
             spriteBatch.Draw(texture, bound, Source, color, 0, Vector2.Zero, Effects, 0);
-
         }
 
-        public override void DrawString(SpriteFont Font, string Text, Vector2 position, Color color)
+        #endregion
+
+        #region Text
+
+        public override void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color)
         {
-            spriteBatch.DrawString(Font, Text, position, color);
+            spriteBatch.DrawString(spriteFont, text, position, color);
         }
+        
+        public override void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale)
+        {
+            spriteBatch.DrawString(spriteFont, text, position, color, rotation, origin, scale, SpriteEffects.None, 0);
+        }
+
+        #endregion
     }
 }

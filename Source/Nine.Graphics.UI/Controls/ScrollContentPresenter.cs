@@ -141,8 +141,9 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            UIElement content = this.Content;
+            if (Visible == Visibility.Collapsed) return Vector2.Zero;
 
+            UIElement content = this.Content;
             this.UpdateScrollData(finalSize, this.scrollData.Extent);
 
             if (content != null)
@@ -165,15 +166,10 @@ namespace Nine.Graphics.UI.Controls
             return finalSize;
         }
 
-        protected override BoundingRectangle? GetClippingRect(Vector2 finalSize)
-        {
-            if (isClippingRequired)
-                return new BoundingRectangle(this.RenderSize.X, this.RenderSize.Y);
-            return null;
-        }
-
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
+            if (Visible == Visibility.Collapsed) return Vector2.Zero;
+
             UIElement content = this.Content;
             var desiredSize = new Vector2();
             var extent = new Vector2();
@@ -198,6 +194,13 @@ namespace Nine.Graphics.UI.Controls
             desiredSize.Y = Math.Min(availableSize.Y, desiredSize.Y);
 
             return desiredSize;
+        }
+
+        protected override BoundingRectangle? GetClippingRect(Vector2 finalSize)
+        {
+            if (isClippingRequired)
+                return new BoundingRectangle(this.RenderSize.X, this.RenderSize.Y);
+            return null;
         }
 
         private void UpdateScrollData(Vector2 viewport, Vector2 extent)

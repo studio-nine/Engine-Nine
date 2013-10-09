@@ -210,6 +210,11 @@ namespace Nine
             return new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
         }
 
+        public static implicit operator BoundingRectangle(Rectangle rect)
+        {
+            return new BoundingRectangle(rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
         public override int GetHashCode()
         {
             return X.GetHashCode() ^ Y.GetHashCode() ^ Width.GetHashCode() ^ Height.GetHashCode();

@@ -6,6 +6,8 @@
     using Microsoft.Xna.Framework.Input;
     using Nine.Graphics.UI.Media;
 
+    // TODO: Marker only work on single Line
+
     [System.Windows.Markup.ContentProperty("Content")]
     public class TextBox : Control
     {
@@ -165,6 +167,7 @@
 
         protected internal override void OnRender(Renderer.Renderer renderer)
         {
+            if (Visible != Visibility.Visible) return;
             base.OnRender(renderer);
 
             // not the best way to display watermark text
@@ -175,9 +178,9 @@
                 textBlock.Text = Watermark;
                 textBlock.Foreground = WatermarkBrush;
             }
-            textBlock.OnRender(renderer);
             textBlock.Text = wt;
             textBlock.Foreground = wb;
+            textBlock.OnRender(renderer);
 
             if (EnableMarker && HasFocus)
             { 

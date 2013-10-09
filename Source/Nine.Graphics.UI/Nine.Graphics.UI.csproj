@@ -94,6 +94,8 @@
     <Compile Include="Controls\EventArgs\SelectionChangedEventArgs.cs" />
     <Compile Include="Controls\Page.cs" />
     <Compile Include="Controls\PageNavigator.cs" />
+    <Compile Include="Navigation\Page.cs" />
+    <Compile Include="Navigation\PageNavigator.cs" />
     <Compile Include="Controls\Primitives\Selector.cs" />
     <Compile Include="Controls\RangeBase.cs" />
     <Compile Include="Controls\ProgressBar.cs" />

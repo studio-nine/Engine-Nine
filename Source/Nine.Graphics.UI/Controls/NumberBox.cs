@@ -2,7 +2,7 @@
 {
     using Microsoft.Xna.Framework.Graphics;
 
-    // This is going to be generic later on when I have the abilily to do so with Textbox
+    // This is going to be generic later on, when I have the abilily to do so with Textbox
     public class NumberBox : TextBox
     {
         public int Value

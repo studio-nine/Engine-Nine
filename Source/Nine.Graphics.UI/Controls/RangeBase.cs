@@ -40,20 +40,12 @@
         /// <summary>
         /// Gets or sets the largets value change.
         /// </summary>
-        public float LargeChange 
-        { 
-            get; 
-            set; 
-        }
+        public float LargeChange { get; set; }
 
         /// <summary>
         /// Gets or sets the smallest valye change.
         /// </summary>
-        public float SmallChange 
-        { 
-            get; 
-            set; 
-        }
+        public float SmallChange { get; set; }
 
         /// <summary>
         /// Gets or sets the current Value

@@ -147,8 +147,7 @@
 
         protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
-            if (!Visible)
-                return;
+            if (Visible != Visibility.Visible) return;
 
             base.OnRender(renderer);
 

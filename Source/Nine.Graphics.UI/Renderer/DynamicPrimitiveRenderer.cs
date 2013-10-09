@@ -27,6 +27,7 @@
             dynamicPrimitive.Clear();
         }
 
+
         public override void Draw(BoundingRectangle bound, Color color)
         {
             dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, null);
@@ -45,6 +46,27 @@
             }
             dynamicPrimitive.EndPrimitive();
         }
+
+        public override void Draw(System.Collections.Generic.IEnumerable<Vector2> poly, Color color, bool join)
+        {
+            // Fix this!
+            Vector3 prevPoint = Vector3.Zero;
+            foreach (var p in poly)
+            {
+                Vector3 newPoint = new Vector3(p, 0);
+                if (prevPoint != Vector3.Zero)
+                    dynamicPrimitive.AddLine(prevPoint, newPoint, color, 2);
+                prevPoint = newPoint;
+            }
+        }
+
+        public override void Draw(Vector2 from, Vector2 to, Color color)
+        {
+            dynamicPrimitive.AddLine(new Vector3(from, -2), new Vector3(to, -2), color, 2);
+        }
+
+
+        #region Texture
 
         public override void Draw(Texture2D texture, BoundingRectangle bound, Rectangle? Source)
         {
@@ -76,10 +98,12 @@
             dynamicPrimitive.EndPrimitive();
         }
 
+        #endregion
+
         [Obsolete("Not Supported")]
-        public override void DrawString(SpriteFont Font, string Text, Vector2 position, Color color)
+        public override void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale)
         {
-            var Size = Font.MeasureString(Text);
+            var Size = spriteFont.MeasureString(text);
             dynamicPrimitive.AddRectangle(new BoundingRectangle(position.X, position.Y, Size.X, Size.Y), color, 2, null);
         }
     }

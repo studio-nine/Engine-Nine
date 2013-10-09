@@ -88,7 +88,7 @@ namespace Nine.Samples
 
                 // TODO: rework on this design
                 currentScene.Add(new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40)) { InputEnabled = true });
-                SceneExtensions.SetDrawingContext(currentScene, new DrawingContext3D(GraphicsDevice, currentScene));
+                Nine.Graphics.SceneExtensions.SetDrawingContext(currentScene, new DrawingContext3D(GraphicsDevice, currentScene));
             }
 
             Window.Title = samples[nextScene].Title;

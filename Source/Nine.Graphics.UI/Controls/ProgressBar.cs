@@ -38,6 +38,7 @@
 
         protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
+            if (Visible != Visibility.Visible) return;
             base.OnRender(renderer);
             switch (Orientation)
             {

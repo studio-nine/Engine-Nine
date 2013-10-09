@@ -62,6 +62,7 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 ArrangeOverride(Vector2 arrangeSize)
         {
+            if (Visible == Visibility.Collapsed) return Vector2.Zero;
             bool isHorizontalOrientation = this.Orientation == Orientation.Horizontal;
             var finalRect = new BoundingRectangle(0, 0, arrangeSize.X, arrangeSize.Y);
             float width = 0;
@@ -93,6 +94,7 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
+            if (Visible == Visibility.Collapsed) return Vector2.Zero;
             var size = new Vector2();
             bool isHorizontalOrientation = this.Orientation == Orientation.Horizontal;
             if (isHorizontalOrientation)

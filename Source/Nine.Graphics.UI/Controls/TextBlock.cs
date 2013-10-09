@@ -34,8 +34,6 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Primitives;
 
-    // TODO: Marker only work on single Line
-
     /// <summary>
     /// Control to display a flow of Content
     /// </summary>
@@ -79,6 +77,8 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         public TextWrapping Wrapping { get; set; }
 
+        public Vector2 FontSize { get; set; }
+
         private string formattedText;
 
         internal Vector2 TextStartPosition { get; private set; }
@@ -93,6 +93,7 @@ namespace Nine.Graphics.UI.Controls
         public TextBlock() 
         {
             Text = "";
+            FontSize = Vector2.One;
         }
 
         /// <summary>
@@ -105,6 +106,7 @@ namespace Nine.Graphics.UI.Controls
                 throw new ArgumentNullException("spriteFont");
 
             Text = "";
+            FontSize = Vector2.One;
             this.Font = Font;
         }
 
@@ -114,44 +116,45 @@ namespace Nine.Graphics.UI.Controls
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            // TODO: Mouse position to character for Marker location
+            // TODO: (Alert) Mouse position to character
         }
 
         protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
-            if (!Visible)
-                return;
+            if (Visible != Visibility.Visible) return;
 
             base.OnRender(renderer);
 
             if (Font == null)
-                throw new ArgumentNullException("Font");
+                return;
+                // throw new ArgumentNullException("Font");
 
             var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
             TextStartPosition = new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset;
             var text = formattedText != null ? formattedText : Text;
-            renderer.DrawString(Font, text, TextStartPosition, (Color)TextColor);
+            renderer.DrawString(Font, text, TextStartPosition, (Color)TextColor, 0, Vector2.Zero, FontSize);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
+            if (Visible == Visibility.Collapsed) return Vector2.Zero;
             return finalSize;
         }
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
+            if (Visible == Visibility.Collapsed) return Vector2.Zero;
             if (Font == null)
                 throw new System.ArgumentNullException("Font");
             this.formattedText = this.Text;
-            Vector2 measureString = this.Font.MeasureString(this.formattedText);
+            Vector2 measureString = this.Font.MeasureString(this.formattedText) * FontSize;
 
             if (this.Wrapping == TextWrapping.Wrap && measureString.X > availableSize.X)
             {
                 this.formattedText = WrapText(this.Font, this.formattedText, availableSize.X);
-                measureString = this.Font.MeasureString(this.formattedText);
+                measureString = this.Font.MeasureString(this.formattedText) * FontSize;
             }
 
-            System.Diagnostics.Debug.WriteLine(formattedText);
             return new Vector2(
                 measureString.X + this.Padding.Left + this.Padding.Right, 
                 measureString.Y + this.Padding.Top + this.Padding.Bottom);

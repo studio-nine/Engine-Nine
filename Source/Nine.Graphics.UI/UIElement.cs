@@ -42,13 +42,12 @@ namespace Nine.Graphics.UI
     {
         #region Properties
 
-        // TODO: Make it work with Parent/s
-        public bool Visible
+        public Visibility Visible
         {
             get { return visible; }
             set { visible = value; }
         }
-        private bool visible = true;
+        private Visibility visible = Visibility.Visible;
 
         public BoundingRectangle? Clip
         {
@@ -304,12 +303,12 @@ namespace Nine.Graphics.UI
         public event EventHandler<MouseEventArgs> MouseUp;
 
         /// <summary>
-        /// Occurs when the mouse scrolled.
+        /// Occurs when the mouse moved.
         /// </summary>
         public event EventHandler<MouseEventArgs> MouseMove;
 
         /// <summary>
-        /// Occurs when the mouse moved.
+        /// Occurs when the mouse scrolled.
         /// </summary>
         public event EventHandler<MouseEventArgs> MouseWheel;
 

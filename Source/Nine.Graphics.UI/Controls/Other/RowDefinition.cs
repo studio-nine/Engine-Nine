@@ -30,12 +30,37 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class RowDefinition : DefinitionBase
     {
+        /// <summary>
+        /// Gets or sets height of the Column
+        /// </summary>
         public GridLength Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum height of the Column
+        /// </summary>
         public float MaxHeight { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum height of the Column
+        /// </summary>
         public float MinHeight { get; set; }
 
+        /// <summary>
+        /// Constructs with 'Height 1' and 'Unit Type Star'.
+        /// </summary>
         public RowDefinition() : this(1, GridUnitType.Star) { }
+
+        /// <summary>
+        /// Constructs with 'Unit Type Star'.
+        /// </summary>
+        /// <param name="value">Height</param>
         public RowDefinition(float value) : this(value, GridUnitType.Star) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value">Height</param>
+        /// <param name="type">Unit Type</param>
         public RowDefinition(float value, GridUnitType type)
             : base(DefinitionType.Row)
         {

@@ -31,6 +31,7 @@ namespace Nine.Graphics.UI.Controls
     using Nine.Graphics.UI.Internal;
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Renderer;
+    using Nine.Graphics.UI.Media;
 
     /// <summary>
     /// Draws a border and/or background around another element.
@@ -38,12 +39,12 @@ namespace Nine.Graphics.UI.Controls
     [System.Windows.Markup.ContentProperty("Content")]
     public class Border : UIElement, IContainer
     {
-        private readonly IList<BoundingRectangle> borders = new List<BoundingRectangle>();
+        private readonly BoundingRectangle[] borders = new BoundingRectangle[4];
 
         /// <summary>
         /// Gets or sets the border color.
         /// </summary>
-        public Nine.Graphics.UI.Media.SolidColorBrush BorderBrush { get; set; }
+        public SolidColorBrush BorderBrush { get; set; }
 
         /// <summary>
         /// Gets or sets the borders thickness.
@@ -71,20 +72,43 @@ namespace Nine.Graphics.UI.Controls
 
         System.Collections.IList IContainer.Children { get { return new UIElement[] { Content }; } }
 
+        #region Constructor
+
+        public Border()
+            : this(new SolidColorBrush(Color.White), Thickness.Empty, Thickness.Empty)
+        {
+
+        }
+
+        public Border(SolidColorBrush borderBrush, Thickness borderThickness)
+            : this(borderBrush, borderThickness, Thickness.Empty)
+        {
+
+        }
+
+        public Border(SolidColorBrush borderBrush, Thickness borderThickness, Thickness padding)
+        {
+            this.BorderBrush = borderBrush;
+            this.BorderThickness = borderThickness;
+            this.Padding = padding;
+        }
+
+        #endregion
+
         #region Methods
 
         protected internal override void OnRender(Renderer renderer)
         {
-            if (!Visible)
-                return;
+            if (Visible != Visibility.Visible) return;
 
             base.OnRender(renderer);
 
             if (BorderThickness != Thickness.Empty && BorderBrush != null)
             {
                 GenerateBorders();
-                foreach (BoundingRectangle border in this.borders)
+                foreach (var border in this.borders)
                 {
+                    if (border == BoundingRectangle.Empty) continue;
                     var Rect = border;
                     Rect.X += AbsoluteVisualOffset.X;
                     Rect.Y += AbsoluteVisualOffset.Y;
@@ -98,6 +122,8 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
+            if (Visible == Visibility.Collapsed) return Vector2.Zero;
+
             UIElement child = this.Content;
             if (child != null)
             {
@@ -111,6 +137,8 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
+            if (Visible == Visibility.Collapsed) return Vector2.Zero;
+
             Thickness borderThicknessAndPadding = this.BorderThickness + this.Padding;
 
             UIElement child = this.Content;
@@ -125,42 +153,34 @@ namespace Nine.Graphics.UI.Controls
 
         private void GenerateBorders()
         {
-            this.borders.Clear();
-
             if (this.BorderThickness.Left > 0)
             {
-                this.borders.Add(new BoundingRectangle(0, 0, this.BorderThickness.Left, this.ActualHeight));
+                this.borders[(int)Direction.Left] = new BoundingRectangle(0, 0, this.BorderThickness.Left, this.ActualHeight);
             }
+            else borders[(int)Direction.Left] = BoundingRectangle.Empty;
 
             if (this.BorderThickness.Top > 0)
             {
-                this.borders.Add(
-                    new BoundingRectangle(
-                        this.BorderThickness.Left, 
-                        0, 
-                        this.ActualWidth - this.BorderThickness.Left, 
-                        this.BorderThickness.Top));
+                this.borders[(int)Direction.Top] = new BoundingRectangle(this.BorderThickness.Left, 0, this.ActualWidth - this.BorderThickness.Left, this.BorderThickness.Top);
             }
+            else borders[(int)Direction.Top] = BoundingRectangle.Empty;
 
             if (this.BorderThickness.Right > 0)
             {
-                this.borders.Add(
-                    new BoundingRectangle(
-                        this.ActualWidth - this.BorderThickness.Right, 
-                        this.BorderThickness.Top, 
-                        this.BorderThickness.Right, 
-                        this.ActualHeight - this.BorderThickness.Top));
+                this.borders[(int)Direction.Right] = new BoundingRectangle(this.ActualWidth - this.BorderThickness.Right, this.BorderThickness.Top, this.BorderThickness.Right, this.ActualHeight - this.BorderThickness.Top);
             }
+            else borders[(int)Direction.Right] = BoundingRectangle.Empty;
 
             if (this.BorderThickness.Bottom > 0)
             {
-                this.borders.Add(
-                    new BoundingRectangle(
-                        this.BorderThickness.Left, 
-                        this.ActualHeight - this.BorderThickness.Bottom, 
-                        this.ActualWidth - (this.BorderThickness.Left + this.BorderThickness.Right), 
-                        this.BorderThickness.Bottom));
+                this.borders[(int)Direction.Bottom] = new BoundingRectangle(this.BorderThickness.Left, this.ActualHeight - this.BorderThickness.Bottom, this.ActualWidth - (this.BorderThickness.Left + this.BorderThickness.Right), this.BorderThickness.Bottom);
             }
+            else borders[(int)Direction.Bottom] = BoundingRectangle.Empty;
+        }
+
+        internal BoundingRectangle GetBorder(Direction direction)
+        {
+            return borders[(int)direction];
         }
 
         #endregion

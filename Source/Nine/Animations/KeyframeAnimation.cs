@@ -40,7 +40,7 @@ namespace Nine.Animations
     /// Event args used by KeyframeAnimation events.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class KeyframeEventArges : EventArgs
+    public class KeyframeEventArgs : EventArgs
     {
         /// <summary>
         /// Gets the index of the frame.
@@ -113,12 +113,12 @@ namespace Nine.Animations
         /// <summary>
         /// Occurs when this animation has just entered the current frame.
         /// </summary>
-        public event EventHandler<KeyframeEventArges> EnterFrame;
+        public event EventHandler<KeyframeEventArgs> EnterFrame;
 
         /// <summary>
         /// Occurs when this animation is about to exit the current frame.
         /// </summary>
-        public event EventHandler<KeyframeEventArges> ExitFrame;
+        public event EventHandler<KeyframeEventArgs> ExitFrame;
 
         /// <summary>
         /// Creates a new instance of <c>KeyframeAnimation</c>.
@@ -252,7 +252,7 @@ namespace Nine.Animations
         protected virtual void OnEnterFrame(int frame)
         {
             if (EnterFrame != null)
-                EnterFrame(this, new KeyframeEventArges() { Frame = frame });
+                EnterFrame(this, new KeyframeEventArgs() { Frame = frame });
         }
         
         /// <summary>
@@ -261,7 +261,7 @@ namespace Nine.Animations
         protected virtual void OnExitFrame(int frame)
         {
             if (ExitFrame != null)
-                ExitFrame(this, new KeyframeEventArges() { Frame = frame });
+                ExitFrame(this, new KeyframeEventArgs() { Frame = frame });
         }
     }
 }

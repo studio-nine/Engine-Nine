@@ -15,6 +15,7 @@
         public float MaxRadius { get; set; }
         public float WheelSpeed { get; set; }
 
+        public Transformable TargetObject;
         public Vector3 Center 
         {
             get { return center; }
@@ -63,9 +64,18 @@
             Matrix.Multiply(ref rotation, ref transform, out transform);
             Matrix.Invert(ref transform, out transform);
 
-            transform.M41 += center.X;
-            transform.M42 += center.Y;
-            transform.M43 += center.Z;
+            if (TargetObject == null)
+            {
+                transform.M41 += center.X;
+                transform.M42 += center.Y;
+                transform.M43 += center.Z;
+            }
+            else
+            {
+                transform.M41 += TargetObject.AbsoluteTransform.Translation.X;
+                transform.M42 += TargetObject.AbsoluteTransform.Translation.Y;
+                transform.M43 += TargetObject.AbsoluteTransform.Translation.Z;
+            }
 
             NotifyTransformChanged();
         }

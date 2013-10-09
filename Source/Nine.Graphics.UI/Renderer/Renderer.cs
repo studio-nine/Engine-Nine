@@ -26,12 +26,87 @@
             brush.OnRender(this, bound);
         }
 
+        /// <summary>
+        /// Draws a rectangle
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="color">Color of the Rectangle</param>
         public abstract void Draw(BoundingRectangle bound, Color color);
 
+
+        /// <summary>
+        /// Draws a line
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="color"></param>
+        public virtual void Draw(LineSegment line, Color color)
+        {
+            Draw(line.Start, line.End, color);
+        }
+
+        /// <summary>
+        /// Draws a line
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="color"></param>
+        public abstract void Draw(Vector2 from, Vector2 to, Color color);
+
+        /// <summary>
+        /// Draws a polygon
+        /// </summary>
+        /// <param name="poly"></param>
+        /// <param name="color"></param>
+        public abstract void Draw(IEnumerable<Vector2> poly, Color color, bool join);
+
+
+        /// <summary>
+        /// Draws a Texture
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="bound"></param>
+        /// <param name="Source">Source Rectangle of the Texture</param>
         public abstract void Draw(Texture2D texture, BoundingRectangle bound, Rectangle? Source);
+
+        /// <summary>
+        /// Draws a Texture
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="bound"></param>
+        /// <param name="Source">Source Rectangle of the Texture</param>
+        /// <param name="color"></param>
         public abstract void Draw(Texture2D texture, BoundingRectangle bound, Rectangle? Source, Color color);
+
+        /// <summary>
+        /// Draws a Texture
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="bound"></param>
+        /// <param name="Source">Source Rectangle of the Texture</param>
+        /// <param name="color"></param>
+        /// <param name="flip"></param>
         public abstract void Draw(Texture2D texture, BoundingRectangle bound, Rectangle? Source, Color color, Flip flip);
 
-        public abstract void DrawString(SpriteFont Font, string Text, Vector2 position, Color color);
+        #region Text
+
+        /// <summary>
+        /// Draws a string of text
+        /// </summary>
+        /// <param name="Font"></param>
+        /// <param name="Text">Text to draw</param>
+        /// <param name="position">Location</param>
+        /// <param name="color">Text Color</param>
+        public virtual void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color)
+        {
+            this.DrawString(spriteFont, text, position, color, 0, Vector2.Zero, Vector2.One);
+        }
+
+        public virtual void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale)
+        {
+            this.DrawString(spriteFont, text, position, color, 0, Vector2.Zero, new Vector2(scale, scale));
+        }
+
+        public abstract void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale);
+
+        #endregion
     }
 }

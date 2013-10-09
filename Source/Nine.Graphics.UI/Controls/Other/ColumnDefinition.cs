@@ -30,12 +30,37 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class ColumnDefinition : DefinitionBase
     {
+        /// <summary>
+        /// Gets or sets width of the Column
+        /// </summary>
         public GridLength Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum width of the Column
+        /// </summary>
         public float MaxWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum width of the Column
+        /// </summary>
         public float MinWidth { get; set; }
 
+        /// <summary>
+        /// Constructs with 'Width 1' and 'Unit Type Star'.
+        /// </summary>
         public ColumnDefinition() : this(1, GridUnitType.Star) { }
+
+        /// <summary>
+        /// Constructs with 'Unit Type Star'.
+        /// </summary>
+        /// <param name="value">Width</param>
         public ColumnDefinition(float value) : this(value, GridUnitType.Star) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value">Width</param>
+        /// <param name="type">Unit Type</param>
         public ColumnDefinition(float value, GridUnitType type)
             : base(DefinitionType.Column)
         {

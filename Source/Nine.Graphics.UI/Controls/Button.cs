@@ -29,7 +29,6 @@ namespace Nine.Graphics.UI.Controls
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Controls.Primitives;
-    using Nine.Graphics.UI.Input;
     using Nine.Graphics.UI.Media;
 
     // Should a button have Content instead of Text?
@@ -110,6 +109,10 @@ namespace Nine.Graphics.UI.Controls
         }
         private VisualBrush InnerBrush;
 
+        /// <summary>
+        /// Constructs a new Button without a Font.
+        /// Font has to be set before it can render!
+        /// </summary>
         public Button()
         {
             InnerBrush = new VisualBrush();
@@ -118,6 +121,10 @@ namespace Nine.Graphics.UI.Controls
             textblock.VerticalAlignment = UI.VerticalAlignment.Center;
         }
 
+        /// <summary>
+        /// Constructs a new button with Font.
+        /// </summary>
+        /// <param name="font">Text Font</param>
         public Button(SpriteFont font)
         {
             InnerBrush = new VisualBrush();
@@ -128,6 +135,7 @@ namespace Nine.Graphics.UI.Controls
 
         protected internal override void OnRender(Renderer.Renderer renderer)
         {
+            if (Visible != Visibility.Visible) return;
             base.OnRender(renderer);
             renderer.Draw(AbsoluteRenderTransform, InnerBrush);
         }

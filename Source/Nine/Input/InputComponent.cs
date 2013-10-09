@@ -62,7 +62,6 @@ namespace Nine
 
         /// <summary>
         /// Creates a new instance of InputComponent using the input system of windows forms.
-
         /// </summary>
         /// <param name="handle">Handle of the game window</param>
         public InputComponent(IntPtr handle)
