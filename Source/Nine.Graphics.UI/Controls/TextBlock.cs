@@ -129,10 +129,10 @@ namespace Nine.Graphics.UI.Controls
                 return;
                 // throw new ArgumentNullException("Font");
 
-            var TextColor = this.Foreground ?? new SolidColorBrush(Color.Black);
+            var TextColor = Foreground != null ? (Color)this.Foreground : Color.Black;
             TextStartPosition = new Vector2(this.Padding.Left, this.Padding.Top) + AbsoluteVisualOffset;
             var text = formattedText != null ? formattedText : Text;
-            renderer.DrawString(Font, text, TextStartPosition, (Color)TextColor, 0, Vector2.Zero, FontSize);
+            renderer.DrawString(Font, text, TextStartPosition, TextColor, 0, Vector2.Zero, FontSize);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
@@ -143,9 +143,12 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
-            if (Visible == Visibility.Collapsed) return Vector2.Zero;
+            if (Visible == Visibility.Collapsed) 
+                return Vector2.Zero;
+
             if (Font == null)
                 throw new System.ArgumentNullException("Font");
+
             this.formattedText = this.Text;
             Vector2 measureString = this.Font.MeasureString(this.formattedText) * FontSize;
 

@@ -61,17 +61,17 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         public UIElement Content 
         {
-            get { return content; }
+            get { return content[0]; }
             set 
             {
-                content = value;
-                content.Parent = this;
+                content[0] = value;
+                content[0].Parent = this;
             }
         }
-        private UIElement content;
+        private UIElement[] content = new UIElement[1];
 
-        System.Collections.IList IContainer.Children { get { return new UIElement[] { Content }; } }
-
+        System.Collections.IList IContainer.Children { get { return content; } }
+        
         #region Constructor
 
         public Border()

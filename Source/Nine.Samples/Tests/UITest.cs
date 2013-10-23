@@ -17,7 +17,6 @@
     {
         public override Scene CreateScene(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics, Serialization.ContentLoader content)
         {
-        
             var font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");
 
             var scene = new Scene();

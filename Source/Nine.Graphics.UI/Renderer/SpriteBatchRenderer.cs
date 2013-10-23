@@ -63,7 +63,11 @@
             else if (flip == Flip.Both)
                 Effects = SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally;
 
-            spriteBatch.Draw(texture, bound, Source, color, 0, Vector2.Zero, Effects, 0);
+            //spriteBatch.Draw(texture, bound, Source, color, 0, Vector2.Zero, Effects, 0);
+            spriteBatch.Draw(texture, new Vector2(bound.X, bound.Y), 
+                Source, color, 0, Vector2.Zero, new Vector2(
+                    Source.HasValue ? bound.Width / Source.Value.Width : bound.Width / texture.Width,
+                    Source.HasValue ? bound.Height / Source.Value.Height : bound.Height / texture.Height), Effects, 0);
         }
 
         #endregion

@@ -73,14 +73,14 @@
 
       <Grid Grid.Column="2" Grid.Row="1">
         <ListBox SelectedIndex="1" Orientation="Vertical">
-          <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}"
-                  Text="SpriteBatch Renderer problem ->" Padding="10" Margin="2" Height="48">
+          <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Name="TextBlock1"
+                  Text="TextBlock 1" Padding="10" Margin="2" Height="48">
             <TextBlock.Background>
               <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="0,0,64,64" />
             </TextBlock.Background>
           </TextBlock>
-          <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}"
-                  Text="Just because it uses Integers" Padding="10" Margin="2" Height="48">
+          <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Name="TextBlock2"
+                  Text="TextBlock 2" Padding="10" Margin="2" Height="48">
             <TextBlock.Background>
               <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="64,0,64,64" />
             </TextBlock.Background>

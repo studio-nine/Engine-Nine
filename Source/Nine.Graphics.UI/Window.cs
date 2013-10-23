@@ -47,23 +47,23 @@ namespace Nine.Graphics.UI
     {
         public UIElement Content 
         {
-            get { return content; }
+            get { return content[0]; }
             set 
             {
-                if (content != value)
+                if (content[0] != value)
                 {
-                    if (content != null)
-                        content.Window = null;
-                    content = value;
-                    if (content != null)
-                        content.Window = this;
+                    if (content[0] != null)
+                        content[0].Window = null;
+                    content[0] = value;
+                    if (content[0] != null)
+                        content[0].Window = this;
                     NextFocus();
                 }
             }
         }
-        private UIElement content;
+        private UIElement[] content = new UIElement[1];
 
-        IList IContainer.Children { get { return new UIElement[] { Content }; } }
+        IList IContainer.Children { get { return content; } }
 
         // TODO: Make this work
         public bool HasMouse { get; private set; }
@@ -91,8 +91,8 @@ namespace Nine.Graphics.UI
                 Height = Viewport.Height,
             };
 
-            content.Measure(new Vector2(bounds.Width, bounds.Height));
-            content.Arrange(bounds);
+            content[0].Measure(new Vector2(bounds.Width, bounds.Height));
+            content[0].Arrange(bounds);
         }
 
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
@@ -110,7 +110,7 @@ namespace Nine.Graphics.UI
 
             Renderer.ElapsedTime = context.ElapsedTime;
             Renderer.Begin(context);
-            content.OnRender(Renderer);
+            content[0].OnRender(Renderer);
             Renderer.End(context);
         }
 
