@@ -166,11 +166,8 @@
             return true;
         }
 
-        protected internal override void OnRender(Renderer.Renderer renderer)
+        protected override void OnRender(Renderer.Renderer renderer)
         {
-            if (Visible != Visibility.Visible) return;
-            base.OnRender(renderer);
-
             // not the best way to display watermark text
             var wt = textBlock.Text;
             var wb = textBlock.Foreground;
@@ -181,7 +178,7 @@
             }
             textBlock.Text = wt;
             textBlock.Foreground = wb;
-            textBlock.OnRender(renderer);
+            textBlock.Render(renderer);
 
             if (EnableMarker && HasFocus)
             { 

@@ -72,7 +72,9 @@ namespace Nine.Graphics.UI.Controls
             get { return this.rowDefinitions; }
         }
 
+        // More for debugging :)
         public bool ShowGridLines { get; set; }
+        public Color? GridLinesColor { get; set; }
 
         #endregion
 
@@ -99,8 +101,6 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            if (Visible == Visibility.Collapsed) return Vector2.Zero;
-
             SetFinalLength(this.columns, finalSize.X);
             SetFinalLength(this.rows, finalSize.Y);
 
@@ -121,6 +121,26 @@ namespace Nine.Graphics.UI.Controls
                         this.columns[columnIndex].FinalLength,
                         this.rows[rowIndex].FinalLength);
 
+                    int columnCount = this.columns.Count();
+                    int rowCount = this.rows.Count();
+
+                    // TODO: Should 1 count as a column/row?
+                    for (int iC = 0; iC < GetColumnSpan(child); iC++)
+                    {
+                        int index = columnIndex + iC;
+                        if (index + 1 >= columnCount)
+                            break;
+                        finalRect.Width += this.columns[index].FinalLength;
+                    }
+
+                    for (int iR = 0; iR < GetRowSpan(child); iR++)
+                    {
+                        int index = rowIndex + iR;
+                        if (index + 1 >= rowCount)
+                            break;
+                        finalRect.Height += this.rows[index].FinalLength;
+                    }
+
                     child.Arrange(finalRect);
                 }
             }
@@ -130,8 +150,6 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
-            if (Visible == Visibility.Collapsed) return Vector2.Zero;
-
             this.columns = this.columnDefinitions.Count == 0
                                ? new DefinitionBase[] { new ColumnDefinition() }
                                : this.columnDefinitions.ToArray();
@@ -154,14 +172,35 @@ namespace Nine.Graphics.UI.Controls
                 this.rows.Sum(definition => definition.MinLength));
         }
 
-        protected internal override void OnRender(Renderer.Renderer renderer)
+        protected override void OnRender(Renderer.Renderer renderer)
         {
-            if (Visible != Visibility.Visible) return;
+            base.OnRender(renderer);
+
             if (ShowGridLines)
             {
-                // TODO: Render Grid Lines (Row & Columns)
+                renderer.GraphicsDevice.RasterizerState = BaseWindow.WithoutClipping;
+                var gridColor = GridLinesColor ?? Color.Red;
+
+                renderer.Draw(AbsoluteVisualOffset + new Vector2(0, 0),
+                              AbsoluteVisualOffset + new Vector2(0, ActualHeight), gridColor);
+                float xx = 0;
+                for (int x = 0; x < columnDefinitions.Count; x++)
+                {
+                    xx += columnDefinitions[x].FinalLength;
+                    renderer.Draw(AbsoluteVisualOffset + new Vector2(xx, 0),
+                                  AbsoluteVisualOffset + new Vector2(xx, ActualHeight), gridColor);
+                }
+
+                renderer.Draw(AbsoluteVisualOffset + new Vector2(0, 0),
+                              AbsoluteVisualOffset + new Vector2(ActualWidth, 0), gridColor);
+                float yy = 0;
+                for (int y = 0; y < rowDefinitions.Count; y++)
+                {
+                    yy += rowDefinitions[y].FinalLength;
+                    renderer.Draw(AbsoluteVisualOffset + new Vector2(0, yy),
+                                  AbsoluteVisualOffset + new Vector2(ActualWidth, yy), gridColor);
+                }
             }
-            base.OnRender(renderer);
         }
 
         private void CreateCells()
@@ -361,8 +400,11 @@ namespace Nine.Graphics.UI.Controls
         #region Static Methods
 
         static readonly AttachableMemberIdentifier RowMember = new AttachableMemberIdentifier(typeof(int), "Row");
+        static readonly AttachableMemberIdentifier RowSpanMember = new AttachableMemberIdentifier(typeof(int), "RowSpan");
         static readonly AttachableMemberIdentifier ColumnMember = new AttachableMemberIdentifier(typeof(int), "Column");
+        static readonly AttachableMemberIdentifier ColumnSpanMember = new AttachableMemberIdentifier(typeof(int), "ColumnSpan");
 
+        #region get
         /// <summary>
         /// Gets the value of the Column attached property for the specified element.
         /// </summary>
@@ -375,7 +417,22 @@ namespace Nine.Graphics.UI.Controls
             if (element.AttachedProperties.ContainsKey(ColumnMember))
                 return (int)element.AttachedProperties[ColumnMember];
             else
-                return 0; // Default Value
+                return 0;
+        }
+
+        /// <summary>
+        /// Gets the value of the ColumnSpan attached property for the specified element.
+        /// </summary>
+        /// <param name="element">The element for which to read the proerty value.</param>
+        /// <returns>The value of the Column attached property.</returns>
+        public static int GetColumnSpan(UIElement element)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            if (element.AttachedProperties.ContainsKey(ColumnSpanMember))
+                return (int)element.AttachedProperties[ColumnSpanMember];
+            else
+                return 0;
         }
 
         /// <summary>
@@ -390,9 +447,26 @@ namespace Nine.Graphics.UI.Controls
             if (element.AttachedProperties.ContainsKey(RowMember))
                 return (int)element.AttachedProperties[RowMember];
             else
-                return 0; // Default Value
+                return 0;
         }
 
+        /// <summary>
+        /// Gets the value of the RowSpan attached property for the specified element.
+        /// </summary>
+        /// <param name="element">The element for which to read the proerty value.</param>
+        /// <returns>The value of the RowSpan attached property.</returns>
+        public static int GetRowSpan(UIElement element)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            if (element.AttachedProperties.ContainsKey(RowSpanMember))
+                return (int)element.AttachedProperties[RowSpanMember];
+            else
+                return 0;
+        }
+        #endregion
+
+        #region set
         /// <summary>
         /// Sets the value of the Column attached property for the specified element.
         /// </summary>
@@ -406,6 +480,18 @@ namespace Nine.Graphics.UI.Controls
         }
 
         /// <summary>
+        /// Sets the value of the ColumnSpan attached property for the specified element. 
+        /// </summary>
+        /// <param name="element">The element for which to write the proerty value.</param>
+        /// <param name="value">The value of the ColumnSpan attached property.</param>
+        public static void SetColumnSpan(UIElement element, int value)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            element.AttachedProperties[ColumnSpanMember] = value;
+        }
+
+        /// <summary>
         /// Sets the value of the Row attached property for the specified element.
         /// </summary>
         /// <param name="element">The element for which to write the proerty value.</param>
@@ -416,6 +502,19 @@ namespace Nine.Graphics.UI.Controls
                 throw new ArgumentNullException("element");
             element.AttachedProperties[RowMember] = value;
         }
+
+        /// <summary>
+        /// Sets the value of the RowSpan attached property for the specified element. 
+        /// </summary>
+        /// <param name="element">The element for which to write the proerty value.</param>
+        /// <param name="value">The value of the RowSpan attached property.</param>
+        public static void SetRowSpan(UIElement element, int value)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            element.AttachedProperties[RowSpanMember] = value;
+        }
+        #endregion
 
         private static void AllocateProportionalSpace(IEnumerable<DefinitionBase> definitions, float availableLength)
         {

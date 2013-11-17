@@ -6,8 +6,6 @@
 
     public class LineGraph : UIElement
     {
-        // TODO: Text
-
         public bool AdaptiveLimits { get; set; }
         public int ValuesToGraph { get; private set; }
         public Color LineColor { get; set; }
@@ -51,24 +49,17 @@
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
-            if (Visible == Visibility.Collapsed) 
-                return Vector2.Zero;
             return base.MeasureOverride(availableSize);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            if (Visible == Visibility.Collapsed) 
-                return Vector2.Zero;
             return base.ArrangeOverride(finalSize);
         }
 
-        protected internal override void OnRender(Renderer.Renderer renderer)
+        protected override void OnRender(Renderer.Renderer renderer)
         {
             // TODO: Render to Texture
-            if (Visible != Visibility.Visible) 
-                return;
-            base.OnRender(renderer);
 
             var Bounds = AbsoluteRenderTransform;
             float x = Bounds.X;

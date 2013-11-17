@@ -74,7 +74,7 @@ namespace Nine.Graphics.UI.Controls.Primitives
 
         #region Methods
 
-        protected internal override void OnRender(Renderer.Renderer renderer)
+        protected override void OnRender(Renderer.Renderer renderer)
         {
             // TODO: Rendering
             base.OnRender(renderer);

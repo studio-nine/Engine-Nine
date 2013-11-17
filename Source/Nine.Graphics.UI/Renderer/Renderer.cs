@@ -10,17 +10,36 @@
 
     public abstract class Renderer
     {
-        public GraphicsDevice GraphicsDevice { get; internal set; }
-        public float ElapsedTime { get; internal set; }
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
+        public float ElapsedTime { get { return elapsedTime; } }
+        internal float elapsedTime = 0;
+
+        public bool IsRendering
+        {
+            get { return isRendering; }
+        }
+        private bool isRendering = false;
 
         protected Renderer(GraphicsDevice graphics)
         {
-            GraphicsDevice = graphics;
+            this.GraphicsDevice = graphics;
         }
 
-        public abstract void Begin(DrawingContext context);
-        public abstract void End(DrawingContext context);
+        public virtual void Begin(DrawingContext context)
+        {
+            if (isRendering)
+                throw new ArgumentException();
+            isRendering = true;
+        }
 
+        public virtual void End(DrawingContext context)
+        {
+            if (!isRendering)
+                throw new ArgumentException();
+            isRendering = false;
+        }
+        
         public virtual void Draw(BoundingRectangle bound, Brush brush)
         {
             brush.OnRender(this, bound);
@@ -51,6 +70,7 @@
         /// <param name="color"></param>
         public abstract void Draw(Vector2 from, Vector2 to, Color color);
 
+/*
         /// <summary>
         /// Draws a polygon
         /// </summary>
@@ -58,6 +78,7 @@
         /// <param name="color"></param>
         public abstract void Draw(IEnumerable<Vector2> poly, Color color, bool join);
 
+*/
 
         /// <summary>
         /// Draws a Texture

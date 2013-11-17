@@ -40,14 +40,19 @@ namespace Nine.Graphics.UI.Media
     {
         public float Alpha = 1;
 
+        protected internal virtual void OnRender(Renderer.Renderer renderer, BoundingRectangle bound)
+        {
+
+        }
+
         public static implicit operator Brush(Color c)
         {
             return new SolidColorBrush(c.R, c.G, c.B, c.A);
         }
 
-        protected internal virtual void OnRender(Renderer.Renderer renderer, BoundingRectangle bound)
+        public static implicit operator Brush(Microsoft.Xna.Framework.Graphics.Texture2D texture)
         {
-
+            return new ImageBrush(texture);
         }
     }
 }

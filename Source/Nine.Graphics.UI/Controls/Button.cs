@@ -133,10 +133,8 @@ namespace Nine.Graphics.UI.Controls
             textblock.VerticalAlignment = UI.VerticalAlignment.Center;
         }
 
-        protected internal override void OnRender(Renderer.Renderer renderer)
+        protected override void OnRender(Renderer.Renderer renderer)
         {
-            if (Visible != Visibility.Visible) return;
-            base.OnRender(renderer);
             renderer.Draw(AbsoluteRenderTransform, InnerBrush);
         }
     }

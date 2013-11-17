@@ -1,4 +1,4 @@
-﻿namespace Nine.Test.Graphics.UI
+﻿namespace Nine.Graphics.UI.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.Xna.Framework;

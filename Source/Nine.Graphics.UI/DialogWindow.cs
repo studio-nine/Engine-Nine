@@ -49,7 +49,7 @@
             }
         }
 
-        IList IContainer.Children { get { return new UIElement[] { Content }; } }
+        IList IContainer.Children { get { return ((IContainer)windowBorder).Children; } }
 
         public Thickness WindowBorder 
         {
@@ -248,10 +248,10 @@
             if (Renderer == null)
                 Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
 
-            Renderer.ElapsedTime = context.ElapsedTime;
+            Renderer.elapsedTime = context.ElapsedTime;
             Renderer.Begin(context);
-            windowBorder.OnRender(Renderer);
-            title.OnRender(Renderer);
+            windowBorder.Render(Renderer);
+            title.Render(Renderer);
             //DebugDraw();
             Renderer.End(context);
         }

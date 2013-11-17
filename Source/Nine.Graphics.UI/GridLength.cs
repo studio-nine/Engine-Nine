@@ -47,18 +47,12 @@ namespace Nine.Graphics.UI
 
         public GridUnitType GridUnitType
         {
-            get
-            {
-                return this.gridUnitType;
-            }
+            get { return this.gridUnitType; }
         }
 
         public float Value
         {
-            get
-            {
-                return this.value;
-            }
+            get { return this.value; }
         }
 
         static GridLength()
@@ -66,8 +60,8 @@ namespace Nine.Graphics.UI
             Auto = new GridLength(1, GridUnitType.Auto);
         }
 
-        public GridLength(float value)
-            : this(value, GridUnitType.Pixel)
+        public GridLength(float pixels)
+            : this(pixels, GridUnitType.Pixel)
         {
         }
 

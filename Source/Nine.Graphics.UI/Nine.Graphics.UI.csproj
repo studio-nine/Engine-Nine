@@ -93,8 +93,10 @@
     <Compile Include="Controls\NumberBox.cs" />
     <Compile Include="Controls\Other\ColumnDefinition.cs" />
     <Compile Include="Controls\EventArgs\SelectionChangedEventArgs.cs" />
+    <Compile Include="Controls\Primitives\PlacementMode.cs" />
     <Compile Include="Controls\TabControl.cs" />
     <Compile Include="Controls\TabItem.cs" />
+    <Compile Include="Controls\ToolTipService.cs" />
     <Compile Include="DialogWindow.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Navigation\Page.cs" />
@@ -144,8 +146,7 @@
     <Compile Include="Thickness.cs" />
     <Compile Include="GridUnitType.cs" />
     <Compile Include="GridLength.cs" />
-    <Compile Include="VerticalAlignment.cs" />
-    <Compile Include="HorizontalAlignment.cs" />
+    <Compile Include="Alignment.cs" />
     <Compile Include="Controls\ItemsControl.cs" />
     <Compile Include="Controls\Primitives\IScrollInfo.cs" />
     <Compile Include="Controls\ScrollContentPresenter.cs" />
@@ -179,7 +180,9 @@
     <Compile Include="TextWrapping.cs" />
     <Compile Include="UIElement.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Nine.Graphics.UI.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\Bin\Nine.Serialization.targets" />
 </Project>

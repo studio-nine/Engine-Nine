@@ -43,22 +43,44 @@ namespace Nine.Graphics.UI.Media
         /// </summary>
         public Vector3 Color { get; set; }
 
-        public SolidColorBrush() { }
-        public SolidColorBrush(float R, float G, float B) : this(R, G, B, 1) { }
-        public SolidColorBrush(float R, float G, float B, float A)
+        // Should I store this in color instead?
+        public Color Test
         {
-            this.Color = new Vector3(R, G, B);
-            this.Alpha = A;
+            get 
+            { 
+                return new Color(Color.X, Color.Y, Color.Z, Alpha); 
+            }
+            set
+            {
+                Color = value.ToVector3();
+                Alpha = value.A;
+            }
         }
+
+        #region ctors
+
+        public SolidColorBrush() 
+        { 
+
+        }
+
+        public SolidColorBrush(int r, int g, int b) : this(r, g, b, 1) { }
+        public SolidColorBrush(float r, float g, float b) : this(r, g, b, 1) { }
+        public SolidColorBrush(float r, float g, float b, float a) : this(new Color(r, g, b, a)) { }
+        public SolidColorBrush(int r, int g, int b, int a) : this(new Color(r, g, b, a)) { }
+
         public SolidColorBrush(Color color)
         {
             this.Color = color.ToVector3();
             Alpha = color.A;
         }
+
         public SolidColorBrush(Vector3 color)
         {
             this.Color = color;
         }
+
+        #endregion
 
         public static implicit operator SolidColorBrush(Color c)
         {

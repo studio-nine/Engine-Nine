@@ -36,10 +36,8 @@
             Padding = new Thickness(4);
         }
 
-        protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
-            if (Visible != Visibility.Visible) return;
-            base.OnRender(renderer);
             switch (Orientation)
             {
                 case Controls.Orientation.Horizontal:

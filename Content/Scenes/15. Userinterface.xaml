@@ -9,9 +9,29 @@
     </Page>
   </PageNavigator>
 -->
-  
+
   <Window>
-    <Grid>
+    <!-- ViewportTest="200,150,880,500" -->
+    <Grid ShowGridLines="False" GridLinesColor="0,255,0,255">
+  <!--
+      <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button" Margin="2" Height="48" 
+              Background="LightGray" TextVerticalAlignment="Center" TextHorizontalAlignment="Center">
+        <Button.VisualStates>
+          <VisualState>
+            <AnimationSequence Repeat="999999">
+              <ColorAnimation TargetProperty="Button3.Background" Duration="00:00:05"
+                              From="1,1,1,1" To="1,0,0,1"/>
+            </AnimationSequence>
+          </VisualState>
+          <VisualState>
+            <AnimationSequence Repeat="999999">
+              <ColorAnimation TargetProperty="Button3.Background" Duration="00:00:05"
+                              From="1,1,1,1" To="0,0,1,1"/>
+            </AnimationSequence>
+          </VisualState>
+        </Button.VisualStates>
+      </Button>
+  -->
       <Grid.RowDefinitions>
         <RowDefinition Height="50*" />
         <RowDefinition Height="50*" />
@@ -46,31 +66,39 @@
         <Border Grid.Row="1" Grid.Column="1" BorderBrush="Orange" BorderThickness="6" Margin="2" />
       </Grid>
 
-      <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
-        <StackPanel.Background>
-          <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
-        </StackPanel.Background>
-        <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2">
-          <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Inside a StackPanel" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        </Border>
-        <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
-          <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button1" Margin="2" Background="LightBlue" TextVerticalAlignment="Center" TextHorizontalAlignment="Center" />
-        </Border>
-        <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
-          <ProgressBar Margin="2" Value="50" />
-        </Border>
-        <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
-          <TextBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}" 
-                    Multiline="False" EnableMarker="True" MarkerBrush="Green" Text="" Foreground="White" 
-                    MaxChars="32" Padding="10" Watermark="This is a TextBox! With Watermark." WatermarkBrush="DarkGray" />
-        </Border>
-        <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
-          <NumberBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}"
-                    Multiline="False" EnableMarker="True" MarkerBrush="Red" Text="1337" Foreground="White"
-                    MaxChars="32" Padding="10" />
-        </Border>
-      </StackPanel>
-
+      <ScrollViewer Grid.Column="1" Grid.Row="0" CanVerticallyScroll="True">
+        <ScrollContentPresenter>
+          <StackPanel Orientation="Vertical">
+            <StackPanel.Background>
+              <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
+            </StackPanel.Background>
+            <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2">
+              <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Inside a StackPanel" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+              <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button1" Margin="2" Background="LightBlue" TextVerticalAlignment="Center" TextHorizontalAlignment="Center" />
+            </Border>
+            <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
+              <ProgressBar Margin="2" Value="50" />
+            </Border>
+            <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+              <TextBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}" 
+                        Multiline="False" EnableMarker="True" MarkerBrush="Green" Text="" Foreground="White" 
+                        MaxChars="32" Padding="10" Watermark="This is a TextBox! With Watermark." WatermarkBrush="DarkGray" />
+            </Border>
+            <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+              <NumberBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}"
+                        Multiline="False" EnableMarker="True" MarkerBrush="Red" Text="1337" Foreground="White"
+                        MaxChars="32" Padding="10" />
+            </Border>
+            <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14"><Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2"><Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" /></Border></Border>
+            <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14"><Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2"><Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" /></Border></Border>
+            <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14"><Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2"><Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" /></Border></Border>
+            <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14"><Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2"><Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" /></Border></Border>
+          </StackPanel>
+        </ScrollContentPresenter>
+      </ScrollViewer>
+      
       <Grid Grid.Column="2" Grid.Row="1">
         <ListBox SelectedIndex="1" Orientation="Vertical">
           <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Name="TextBlock1"

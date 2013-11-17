@@ -74,10 +74,8 @@ namespace Nine.Graphics.UI.Controls
             Flip = Media.Flip.None;
         }
 
-        protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
-            if (Visible != Visibility.Visible) return;
-            base.OnRender(renderer);
             if (this.Source != null)
             {
                 renderer.Draw(Source, AbsoluteRenderTransform, null, Color.White, Flip);
@@ -86,13 +84,11 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            if (Visible == Visibility.Collapsed) return Vector2.Zero;
             return this.GetScaledImageSize(finalSize);
         }
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
-            if (Visible == Visibility.Collapsed) return Vector2.Zero;
             return this.GetScaledImageSize(availableSize);
         }
 

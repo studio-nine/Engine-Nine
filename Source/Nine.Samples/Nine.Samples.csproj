@@ -76,6 +76,7 @@
     <Compile Include="Components\ExampleController.cs" />
     <Compile Include="Components\ExamplePhysicsController.cs" />
     <Compile Include="Components\ExampleShooter.cs" />
+    <Compile Include="Tests\UIScrollViewerTest.cs" />
     <Compile Include="Tests\UITest.cs" />
     <Compile Include="Tutorial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

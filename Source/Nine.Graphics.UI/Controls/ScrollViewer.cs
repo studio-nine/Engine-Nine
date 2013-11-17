@@ -113,5 +113,10 @@ namespace Nine.Graphics.UI.Controls
                 this.Content = new ScrollContentPresenter();
             }
         }
+
+        protected override void OnRender(Renderer.Renderer renderer)
+        {
+            base.OnRender(renderer);
+        }
     }
 }

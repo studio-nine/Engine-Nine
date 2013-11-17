@@ -1,0 +1,922 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="TODO: Content instead of Element">
+    <Position X="9.747" Y="6.816" Height="0.62" Width="1.103" />
+  </Comment>
+  <Comment CommentText="TODO: We cant have so many strange properties!">
+    <Position X="27.964" Y="6.763" Height="0.65" Width="1.338" />
+  </Comment>
+  <Comment CommentText="TODO: Why are they build like this :O">
+    <Position X="3.442" Y="10.016" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="TODO: Make this more usable in code!">
+    <Position X="15.207" Y="2.256" Height="0.624" Width="1.186" />
+  </Comment>
+  <Comment CommentText="TODO: Make this easier to use">
+    <Position X="17.231" Y="1.398" Height="0.699" Width="0.944" />
+  </Comment>
+  <Comment CommentText="TODO: Remove this?">
+    <Position X="30" Y="0.5" Height="0.417" Width="1.456" />
+  </Comment>
+  <Comment CommentText="TODO: I want to make this cleaner!">
+    <Position X="8.599" Y="12.27" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="TODO: Change name!!">
+    <Position X="22.67" Y="13.286" Height="0.417" Width="1.283" />
+  </Comment>
+  <Comment CommentText="TODO: Those need some work!!">
+    <Position X="23.471" Y="0.5" Height="0.494" Width="1.7" />
+  </Comment>
+  <Comment CommentText="WIP">
+    <Position X="28.75" Y="3.5" Height="0.492" Width="0.72" />
+  </Comment>
+  <Class Name="Nine.Graphics.UI.Controls.Border">
+    <Position X="3.5" Y="2.25" Width="1.5" />
+    <Members>
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Method Name="Border" Hidden="true" />
+      <Field Name="borders" Hidden="true" />
+      <Field Name="content" Hidden="true" />
+      <Method Name="GenerateBorders" Hidden="true" />
+      <Method Name="GetBorder" Hidden="true" />
+      <Property Name="IContainer.Children" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.UIElement" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="0.605" />
+        <Point X="3.625" Y="0.605" />
+        <Point X="3.625" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAGCAAAAgAAAEAAABAACAAQAAAAAQAAAAIAIAAAEAA=</HashCode>
+      <FileName>Controls\Border.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.Button">
+    <Position X="9.5" Y="7.5" Width="1.5" />
+    <Members>
+      <Method Name="Button" Hidden="true" />
+      <Field Name="InnerBrush" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Property Name="textblock" Hidden="true" />
+      <Field Name="VisualGroups" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Control" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="6.688" />
+        <Point X="9.625" Y="6.688" />
+        <Point X="9.625" Y="7.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>BgAQACCAAAAAAAAAAAACAAAAAAAAEAAAAAIAKAACAAA=</HashCode>
+      <FileName>Controls\Button.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.CheckBox" Collapsed="true">
+    <Position X="3.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\CheckBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.ContentControl">
+    <Position X="11.5" Y="7.5" Width="1.5" />
+    <Members>
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Field Name="content" Hidden="true" />
+      <Property Name="IContainer.Children" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Method Name="OnContentChanged" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Control" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="6.688" />
+        <Point X="11.625" Y="6.688" />
+        <Point X="11.625" Y="7.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAGAAAAAgAAAAAAAAAAAAAQACAAAQAAABAAIAAAAAA=</HashCode>
+      <FileName>Controls\ContentControl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.Control">
+    <Position X="3.5" Y="6.5" Width="1.5" />
+    <Members>
+      <Field Name="hasFocus" Hidden="true" />
+      <Method Name="OnMouseDown" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.UIElement" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="0.605" />
+        <Point X="3.24" Y="0.605" />
+        <Point X="3.24" Y="6.625" />
+        <Point X="3.5" Y="6.625" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAIAAAAEAAAEAAAAAAAAAIAQAAAAAAgA=</HashCode>
+      <FileName>Controls\Control.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.Grid">
+    <Position X="15" Y="3" Width="1.5" />
+    <Members>
+      <Method Name="AllocateProportionalSpace" Hidden="true" />
+      <Field Name="allStars" Hidden="true" />
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Field Name="autoPixelHeightStarWidth" Hidden="true" />
+      <Field Name="cells" Hidden="true" />
+      <Field Name="columnDefinitions" Hidden="true" />
+      <Field Name="ColumnMember" Hidden="true" />
+      <Field Name="columns" Hidden="true" />
+      <Field Name="ColumnSpanMember" Hidden="true" />
+      <Method Name="CreateCells" Hidden="true" />
+      <Method Name="Grid" Hidden="true" />
+      <Field Name="hasAuto" Hidden="true" />
+      <Field Name="hasStar" Hidden="true" />
+      <Method Name="InitializeMeasureData" Hidden="true" />
+      <Method Name="MeasureCell" Hidden="true" />
+      <Method Name="MeasureCells" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Field Name="noStars" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Field Name="rowDefinitions" Hidden="true" />
+      <Field Name="RowMember" Hidden="true" />
+      <Field Name="rows" Hidden="true" />
+      <Field Name="RowSpanMember" Hidden="true" />
+      <Method Name="SetFinalLength" Hidden="true" />
+      <Field Name="starHeightAutoPixelWidth" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Nine.Graphics.UI.Controls.Grid.Dimension" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Controls\Grid.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nine.Graphics.UI.Controls.Grid.UpdateMinLengths" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Controls\Grid.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Struct Name="Nine.Graphics.UI.Controls.Grid.Cell" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Controls\Grid.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Panel" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13" Y="2.438" />
+        <Point X="15.125" Y="2.438" />
+        <Point X="15.125" Y="3" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQWQQCgAAAAHAIAAFBAMKATACAAAoQADICAIIIAAAA=</HashCode>
+      <FileName>Controls\Grid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.Image">
+    <Position X="9.5" Y="2.25" Width="1.5" />
+    <Members>
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Method Name="GetScaledImageSize" Hidden="true" />
+      <Method Name="Image" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.UIElement" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="0.605" />
+        <Point X="9.625" Y="0.605" />
+        <Point X="9.625" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAkAAAAAAAAAQAAEQAAAAAAAAAAAQIAAAAAA=</HashCode>
+      <FileName>Controls\Image.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.ItemsControl">
+    <Position X="20.5" Y="7.5" Width="1.5" />
+    <Members>
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Property Name="IContainer.Children" Hidden="true" />
+      <Method Name="ItemsControl" Hidden="true" />
+      <Field Name="itemsPanel" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Control" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="6.688" />
+        <Point X="20.625" Y="6.688" />
+        <Point X="20.625" Y="7.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAEAAAAAAAEAQAAAAAQAAAAAAIYAAAAE=</HashCode>
+      <FileName>Controls\ItemsControl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.ListBox">
+    <Position X="25.75" Y="9" Width="1.5" />
+    <Members>
+      <Method Name="OnKeyDown" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Primitives.Selector" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.75" Y="8.438" />
+        <Point X="25.875" Y="8.438" />
+        <Point X="25.875" Y="9" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAEAAIAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\ListBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.ListBoxItem">
+    <Position X="13.25" Y="8.25" Width="1.5" />
+    <Members>
+      <Method Name="OnMouseDown" Hidden="true" />
+      <Method Name="OnMouseMove" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.ContentControl" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13" Y="7.688" />
+        <Point X="13.375" Y="7.688" />
+        <Point X="13.375" Y="8.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAEAAAAAAAAAAAABAAAAAAIAAAAAAIAAA=</HashCode>
+      <FileName>Controls\ListBoxItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.MediaElement">
+    <Position X="5.5" Y="2.25" Width="1.5" />
+    <Members>
+      <Method Name="MediaElement" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Field Name="player" Hidden="true" />
+      <Field Name="Texture" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.UIElement" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="0.605" />
+        <Point X="5.625" Y="0.605" />
+        <Point X="5.625" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAgAAEIAgAAAAAgAAAAAgEAAAAAAAABoAIAJAgAAAA=</HashCode>
+      <FileName>Controls\MediaElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.NumberBox">
+    <Position X="29.5" Y="8.25" Width="1.5" />
+    <Members>
+      <Method Name="AllowInput" Hidden="true" />
+      <Method Name="NumberBox" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.TextBox" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="29.25" Y="7.75" />
+        <Point X="29.625" Y="7.75" />
+        <Point X="29.625" Y="8.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Controls\NumberBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.Panel">
+    <Position X="11.5" Y="2.25" Width="1.5" />
+    <Members>
+      <Method Name="Child_Added" Hidden="true" />
+      <Method Name="Child_Removed" Hidden="true" />
+      <Field Name="children" Hidden="true" />
+      <Property Name="IContainer.Children" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Method Name="Panel" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.UIElement" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="0.605" />
+        <Point X="11.625" Y="0.605" />
+        <Point X="11.625" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAEQAAAAEAEAAAAAAAQAAAAAgIAAAAAA=</HashCode>
+      <FileName>Controls\Panel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.ProgressBar">
+    <Position X="7.5" Y="8.25" Width="1.5" />
+    <Members>
+      <Method Name="OnRender" Hidden="true" />
+      <Method Name="ProgressBar" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.RangeBase" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="7.688" />
+        <Point X="7.625" Y="7.688" />
+        <Point X="7.625" Y="8.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAAAAEAAAAAIAIAAAAAA=</HashCode>
+      <FileName>Controls\ProgressBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.RangeBase">
+    <Position X="5.75" Y="7.5" Width="1.5" />
+    <Members>
+      <Field Name="maximum" Hidden="true" />
+      <Field Name="minimum" Hidden="true" />
+      <Method Name="RangeBase" Hidden="true" />
+      <Field Name="value" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Control" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="6.688" />
+        <Point X="5.875" Y="6.688" />
+        <Point X="5.875" Y="7.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>gAAAAICAAAAAgAAAQAAAAAAAAAAACCAAAAAgAAAAAAA=</HashCode>
+      <FileName>Controls\RangeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.ScrollContentPresenter">
+    <Position X="18.5" Y="8.25" Width="1.5" />
+    <Members>
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Method Name="GetClippingRect" Hidden="true" />
+      <Field Name="isClippingRequired" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Method Name="ScrollContentPresenter" Hidden="true" />
+      <Field Name="scrollData" Hidden="true" />
+      <Method Name="UpdateScrollData" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.ContentControl" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13" Y="7.688" />
+        <Point X="18.625" Y="7.688" />
+        <Point X="18.625" Y="8.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>EAAEAAAAAAAEAQAAAEAAAAAQAAQAIAAAACABAAABgAA=</HashCode>
+      <FileName>Controls\ScrollContentPresenter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.ScrollViewer">
+    <Position X="16.75" Y="8.25" Width="1.5" />
+    <Members>
+      <Field Name="isInsertingScrollContentPresenter" Hidden="true" />
+      <Method Name="OnContentChanged" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Field Name="scrollInfo" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.ContentControl" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13" Y="7.688" />
+        <Point X="16.875" Y="7.688" />
+        <Point X="16.875" Y="8.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>EEAIAAAAAAAEAAAAAAAAAAAAACQAAAAAAAAAIAAAgAA=</HashCode>
+      <FileName>Controls\ScrollViewer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.StackPanel">
+    <Position X="13.25" Y="3" Width="1.5" />
+    <Members>
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Method Name="StackPanel" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Panel" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13" Y="2.438" />
+        <Point X="13.375" Y="2.438" />
+        <Point X="13.375" Y="3" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\StackPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.TabControl">
+    <Position X="24" Y="9" Width="1.5" />
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Primitives.Selector" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.75" Y="8.438" />
+        <Point X="24.125" Y="8.438" />
+        <Point X="24.125" Y="9" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\TabControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.TabItem">
+    <Position X="15" Y="8.25" Width="1.5" />
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.ContentControl" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13" Y="7.688" />
+        <Point X="15.125" Y="7.688" />
+        <Point X="15.125" Y="8.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAIAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\TabItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.TextBlock">
+    <Position X="7.5" Y="2.25" Width="1.5" />
+    <Members>
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Field Name="formattedText" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Method Name="OnMouseDown" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Field Name="text" Hidden="true" />
+      <Method Name="TextBlock" Hidden="true" />
+      <Field Name="WhiteSpaceRegEx" Hidden="true" />
+      <Method Name="WrapText" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.UIElement" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="0.605" />
+        <Point X="7.625" Y="0.605" />
+        <Point X="7.625" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAEACAAAAAABAgAAAAAAgAUAAAAEAAIIIIAKAACAAA=</HashCode>
+      <FileName>Controls\TextBlock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.TextBox">
+    <Position X="27.75" Y="7.5" Width="1.5" />
+    <Members>
+      <Method Name="AllowInput" Hidden="true" />
+      <Field Name="markerLocation" Hidden="true" />
+      <Field Name="maxChars" Hidden="true" />
+      <Method Name="OnKeyDown" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Field Name="textBlock" Hidden="true" />
+      <Method Name="TextBox" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Control" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="6.688" />
+        <Point X="27.875" Y="6.688" />
+        <Point X="27.875" Y="7.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIIACAAAgiAAAABABQAAAAQAAqAEAAgAAJAKAACAAA=</HashCode>
+      <FileName>Controls\TextBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.ToolTipService" Collapsed="true">
+    <Position X="31.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAABGAAACEAQAIAAAABAKAAAAAAAggAgAAAACAAAAA=</HashCode>
+      <FileName>Controls\ToolTipService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.DataVisualization.LineGraph">
+    <Position X="17" Y="2.25" Width="1.5" />
+    <Members>
+      <Field Name="AdaptiveMaximum" Hidden="true" />
+      <Field Name="AdaptiveMinimum" Hidden="true" />
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Field Name="AverageValue" Hidden="true" />
+      <Field Name="GraphValues" Hidden="true" />
+      <Method Name="LineGraph" Hidden="true" />
+      <Field Name="MaxValue" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Field Name="MinimumValue" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.UIElement" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="0.605" />
+        <Point X="17.125" Y="0.605" />
+        <Point X="17.125" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AQIEAAAQAAAAAAAACABAgCAQQAAAIAAAAAAgIAAAAAA=</HashCode>
+      <FileName>Controls\DataVisualization\LineGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.Primitives.Selector">
+    <Position X="22.25" Y="8.25" Width="1.5" />
+    <Members>
+      <Field Name="selectedIndex" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.ItemsControl" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="22" Y="7.688" />
+        <Point X="22.438" Y="7.688" />
+        <Point X="22.438" Y="8.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAJAAQAAAAAA=</HashCode>
+      <FileName>Controls\Primitives\Selector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.Primitives.ToggleButton" Collapsed="true">
+    <Position X="3.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAiAAAACAAIAAAAAAAAAAAAAAIARAIAEAAAA=</HashCode>
+      <FileName>Controls\Primitives\ToggleButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.VisualState" Collapsed="true">
+    <Position X="30" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VisualState\VisualState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.VisualStateChangedEventArgs" Collapsed="true">
+    <Position X="30" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAIAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VisualState\VisualStateChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.VisualStateGroup" Collapsed="true">
+    <Position X="30" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAgAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAA=</HashCode>
+      <FileName>VisualState\VisualStateGroup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.VisualStateManager">
+    <Position X="29.5" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VisualState\VisualStateManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.BaseWindow">
+    <Position X="21.5" Y="1" Width="1.5" />
+    <Members>
+      <Method Name="BaseWindow" Hidden="true" />
+      <Method Name="ButtonDown" Hidden="true" />
+      <Method Name="ButtonUp" Hidden="true" />
+      <Method Name="Draw" Hidden="true" />
+      <Method Name="GestureSampled" Hidden="true" />
+      <Method Name="IGraphicsObject.OnAdded" Hidden="true" />
+      <Method Name="IGraphicsObject.OnRemoved" Hidden="true" />
+      <Method Name="KeyDown" Hidden="true" />
+      <Method Name="KeyUp" Hidden="true" />
+      <Field Name="manager" Hidden="true" />
+      <Method Name="MouseDown" Hidden="true" />
+      <Method Name="MouseMove" Hidden="true" />
+      <Method Name="MouseUp" Hidden="true" />
+      <Method Name="MouseWheel" Hidden="true" />
+      <Field Name="WithClipping" Hidden="true" />
+      <Field Name="WithoutClipping" Hidden="true" />
+      <Field Name="ZDepth" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAICAAABAAAGgkAAAIgAAAAEABAAFAAAAIiAAACAAAA=</HashCode>
+      <FileName>BaseWindow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Graphics.UI.DialogWindow">
+    <Position X="23.25" Y="1.75" Width="1.5" />
+    <Members>
+      <Method Name="DebugDraw" Hidden="true" />
+      <Method Name="DialogWindow" Hidden="true" />
+      <Method Name="Draw" Hidden="true" />
+      <Property Name="IContainer.Children" Hidden="true" />
+      <Field Name="maxSize" Hidden="true" />
+      <Field Name="minSize" Hidden="true" />
+      <Method Name="MouseDown" Hidden="true" />
+      <Method Name="MouseMove" Hidden="true" />
+      <Field Name="mouseOffset" Hidden="true" />
+      <Method Name="MouseUp" Hidden="true" />
+      <Method Name="resizeCanResize" Hidden="true" />
+      <Method Name="Resized" Hidden="true" />
+      <Field Name="state" Hidden="true" />
+      <Field Name="title" Hidden="true" />
+      <Field Name="windowBorder" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.BaseWindow" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23" Y="1.056" />
+        <Point X="23.375" Y="1.056" />
+        <Point X="23.375" Y="1.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAwgAQAkAAQACAEAUAAAACEQCUCgIgAAiAAAA=</HashCode>
+      <FileName>DialogWindow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Graphics.UI.UIElement">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <Members>
+      <Method Name="Arrange" Hidden="true" />
+      <Method Name="ArrangeCore" Hidden="true" />
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Field Name="clip" Hidden="true" />
+      <Method Name="ComputeAlignmentOffset" Hidden="true" />
+      <Method Name="GetClippingRect" Hidden="true" />
+      <Property Name="IComponent.Parent" Hidden="true" />
+      <Method Name="InvalidateArrange" Hidden="true" />
+      <Method Name="InvalidateMeasure" Hidden="true" />
+      <Method Name="InvokeButtonDown" Hidden="true" />
+      <Method Name="InvokeButtonUp" Hidden="true" />
+      <Method Name="InvokeKeyDown" Hidden="true" />
+      <Method Name="InvokeKeyUp" Hidden="true" />
+      <Method Name="InvokeMouseDown" Hidden="true" />
+      <Method Name="InvokeMouseMove" Hidden="true" />
+      <Method Name="InvokeMouseWheel" Hidden="true" />
+      <Method Name="InvokeOnMouseUp" Hidden="true" />
+      <Field Name="isArrangeValid" Hidden="true" />
+      <Field Name="isClippingRequired" Hidden="true" />
+      <Field Name="isMeasureValid" Hidden="true" />
+      <Method Name="Measure" Hidden="true" />
+      <Method Name="MeasureCore" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Property Name="needsClipping" Hidden="true" />
+      <Method Name="OnButtonDown" Hidden="true" />
+      <Method Name="OnButtonUp" Hidden="true" />
+      <Method Name="OnKeyDown" Hidden="true" />
+      <Method Name="OnKeyUp" Hidden="true" />
+      <Method Name="OnMouseDown" Hidden="true" />
+      <Method Name="OnMouseMove" Hidden="true" />
+      <Method Name="OnMouseUp" Hidden="true" />
+      <Method Name="OnMouseWheel" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Field Name="previousAvailableSize" Hidden="true" />
+      <Field Name="previousFinalRect" Hidden="true" />
+      <Method Name="UIElement" Hidden="true" />
+      <Field Name="unclippedSize" Hidden="true" />
+      <Field Name="Window" Hidden="true" />
+      <Field Name="visible" Hidden="true" />
+      <Field Name="visualOffset" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gAI1BAAgFADBgUCwiMsCYEsQGRIBEQE4IIgwKAWiFDA=</HashCode>
+      <FileName>UIElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Graphics.UI.Window">
+    <Position X="25" Y="1.75" Width="1.5" />
+    <Members>
+      <Field Name="content" Hidden="true" />
+      <Field Name="CurrentFocuesdControl" Hidden="true" />
+      <Method Name="Draw" Hidden="true" />
+      <Method Name="FindAll" Hidden="true" />
+      <Property Name="IContainer.Children" Hidden="true" />
+      <Method Name="Input_KeyDown" Hidden="true" />
+      <Method Name="Input_KeyUp" Hidden="true" />
+      <Method Name="Messure" Hidden="true" />
+      <Method Name="MouseDown" Hidden="true" />
+      <Method Name="MouseMove" Hidden="true" />
+      <Method Name="MouseWheel" Hidden="true" />
+      <Method Name="NextFocus" Hidden="true" />
+      <Method Name="SetFocus" Hidden="true" />
+      <Method Name="TryGetElement" Hidden="true" />
+      <Method Name="Window" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.BaseWindow" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23" Y="1.056" />
+        <Point X="25.125" Y="1.056" />
+        <Point X="25.125" Y="1.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>gIACAAAAAgJAAgAAIAAQgAAAAAIAEQAAAIACAACAABA=</HashCode>
+      <FileName>Window.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Graphics.UI.WindowManager" Collapsed="true">
+    <Position X="31.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAEAgEAAAIgAAAAAAAAAEBAAAIgAAASQAAA=</HashCode>
+      <FileName>WindowManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Internal.FloatExtensions" Collapsed="true">
+    <Position X="30" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBAAAAgAACQAAAAAAAAAAAAAAASAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Internal\FloatExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Media.Brush">
+    <Position X="17.25" Y="13" Width="1.5" />
+    <Members>
+      <Method Name="implicit operator Brush" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAABAAAAAAIAAAAAA=</HashCode>
+      <FileName>Media\Brushes\Brush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Media.GradientBrush">
+    <Position X="19" Y="13.75" Width="1.5" />
+    <Members>
+      <Method Name="OnRender" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Media.Brush" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.75" Y="13.188" />
+        <Point X="19.125" Y="13.188" />
+        <Point X="19.125" Y="13.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAIAAAAAAAEAAAAIAACAAA=</HashCode>
+      <FileName>Media\Brushes\GradientBrush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Media.ImageBrush">
+    <Position X="26" Y="14.5" Width="1.5" />
+    <Members>
+      <Method Name="ImageBrush" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Media.TileBrush" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="25.75" Y="13.937" />
+        <Point X="26.125" Y="13.937" />
+        <Point X="26.125" Y="14.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Media\Brushes\ImageBrush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Media.SolidColorBrush">
+    <Position X="20.75" Y="13.75" Width="1.5" />
+    <Members>
+      <Method Name="explicit operator Color" Hidden="true" />
+      <Method Name="implicit operator SolidColorBrush" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Method Name="SolidColorBrush" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Media.Brush" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.75" Y="13.188" />
+        <Point X="20.875" Y="13.188" />
+        <Point X="20.875" Y="13.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAggAAAAAEAAAAAAAAAAAAAAAAAAAAqAAAAAA=</HashCode>
+      <FileName>Media\Brushes\SolidColorBrush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Media.SpecialBrush">
+    <Position X="22.5" Y="13.75" Width="1.5" />
+    <Members>
+      <Method Name="Build" Hidden="true" />
+      <Field Name="needsRebuild" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Field Name="prevBound" Hidden="true" />
+      <Field Name="rectangles" Hidden="true" />
+      <Field Name="sourceArea" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Struct Name="Nine.Graphics.UI.Media.SpecialBrush.Sprite" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Media\Brushes\SpecialBrush.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <InheritanceLine Type="Nine.Graphics.UI.Media.Brush" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.75" Y="13.188" />
+        <Point X="22.625" Y="13.188" />
+        <Point X="22.625" Y="13.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAIAAAACAAAAAAAAAAAAAAgBAAAAIAIAgAAAA=</HashCode>
+      <FileName>Media\Brushes\SpecialBrush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Media.TileBrush">
+    <Position X="24.25" Y="13.75" Width="1.5" />
+    <Members>
+      <Field Name="flip" Hidden="true" />
+      <Field Name="stretch" Hidden="true" />
+      <Field Name="stretchDirection" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Media.Brush" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.75" Y="13.188" />
+        <Point X="24.375" Y="13.188" />
+        <Point X="24.375" Y="13.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAARAQAAEAAAAABBAAAAAQAAAAAAA=</HashCode>
+      <FileName>Media\Brushes\TileBrush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Media.VisualBrush">
+    <Position X="27.75" Y="13.75" Width="1.5" />
+    <Members>
+      <Method Name="OnRender" Hidden="true" />
+      <Method Name="VisualBrush" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Media.Brush" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.75" Y="13.188" />
+        <Point X="27.875" Y="13.188" />
+        <Point X="27.875" Y="13.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIIAAAAA=</HashCode>
+      <FileName>Media\Brushes\VisualBrush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Renderer.DynamicPrimitiveRenderer" Collapsed="true">
+    <Position X="11.75" Y="14.25" Width="1.5" />
+    <InheritanceLine Type="Nine.Graphics.UI.Renderer.Renderer" FixedFromPoint="true">
+      <Path>
+        <Point X="11" Y="13.401" />
+        <Point X="11.375" Y="13.401" />
+        <Point X="11.375" Y="14.596" />
+        <Point X="11.75" Y="14.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAABAAAgAAAAAAAAAAAAAAEAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Renderer\DynamicPrimitiveRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Renderer.Renderer">
+    <Position X="7.75" Y="13.25" Width="3.25" />
+    <Members>
+      <Field Name="elapsedTime" Hidden="true" />
+      <Field Name="isRendering" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAIBIAAAARAAAgAAAAAAAAAAAAAAEAAAAAAEAAAAACA=</HashCode>
+      <FileName>Renderer\Renderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Renderer.SpriteBatchRenderer" Collapsed="true">
+    <Position X="11.75" Y="15.25" Width="1.5" />
+    <InheritanceLine Type="Nine.Graphics.UI.Renderer.Renderer" FixedFromPoint="true">
+      <Path>
+        <Point X="11" Y="13.401" />
+        <Point X="11.375" Y="13.401" />
+        <Point X="11.375" Y="15.596" />
+        <Point X="11.75" Y="15.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAEAAABAAAgAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Renderer\SpriteBatchRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

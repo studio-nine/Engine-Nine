@@ -28,7 +28,6 @@
 
         protected override Microsoft.Xna.Framework.Vector2 MeasureOverride(Vector2 availableSize)
         {
-            if (Visible == Visibility.Collapsed) return Vector2.Zero;
             if (content != null)
                 content.Measure(availableSize);
             return base.MeasureOverride(availableSize);
@@ -36,18 +35,15 @@
 
         protected override Microsoft.Xna.Framework.Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            if (Visible == Visibility.Collapsed) return Vector2.Zero;
             if (content != null)
                 content.Arrange(new BoundingRectangle(0, 0, finalSize.X, finalSize.Y));
             return base.ArrangeOverride(finalSize);
         }
 
-        protected internal override void OnRender(Renderer.Renderer renderer)
+        protected override void OnRender(Renderer.Renderer renderer)
         {
-            if (Visible != Visibility.Visible) return;
-            base.OnRender(renderer);
             if (Content != null)
-                Content.OnRender(renderer);
+                Content.Render(renderer);
         }
     }
 }

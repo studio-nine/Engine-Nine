@@ -25,8 +25,12 @@
 
 namespace Nine.Graphics.UI
 {
+    /// <summary>
+    /// Specifies if the text should wrap.
+    /// </summary>
     public enum TextWrapping
     {
+        // TODO: Overflow
         NoWrap, 
         Wrap
     }

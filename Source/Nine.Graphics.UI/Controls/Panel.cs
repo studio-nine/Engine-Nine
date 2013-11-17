@@ -92,13 +92,11 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
-            if (Visible != Visibility.Visible) return;
-            base.OnRender(renderer);
             foreach (var child in children)
             {
-                child.OnRender(renderer);
+                child.Render(renderer);
             }
         }
 

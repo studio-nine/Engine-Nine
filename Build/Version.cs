@@ -5,6 +5,6 @@
 
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Engine Nine")]
-[assembly: AssemblyCopyright("Copyright © 2009 - 2012 Engine Nine")]
+[assembly: AssemblyCopyright("Copyright © 2009 - 2013 Engine Nine")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -18,13 +18,12 @@
 
         public override void Begin(DrawingContext context)
         {
-
+            dynamicPrimitive.Clear();
         }
 
         public override void End(DrawingContext context)
         {
             dynamicPrimitive.Draw(context, null);
-            dynamicPrimitive.Clear();
         }
 
 
@@ -45,19 +44,6 @@
                 dynamicPrimitive.AddIndex(2);
             }
             dynamicPrimitive.EndPrimitive();
-        }
-
-        public override void Draw(System.Collections.Generic.IEnumerable<Vector2> poly, Color color, bool join)
-        {
-            // Fix this!
-            Vector3 prevPoint = Vector3.Zero;
-            foreach (var p in poly)
-            {
-                Vector3 newPoint = new Vector3(p, 0);
-                if (prevPoint != Vector3.Zero)
-                    dynamicPrimitive.AddLine(prevPoint, newPoint, color, 2);
-                prevPoint = newPoint;
-            }
         }
 
         public override void Draw(Vector2 from, Vector2 to, Color color)

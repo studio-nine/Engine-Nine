@@ -26,18 +26,10 @@
 
 namespace Nine.Graphics.UI
 {
-    using System;
-    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Nine.Graphics.UI.Renderer;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
-    using Microsoft.Xna.Framework.Input.Touch;
-    using Nine.Graphics.Drawing;
-    using Nine.Graphics.Primitives;
-    using Nine.Graphics.UI.Controls;
-    using Nine.Graphics.UI.Renderer;
 
     /// <summary>
     /// RootElement is the main host for all <see cref="UIElement">UIElement</see>s, it manages the  user input and is the target for Update/Draw calls.
@@ -57,16 +49,12 @@ namespace Nine.Graphics.UI
                     content[0] = value;
                     if (content[0] != null)
                         content[0].Window = this;
-                    NextFocus();
                 }
             }
         }
         private UIElement[] content = new UIElement[1];
 
         IList IContainer.Children { get { return content; } }
-
-        // TODO: Make this work
-        public bool HasMouse { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
@@ -76,168 +64,25 @@ namespace Nine.Graphics.UI
             
         }
 
-        #region Methods
-
-        internal void Messure()
-        {
-            if (Viewport == null)
-                throw new ArgumentNullException("Viewport");
-
-            BoundingRectangle bounds = new BoundingRectangle
-            {
-                X = Viewport.X,
-                Y = Viewport.Y,
-                Width = Viewport.Width,
-                Height = Viewport.Height,
-            };
-
-            content[0].Measure(new Vector2(bounds.Width, bounds.Height));
-            content[0].Arrange(bounds);
-        }
-
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             if (content == null)
                 return;
 
-            if (this.Viewport != (BoundingRectangle)context.GraphicsDevice.Viewport.TitleSafeArea)
+            //if (this.Viewport == BoundingRectangle.Empty)
+            if (!this.Viewport.Equals(context.GraphicsDevice.Viewport.TitleSafeArea))
                 this.Viewport = (BoundingRectangle)context.GraphicsDevice.Viewport.TitleSafeArea;
 
-            Messure();
+            content[0].Measure(new Vector2(Viewport.Width, Viewport.Height));
+            content[0].Arrange(Viewport);
 
             if (Renderer == null)
                 Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
 
-            Renderer.ElapsedTime = context.ElapsedTime;
+            Renderer.elapsedTime = context.ElapsedTime;
             Renderer.Begin(context);
-            content[0].OnRender(Renderer);
+            content[0].Render(Renderer);
             Renderer.End(context);
         }
-
-        #endregion
-
-        private IList<T> FindAll<T>() where T : class
-        {
-            List<T> result = new List<T>();
-            ContainerTraverser.Traverse<T>(content, result);
-            return result;
-        }
-
-        // TODO: Make a standard for Input
-
-        #region Input
-
-        // I am not sure on the design of the input yet!
-        // TODO: Control Tabbing with Focus and make it modifiable
-
-        Control CurrentFocuesdControl = null;
-
-        void MouseMove(object sender, MouseEventArgs e)
-        {
-            UIElement result = null;
-            if (TryGetElement(new Vector2(e.X, e.Y), out result))
-            {
-                HasMouse = true;
-                result.InvokeMouseMove(sender, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
-            }
-            else
-            {
-                HasMouse = false;
-            }
-        }
-        void MouseDown(object sender, MouseEventArgs e)
-        {
-            UIElement result = null;
-            if (TryGetElement(new Vector2(e.X, e.Y), out result))
-            {
-                if (result is Control)
-                    SetFocus(result as Control);
-                result.InvokeMouseDown(sender, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
-            }
-        }
-        void MouseWheel(object sender, MouseEventArgs e)
-        {
-            UIElement result = null;
-            if (TryGetElement(new Vector2(e.X, e.Y), out result))
-            {
-                result.InvokeMouseWheel(sender, new MouseEventArgs(e.Button, e.X, e.Y, e.WheelDelta));
-            }
-        }
-
-        void Input_KeyDown(object sender, KeyboardEventArgs e)
-        {
-            if (e.Key == Keys.Tab)
-            {
-                NextFocus();
-            }
-            if (CurrentFocuesdControl != null)
-            {
-                CurrentFocuesdControl.InvokeKeyDown(sender, e);
-            }
-        }
-        void Input_KeyUp(object sender, KeyboardEventArgs e)
-        {
-            if (CurrentFocuesdControl != null)
-            {
-                CurrentFocuesdControl.InvokeKeyUp(sender, e);
-            }
-        }
-
-        public void NextFocus()
-        {
-            // TODO: Rework this algoritm
-            var Controls = FindAll<Control>();
-            if (Controls.Count > 0)
-            {
-                var NextControls = Controls.Where(o => 
-                    o.IsTabStop == true &&
-                    o != CurrentFocuesdControl)
-                    .ToList().OrderBy(o => o.TabIndex);
-                if (NextControls.Count<Control>() > 0)
-                    SetFocus(NextControls.First());
-            }
-        }
-
-        public void SetFocus(Control control)
-        {
-            if (CurrentFocuesdControl != null)
-                CurrentFocuesdControl.hasFocus = false;
-            CurrentFocuesdControl = control;
-            CurrentFocuesdControl.hasFocus = true;
-        }
-
-        private bool TryGetElement(Vector2 point, out UIElement output)
-        {
-            if (content == null)
-            {
-                output = null;
-                return false;
-            }
-
-            UIElement result = null;
-            ContainerTraverser.Traverse<UIElement>(content,
-                (d) =>
-                {
-                    if (d.Visible == Visibility.Visible & d.HitTest(point))
-                    {
-                        result = d;
-                        var container = d as IContainer;
-                        if (container != null)
-                            if (container.Children.Count > 0)
-                                return TraverseOptions.Continue;
-                        return TraverseOptions.Stop;
-                    }
-                    else
-                        return TraverseOptions.Skip;
-                });
-
-            output = result;
-            if (result != null)
-                return true;
-            else
-                return false;
-        }
-
-        #endregion
     }
 }

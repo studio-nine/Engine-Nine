@@ -6,11 +6,10 @@
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
-    // TODO: Move this to a window
-
     /// <summary>
     /// A Control that lets you navigate <see cref="Page">Pages</see>.
     /// </summary>
+    [Obsolete]
     [System.Windows.Markup.ContentProperty("Pages")]
     public class PageNavigator : BaseWindow, IContainer, INotifyCollectionChanged<UIElement>
     {
@@ -159,7 +158,7 @@
             pages.ForEach<Page>(o => o.Measure(availableSize));
             pages.ForEach<Page>(o => o.Arrange(bounds));
 
-            pages[SelectedIndex].OnRender(Renderer);
+            pages[SelectedIndex].Render(Renderer);
             base.Draw(context, drawables);
         }
     }

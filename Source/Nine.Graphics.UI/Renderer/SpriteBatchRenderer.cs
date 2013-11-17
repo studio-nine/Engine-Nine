@@ -19,12 +19,15 @@
 
         public override void Begin(DrawingContext context)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend,
+                      null, null, BaseWindow.WithClipping);
+            base.Begin(context);
         }
 
         public override void End(DrawingContext context)
         {
             spriteBatch.End();
+            base.End(context);
         }
 
 
@@ -36,11 +39,6 @@
         public override void Draw(Vector2 from, Vector2 to, Color color)
         {
             spriteBatch.DrawLine(from, to, color, 1);
-        }
-
-        public override void Draw(System.Collections.Generic.IEnumerable<Vector2> poly, Color color, bool join)
-        {
-
         }
 
         #region Texture

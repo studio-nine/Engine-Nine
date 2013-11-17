@@ -145,12 +145,8 @@
                 player.Stop();
         }
 
-        protected internal override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
-            if (Visible != Visibility.Visible) return;
-
-            base.OnRender(renderer);
-
             if (player.State != MediaState.Stopped)
                 Texture = player.GetTexture();
 

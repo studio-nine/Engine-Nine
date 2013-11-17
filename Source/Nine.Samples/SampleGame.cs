@@ -131,7 +131,7 @@ namespace Nine.Samples
                 Exit();
 #endif
             currentScene.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
-            currentScene.UpdatePhysicsAsync((float)gameTime.ElapsedGameTime.TotalSeconds);
+            //currentScene.UpdatePhysicsAsync((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
 

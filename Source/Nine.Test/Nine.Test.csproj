@@ -83,6 +83,7 @@
     <Compile Include="ErrorLogger.cs" />
     <Compile Include="ExpressionTest.cs" />
     <Compile Include="ContentPipelineTest.cs" />
+    <Compile Include="Graphics\UI\ScrollViewerTest.cs" />
     <Compile Include="GraphicsTest.cs" />
     <Compile Include="Graphics\ObjectModel\ModelTest.cs" />
     <Compile Include="Graphics\ObjectModel\SurfaceTest.cs" />

@@ -49,12 +49,6 @@ namespace Nine.Graphics.UI
         }
         private Visibility visible = Visibility.Visible;
 
-        public BoundingRectangle? Clip
-        {
-            get { return this.clip; }
-        }
-        private BoundingRectangle? clip = null;
-
         public BoundingRectangle AbsoluteRenderTransform
         {
             get 
@@ -118,7 +112,22 @@ namespace Nine.Graphics.UI
         private Vector2 previousAvailableSize;
         private BoundingRectangle previousFinalRect;
 
+        private bool needsClipping
+        {
+            get
+            {
+                if (Parent != null)
+                {
+                    if (Parent.clip.HasValue)
+                        return true;
+                }
+                if (clip.HasValue)
+                    return true;
+                return false;
+            }
+        }
         private bool isClippingRequired;
+
         private Vector2 unclippedSize;
         private Vector2 visualOffset;
 
@@ -132,6 +141,8 @@ namespace Nine.Graphics.UI
             get { return Parent as IContainer; }
             set { Parent = value as UIElement; }
         }
+
+        internal BoundingRectangle? clip = null;
 
         #endregion
 
@@ -191,17 +202,14 @@ namespace Nine.Graphics.UI
 
             if (!isClippingRequiredDueToClientSize)
             {
-                // TODO: Clipping
                 return BoundingRectangle.Empty;
             }
 
             Vector2 offset = this.ComputeAlignmentOffset(clientSize, renderSize);
-
             var clipRect = new BoundingRectangle(-offset.X, -offset.Y, clientSize.X, clientSize.Y);
 
             if (isClippingRequiredDueToMaxSize)
             {
-                //clipRect.Contains(new BoundingRectangle(0f, 0f, maxWidth, maxHeight));
             }
             
             return clipRect;
@@ -258,25 +266,30 @@ namespace Nine.Graphics.UI
 
         #region Draw
 
-        protected internal virtual void OnRender(Renderer.Renderer renderer)
+        public void Render(Renderer.Renderer renderer)
         {
-            ToggleClipping(renderer.GraphicsDevice, isClippingRequired);
-            if (Background != null)
-                renderer.Draw(AbsoluteRenderTransform, Background);
-        }
+            if (Visible != Visibility.Visible) 
+                return;
 
-
-        protected void ToggleClipping(GraphicsDevice graphics, bool value)
-        {
-            graphics.RasterizerState = value ? BaseWindow.WithClipping : BaseWindow.WithoutClipping;
-
-            if (value)
+            renderer.GraphicsDevice.RasterizerState = needsClipping ?
+                BaseWindow.WithClipping : BaseWindow.WithoutClipping;
+            if (clip.HasValue)
             {
-                var ClippingRect = GetClippingRect(RenderSize);
-                if (ClippingRect.HasValue)
-                    ; // renderer.GraphicsDevice.ScissorRectangle = (BoundingRectangle)ClippingRect;
+                var c = clip.Value;
+                c.X += AbsoluteVisualOffset.X;
+                c.Y += AbsoluteVisualOffset.Y;
+                renderer.GraphicsDevice.ScissorRectangle = c;
             }
+
+            if (Background != null)
+            {
+                renderer.Draw(AbsoluteRenderTransform, Background);
+            }
+
+            OnRender(renderer);
         }
+
+        protected virtual void OnRender(Renderer.Renderer renderer) { }
 
         #endregion
 
@@ -561,7 +574,8 @@ namespace Nine.Graphics.UI
             availableSizeWithoutMargins.X = MathHelper.Clamp(availableSizeWithoutMargins.X, minMax.MinWidth, minMax.MaxWidth);
             availableSizeWithoutMargins.Y = MathHelper.Clamp(availableSizeWithoutMargins.Y, minMax.MinHeight, minMax.MaxHeight);
 
-            Vector2 size = this.MeasureOverride(availableSizeWithoutMargins);
+            Vector2 size = Visible == Visibility.Collapsed ? 
+                Vector2.Zero : this.MeasureOverride(availableSizeWithoutMargins);
             size.X = Math.Max(size.X, minMax.MinWidth);
             size.Y = Math.Max(size.Y, minMax.MinHeight);
 

@@ -1,6 +1,7 @@
 #region License
 /* The MIT License
  *
+ * Copyright (c) 2013 Engine Nine
  * Copyright (c) 2011 Red Badger Consulting
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,64 +24,51 @@
 */
 #endregion
 
-namespace Nine.Graphics.UI.Controls
+namespace Nine.Graphics.UI
 {
     /// <summary>
-    /// Defines Column properties that apply to <see cref="Nine.Graphics.UI.Controls.Grid"/>.
+    /// Describes how the element is aligned horizontally within it's parent element.
     /// </summary>
-    public class ColumnDefinition : DefinitionBase
+    public enum HorizontalAlignment
     {
         /// <summary>
-        /// Gets or sets width of the Column
+        /// Stretches to fill the parent's layout slot.
         /// </summary>
-        public GridLength Width { get; set; }
-
+        Stretch,
         /// <summary>
-        /// Gets or sets maximum width of the Column
+        /// Element is aligned to the left of the parent's layout slot. 
         /// </summary>
-        public float MaxWidth { get; set; }
-
+        Left,
         /// <summary>
-        /// Gets or sets minimum width of the Column
+        /// Element is aligned to the center of the parent's layout slot. 
         /// </summary>
-        public float MinWidth { get; set; }
-
-        #region Ctor
-
+        Center,
         /// <summary>
-        /// Constructs with 'Width 1' and 'Unit Type Star'.
+        /// Element is aligned to the right of the parent's layout slot. 
         /// </summary>
-        public ColumnDefinition() : this(1, GridUnitType.Star) { }
+        Right
+    }
 
+    /// <summary>
+    /// Describes how the element is aligned horizontally within it's parent element.
+    /// </summary>
+    public enum VerticalAlignment
+    {
         /// <summary>
-        /// Constructs with 'Unit Type Star'.
+        /// Stretches to fill the parent's layout slot.
         /// </summary>
-        /// <param name="value">Width</param>
-        public ColumnDefinition(float value) : this(value, GridUnitType.Star) { }
-
+        Stretch,
         /// <summary>
-        /// Constructs with type and value 0.
-        /// </summary>
-        /// <param name="type"></param>
-        public ColumnDefinition(GridUnitType type) 
-            : this(0, type)
-        {
-            // Designed to make it easier to create with type 'Auto' in code
-        }
-
+        /// Element is aligned to the top of the parent's layout slot. 
+        /// </summary> 
+        Top,
         /// <summary>
-        /// 
+        /// Element is aligned to the center of the parent's layout slot. 
         /// </summary>
-        /// <param name="value">Width</param>
-        /// <param name="type">Unit Type</param>
-        public ColumnDefinition(float value, GridUnitType type)
-            : base(DefinitionType.Column)
-        {
-            Width = new GridLength(value, type);
-            MaxWidth = float.PositiveInfinity;
-            MinWidth = 0;
-        }
-
-        #endregion
+        Center,
+        /// <summary>
+        /// Element is aligned to the bottom of the parent's layout slot. 
+        /// </summary> 
+        Bottom
     }
 }

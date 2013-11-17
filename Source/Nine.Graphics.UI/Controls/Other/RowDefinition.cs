@@ -55,6 +55,16 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         /// <param name="value">Height</param>
         public RowDefinition(float value) : this(value, GridUnitType.Star) { }
+        
+        /// <summary>
+        /// Constructs with type and value 0.
+        /// </summary>
+        /// <param name="type"></param>
+        public RowDefinition(GridUnitType type) 
+            : this(0, type)
+        {
+            // Designed to make it easier to create with type 'Auto' in code
+        }
 
         /// <summary>
         /// 
