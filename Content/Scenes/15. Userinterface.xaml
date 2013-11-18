@@ -1,19 +1,10 @@
 <Scene xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  
-<!-- This is now it's own type of window
-  <PageNavigator SelectedIndex="0">
-    <Page Name="ControlsPage">
-    </Page>
-    <Page Name="EmptyPage">
-      <Image Margin="20" Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
-    </Page>
-  </PageNavigator>
--->
 
-  <Window>
-    <!-- ViewportTest="200,150,880,500" -->
-    <Grid ShowGridLines="False" GridLinesColor="0,255,0,255">
-  <!--
+  <WindowManager>
+    <Window>
+      <!-- ViewportTest="200,150,880,500" -->
+      <Grid ShowGridLines="False" GridLinesColor="0,255,0,255">
+        <!--
       <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button" Margin="2" Height="48" 
               Background="LightGray" TextVerticalAlignment="Center" TextHorizontalAlignment="Center">
         <Button.VisualStates>
@@ -32,108 +23,125 @@
         </Button.VisualStates>
       </Button>
   -->
-      <Grid.RowDefinitions>
-        <RowDefinition Height="50*" />
-        <RowDefinition Height="50*" />
-      </Grid.RowDefinitions>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="25*" />
-        <ColumnDefinition Width="25*" />
-        <ColumnDefinition Width="25*" />
-      </Grid.ColumnDefinitions>
-
-      <Grid.Background>
-        <!-- This will not render when using SpriteBatch Renderer -->
-        <GradientBrush G1="0.37,0.47,0.615" G2="0.37,0.47,0.615" G3="0.24,0.3,0.4" G4="0.24,0.3,0.4" />
-      </Grid.Background>
-
-      <Grid Grid.Column="0" Grid.Row="0">
         <Grid.RowDefinitions>
           <RowDefinition Height="50*" />
           <RowDefinition Height="50*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="50*" />
-          <ColumnDefinition Width="50*" />
+          <ColumnDefinition Width="25*" />
+          <ColumnDefinition Width="25*" />
+          <ColumnDefinition Width="25*" />
         </Grid.ColumnDefinitions>
-        <Border Grid.Row="0" Grid.Column="0" BorderBrush="Red" BorderThickness="6" Margin="2" />
-        <Border Grid.Row="1" Grid.Column="0" BorderBrush="Green" BorderThickness="6" Margin="2">
-          <Border.Background>
-            <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
-          </Border.Background>
-        </Border>
-        <Border Grid.Row="0" Grid.Column="1" BorderBrush="Blue" BorderThickness="6" Margin="2" />
-        <Border Grid.Row="1" Grid.Column="1" BorderBrush="Orange" BorderThickness="6" Margin="2" />
-      </Grid>
 
-      <ScrollViewer Grid.Column="1" Grid.Row="0" CanVerticallyScroll="True">
-        <ScrollContentPresenter>
-          <StackPanel Orientation="Vertical">
-            <StackPanel.Background>
+        <Grid.Background>
+          <!-- This will not render when using SpriteBatch Renderer -->
+          <GradientBrush G1="0.37,0.47,0.615" G2="0.37,0.47,0.615" G3="0.24,0.3,0.4" G4="0.24,0.3,0.4" />
+        </Grid.Background>
+
+        <Grid Grid.Column="0" Grid.Row="0">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="50*" />
+            <RowDefinition Height="50*" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*" />
+            <ColumnDefinition Width="50*" />
+          </Grid.ColumnDefinitions>
+          <Border Grid.Row="0" Grid.Column="0" BorderBrush="Red" BorderThickness="6" Margin="2" />
+          <Border Grid.Row="1" Grid.Column="0" BorderBrush="Green" BorderThickness="6" Margin="2">
+            <Border.Background>
               <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
-            </StackPanel.Background>
-            <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2">
-              <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Inside a StackPanel" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Border>
-            <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
-              <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button1" Margin="2" Background="LightBlue" TextVerticalAlignment="Center" TextHorizontalAlignment="Center" />
-            </Border>
-            <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
-              <ProgressBar Margin="2" Value="50" />
-            </Border>
-            <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
-              <TextBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}" 
-                        Multiline="False" EnableMarker="True" MarkerBrush="Green" Text="" Foreground="White" 
-                        MaxChars="32" Padding="10" Watermark="This is a TextBox! With Watermark." WatermarkBrush="DarkGray" />
-            </Border>
-            <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
-              <NumberBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}"
-                        Multiline="False" EnableMarker="True" MarkerBrush="Red" Text="1337" Foreground="White"
-                        MaxChars="32" Padding="10" />
-            </Border>
-            <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14"><Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2"><Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" /></Border></Border>
-            <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14"><Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2"><Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" /></Border></Border>
-            <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14"><Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2"><Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" /></Border></Border>
-            <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14"><Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2"><Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" /></Border></Border>
-          </StackPanel>
-        </ScrollContentPresenter>
-      </ScrollViewer>
-      
-      <Grid Grid.Column="2" Grid.Row="1">
-        <ListBox SelectedIndex="1" Orientation="Vertical">
-          <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Name="TextBlock1"
-                  Text="TextBlock 1" Padding="10" Margin="2" Height="48">
-            <TextBlock.Background>
-              <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="0,0,64,64" />
-            </TextBlock.Background>
-          </TextBlock>
-          <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Name="TextBlock2"
-                  Text="TextBlock 2" Padding="10" Margin="2" Height="48">
-            <TextBlock.Background>
-              <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="64,0,64,64" />
-            </TextBlock.Background>
-          </TextBlock>
-          <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}"
-                  Text=" :)" Padding="10" Margin="2" Height="48">
-            <TextBlock.Background>
-              <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="128,0,64,64" />
-            </TextBlock.Background>
-          </TextBlock>
-          <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button2" Margin="2" Height="48"
-                  TextVerticalAlignment="Center" TextHorizontalAlignment="Center">
-            <Button.Background>
-              <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="192,0,64,64" />
-            </Button.Background>
-          </Button>
-          <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button3" Margin="2" Height="48" Background="LightGray" TextVerticalAlignment="Center" TextHorizontalAlignment="Center" />
-        </ListBox>
+            </Border.Background>
+          </Border>
+          <Border Grid.Row="0" Grid.Column="1" BorderBrush="Blue" BorderThickness="6" Margin="2" />
+          <Border Grid.Row="1" Grid.Column="1" BorderBrush="Orange" BorderThickness="6" Margin="2" />
+        </Grid>
+
+        <ScrollViewer Grid.Column="1" Grid.Row="0" CanVerticallyScroll="True">
+          <ScrollContentPresenter>
+            <StackPanel Orientation="Vertical">
+              <StackPanel.Background>
+                <ImageBrush Source="{ContentReference ../Textures/checker.bmp}" />
+              </StackPanel.Background>
+              <Border Margin="2" Height="50" BorderBrush="Red" BorderThickness="2">
+                <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Inside a StackPanel" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+              <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+                <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button1" Margin="2" Background="LightBlue" TextVerticalAlignment="Center" TextHorizontalAlignment="Center" />
+              </Border>
+              <Border Margin="2" Height="50" BorderBrush="Blue" BorderThickness="2">
+                <ProgressBar Margin="2" Value="50" />
+              </Border>
+              <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+                <TextBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}"
+                          Multiline="False" EnableMarker="True" MarkerBrush="Green" Text="" Foreground="White"
+                          MaxChars="32" Padding="10" Watermark="This is a TextBox! With Watermark." WatermarkBrush="DarkGray" />
+              </Border>
+              <Border Margin="2" Height="50" BorderBrush="Green" BorderThickness="2">
+                <NumberBox IsTabStop="True" TabIndex="-10" Font="{ContentReference ../Fonts/Consolas.spritefont}"
+                          Multiline="False" EnableMarker="True" MarkerBrush="Red" Text="1337" Foreground="White"
+                          MaxChars="32" Padding="10" />
+              </Border>
+              <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14">
+                <Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2">
+                  <Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" />
+                </Border>
+              </Border>
+              <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14">
+                <Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2">
+                  <Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" />
+                </Border>
+              </Border>
+              <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14">
+                <Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2">
+                  <Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" />
+                </Border>
+              </Border>
+              <Border Margin="2" Height="50" BorderBrush="White" BorderThickness="14">
+                <Border Margin="2" Height="16" BorderBrush="Red" BorderThickness="2">
+                  <Border Margin="2" Height="8" BorderBrush="LimeGreen" BorderThickness="2" />
+                </Border>
+              </Border>
+            </StackPanel>
+          </ScrollContentPresenter>
+        </ScrollViewer>
+
+        <Grid Grid.Column="2" Grid.Row="1">
+          <ListBox SelectedIndex="1" Orientation="Vertical">
+            <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Name="TextBlock1"
+                    Text="TextBlock 1" Padding="10" Margin="2" Height="48">
+              <TextBlock.Background>
+                <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="0,0,64,64" />
+              </TextBlock.Background>
+            </TextBlock>
+            <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}" Name="TextBlock2"
+                    Text="TextBlock 2" Padding="10" Margin="2" Height="48">
+              <TextBlock.Background>
+                <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="64,0,64,64" />
+              </TextBlock.Background>
+            </TextBlock>
+            <TextBlock Font="{ContentReference ../Fonts/Consolas.spritefont}"
+                    Text=" :)" Padding="10" Margin="2" Height="48">
+              <TextBlock.Background>
+                <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="128,0,64,64" />
+              </TextBlock.Background>
+            </TextBlock>
+            <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button2" Margin="2" Height="48"
+                    TextVerticalAlignment="Center" TextHorizontalAlignment="Center">
+              <Button.Background>
+                <SpecialBrush Texture="{ContentReference ../Textures/button.png}" SourceArea="192,0,64,64" />
+              </Button.Background>
+            </Button>
+            <Button Font="{ContentReference ../Fonts/Consolas.spritefont}" Text="Button3" Margin="2" Height="48" Background="LightGray" TextVerticalAlignment="Center" TextHorizontalAlignment="Center" />
+          </ListBox>
+        </Grid>
+
+        <TextBox Font="{ContentReference ../Fonts/Consolas.spritefont}" Grid.Column="2" Grid.Row="0" Margin="20" Multiline="True"
+                  Text="Engine Nine Userinterface&#x0a; - This is a TextBox" />
+
+        <Image Margin="20" Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
       </Grid>
 
-      <TextBox Font="{ContentReference ../Fonts/Consolas.spritefont}" Grid.Column="2" Grid.Row="0" Margin="20" Multiline="True" 
-                Text="Engine Nine Userinterface&#x0a; - This is a TextBox" />
-          
-      <Image Margin="20" Grid.Column="0" Grid.Row="2" Source="{ContentReference ../Textures/box.dds}" />
-    </Grid>
-      
-  </Window>
+    </Window>
+  </WindowManager>
 </Scene>

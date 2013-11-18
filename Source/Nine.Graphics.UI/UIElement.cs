@@ -613,5 +613,22 @@ namespace Nine.Graphics.UI
         }
 
         #endregion
+
+        internal UIElement ObjectToElement(object element)
+        {
+            if (element is UIElement)
+                return element as UIElement;
+
+            var isString = element as string;
+            if (isString != null)
+            {
+                return new Nine.Graphics.UI.Controls.TextBlock
+                    {
+                        Text = isString
+                    };
+            }
+
+            return null;
+        }
     }
 }

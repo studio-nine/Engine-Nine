@@ -3,11 +3,13 @@
     using System.Linq;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
+    using System.Collections;
 
     /// <summary>
-    /// Handles input for the UI
+    /// Handles multiple windows and input
     /// </summary>
-    public class WindowManager
+    [System.Windows.Markup.ContentProperty("Windows")]
+    public class WindowManager : Nine.Object, IContainer
     {
         public bool InputEnabled
         {
@@ -21,18 +23,19 @@
             }
         }
 
+        IList IContainer.Children { get { return windows; } }
+        public IList<BaseWindow> Windows
+        {
+            get { return windows; }
+        }
+        private NotificationCollection<BaseWindow> windows;
+
         private Input input;
-        internal NotificationCollection<BaseWindow> windows = new NotificationCollection<BaseWindow>();
 
         public WindowManager()
         {
+            windows = new NotificationCollection<BaseWindow>();
             EnsureInput();
-            windows.Added +=
-                e =>
-                {
-                    if (e.ZDepth == -1)
-                        e.ZDepth = windows.Count;
-                };
         }
 
         #region Mouse

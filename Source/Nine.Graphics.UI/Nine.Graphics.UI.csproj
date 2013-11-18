@@ -142,7 +142,6 @@
     <Compile Include="Renderer\DynamicPrimitiveRenderer.cs" />
     <Compile Include="Renderer\Renderer.cs" />
     <Compile Include="Renderer\SpriteBatchRenderer.cs" />
-    <Compile Include="SceneExtensions.cs" />
     <Compile Include="Thickness.cs" />
     <Compile Include="GridUnitType.cs" />
     <Compile Include="GridLength.cs" />

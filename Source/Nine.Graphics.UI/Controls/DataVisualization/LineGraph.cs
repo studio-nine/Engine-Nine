@@ -1,14 +1,20 @@
 ﻿namespace Nine.Graphics.UI.Controls.DataVisualization
 {
+    using System;
     using System.Linq;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
-    public class LineGraph : UIElement
+    public abstract class LineGraph : UIElement
     {
         public bool AdaptiveLimits { get; set; }
         public int ValuesToGraph { get; private set; }
         public Color LineColor { get; set; }
+
+        protected TimeSpan UpdateFrequency { get; set; }
+
+        protected float ElapsedTimeSinceLastUpdate { get { return elapsedTimeSinceLastUpdate; } }
+        private float elapsedTimeSinceLastUpdate = 0;
 
         protected int MinimumValue;
         protected int MaxValue;
@@ -26,7 +32,7 @@
             this.LineColor = Color.Red;
         }
 
-        public void Add(float value)
+        protected void Add(float value)
         {
             GraphValues.Add(value);
 
@@ -47,6 +53,8 @@
             }
         }
 
+        #region Measure & Arrange
+
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
             return base.MeasureOverride(availableSize);
@@ -57,8 +65,19 @@
             return base.ArrangeOverride(finalSize);
         }
 
+        #endregion
+
+        protected abstract void Update(float elapsedTime);
+
         protected override void OnRender(Renderer.Renderer renderer)
         {
+            elapsedTimeSinceLastUpdate += renderer.ElapsedTime;
+            if (elapsedTimeSinceLastUpdate >= UpdateFrequency.TotalSeconds)
+            {
+                Update(renderer.ElapsedTime);
+                elapsedTimeSinceLastUpdate -= (float)UpdateFrequency.TotalSeconds;
+            }
+
             // TODO: Render to Texture
 
             var Bounds = AbsoluteRenderTransform;

@@ -6,17 +6,8 @@
   <Comment CommentText="TODO: We cant have so many strange properties!">
     <Position X="27.964" Y="6.763" Height="0.65" Width="1.338" />
   </Comment>
-  <Comment CommentText="TODO: Why are they build like this :O">
-    <Position X="3.442" Y="10.016" Height="0.75" Width="1.7" />
-  </Comment>
   <Comment CommentText="TODO: Make this more usable in code!">
     <Position X="15.207" Y="2.256" Height="0.624" Width="1.186" />
-  </Comment>
-  <Comment CommentText="TODO: Make this easier to use">
-    <Position X="17.231" Y="1.398" Height="0.699" Width="0.944" />
-  </Comment>
-  <Comment CommentText="TODO: Remove this?">
-    <Position X="30" Y="0.5" Height="0.417" Width="1.456" />
   </Comment>
   <Comment CommentText="TODO: I want to make this cleaner!">
     <Position X="8.599" Y="12.27" Height="0.75" Width="1.7" />
@@ -28,7 +19,7 @@
     <Position X="23.471" Y="0.5" Height="0.494" Width="1.7" />
   </Comment>
   <Comment CommentText="WIP">
-    <Position X="28.75" Y="3.5" Height="0.492" Width="0.72" />
+    <Position X="28.18" Y="0.5" Height="4.991" Width="0.72" />
   </Comment>
   <Class Name="Nine.Graphics.UI.Controls.Border">
     <Position X="3.5" Y="2.25" Width="1.5" />
@@ -63,7 +54,6 @@
       <Field Name="InnerBrush" Hidden="true" />
       <Method Name="OnRender" Hidden="true" />
       <Property Name="textblock" Hidden="true" />
-      <Field Name="VisualGroups" Hidden="true" />
     </Members>
     <InheritanceLine Type="Nine.Graphics.UI.Controls.Control" FixedFromPoint="true" FixedToPoint="true">
       <Path>
@@ -73,15 +63,8 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>BgAQACCAAAAAAAAAAAACAAAAAAAAEAAAAAIAKAACAAA=</HashCode>
+      <HashCode>BAAQACCAAAAAAAAAAAACAAAAAAAAEAAAAAIAKAACAAA=</HashCode>
       <FileName>Controls\Button.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Nine.Graphics.UI.Controls.CheckBox" Collapsed="true">
-    <Position X="3.5" Y="11" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Controls\CheckBox.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Nine.Graphics.UI.Controls.ContentControl">
@@ -505,7 +488,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Nine.Graphics.UI.Controls.ToolTipService" Collapsed="true">
-    <Position X="31.75" Y="3.75" Width="1.5" />
+    <Position X="29.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAABGAAACEAQAIAAAABAKAAAAAAAggAgAAAACAAAAA=</HashCode>
       <FileName>Controls\ToolTipService.cs</FileName>
@@ -533,7 +516,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AQIEAAAQAAAAAAAACABAgCAQQAAAIAAAAAAgIAAAAAA=</HashCode>
+      <HashCode>AQYEAAAQAAAAAAQACgBEgCAQQAAAIAAAAAAgIAAAAAA=</HashCode>
       <FileName>Controls\DataVisualization\LineGraph.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -552,41 +535,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAJAAQAAAAAA=</HashCode>
       <FileName>Controls\Primitives\Selector.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Nine.Graphics.UI.Controls.Primitives.ToggleButton" Collapsed="true">
-    <Position X="3.5" Y="12" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAiAAAACAAIAAAAAAAAAAAAAAIARAIAEAAAA=</HashCode>
-      <FileName>Controls\Primitives\ToggleButton.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Nine.Graphics.UI.VisualState" Collapsed="true">
-    <Position X="30" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>VisualState\VisualState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Nine.Graphics.UI.VisualStateChangedEventArgs" Collapsed="true">
-    <Position X="30" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAAIAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>VisualState\VisualStateChangedEventArgs.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Nine.Graphics.UI.VisualStateGroup" Collapsed="true">
-    <Position X="30" Y="2.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAgAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAA=</HashCode>
-      <FileName>VisualState\VisualStateGroup.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Nine.Graphics.UI.VisualStateManager">
-    <Position X="29.5" Y="4.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>VisualState\VisualStateManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Nine.Graphics.UI.BaseWindow">
@@ -693,7 +641,7 @@
       <Field Name="visualOffset" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>gAI1BAAgFADBgUCwiMsCYEsQGRIBEQE4IIgwKAWiFDA=</HashCode>
+      <HashCode>gAI1BAAgFADBwUCwiMsCYEsQGRIBEQE4IJgwKAWiFDA=</HashCode>
       <FileName>UIElement.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -702,19 +650,8 @@
     <Position X="25" Y="1.75" Width="1.5" />
     <Members>
       <Field Name="content" Hidden="true" />
-      <Field Name="CurrentFocuesdControl" Hidden="true" />
       <Method Name="Draw" Hidden="true" />
-      <Method Name="FindAll" Hidden="true" />
       <Property Name="IContainer.Children" Hidden="true" />
-      <Method Name="Input_KeyDown" Hidden="true" />
-      <Method Name="Input_KeyUp" Hidden="true" />
-      <Method Name="Messure" Hidden="true" />
-      <Method Name="MouseDown" Hidden="true" />
-      <Method Name="MouseMove" Hidden="true" />
-      <Method Name="MouseWheel" Hidden="true" />
-      <Method Name="NextFocus" Hidden="true" />
-      <Method Name="SetFocus" Hidden="true" />
-      <Method Name="TryGetElement" Hidden="true" />
       <Method Name="Window" Hidden="true" />
     </Members>
     <InheritanceLine Type="Nine.Graphics.UI.BaseWindow" FixedFromPoint="true" FixedToPoint="true">
@@ -725,23 +662,16 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>gIACAAAAAgJAAgAAIAAQgAAAAAIAEQAAAIACAACAABA=</HashCode>
+      <HashCode>AAACAAAAAgAAAgAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>Window.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Nine.Graphics.UI.WindowManager" Collapsed="true">
-    <Position X="31.75" Y="4.5" Width="1.5" />
+  <Class Name="Nine.Graphics.UI.WindowInputManager" Collapsed="true">
+    <Position X="29.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAEAgEAAAIgAAAAAAAAAEBAAAIgAAASQAAA=</HashCode>
-      <FileName>WindowManager.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Nine.Graphics.UI.Internal.FloatExtensions" Collapsed="true">
-    <Position X="30" Y="1" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>gBAAAAgAACQAAAAAAAAAAAAAAASAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Internal\FloatExtensions.cs</FileName>
+      <FileName>WindowInputManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Nine.Graphics.UI.Media.Brush">
@@ -916,6 +846,38 @@
     <TypeIdentifier>
       <HashCode>AAIAAEAAABAAAgAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
       <FileName>Renderer\SpriteBatchRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.CheckBox">
+    <Position X="33.25" Y="8.25" Width="1.5" />
+    <Members>
+      <Method Name="CheckBox" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\CheckBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.UI.Controls.Primitives.ToggleButton">
+    <Position X="31.5" Y="7.5" Width="1.5" />
+    <Members>
+      <Method Name="OnChecked" Hidden="true" />
+      <Method Name="OnIndeterminate" Hidden="true" />
+      <Method Name="OnMouseDown" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Method Name="OnToggle" Hidden="true" />
+      <Method Name="OnUnchecked" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Nine.Graphics.UI.Controls.Control" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="6.688" />
+        <Point X="31.625" Y="6.688" />
+        <Point X="31.625" Y="7.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAiAAAACAAIAAAAAAAAAAAAAAIARAIAEAAAA=</HashCode>
+      <FileName>Controls\Primitives\ToggleButton.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
