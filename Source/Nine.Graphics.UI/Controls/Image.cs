@@ -36,6 +36,8 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class Image : UIElement
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the represented Image.
         /// </summary>
@@ -56,6 +58,10 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         public Flip Flip { get; set; }
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
         /// Initializes a new instance of <see cref="Image">Image</see> with <see cref="Image.Source">Source</see> empty.
         /// </summary>
@@ -73,6 +79,10 @@ namespace Nine.Graphics.UI.Controls
             Stretch = Stretch.Fill;
             Flip = Media.Flip.None;
         }
+
+        #endregion
+
+        #region Methods
 
         protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
@@ -100,5 +110,7 @@ namespace Nine.Graphics.UI.Controls
             Vector2 scale = Nine.Graphics.UI.Internal.Controls.Viewbox.ComputeScaleFactor(givenSize, contentSize, this.Stretch, this.StretchDirection);
             return new Vector2(contentSize.X * scale.X, contentSize.Y * scale.Y);
         }
+
+        #endregion
     }
 }

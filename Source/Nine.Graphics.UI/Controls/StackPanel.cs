@@ -35,15 +35,23 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class StackPanel : Panel
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the Orientation of the Childrens Arrangement.
         /// </summary>
         public Orientation Orientation { get; set; }
 
+        #endregion
+
         #region Constructor
 
         public StackPanel() 
-            : this(Orientation.Horizontal) { }
+            : this(Orientation.Horizontal) 
+        { 
+            
+        }
+
         public StackPanel(Orientation orientation)
             : base()
         {
@@ -51,7 +59,11 @@ namespace Nine.Graphics.UI.Controls
         }
 
         public StackPanel(IEnumerable<UIElement> children) 
-            : this(children, Orientation.Horizontal) { }
+            : this(children, Orientation.Horizontal) 
+        { 
+            
+        }
+
         public StackPanel(IEnumerable<UIElement> children, Orientation orientation)
             : base(children)
         {
@@ -59,6 +71,8 @@ namespace Nine.Graphics.UI.Controls
         }
 
         #endregion
+
+        #region Methods
 
         protected override Vector2 ArrangeOverride(Vector2 arrangeSize)
         {
@@ -117,5 +131,7 @@ namespace Nine.Graphics.UI.Controls
             }
             return size;
         }
+
+        #endregion
     }
 }

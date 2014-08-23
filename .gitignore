@@ -1,0 +1,16 @@
+Bin/
+References/
+Source/Nine.Content/obj/
+Source/Nine.Design/obj/
+Source/Nine.Graphics.3D/obj/
+Source/Nine.Graphics.UI/obj/x86/
+Source/Nine.Graphics/obj/
+Source/Nine.Navigation/obj/
+Source/Nine.Physics/obj/
+Source/Nine.Samples/obj/
+Source/Nine.Serialization/obj/
+Source/Nine.Studio.Shell/obj/
+Source/Nine.Studio/obj/
+Source/Nine.Test/obj/
+Source/Nine/obj/
+*.suo

@@ -32,11 +32,13 @@ namespace Nine.Graphics.UI
     using System.Collections.Generic;
 
     /// <summary>
-    /// RootElement is the main host for all <see cref="UIElement">UIElement</see>s, it manages the  user input and is the target for Update/Draw calls.
+    /// Window is the main host for all <see cref="UIElement">UIElement</see>s, it manages the  user input and is the target for Update/Draw calls.
     /// </summary>
     [System.Windows.Markup.ContentProperty("Content")]
     public class Window : BaseWindow, IContainer
     {
+        #region Properties
+
         public UIElement Content 
         {
             get { return content[0]; }
@@ -56,12 +58,40 @@ namespace Nine.Graphics.UI
 
         IList IContainer.Children { get { return content; } }
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="Window">RootElement</see> class.
+        /// Initializes a new instance of the <see cref="Window">Window</see> class.
         /// </summary> 
         public Window()
         {
             
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Window">Window</see> class.
+        /// </summary>
+        /// <param name="content"></param>
+        public Window(UIElement content)
+        {
+            this.content[0] = content;
+        }
+
+        #endregion 
+
+        #region Methods
+
+        protected internal override void MouseDown(object sender, MouseEventArgs e)
+        {
+            content[0].InvokeMouseDown(sender, e);
+        }
+
+        internal void Messure()
+        {
+            content[0].Measure(new Vector2(Viewport.Width, Viewport.Height));
+            content[0].Arrange(Viewport);
         }
 
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
@@ -73,8 +103,7 @@ namespace Nine.Graphics.UI
             if (!this.Viewport.Equals(context.GraphicsDevice.Viewport.TitleSafeArea))
                 this.Viewport = (BoundingRectangle)context.GraphicsDevice.Viewport.TitleSafeArea;
 
-            content[0].Measure(new Vector2(Viewport.Width, Viewport.Height));
-            content[0].Arrange(Viewport);
+            Messure();
 
             if (Renderer == null)
                 Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
@@ -84,5 +113,7 @@ namespace Nine.Graphics.UI
             content[0].Render(Renderer);
             Renderer.End(context);
         }
+
+        #endregion
     }
 }

@@ -16,13 +16,12 @@
         
         internal int ZDepth = -1;
 
+        #region Properties
+
+        // TODO: ???
         public WindowManager Manager
         {
             get { return manager; }
-            set
-            {
-                manager = value;
-            }
         }
         internal WindowManager manager;
 
@@ -35,6 +34,11 @@
         /// Gets or sets the viewport used by <see cref="BaseWindow">RootElement</see> to layout its content.
         /// </summary>
         public BoundingRectangle Viewport { get; set; }
+        // TODO: Why did I change this to Floats?
+
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseWindow">RootElement</see> class.
@@ -43,6 +47,10 @@
         {
 
         }
+
+        #endregion
+
+        #region Methods
 
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
@@ -58,6 +66,8 @@
         protected internal virtual void ButtonUp(object sender, GamePadEventArgs e) { }
         protected internal virtual void ButtonDown(object sender, GamePadEventArgs e) { }
         protected internal virtual void GestureSampled(object sender, GestureEventArgs e) { }
+
+        #endregion
 
         #region IGraphicsObject
 

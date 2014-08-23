@@ -30,8 +30,8 @@ namespace Nine.Graphics.UI
     /// </summary>
     public enum TextWrapping
     {
-        // TODO: Overflow
         NoWrap, 
-        Wrap
+        Wrap,
+        WrapWithOverflow
     }
 }

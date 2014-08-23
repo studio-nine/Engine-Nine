@@ -32,20 +32,35 @@ namespace Nine.Graphics.UI.Controls
     [System.Windows.Markup.ContentProperty("Children")]
     public abstract class Panel : UIElement, IContainer, INotifyCollectionChanged<UIElement>
     {
+        #region Properties
+
+        public IList<UIElement> Children
+        {
+            get { return this.children; }
+        }
+        private NotificationCollection<UIElement> children;
+
+        #endregion 
+
+        #region Events
+
+        public event Action<UIElement> Added;
+        public event Action<UIElement> Removed;
+
+        #endregion 
+
         #region Constructor
 
         public Panel()
+            : this(new UIElement[] { })
         {
-            children = new NotificationCollection<UIElement>();
-            children.Sender = this;
-            children.Added += Child_Added;
-            children.Removed += Child_Removed;
+
         }
 
-        public Panel(IEnumerable<UIElement> cchildren)
+        public Panel(IEnumerable<UIElement> elements)
         {
             children = new NotificationCollection<UIElement>();
-            children.AddRange(cchildren);
+            children.AddRange(elements);
             children.Sender = this;
             children.Added += Child_Added;
             children.Removed += Child_Removed;
@@ -55,16 +70,7 @@ namespace Nine.Graphics.UI.Controls
 
         #region Children
 
-        public event Action<UIElement> Added;
-        public event Action<UIElement> Removed;
-
         System.Collections.IList IContainer.Children { get { return (System.Collections.IList)Children; } }
-
-        public IList<UIElement> Children
-        {
-            get { return this.children; }
-        }
-        private NotificationCollection<UIElement> children;
 
         void Child_Added(object value)
         {

@@ -80,10 +80,6 @@ namespace Nine.Graphics.UI
             get { return this.visualOffset; }
         }
 
-        #endregion 
-
-        #region Fields
-
         public Brush Background { get; set; }
 
         public float Width { get; set; }
@@ -106,11 +102,8 @@ namespace Nine.Graphics.UI
 
         public Thickness Margin { get; set; }
 
-        internal bool isArrangeValid;
-        internal bool isMeasureValid;
-
-        private Vector2 previousAvailableSize;
-        private BoundingRectangle previousFinalRect;
+        [Nine.Serialization.NotBinarySerializable]
+        public UIElement Parent { get; internal set; }
 
         private bool needsClipping
         {
@@ -128,13 +121,20 @@ namespace Nine.Graphics.UI
         }
         private bool isClippingRequired;
 
+        #endregion 
+
+        #region Fields
+
+        internal bool isArrangeValid;
+        internal bool isMeasureValid;
+
+        private Vector2 previousAvailableSize;
+        private BoundingRectangle previousFinalRect;
+
         private Vector2 unclippedSize;
         private Vector2 visualOffset;
 
         internal BaseWindow Window;
-
-        [Nine.Serialization.NotBinarySerializable]
-        public UIElement Parent { get; internal set; }
 
         IContainer IComponent.Parent
         {
@@ -146,7 +146,7 @@ namespace Nine.Graphics.UI
 
         #endregion
 
-        #region Methods
+        #region Constructor
 
         protected UIElement()
         {
@@ -155,6 +155,10 @@ namespace Nine.Graphics.UI
             MaxWidth = float.PositiveInfinity;
             MaxHeight = float.PositiveInfinity;
         }
+
+        #endregion
+
+        #region Methods
 
         public bool TryGetRootElement(out BaseWindow rootElement)
         {

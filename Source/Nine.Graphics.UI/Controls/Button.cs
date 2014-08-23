@@ -31,7 +31,7 @@ namespace Nine.Graphics.UI.Controls
     using Nine.Graphics.UI.Controls.Primitives;
     using Nine.Graphics.UI.Media;
 
-    // Should a button have Content instead of Text?
+    // TODO: A button shall have Content instead of Text
 
     /// <summary>
     /// A Control that represent a clickable button.
@@ -39,6 +39,8 @@ namespace Nine.Graphics.UI.Controls
     [System.Windows.Markup.ContentProperty("Text")]
     public class Button : Control
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the text contents of the button.
         /// </summary>
@@ -109,6 +111,10 @@ namespace Nine.Graphics.UI.Controls
         }
         private VisualBrush InnerBrush;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
         /// Constructs a new Button without a Font.
         /// Font has to be set before it can render!
@@ -119,6 +125,8 @@ namespace Nine.Graphics.UI.Controls
             textblock = new TextBlock();
             textblock.HorizontalAlignment = UI.HorizontalAlignment.Center;
             textblock.VerticalAlignment = UI.VerticalAlignment.Center;
+
+            this.Height = 32;
         }
 
         /// <summary>
@@ -126,16 +134,35 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         /// <param name="font">Text Font</param>
         public Button(SpriteFont font)
+            : this(font, string.Empty)
+        {
+
+        }
+
+        /// <summary>
+        /// Constructs a new button with Font.
+        /// </summary>
+        /// <param name="font">Text Font</param>
+        /// <param name="text"></param>
+        public Button(SpriteFont font, string text)
         {
             InnerBrush = new VisualBrush();
-            textblock = new TextBlock(font);
+            textblock = new TextBlock(font, text);
             textblock.HorizontalAlignment = UI.HorizontalAlignment.Center;
             textblock.VerticalAlignment = UI.VerticalAlignment.Center;
+
+            this.Height = 32;
         }
+
+        #endregion
+
+        #region Methods
 
         protected override void OnRender(Renderer.Renderer renderer)
         {
             renderer.Draw(AbsoluteRenderTransform, InnerBrush);
         }
+
+        #endregion
     }
 }

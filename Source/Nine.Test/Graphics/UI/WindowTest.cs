@@ -13,21 +13,23 @@
         public void GridLayout()
         {
             Grid grid;
-            Window window = new Window();
 
-            window.Viewport = new Rectangle(0, 0, 800, 800);
-            window.Content = grid = new Grid()
+            Window window = new Window
             {
-                RowDefinitions =
-                        {
-                            new RowDefinition { Height = new GridLength(100) }, 
-                            new RowDefinition { Height = new GridLength(100) }, 
-                            new RowDefinition { Height = new GridLength(100) }, 
-                        },
-                ColumnDefinitions =
-                        {
-                            new ColumnDefinition() { Width = new GridLength(100) },
-                        },
+                Viewport = new Rectangle(0, 0, 800, 800),
+                Content = grid = new Grid()
+                {
+                    RowDefinitions =
+                            {
+                                new RowDefinition { Height = new GridLength(100) }, 
+                                new RowDefinition { Height = new GridLength(100) }, 
+                                new RowDefinition { Height = new GridLength(100) }, 
+                            },
+                    ColumnDefinitions =
+                            {
+                                new ColumnDefinition() { Width = new GridLength(100) },
+                            },
+                }
             };
 
             var border1 = new Border()

@@ -88,8 +88,25 @@ namespace Nine.Graphics.UI.Controls
 
         #region Constructor
 
-        public Grid() { }
+        public Grid() 
+        { 
+            
+        }
+
+        public Grid(IEnumerable<UIElement> elements)
+            : base(elements)
+        {
+
+        }
+
         public Grid(IList<ColumnDefinition> colums, IList<RowDefinition> rows)
+        {
+            this.columnDefinitions = colums;
+            this.rowDefinitions = rows;
+        }
+
+        public Grid(IList<ColumnDefinition> colums, IList<RowDefinition> rows, IEnumerable<UIElement> elements)
+            : base(elements)
         {
             this.columnDefinitions = colums;
             this.rowDefinitions = rows;

@@ -101,12 +101,23 @@ namespace Nine.Graphics.UI.Controls
         /// </summary>
         /// <param name="Font">Font</param>
         public TextBlock(SpriteFont Font)
+            : this(Font, string.Empty)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="TextBlock">TextBlock</see> with font.
+        /// </summary>
+        /// <param name="Font">Font</param>
+        /// <param name="text">Text</param>
+        public TextBlock(SpriteFont Font, string text)
         {
             if (Font == null)
                 throw new ArgumentNullException("spriteFont");
 
-            Text = "";
-            FontSize = Vector2.One;
+            this.Text = text;
+            this.FontSize = Vector2.One;
             this.Font = Font;
         }
 

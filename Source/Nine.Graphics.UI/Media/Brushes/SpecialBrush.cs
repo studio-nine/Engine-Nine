@@ -10,11 +10,11 @@
     /// This brush separate a texture into 9 parts and render them in a layout.
     /// </summary>
     /// <remarks>
-    ///      __ ____ __
-    ///     |__|____|__|
-    ///     |__|____|__|
-    ///     |__|____|__|
-    ///     
+    ///      __ ____ __     
+    ///     |__|____|__|    
+    ///     |__|____|__|    
+    ///     |__|____|__|    
+    ///                     
     /// </remarks>
     public class SpecialBrush : Brush
     {
