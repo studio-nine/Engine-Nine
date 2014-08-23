@@ -98,7 +98,7 @@
     <Compile Include="Controls\TabItem.cs" />
     <Compile Include="Controls\ToolTipService.cs" />
     <Compile Include="DialogWindow.cs" />
-    <Compile Include="Direction.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Navigation\Page.cs" />
     <Compile Include="Navigation\PageNavigator.cs" />
     <Compile Include="Controls\Primitives\Selector.cs" />
@@ -143,9 +143,7 @@
     <Compile Include="Renderer\Renderer.cs" />
     <Compile Include="Renderer\SpriteBatchRenderer.cs" />
     <Compile Include="Thickness.cs" />
-    <Compile Include="GridUnitType.cs" />
     <Compile Include="GridLength.cs" />
-    <Compile Include="Alignment.cs" />
     <Compile Include="Controls\ItemsControl.cs" />
     <Compile Include="Controls\Primitives\IScrollInfo.cs" />
     <Compile Include="Controls\ScrollContentPresenter.cs" />
@@ -171,12 +169,10 @@
     <Compile Include="Controls\Grid.cs" />
     <Compile Include="Controls\Image.cs" />
     <Compile Include="Controls\Panel.cs" />
-    <Compile Include="Visibility.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="Controls\Other\RowDefinition.cs" />
     <Compile Include="Controls\StackPanel.cs" />
     <Compile Include="Controls\TextBlock.cs" />
-    <Compile Include="TextWrapping.cs" />
     <Compile Include="UIElement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

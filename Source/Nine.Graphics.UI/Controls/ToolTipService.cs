@@ -12,7 +12,6 @@
         static readonly AttachableMemberIdentifier ShowDurationMember = new AttachableMemberIdentifier(typeof(float), "ShowDuration");
         static readonly AttachableMemberIdentifier ToolTipMember = new AttachableMemberIdentifier(typeof(UIElement), "ToolTip");
 
-        //// Stuff that WPF has but don't want to implement yet or if I should.
         // public static void SetBetweenShowDelay(UIElement element, int value);
         // public static void SetInitialShowDelay(UIElement element, int value);
         // public static void SetHorizontalOffset(UIElement element, double value);

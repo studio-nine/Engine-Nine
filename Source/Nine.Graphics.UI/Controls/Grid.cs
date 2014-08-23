@@ -39,6 +39,8 @@ namespace Nine.Graphics.UI.Controls
     /// </summary>
     public class Grid : Panel
     {
+        #region Properties
+
         private enum Dimension { X, Y }
         private enum UpdateMinLengths { SkipHeights, SkipWidths, WidthsAndHeights }
 
@@ -51,8 +53,6 @@ namespace Nine.Graphics.UI.Controls
         private readonly LinkedList<Cell> autoPixelHeightStarWidth = new LinkedList<Cell>();
         private readonly IList<ColumnDefinition> columnDefinitions = new List<ColumnDefinition>();
         private readonly IList<RowDefinition> rowDefinitions = new List<RowDefinition>();
-
-        #region Properties
 
         /// <summary>
         /// Gets the collection of column definitions.

@@ -15,7 +15,7 @@
         public string Language { get; set; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public WINDOWPLACEMENT WindowPlacement { get; set; }
+        internal WINDOWPLACEMENT WindowPlacement { get; set; }
 
         public GeneralSettings()
         {

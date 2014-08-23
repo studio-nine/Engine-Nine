@@ -32,13 +32,13 @@
 
                 mainWindow.SourceInitialized += (sender, args) =>
                 {
-                    if (settings.WindowPlacement != null)
-                    {
-                        
-                    }
-                    mainWindow.WindowState = settings.WindowMaximized ? WindowState.Maximized : WindowState.Normal;
-                    mainWindow.Width = Math.Min(settings.WindowWidth, SystemParameters.VirtualScreenWidth);
-                    mainWindow.Height = Math.Min(settings.WindowHeight, SystemParameters.VirtualScreenHeight);
+                    //if (settings.WindowPlacement != null)
+                    //{
+                    //    
+                    //}
+                    //mainWindow.WindowState = settings.WindowMaximized ? WindowState.Maximized : WindowState.Normal;
+                    //mainWindow.Width = Math.Min(settings.WindowWidth, SystemParameters.VirtualScreenWidth);
+                    //mainWindow.Height = Math.Min(settings.WindowHeight, SystemParameters.VirtualScreenHeight);
                     mainWindow.Left = (SystemParameters.VirtualScreenWidth - mainWindow.Width) / 2;
                     mainWindow.Top = (SystemParameters.VirtualScreenHeight - mainWindow.Height) / 2;
 
@@ -60,15 +60,16 @@
 
         private static void SetWindowPlacement(Window mainWindow, WINDOWPLACEMENT placement)
         {
-            try
-            {
-                return NativeMethods.SetWindowPlacement(
-                    new System.Windows.Interop.WindowInteropHelper(mainWindow).Handle, ref placement);
-            }
-            catch (System.ComponentModel.Win32Exception)
-            {
-                return null;
-            }
+            // TODO: 
+            //try
+            //{
+            //    return NativeMethods.SetWindowPlacement(
+            //        new System.Windows.Interop.WindowInteropHelper(mainWindow).Handle, ref placement);
+            //}
+            //catch (System.ComponentModel.Win32Exception)
+            //{
+            //    return null;
+            //}
         }
 
         private static WINDOWPLACEMENT GetWindowPlacement(Window mainWindow)
@@ -80,7 +81,8 @@
             }
             catch (System.ComponentModel.Win32Exception) 
             {
-                return null; 
+                // TODO: NULL
+                return new WINDOWPLACEMENT(); 
             }
         }
 

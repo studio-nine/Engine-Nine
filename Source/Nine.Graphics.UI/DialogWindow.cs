@@ -30,9 +30,8 @@
     [System.Windows.Markup.ContentProperty("Content")]
     public class DialogWindow : BaseWindow, IContainer
     {
-        // TODO: better mouse input
-
         #region Properties
+
         public UIElement Content
         {
             get { return windowBorder.Content; }
@@ -57,7 +56,7 @@
             set { windowBorder.BorderThickness = value; }
         }
 
-        public SolidColorBrush WindowBorderBrush
+        public Brush WindowBorderBrush
         {
             get { return windowBorder.BorderBrush; }
             set { windowBorder.BorderBrush = value; }
@@ -75,7 +74,6 @@
             set { windowBorder.Padding = value; }
         }
 
-        // Rename?
         public Vector2 MinSize
         {
             get { return minSize; }
@@ -83,7 +81,6 @@
         }
         private Vector2 minSize = new Vector2(100, 100);
 
-        // Rename?
         public Vector2 MaxSize
         {
             get { return maxSize; }
@@ -111,6 +108,7 @@
             get { return title.Font; }
             set { title.Font = value; }
         }
+
         #endregion
 
         #region Fields

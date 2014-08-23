@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* The MIT License
  *
  * Copyright (c) 2013 Engine Nine
@@ -26,6 +26,50 @@
 
 namespace Nine.Graphics.UI
 {
+    public enum Direction
+    {
+        Left,
+        Top,
+        Right,
+        Bottom,
+    }
+
+    public enum GridUnitType
+    {
+        Auto,
+        Pixel,
+        Star
+    }
+
+    /// <summary>
+    /// Specifies if the text should wrap.
+    /// </summary>
+    public enum TextWrapping
+    {
+        NoWrap,
+        Wrap,
+        WrapWithOverflow
+    }
+
+    /// <summary>
+    /// Specifies the display state of an element.
+    /// </summary>
+    public enum Visibility
+    {
+        /// <summary>
+        /// Display the element.
+        /// </summary>
+        Visible = 0,
+        /// <summary>
+        /// Do not display the element, but reserve space for the element in layout.
+        /// </summary>
+        Hidden = 1,
+        /// <summary>
+        /// Do not display the element, and do not reserve space for it in layout.
+        /// </summary>
+        Collapsed = 2,
+    }
+
     /// <summary>
     /// Describes how the element is aligned horizontally within it's parent element.
     /// </summary>

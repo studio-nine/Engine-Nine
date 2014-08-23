@@ -12,45 +12,39 @@
         [TestMethod()]
         public void GridLayout()
         {
-            Grid grid;
-
+            Border border1, border2;
             Window window = new Window
             {
                 Viewport = new Rectangle(0, 0, 800, 800),
-                Content = grid = new Grid()
+                Content = new Grid(
+                    new ColumnDefinition[] {
+                        new ColumnDefinition() { Width = new GridLength(100) },
+                    },
+                    new RowDefinition[] {
+                        new RowDefinition { Height = new GridLength(100) }, 
+                        new RowDefinition { Height = new GridLength(100) }, 
+                        new RowDefinition { Height = new GridLength(100) }, 
+                    },
+                    new UIElement[] {
+                        border1 = new Border() {
+                            Content = new Image() {
+                                HorizontalAlignment = HorizontalAlignment.Stretch,
+                                VerticalAlignment = VerticalAlignment.Stretch
+                            }
+                        },
+                        border2 = new Border() {
+                            
+                        }
+                    })
                 {
-                    RowDefinitions =
-                            {
-                                new RowDefinition { Height = new GridLength(100) }, 
-                                new RowDefinition { Height = new GridLength(100) }, 
-                                new RowDefinition { Height = new GridLength(100) }, 
-                            },
-                    ColumnDefinitions =
-                            {
-                                new ColumnDefinition() { Width = new GridLength(100) },
-                            },
+                    
                 }
             };
 
-            var border1 = new Border()
-            {
-                Content = new Image()
-                {
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Stretch
-                }
-            };
             Grid.SetRow(border1, 1);
             Grid.SetColumn(border1, 0);
-            grid.Children.Add(border1);
-
-            var border2 = new Border()
-            {
-                Content = new Border() { }
-            };
             Grid.SetRow(border2, 0);
             Grid.SetColumn(border2, 0);
-            grid.Children.Add(border2);
 
             window.Messure();
 
@@ -64,23 +58,48 @@
         [TestMethod()]
         public void StackPanelLayout()
         {
-            StackPanel sp;
-            Window window = new Window();
-            window.Viewport = new Rectangle(0, 0, 200, 800);
-
-            window.Content = sp = new StackPanel() { Orientation = Orientation.Vertical };
-
             Border Border1, Border2, Border3;
-
-            sp.Children.Add(Border1 = new Border() { Height = 100 });
-            sp.Children.Add(Border2 = new Border() { Height = 100 });
-            sp.Children.Add(Border3 = new Border() { Height = 100 });
+            Window window = new Window
+            {
+                Viewport = new Rectangle(0, 0, 200, 800),
+                Content = new StackPanel(
+                    new UIElement[] {
+                        Border1 = new Border() { Height = 100 },
+                        Border2 = new Border() { Height = 100 },
+                        Border3 = new Border() { Height = 100 },
+                    }) { 
+                    Orientation = Orientation.Vertical 
+                },
+            };
 
             window.Messure();
 
             Assert.AreEqual(new Vector2(0, 0), Border1.AbsoluteVisualOffset);
             Assert.AreEqual(new Vector2(0, 100), Border2.AbsoluteVisualOffset);
             Assert.AreEqual(new Vector2(0, 200), Border3.AbsoluteVisualOffset);
+
+            Assert.AreEqual(Border2, HitTest(window.Content, new Vector2(100, 200)));
+        }
+
+        static UIElement HitTest(UIElement element, Vector2 hit)
+        {
+            if (element.HitTest(hit))
+            {
+                var container = element as IContainer;
+                if (container != null)
+                {
+                    foreach (var child in container.Children)
+                    {
+                        var uiElement = child as UIElement;
+                        if (uiElement != null && uiElement.HitTest(hit))
+                        {
+                            return HitTest(uiElement, hit);
+                        }
+                    }
+                }
+                return element;
+            }
+            return null;
         }
     }
 }

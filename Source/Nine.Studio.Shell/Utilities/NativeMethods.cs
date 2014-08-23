@@ -2271,7 +2271,8 @@
     [StructLayout(LayoutKind.Sequential)]
     internal struct WINDOWPLACEMENT
     {
-        public int length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
+        // TODO: length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
+        public int length;
         public int flags;
         public SW showCmd;
         public POINT ptMinPosition;

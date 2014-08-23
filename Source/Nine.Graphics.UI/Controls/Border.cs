@@ -39,12 +39,14 @@ namespace Nine.Graphics.UI.Controls
     [System.Windows.Markup.ContentProperty("Content")]
     public class Border : UIElement, IContainer
     {
+        #region Properties
+
         private readonly BoundingRectangle[] borders = new BoundingRectangle[4];
 
         /// <summary>
         /// Gets or sets the border color.
         /// </summary>
-        public SolidColorBrush BorderBrush { get; set; }
+        public Brush BorderBrush { get; set; }
 
         /// <summary>
         /// Gets or sets the borders thickness.
@@ -71,7 +73,9 @@ namespace Nine.Graphics.UI.Controls
         private UIElement[] content = new UIElement[1];
 
         System.Collections.IList IContainer.Children { get { return content; } }
-        
+
+        #endregion 
+
         #region Constructor
 
         public Border()

@@ -226,7 +226,7 @@ namespace Nine
 
             var collectionChanged = descendant as INotifyCollectionChanged<object>;
             if (collectionChanged != null)
-                workingExpandables.Add(collectionChanged);
+                workingExpandables.Remove(collectionChanged);
 
             UnTrackObject(descendant);
             OnRemovedFromScene(descendant);

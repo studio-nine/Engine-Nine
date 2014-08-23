@@ -31,7 +31,7 @@
             var window2 = new DialogWindow();
             window2.Viewport = new Rectangle(20, 255, 340, 195);
             window2.WindowBorderBrush = new SolidColorBrush(new Color(106, 172, 246));
-            window2.Background = new SolidColorBrush(new Color(255, 255, 255));
+            window1.Background = new SolidColorBrush(new Color(255, 255, 255));
             window2.TitleFont = font;
             window2.Title = "Memory Graph";
             window2.Content = new MemoryGraph() { Margin = new Thickness(10) };
