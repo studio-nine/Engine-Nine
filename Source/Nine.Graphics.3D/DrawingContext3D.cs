@@ -114,6 +114,17 @@ namespace Nine.Graphics
             
             this.rootPass.Passes.Insert(0, mainPass = new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
         }
+
+        protected override void AddDiagnostics(DynamicPrimitive dynamicPrimitive, IList<ISpatialQueryable> boundsInView)
+        {
+            dynamicPrimitive.AddBox(BoundingBox, null, Constants.SceneBoundsColor, 4);
+
+            for (int i = 0; i < boundsInView.Count; ++i)
+            {
+                dynamicPrimitive.AddBox(boundsInView[i].BoundingBox, null, Constants.BoundingBoxColor, Constants.MiddleLineWidth);
+            }
+        }
+
         #endregion
     }
 }

@@ -15,6 +15,7 @@
 
     public class UIScrollViewerTest : Sample
     {
+        public override string Title { get { return "[UI] ScrollViewer Test"; } }
         public override Scene CreateScene(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics, Serialization.ContentLoader content)
         {
             var scene = new Scene();

@@ -593,14 +593,8 @@ namespace Nine.Graphics
             debugDrawables.FindAll(viewFrustum, debugDrawablesInViewFrustum);
             debugBounds.FindAll(viewFrustum, debugBoundsInViewFrustum);
 
-            // TODO:
-            //debugPrimitive.AddBox(BoundingBox, null, Constants.SceneBoundsColor, 4);
+            AddDiagnostics(debugPrimitive, debugBoundsInViewFrustum);
 
-            for (int i = 0; i < debugBoundsInViewFrustum.Count; ++i)
-            {
-                //debugPrimitive.AddBox(debugBoundsInViewFrustum[i].BoundingBox, null, Constants.BoundingBoxColor, Constants.MiddleLineWidth);
-            }
-            
             for (int i = 0; i < debugDrawablesInViewFrustum.Count; ++i)
             {
                 debugDrawablesInViewFrustum[i].Draw(this, debugPrimitive);
@@ -612,6 +606,9 @@ namespace Nine.Graphics
             debugDrawablesInViewFrustum.Clear();
             debugBoundsInViewFrustum.Clear();
         }
+
+        protected virtual void AddDiagnostics(DynamicPrimitive dynamicPrimitive, IList<ISpatialQueryable> boundsInView) { }
+
         #endregion
 
         #region IDisposable

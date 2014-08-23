@@ -32,8 +32,8 @@ namespace Nine.Samples
 
         public SampleGame()
         {
-            //Package.BuildDirectory(@"D:\Git\nine\Content\", @"D:\Git\nine\Content.n", (file, err) => { System.Diagnostics.Trace.TraceError(file + "\n" + err.ToString()); });
-            //Package.BuildFile(@"D:\Git\nine\Content\Scenes\01. Hello World.xaml", @"D:\01.xnb");
+            // Package.BuildDirectory("../Content/", "../Content.n", (filePath, fileIndex, filesCount) => { System.Diagnostics.Trace.TraceError("{0}. {1}", fileIndex, filePath); });
+            // Package.BuildFile(@"D:\Github\Nine\Content\Models\Peon/Peon.X", "../Peon.xnb");
 
             var graphics = new GraphicsDeviceManager(this);
 
@@ -47,15 +47,13 @@ namespace Nine.Samples
             IsFixedTimeStep = false;
 
             Window.AllowUserResizing = true;
-            System.Diagnostics.Trace.WriteLine(typeof(Fog).AssemblyQualifiedName.ToString());
-            System.Diagnostics.Trace.WriteLine(typeof(SkyBox).AssemblyQualifiedName.ToString());
         }
         
         protected override void LoadContent()
         {
             loader = new ContentLoader(Services);
             loader.SearchDirectories.Add("../Content");
-                        
+
 #if WINDOWS
             loader.Resolvers.Add(new FileSystemResolver());
 #endif
@@ -77,7 +75,12 @@ namespace Nine.Samples
                 where type.IsSubclassOf(typeof(Sample)) && type != typeof(Tutorial)
                 select (Sample)Activator.CreateInstance(type));
 
-            samples = new List<Sample> { new UITest() };
+            samples = new List<Sample> { 
+                //new SkinnedModelTest(),
+                new UITest(),
+                new UIDialogWindowTest(),
+                new UIScrollViewerTest(),
+            };
             //samples = new List<Sample> { new Tutorial("Scenes/03. Materials.xaml") };
         }
 
@@ -115,9 +118,9 @@ namespace Nine.Samples
                     LoadNextScene();
             };
 #else
-            input.MouseDown += (sender, e) =>
+            input.KeyDown += (sender, e) =>
             {
-                if (e.Button == MouseButtons.Left)
+                if (e.Key == Keys.F1)
                     LoadNextScene();
             };
 #endif

@@ -99,6 +99,7 @@
                 if (content == null)
                     return default(T);
 
+                // TODO: Model does not save Tag, so using a processor is useless.
                 SaveContent(cachedFileName, content);
             }
 

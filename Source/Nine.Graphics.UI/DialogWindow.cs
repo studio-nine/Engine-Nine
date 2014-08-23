@@ -130,14 +130,16 @@
             title.HorizontalAlignment = HorizontalAlignment.Center;
             title.VerticalAlignment = VerticalAlignment.Center;
 
-            // Input.MouseMove += MouseMove;
-            // Input.MouseDown += MouseDown;
-            // Input.MouseUp += MouseUp;
+
+            // TODO: 
+            windowBorder.MouseMove += WindowMouseMove;
+            windowBorder.MouseDown += WindowMouseDown;
+            windowBorder.MouseUp += WindowMouseUp;
         }
 
         #region Input
 
-        protected internal override void MouseMove(object sender, MouseEventArgs e)
+        void WindowMouseMove(object sender, MouseEventArgs e)
         {
             switch (state)
             {
@@ -189,7 +191,7 @@
             }
         }
 
-        protected internal override void MouseDown(object sender, MouseEventArgs e)
+        void WindowMouseDown(object sender, MouseEventArgs e)
         {
             if (windowBorder.AbsoluteRenderTransform.Contains(e.X, e.Y) == ContainmentType.Contains)
             {
@@ -215,14 +217,17 @@
             }
         }
 
-        protected internal override void MouseUp(object sender, MouseEventArgs e)
+        void WindowMouseUp(object sender, MouseEventArgs e)
         {
             state = DialogWindowState.Default;
         }
 
         #endregion
 
-        protected virtual void Resized(float width, float height) { }
+        protected virtual void Resized(float width, float height) 
+        { 
+            
+        }
 
         public override void Draw(DrawingContext context, System.Collections.Generic.IList<IDrawableObject> drawables)
         {

@@ -1,6 +1,7 @@
 ﻿namespace Nine.Graphics.UI.Media
 {
-    // TODO: Make a Converter?, for SpriteEffects instead of this.
+    // Same as SpriteEffects. 
+    // Should we use it instead?
     public enum Flip
     {
         None,

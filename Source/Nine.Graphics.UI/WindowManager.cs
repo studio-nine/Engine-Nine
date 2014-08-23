@@ -1,159 +1,229 @@
 ﻿namespace Nine.Graphics.UI
 {
-    using System.Linq;
-    using System.Collections.Generic;
-    using Microsoft.Xna.Framework;
-    using System.Collections;
+	using System.Linq;
+	using System.Collections.Generic;
+	using Microsoft.Xna.Framework;
+	using System.Collections;
+	using System.Diagnostics;
 
-    /// <summary>
-    /// Handles multiple windows and input
-    /// </summary>
-    [System.Windows.Markup.ContentProperty("Windows")]
-    public class WindowManager : Nine.Object, IContainer
-    {
-        public bool InputEnabled
-        {
-            get { return input != null && input.Enabled; }
-            set
-            {
-                if (value)
-                    EnsureInput();
-                if (input != null)
-                    input.Enabled = value;
-            }
-        }
+	/// <summary>
+	/// Handles multiple windows and input.
+	/// </summary>
+	[System.Windows.Markup.ContentProperty("Windows")]
+	public class WindowManager : Nine.Object, IContainer
+	{
+		public bool InputEnabled
+		{
+			get { return input != null && input.Enabled; }
+			set
+			{
+				if (value) EnsureInput();
+				if (input != null) input.Enabled = value;
+			}
+		}
 
-        IList IContainer.Children { get { return windows; } }
-        public IList<BaseWindow> Windows
-        {
-            get { return windows; }
-        }
-        private NotificationCollection<BaseWindow> windows;
+		public bool TrackEvents { get; set; }
 
-        private Input input;
+		public IList<BaseWindow> Windows
+		{
+			get { return windows; }
+		}
+		private NotificationCollection<BaseWindow> windows;
 
-        public WindowManager()
-        {
-            windows = new NotificationCollection<BaseWindow>();
-            EnsureInput();
-        }
+		IList IContainer.Children { get { return windows; } }
+		
+		private Input input;
 
-        #region Mouse
+		public WindowManager()
+		{
+			this.windows = new NotificationCollection<BaseWindow>();
+			this.TrackEvents = false;
 
-        void MouseMove(object sender, MouseEventArgs e)
-        {
-            // var win = windows.Where(o => o.Viewport.Contains(new Point(e.X, e.Y))).OrderByDescending(o => o.ZDepth);
-            // if (win.Count() > 0)
-            // {
-            //     var window = win.First();
-            //     window.MouseMove(sender, e);
-            // }
-            foreach (var window in windows)
-            {
-                window.MouseMove(sender, e);
-            }
-        }
-        
-        void MouseUp(object sender, MouseEventArgs e)
-        {
-            // var win = windows.Where(o => o.Viewport.Intersects(new Rectangle(e.X, e.Y, 1, 1))).OrderBy(o => o.ZDepth);
-            // if (win.Count() > 0)
-            // {
-            //     var window = win.First();
-            //     window.MouseUp(sender, e);
-            // }
-            foreach (var window in windows)
-            {
-                window.MouseUp(sender, e);
-            }
-        }
+			EnsureInput();
+		}
 
-        void MouseDown(object sender, MouseEventArgs e)
-        {
-            // var win = windows.Where(o => o.Viewport.Intersects(new Rectangle(e.X, e.Y, 1, 1))).OrderBy(o => o.ZDepth);
-            // if (win.Count() > 0)
-            // {
-            //     var window = win.First();
-            //     if (window.ZDepth != c)
-            //     {
-            //         c++;
-            //         window.ZDepth = c;
-            //         var toAdd = windows.OrderByDescending(o => o.ZDepth);
-            //         windows.Clear();
-            //         windows.AddRange(toAdd);
-            //     }
-            //     window.MouseDown(sender, e);
-            // }
-            foreach (var window in windows)
-            {
-                window.MouseDown(sender, e);
-            }
-        }
+		// TODO: Window Input
 
-        void MouseWheel(object sender, MouseEventArgs e)
-        {
-            var win = windows.Where(o => o.Viewport.Contains(e.X, e.Y) == ContainmentType.Contains).OrderBy(o => o.ZDepth);
-            if (win.Count() > 0)
-            {
-                var window = win.First();
-                window.MouseWheel(sender, e);
-            }
-        }
+		#region Mouse
 
-        #endregion
+		void MouseMove(object sender, MouseEventArgs e)
+		{
+			// TODO: Improve this
+			UIElement element = FindElement(e.X, e.Y);
+			if (element != null)
+			{
+				if (TrackEvents) Debug.WriteLine(string.Format("Event: {0}, Element: {1}", "MouseMove", element));
+				element.InvokeMouseMove(this, e);
+			}
+		}
+		
+		void MouseUp(object sender, MouseEventArgs e)
+		{
+			UIElement element = FindElement(e.X, e.Y);
+			if (element != null)
+			{
+				if (TrackEvents) Debug.WriteLine(string.Format("Event: {0}, Element: {1}", "MouseUp", element));
+				element.InvokeOnMouseUp(this, e);
+			}
+		}
 
-        #region Keyboard
+		void MouseDown(object sender, MouseEventArgs e)
+		{
+			BaseWindow window;
+			int index = FindWindow(e.X, e.Y, out window);
 
-        void KeyDown(object sender, KeyboardEventArgs e)
-        {
+			if (window == null)
+				return;
 
-        }
+			if (index != 0)
+			{
+				Windows.RemoveAt(index);
+				Windows.Insert(0, window);
+			}
 
-        void KeyUp(object sender, KeyboardEventArgs e)
-        {
+			UIElement element = FindElement(window, e.X, e.Y);
+			if (element != null)
+			{
+				if (TrackEvents) Debug.WriteLine(string.Format("Event: {0}, Element: {1}", "MouseDown", element));
+				element.InvokeMouseDown(this, e);
+			}
+		}
 
-        }
+		void MouseWheel(object sender, MouseEventArgs e)
+		{
 
-        #endregion
+		}
 
-        #region GamePad
+		#endregion
 
-        void ButtonUp(object sender, GamePadEventArgs e)
-        {
+		#region Keyboard
 
-        }
+		void KeyDown(object sender, KeyboardEventArgs e)
+		{
 
-        void ButtonDown(object sender, GamePadEventArgs e)
-        {
+		}
 
-        }
+		void KeyUp(object sender, KeyboardEventArgs e)
+		{
 
-        #endregion
+		}
 
-        #region Touch
+		#endregion
 
-        void GestureSampled(object sender, GestureEventArgs e)
-        {
+		#region GamePad
 
-        }
+		void ButtonUp(object sender, GamePadEventArgs e)
+		{
 
-        #endregion
+		}
 
-        private void EnsureInput()
-        {
-            if (input == null)
-            {
-                input = new Input();
-                input.MouseMove += MouseMove;
-                input.MouseUp += MouseUp;
-                input.MouseDown += MouseDown;
-                input.MouseWheel += MouseWheel;
-                input.KeyDown += KeyDown;
-                input.KeyUp += KeyUp;
-                input.ButtonUp += ButtonUp;
-                input.ButtonDown += ButtonDown;
-                input.GestureSampled += GestureSampled;
-            }
-        }
-    }
+		void ButtonDown(object sender, GamePadEventArgs e)
+		{
+
+		}
+
+		#endregion
+
+		#region Touch
+
+		void GestureSampled(object sender, GestureEventArgs e)
+		{
+
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private void EnsureInput()
+		{
+			if (input == null)
+			{
+				input = new Input();
+				input.MouseMove += MouseMove;
+				input.MouseUp += MouseUp;
+				input.MouseDown += MouseDown;
+				input.MouseWheel += MouseWheel;
+				input.KeyDown += KeyDown;
+				input.KeyUp += KeyUp;
+				input.ButtonUp += ButtonUp;
+				input.ButtonDown += ButtonDown;
+				input.GestureSampled += GestureSampled;
+			}
+		}
+
+		private int FindWindow(int x, int y, out BaseWindow result)
+		{
+			for (int i = 0; i < windows.Count; i++)
+			{
+				BaseWindow window = windows[i];
+				if (window.Viewport.Contains(x, y) == ContainmentType.Contains)
+				{
+					result = window;
+					return i;
+				}
+			}
+			result = null;
+			return -1;
+		}
+
+		private UIElement FindElement(int x, int y)
+		{
+			BaseWindow window;
+			FindWindow(x, y, out window);
+
+			if (window == null)
+				return null;
+
+			return FindElement(window, x, y);
+		}
+
+		private UIElement FindElement(BaseWindow window, int x, int y)
+		{
+			if (window == null)
+				return null;
+
+			Vector2 hit = new Vector2(x, y);
+			UIElement element = null;
+
+			var container = window as IContainer;
+			if (container != null)
+			{
+				foreach (var child in container.Children)
+				{
+					var uiElement = child as UIElement;
+					if (uiElement != null)
+					{
+						element = HitTest(uiElement, hit);
+						break;
+					}
+				}
+			}
+
+			return element;
+		}
+
+		private static UIElement HitTest(UIElement element, Vector2 hit)
+		{
+			if (element.HitTest(hit))
+			{
+				var container = element as IContainer;
+				if (container != null)
+				{
+					foreach (var child in container.Children)
+					{
+						var uiElement = child as UIElement;
+						if (uiElement != null && uiElement.HitTest(hit))
+						{
+							return HitTest(uiElement, hit);
+						}
+					}
+				}
+				return element;
+			}
+			return null;
+		}
+
+		#endregion 
+	}
 }

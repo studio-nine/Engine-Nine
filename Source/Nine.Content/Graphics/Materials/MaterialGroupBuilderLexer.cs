@@ -354,7 +354,7 @@
                 Position = initial;
                 return null;
             }
-            // TODO: Canot simply judge based on this....
+            // TODO: Cannot simply judge based on this....
             declaration.ContainsClip = declaration.Body.Contains("clip(");
             return declaration;
         }

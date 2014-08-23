@@ -39,6 +39,8 @@
                     //mainWindow.WindowState = settings.WindowMaximized ? WindowState.Maximized : WindowState.Normal;
                     //mainWindow.Width = Math.Min(settings.WindowWidth, SystemParameters.VirtualScreenWidth);
                     //mainWindow.Height = Math.Min(settings.WindowHeight, SystemParameters.VirtualScreenHeight);
+                    
+                    // TODO: Add Dual-monitor support
                     mainWindow.Left = (SystemParameters.VirtualScreenWidth - mainWindow.Width) / 2;
                     mainWindow.Top = (SystemParameters.VirtualScreenHeight - mainWindow.Height) / 2;
 

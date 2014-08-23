@@ -83,11 +83,6 @@ namespace Nine.Graphics.UI
 
         #region Methods
 
-        protected internal override void MouseDown(object sender, MouseEventArgs e)
-        {
-            content[0].InvokeMouseDown(sender, e);
-        }
-
         internal void Messure()
         {
             content[0].Measure(new Vector2(Viewport.Width, Viewport.Height));
@@ -99,7 +94,6 @@ namespace Nine.Graphics.UI
             if (content == null)
                 return;
 
-            //if (this.Viewport == BoundingRectangle.Empty)
             if (!this.Viewport.Equals(context.GraphicsDevice.Viewport.TitleSafeArea))
                 this.Viewport = (BoundingRectangle)context.GraphicsDevice.Viewport.TitleSafeArea;
 

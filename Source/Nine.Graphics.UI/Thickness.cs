@@ -65,7 +65,7 @@ namespace Nine.Graphics.UI
 
         public static implicit operator Thickness(int i)
         {
-            return new Thickness(0);
+            return new Thickness(i);
         }
 
         /// <summary>
