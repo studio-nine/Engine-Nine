@@ -37,7 +37,7 @@
 		public WindowManager()
 		{
 			this.windows = new NotificationCollection<BaseWindow>();
-			this.TrackEvents = false;
+			this.TrackEvents = true;
 
 			EnsureInput();
 		}
@@ -75,7 +75,8 @@
 			if (window == null)
 				return;
 
-			if (index != 0)
+			// Bring window to front
+			if (e.Button == MouseButtons.Right && index != 0)
 			{
 				Windows.RemoveAt(index);
 				Windows.Insert(0, window);

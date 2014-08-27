@@ -94,8 +94,7 @@ namespace Nine.Graphics.UI
             if (content == null)
                 return;
 
-            if (!this.Viewport.Equals(context.GraphicsDevice.Viewport.TitleSafeArea))
-                this.Viewport = (BoundingRectangle)context.GraphicsDevice.Viewport.TitleSafeArea;
+            base.Draw(context, drawables);
 
             Messure();
 

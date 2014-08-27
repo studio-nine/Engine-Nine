@@ -21,7 +21,6 @@
 
         #region Properties
 
-        // TODO: ???
         public WindowManager Manager
         {
             get { return manager; }
@@ -57,7 +56,9 @@
 
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-
+            // TODO: How should I handle the Viewport?
+            if (this.Viewport == BoundingRectangle.Empty)
+                this.Viewport = (BoundingRectangle)context.GraphicsDevice.Viewport.TitleSafeArea;
         }
 
         #endregion

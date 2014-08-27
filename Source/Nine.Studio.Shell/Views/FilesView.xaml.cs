@@ -23,6 +23,7 @@
                 {
                     App.Shell.EndDialog(this, null);
                     await App.Shell.RunAsync(() => { App.Editor.CreateProject(newProjectView.ProjectName, newProjectView.ProjectDirectory); });
+                    // TODO: We should also save the project
                 }
             }
         }

@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using Microsoft.Xna.Framework.Content.Pipeline;
-    using Nine.Content.Importers;
+    using Nine.Serialization;
     using Nine.Studio.Extensibility;
     using System.Collections.Generic;
 
@@ -21,9 +21,9 @@
     [ExportMetadata(Class = "Scenes", IsDefault = true)]
     public class SceneImporter : PipelineImporter<Scene>
     {
-        public override IContentImporter ContentImporter
+        public override Microsoft.Xna.Framework.Content.Pipeline.IContentImporter ContentImporter
         {
-            get { return new XamlImporter(); }
+            get { return new XamlSerializer(); }
         }
 
         public override IContentProcessor ContentProcesser
@@ -49,7 +49,7 @@
 
         protected override void Export(Stream output, Scene value)
         {
-            new Nine.Content.XamlSerializer().Save(output, value);
+            new XamlSerializer().Save(output, value, null);
         }
     }
 }

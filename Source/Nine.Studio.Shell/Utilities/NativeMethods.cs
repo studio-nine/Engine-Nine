@@ -2271,7 +2271,6 @@
     [StructLayout(LayoutKind.Sequential)]
     internal struct WINDOWPLACEMENT
     {
-        // TODO: length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
         public int length;
         public int flags;
         public SW showCmd;
@@ -3108,7 +3107,7 @@
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SetWindowPlacement(IntPtr hwnd, [In] ref WINDOWPLACEMENT lpwndpl);
+        public static extern bool SetWindowPlacement(IntPtr hwnd, [In] ref WINDOWPLACEMENT lpwndpl);
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]

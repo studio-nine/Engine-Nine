@@ -32,49 +32,49 @@
 
                 mainWindow.SourceInitialized += (sender, args) =>
                 {
-                    //if (settings.WindowPlacement != null)
-                    //{
-                    //    
-                    //}
-                    //mainWindow.WindowState = settings.WindowMaximized ? WindowState.Maximized : WindowState.Normal;
-                    //mainWindow.Width = Math.Min(settings.WindowWidth, SystemParameters.VirtualScreenWidth);
-                    //mainWindow.Height = Math.Min(settings.WindowHeight, SystemParameters.VirtualScreenHeight);
+                    if (settings.WindowPlacement != null)
+                    {
+                        // TODO: 
+                    }
                     
-                    // TODO: Add Dual-monitor support
-                    mainWindow.Left = (SystemParameters.VirtualScreenWidth - mainWindow.Width) / 2;
-                    mainWindow.Top = (SystemParameters.VirtualScreenHeight - mainWindow.Height) / 2;
+                    mainWindow.WindowState = settings.WindowMaximized ? WindowState.Maximized : WindowState.Normal;
+
+                    var primaryScreenBounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+                    mainWindow.Width = Math.Min(settings.WindowWidth, primaryScreenBounds.Width);
+                    mainWindow.Height = Math.Min(settings.WindowHeight, primaryScreenBounds.Height);
+                    mainWindow.Left = (primaryScreenBounds.Width - mainWindow.Width) / 2;
+                    mainWindow.Top = (primaryScreenBounds.Height - mainWindow.Height) / 2;
 
                     if (splashWindow != IntPtr.Zero)
-                        ;// NativeMethods.ShowWindow(splashWindow, SW.HIDE);
+                        ; // NativeMethods.ShowWindow(splashWindow, SW.HIDE);
                 };
 
-                mainWindow.Closed += (sender, args) =>
+                mainWindow.Closing += (sender, args) =>
                 {
                     settings.WindowPlacement = GetWindowPlacement(mainWindow);
                 };
 
                 Shell = (IEditorShell)mainWindow;
                 Shell.ShowDialogAsync(new FilesView { DataContext = App.Editor });
-                
+
                 mainWindow.Show();
             }
         }
 
-        private static void SetWindowPlacement(Window mainWindow, WINDOWPLACEMENT placement)
+        private static bool SetWindowPlacement(Window mainWindow, WINDOWPLACEMENT placement)
         {
-            // TODO: 
-            //try
-            //{
-            //    return NativeMethods.SetWindowPlacement(
-            //        new System.Windows.Interop.WindowInteropHelper(mainWindow).Handle, ref placement);
-            //}
-            //catch (System.ComponentModel.Win32Exception)
-            //{
-            //    return null;
-            //}
+            try
+            {
+                return NativeMethods.SetWindowPlacement(
+                    new System.Windows.Interop.WindowInteropHelper(mainWindow).Handle, ref placement);
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                return false;
+            }
         }
 
-        private static WINDOWPLACEMENT GetWindowPlacement(Window mainWindow)
+        private static WINDOWPLACEMENT? GetWindowPlacement(Window mainWindow)
         {
             try
             {
@@ -83,8 +83,7 @@
             }
             catch (System.ComponentModel.Win32Exception) 
             {
-                // TODO: NULL
-                return new WINDOWPLACEMENT(); 
+                return null; 
             }
         }
 

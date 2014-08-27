@@ -14,6 +14,29 @@
     using Nine.Graphics.UI.Renderer;
     using Nine.Graphics.Primitives;
 
+    class ScrollViewerComponent : Component
+    {
+        private ScrollContentPresenter scrollviewer;
+        private bool plus;
+
+        public ScrollViewerComponent(ScrollContentPresenter scrollViewer)
+        {
+            this.scrollviewer = scrollViewer;
+            this.plus = true;
+        }
+
+        protected override void Update(float elapsedTime)
+        {
+            float toValue = plus ? 1.0f : 0.0f;
+            float result = MathHelper.Lerp(scrollviewer.Offset.Y, toValue, elapsedTime);
+            scrollviewer.SetVerticalOffset(result);
+            if ((float)Math.Round(result, 1) == toValue)
+                plus = !plus;
+
+            base.Update(elapsedTime);
+        }
+    }
+
     public class UITest : Sample
     {
         public override string Title { get { return "[UI] Window Test"; } }
@@ -22,8 +45,9 @@
             var scene = new Scene();
             var font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");
 
-            Border border1;
+            Border topBorder, sideBorder1, sideBorder2, border1;
             TextBlock helloWorldText;
+            ScrollContentPresenter scroll;
 
             Window window = new Window()
             {
@@ -35,23 +59,48 @@
                     },
                     new RowDefinition[] {
                         new RowDefinition(1), 
-                        new RowDefinition(3), 
+                        new RowDefinition(8), 
                         new RowDefinition(1), 
                     },
                     new UIElement[] {
+                        topBorder = new Border() {
+                            BorderThickness = 1,
+                            BorderBrush = new SolidColorBrush(Color.Black),
+                            Margin = new Thickness(10, 20, 10, 30),
+                        },
+                        sideBorder1 = new Border() {
+                            BorderThickness = 1,
+                            BorderBrush = new SolidColorBrush(Color.Black),
+                            Margin = new Thickness(10, 0, 40, 0),
+                        },
+                        sideBorder2 = new Border() {
+                            BorderThickness = 1,
+                            BorderBrush = new SolidColorBrush(Color.Black),
+                            Margin = new Thickness(40, 0, 10, 0),
+                        },
                         border1 = new Border() {
                             BorderThickness = 1,
                             BorderBrush = new SolidColorBrush(Color.Black),
-                            Content = helloWorldText = new TextBlock(font, "Hello World!") {
-                                HorizontalAlignment = HorizontalAlignment.Center,
-                                VerticalAlignment = VerticalAlignment.Center,
+                            Content = scroll = new ScrollContentPresenter() {
+                                Content = helloWorldText = new TextBlock(font, "Hello World!") {
+                                    HorizontalAlignment = HorizontalAlignment.Center,
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                }
                             }
                         },
                     })
             };
 
+            Grid.SetColumnSpan(topBorder, 3);
+
+            Grid.SetRow(sideBorder1, 1);
+            Grid.SetColumn(sideBorder2, 2);
+            Grid.SetRow(sideBorder2, 1);
+
             Grid.SetColumn(border1, 1);
             Grid.SetRow(border1, 1);
+
+            //scene.Add(new ScrollViewerComponent(scroll));
 
             WindowManager manager = new WindowManager();
             scene.Add(manager);

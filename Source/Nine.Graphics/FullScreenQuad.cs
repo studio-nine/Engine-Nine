@@ -86,18 +86,17 @@
             if (!SharedBuffers.TryGetValue(graphics, out sharedBuffer))
             {
                 sharedBuffer = new KeyValuePair<VertexBuffer, IndexBuffer>(
-                    new VertexBuffer(graphics, typeof(VertexPositionTexture), 4, BufferUsage.WriteOnly)
-                  , new IndexBuffer(graphics, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly));
+                    new VertexBuffer(graphics, typeof(VertexPositionTexture), 3, BufferUsage.WriteOnly)
+                  , new IndexBuffer(graphics, IndexElementSize.SixteenBits, 3, BufferUsage.WriteOnly));
 
                 sharedBuffer.Key.SetData(new[] 
                 {
-                    new VertexPositionTexture() { Position = new Vector3(-1, 1, 0), TextureCoordinate = new Vector2(0, 0) },
-                    new VertexPositionTexture() { Position = new Vector3(1, 1, 0), TextureCoordinate = new Vector2(1, 0) },
-                    new VertexPositionTexture() { Position = new Vector3(1, -1, 0), TextureCoordinate = new Vector2(1, 1) },
-                    new VertexPositionTexture() { Position = new Vector3(-1, -1, 0), TextureCoordinate = new Vector2(0, 1) },
+                    new VertexPositionTexture() { Position = new Vector3(-1,  3, 0), TextureCoordinate = new Vector2(0, 2) },
+                    new VertexPositionTexture() { Position = new Vector3( 3, -1, 0), TextureCoordinate = new Vector2(2, 0) },
+                    new VertexPositionTexture() { Position = new Vector3(-1, -1, 0), TextureCoordinate = new Vector2(0, 0) },
                 });
 
-                sharedBuffer.Value.SetData<ushort>(new ushort[] { 0, 1, 2, 0, 2, 3 });
+                sharedBuffer.Value.SetData<ushort>(new ushort[] { 0, 1, 2 });
                 SharedBuffers.Add(graphics, sharedBuffer);
             }
 
@@ -137,7 +136,7 @@
             {
                 // Use vs 2_0
                 vertexPassThrough2.BeginApply(context);
-                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 3, 0, 1);
             }
             catch (InvalidOperationException)
             {
@@ -148,7 +147,7 @@
                 if (vertexPassThrough3 == null)
                     vertexPassThrough3 = new VertexPassThrough3Material(GraphicsDevice);
                 vertexPassThrough3.BeginApply(context);
-                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 3, 0, 1);
             }
 #endif
 

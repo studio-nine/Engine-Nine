@@ -78,8 +78,7 @@ namespace Nine.Graphics.UI.Controls
         {
             bool isHorizontalOrientation = this.Orientation == Orientation.Horizontal;
             var finalRect = new BoundingRectangle(0, 0, arrangeSize.X, arrangeSize.Y);
-            float width = 0;
-            float height = 0;
+            float width = 0, height = 0;
             foreach (UIElement child in Children)
             {
                 if (child != null)

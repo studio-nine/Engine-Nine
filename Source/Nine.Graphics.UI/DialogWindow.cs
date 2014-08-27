@@ -39,11 +39,8 @@
             {
                 if (windowBorder.Content != value)
                 {
-                    if (windowBorder.Content != null)
-                        windowBorder.Content.Window = null;
                     windowBorder.Content = value;
-                    if (windowBorder.Content != null)
-                        windowBorder.Content.Window = this;
+                    windowBorder.Content.Window = this;
                 }
             }
         }
@@ -231,8 +228,7 @@
 
         public override void Draw(DrawingContext context, System.Collections.Generic.IList<IDrawableObject> drawables)
         {
-            if (this.Viewport == BoundingRectangle.Empty) // Should this be set?
-                this.Viewport = (BoundingRectangle)context.GraphicsDevice.Viewport.TitleSafeArea;
+            base.Draw(context, drawables);
 
             windowBorder.Measure(new Vector2(Viewport.Width, Viewport.Height));
             windowBorder.Arrange(Viewport);
@@ -255,83 +251,7 @@
             Renderer.Begin(context);
             windowBorder.Render(Renderer);
             title.Render(Renderer);
-            //DebugDraw();
             Renderer.End(context);
-        }
-
-        [Obsolete]
-        public void DebugDraw()
-        {
-            var spriteRenderer = Renderer as SpriteBatchRenderer;
-            if (spriteRenderer != null)
-            {
-                var rect = windowBorder.GetBorder(Direction.Top);
-                rect.X += windowBorder.AbsoluteRenderTransform.X;
-                rect.Y += windowBorder.AbsoluteRenderTransform.Y + 8;
-                rect.Width -= windowBorder.BorderThickness.Right;
-                rect.Height -= 8;
-                spriteRenderer.spriteBatch.Draw(rect, Color.Green);
-
-                var resizeRectBottom = windowBorder.GetBorder(Direction.Bottom);
-                resizeRectBottom.X += windowBorder.AbsoluteRenderTransform.X;
-                resizeRectBottom.Y += windowBorder.AbsoluteRenderTransform.Y;
-                spriteRenderer.spriteBatch.Draw(resizeRectBottom, Color.Red);
-
-                var resizeRectRight = windowBorder.GetBorder(Direction.Right);
-                resizeRectRight.X += windowBorder.AbsoluteRenderTransform.X;
-                resizeRectRight.Y += windowBorder.AbsoluteRenderTransform.Y;
-                resizeRectRight.Height -= windowBorder.BorderThickness.Bottom;
-                spriteRenderer.spriteBatch.Draw(resizeRectRight, Color.Red);
-
-                var resizeRectLeft = windowBorder.GetBorder(Direction.Left);
-                resizeRectLeft.X += windowBorder.AbsoluteRenderTransform.X;
-                resizeRectLeft.Y += windowBorder.AbsoluteRenderTransform.Y + windowBorder.BorderThickness.Top;
-                resizeRectLeft.Height -= windowBorder.BorderThickness.Bottom + windowBorder.BorderThickness.Top;
-                spriteRenderer.spriteBatch.Draw(resizeRectLeft, Color.Red);
-
-                var rectx1 = new BoundingRectangle()
-                {
-                    X = windowBorder.AbsoluteRenderTransform.X + windowBorder.RenderSize.X - windowBorder.BorderThickness.Right,
-                    Y = windowBorder.AbsoluteRenderTransform.Y + windowBorder.RenderSize.Y - windowBorder.BorderThickness.Bottom,
-                    Width = windowBorder.BorderThickness.Right,
-                    Height = windowBorder.BorderThickness.Bottom,
-                };
-                spriteRenderer.spriteBatch.Draw(rectx1, Color.Blue);
-
-                var rectx2 = new BoundingRectangle()
-                {
-                    X = windowBorder.AbsoluteRenderTransform.X,
-                    Y = windowBorder.AbsoluteRenderTransform.Y + windowBorder.RenderSize.Y - windowBorder.BorderThickness.Bottom,
-                    Width = windowBorder.BorderThickness.Left,
-                    Height = windowBorder.BorderThickness.Bottom,
-                };
-                spriteRenderer.spriteBatch.Draw(rectx2, Color.Blue);
-
-                var rectx3 = new BoundingRectangle()
-                {
-                    X = windowBorder.AbsoluteRenderTransform.X,
-                    Y = windowBorder.AbsoluteRenderTransform.Y,
-                    Width = windowBorder.BorderThickness.Left,
-                    Height = windowBorder.BorderThickness.Top,
-                };
-                spriteRenderer.spriteBatch.Draw(rectx3, Color.Blue);
-
-                var rectx4 = new BoundingRectangle()
-                {
-                    X = windowBorder.AbsoluteRenderTransform.X + windowBorder.RenderSize.X - windowBorder.BorderThickness.Right,
-                    Y = windowBorder.AbsoluteRenderTransform.Y,
-                    Width = windowBorder.BorderThickness.Left,
-                    Height = windowBorder.BorderThickness.Top,
-                };
-                spriteRenderer.spriteBatch.Draw(rectx4, Color.Blue);
-
-                var recttop = windowBorder.GetBorder(Direction.Top);
-                recttop.X += windowBorder.AbsoluteRenderTransform.X;
-                recttop.Y += windowBorder.AbsoluteRenderTransform.Y;
-                recttop.Height -= 24;
-                recttop.Width -= windowBorder.BorderThickness.Right;
-                spriteRenderer.spriteBatch.Draw(recttop, Color.Red);
-            }
         }
 
         private void resizeCanResize(float x, float y)
