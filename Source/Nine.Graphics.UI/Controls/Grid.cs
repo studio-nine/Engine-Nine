@@ -189,9 +189,9 @@ namespace Nine.Graphics.UI.Controls
                 this.rows.Sum(definition => definition.MinLength));
         }
 
-        protected override void OnRender(Renderer.Renderer renderer)
+        protected override void OnDraw(Renderer.Renderer renderer)
         {
-            base.OnRender(renderer);
+            base.OnDraw(renderer);
 
             if (ShowGridLines)
             {

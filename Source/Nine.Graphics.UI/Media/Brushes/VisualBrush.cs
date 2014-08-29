@@ -21,7 +21,7 @@
         {
             Visual.Measure(new Vector2(bound.Width, bound.Height));
             Visual.Arrange(bound);
-            Visual.Render(renderer);
+            Visual.Draw(renderer);
         }
     }
 }

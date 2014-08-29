@@ -101,7 +101,7 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected override void OnRender(Renderer renderer)
+        protected override void OnDraw(Renderer renderer)
         {
             if (BorderThickness != Thickness.Empty && BorderBrush != null)
             {
@@ -117,7 +117,9 @@ namespace Nine.Graphics.UI.Controls
             }
 
             if (Content != null)
-                Content.Render(renderer);
+            {
+                Content.Draw(renderer);
+            }
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

@@ -91,9 +91,9 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnDraw(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
-            this.ItemsPanel.Render(renderer);
+            this.ItemsPanel.Draw(renderer);
         }
 
         protected override Vector2 ArrangeOverride(Vector2 finalSize)

@@ -35,7 +35,7 @@ namespace Nine.Graphics.UI
     /// Window is the main host for all <see cref="UIElement">UIElement</see>s, it manages the  user input and is the target for Update/Draw calls.
     /// </summary>
     [System.Windows.Markup.ContentProperty("Content")]
-    public class Window : BaseWindow, IContainer
+    public class Window : BaseWindow, IContainer, IDebugDrawable
     {
         #region Properties
 
@@ -103,10 +103,26 @@ namespace Nine.Graphics.UI
 
             Renderer.elapsedTime = context.ElapsedTime;
             Renderer.Begin(context);
-            content[0].Render(Renderer);
+            content[0].Draw(Renderer);
             Renderer.End(context);
         }
 
         #endregion
+
+        #region IDebugDrawable
+
+        bool IDebugDrawable.Visible
+        {
+            get { return true; }
+        }
+
+        void IDebugDrawable.Draw(DrawingContext context, Primitives.DynamicPrimitive primitive)
+        {
+            this.Renderer.Begin(context);
+            content[0].DrawBounds(Renderer, new Color(1, 0, 0, 0.1f));
+            this.Renderer.End(context);
+        }
+
+        #endregion 
     }
 }

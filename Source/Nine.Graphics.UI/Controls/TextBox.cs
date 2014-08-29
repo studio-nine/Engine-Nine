@@ -166,7 +166,7 @@
             return true;
         }
 
-        protected override void OnRender(Renderer.Renderer renderer)
+        protected override void OnDraw(Renderer.Renderer renderer)
         {
             // not the best way to display watermark text
             var wt = textBlock.Text;
@@ -178,7 +178,7 @@
             }
             textBlock.Text = wt;
             textBlock.Foreground = wb;
-            textBlock.Render(renderer);
+            textBlock.Draw(renderer);
 
             if (EnableMarker && HasFocus)
             { 

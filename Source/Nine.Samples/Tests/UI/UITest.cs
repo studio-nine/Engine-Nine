@@ -46,9 +46,7 @@
             var font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");
 
             Border topBorder, sideBorder1, sideBorder2, border1;
-            TextBlock helloWorldText;
-            ScrollContentPresenter scroll;
-
+            StackPanel stackPanel;
             Window window = new Window()
             {
                 Content = new Grid(
@@ -68,44 +66,53 @@
                             BorderBrush = new SolidColorBrush(Color.Black),
                             Margin = new Thickness(10, 20, 10, 30),
                         },
+
                         sideBorder1 = new Border() {
                             BorderThickness = 1,
                             BorderBrush = new SolidColorBrush(Color.Black),
                             Margin = new Thickness(10, 0, 40, 0),
+                            //Content = new ScrollViewer() {
+                                Content = stackPanel = new StackPanel(Orientation.Vertical)
+                            //}
                         },
+
                         sideBorder2 = new Border() {
                             BorderThickness = 1,
                             BorderBrush = new SolidColorBrush(Color.Black),
                             Margin = new Thickness(40, 0, 10, 0),
+                            Content = new Border() {
+                                BorderThickness = 1,
+                                BorderBrush = new SolidColorBrush(Color.Black),
+                                Margin = new Thickness(10),
+                            }
                         },
+
                         border1 = new Border() {
                             BorderThickness = 1,
                             BorderBrush = new SolidColorBrush(Color.Black),
-                            Content = scroll = new ScrollContentPresenter() {
-                                Content = helloWorldText = new TextBlock(font, "Hello World!") {
-                                    HorizontalAlignment = HorizontalAlignment.Center,
-                                    VerticalAlignment = VerticalAlignment.Center,
-                                }
+                            Content = new TabControl() {
+                                
                             }
                         },
                     })
             };
 
             Grid.SetColumnSpan(topBorder, 3);
-
             Grid.SetRow(sideBorder1, 1);
             Grid.SetColumn(sideBorder2, 2);
             Grid.SetRow(sideBorder2, 1);
-
             Grid.SetColumn(border1, 1);
             Grid.SetRow(border1, 1);
 
-            //scene.Add(new ScrollViewerComponent(scroll));
+            for (int i = 0; i < 12; i++)
+            {
+                stackPanel.Children.Add(new Button(font, string.Format("Hello World! [{0}]", (i + 1).ToString("00"))));
+            }
+
 
             WindowManager manager = new WindowManager();
             scene.Add(manager);
             manager.Windows.Add(window);
-
 
             return scene;
         }

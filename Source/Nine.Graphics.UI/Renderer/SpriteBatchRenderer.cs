@@ -14,7 +14,7 @@
         public SpriteBatchRenderer(GraphicsDevice graphics)
             : base(graphics)
         {
-            spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(graphics);
+            this.spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(graphics);
         }
 
         public override void Begin(DrawingContext context)

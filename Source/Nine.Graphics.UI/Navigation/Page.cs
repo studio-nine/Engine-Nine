@@ -40,10 +40,12 @@
             return base.ArrangeOverride(finalSize);
         }
 
-        protected override void OnRender(Renderer.Renderer renderer)
+        protected override void OnDraw(Renderer.Renderer renderer)
         {
             if (Content != null)
-                Content.Render(renderer);
+            {
+                Content.Draw(renderer);
+            }
         }
     }
 }

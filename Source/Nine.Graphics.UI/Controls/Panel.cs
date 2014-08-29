@@ -60,10 +60,11 @@ namespace Nine.Graphics.UI.Controls
         public Panel(IEnumerable<UIElement> elements)
         {
             children = new NotificationCollection<UIElement>();
-            children.AddRange(elements);
             children.Sender = this;
             children.Added += Child_Added;
             children.Removed += Child_Removed;
+
+            children.AddRange(elements);
         }
 
         #endregion
@@ -98,11 +99,11 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnDraw(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             foreach (var child in children)
             {
-                child.Render(renderer);
+                child.Draw(renderer);
             }
         }
 

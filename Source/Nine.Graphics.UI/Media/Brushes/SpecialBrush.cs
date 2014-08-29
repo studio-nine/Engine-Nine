@@ -4,7 +4,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    // TODO: Rename to something better?
+    // TODO: Rename to something better?, Make it somewhat more generic.
 
     /// <summary>
     /// This brush separate a texture into 9 parts and render them in a layout.

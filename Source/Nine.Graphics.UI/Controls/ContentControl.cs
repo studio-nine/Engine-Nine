@@ -74,11 +74,11 @@ namespace Nine.Graphics.UI.Controls
             return content.DesiredSize;
         }
 
-        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnDraw(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             if (Content != null)
             {
-                Content.Render(renderer);
+                Content.Draw(renderer);
             }
         }
 

@@ -27,6 +27,7 @@ namespace Nine.Graphics.UI.Internal
 {
     using Microsoft.Xna.Framework;
 
+    [System.Diagnostics.DebuggerDisplay("Max: {MaxHeight}, {MaxWidth} ; Min: {MinHeight}, {MinWidth}")]
     internal struct MinMax
     {
         internal readonly float MaxHeight;

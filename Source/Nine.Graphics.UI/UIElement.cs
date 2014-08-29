@@ -37,18 +37,17 @@ namespace Nine.Graphics.UI
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Renderer;
 
+    /// <summary>
+    /// UIElement is a base class for all the Controls.
+    /// </summary>
     [Nine.Serialization.BinarySerializable]
-    public abstract class UIElement : Nine.Object, IComponent
+    public abstract partial class UIElement : Nine.Object, IComponent
     {
         #region Properties
 
-        public Visibility Visible
-        {
-            get { return visible; }
-            set { visible = value; }
-        }
-        private Visibility visible = Visibility.Visible;
-
+        /// <summary>
+        /// 
+        /// </summary>
         public BoundingRectangle AbsoluteRenderTransform
         {
             get 
@@ -57,11 +56,17 @@ namespace Nine.Graphics.UI
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public BoundingRectangle RenderTransform
         {
             get { return new BoundingRectangle(VisualOffset.X, VisualOffset.Y, ActualWidth, ActualHeight); }
         }
 
+        /// <summary>
+        /// Absolute Position of the element.
+        /// </summary>
         public Vector2 AbsoluteVisualOffset
         {
             get 
@@ -75,12 +80,25 @@ namespace Nine.Graphics.UI
             }
         }
 
+        /// <summary>
+        /// Gets or sets the visibility of this element.
+        /// </summary>
+        public Visibility Visibility { get; set; }
+
+        /// <summary>
+        /// Gets or sets the background brush.
+        /// </summary>
+        public Brush Background { get; set; }
+
+        /// <summary>
+        /// Local Position of the element.
+        /// </summary>
         public Vector2 VisualOffset
         {
             get { return this.visualOffset; }
         }
+        private Vector2 visualOffset;
 
-        public Brush Background { get; set; }
 
         public float Width { get; set; }
         public float Height { get; set; }
@@ -132,7 +150,6 @@ namespace Nine.Graphics.UI
         private BoundingRectangle previousFinalRect;
 
         private Vector2 unclippedSize;
-        private Vector2 visualOffset;
 
         internal BaseWindow Window;
 
@@ -150,16 +167,23 @@ namespace Nine.Graphics.UI
 
         protected UIElement()
         {
-            Width = float.NaN;
-            Height = float.NaN;
-            MaxWidth = float.PositiveInfinity;
-            MaxHeight = float.PositiveInfinity;
+            this.Width = float.NaN;
+            this.Height = float.NaN;
+            this.MaxWidth = float.PositiveInfinity;
+            this.MaxHeight = float.PositiveInfinity;
+
+            this.Visibility = UI.Visibility.Visible;
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rootElement"></param>
+        /// <returns></returns>
         public bool TryGetRootElement(out BaseWindow rootElement)
         {
             UIElement element = this;
@@ -171,52 +195,31 @@ namespace Nine.Graphics.UI
             return true;
         }
 
-        protected virtual BoundingRectangle? GetClippingRect(Vector2 finalSize)
+        /// <summary>
+        /// Invalidates the size of the element.
+        /// </summary>
+        public void InvalidateMeasure()
         {
-            if (!this.isClippingRequired)
-                return null;
-
-            var max = new MinMax(this);
-            Vector2 renderSize = this.RenderSize;
-
-            float maxWidth = float.IsPositiveInfinity(max.MaxWidth) ? renderSize.X : max.MaxWidth;
-            float maxHeight = float.IsPositiveInfinity(max.MaxHeight) ? renderSize.Y : max.MaxHeight;
-
-            bool isClippingRequiredDueToMaxSize = maxWidth.IsLessThan(renderSize.X) ||
-                                                  maxHeight.IsLessThan(renderSize.Y);
-
-            renderSize.X = Math.Min(renderSize.X, max.MaxWidth);
-            renderSize.Y = Math.Min(renderSize.Y, max.MaxHeight);
-
-            Thickness margin = this.Margin;
-            float horizontalMargins = margin.Left + margin.Right;
-            float verticalMargins = margin.Top + margin.Bottom;
-
-            var clientSize = new Vector2(
-                (finalSize.X - horizontalMargins).EnsurePositive(), 
-                (finalSize.Y - verticalMargins).EnsurePositive());
-
-            bool isClippingRequiredDueToClientSize = clientSize.X.IsLessThan(renderSize.X) ||
-                                                     clientSize.Y.IsLessThan(renderSize.Y);
-
-            if (isClippingRequiredDueToMaxSize && !isClippingRequiredDueToClientSize)
+            var visualParent = this;
+            while (visualParent != null)
             {
-                return new BoundingRectangle(0f, 0f, maxWidth, maxHeight);
+                visualParent.isMeasureValid = false;
+                visualParent.isArrangeValid = false;
+                visualParent = visualParent.Parent as UIElement;
             }
+        }
 
-            if (!isClippingRequiredDueToClientSize)
+        /// <summary>
+        /// Invalidates the final rectangle of the element.
+        /// </summary>
+        public void InvalidateArrange()
+        {
+            var visualParent = this;
+            while (visualParent != null)
             {
-                return BoundingRectangle.Empty;
+                visualParent.isArrangeValid = false;
+                visualParent = visualParent.Parent as UIElement;
             }
-
-            Vector2 offset = this.ComputeAlignmentOffset(clientSize, renderSize);
-            var clipRect = new BoundingRectangle(-offset.X, -offset.Y, clientSize.X, clientSize.Y);
-
-            if (isClippingRequiredDueToMaxSize)
-            {
-            }
-            
-            return clipRect;
         }
 
         private Vector2 ComputeAlignmentOffset(Vector2 clientSize, Vector2 inkSize)
@@ -254,193 +257,43 @@ namespace Nine.Graphics.UI
                 case VerticalAlignment.Center:
                 case VerticalAlignment.Stretch:
                     vector.Y = (clientSize.Y - inkSize.Y) * 0.5f;
-                    return vector;
+                    break;
                 case VerticalAlignment.Bottom:
                     vector.Y = clientSize.Y - inkSize.Y;
-                    return vector;
+                    break;
                 case VerticalAlignment.Top:
                     vector.Y = 0;
                     break;
             }
+
+            //vector.X += Margin.Left;
+            //vector.Y += Margin.Top;
 
             return vector;
         }
 
         #endregion
 
-        #region Draw
-
-        public void Render(Renderer.Renderer renderer)
-        {
-            if (Visible != Visibility.Visible) 
-                return;
-
-            renderer.GraphicsDevice.RasterizerState = needsClipping ?
-                BaseWindow.WithClipping : BaseWindow.WithoutClipping;
-            if (clip.HasValue)
-            {
-                var c = clip.Value;
-                c.X += AbsoluteVisualOffset.X;
-                c.Y += AbsoluteVisualOffset.Y;
-                renderer.GraphicsDevice.ScissorRectangle = c;
-            }
-
-            if (Background != null)
-            {
-                renderer.Draw(AbsoluteRenderTransform, Background);
-            }
-
-            OnRender(renderer);
-        }
-
-        protected virtual void OnRender(Renderer.Renderer renderer) { }
-
-        #endregion
-
-        #region Input
-
-        /// <summary>
-        /// Occurs when a key is been pressed.
-        /// </summary>
-        public event EventHandler<KeyboardEventArgs> KeyDown;
-
-        /// <summary>
-        /// Occurs when a key is been released.
-        /// </summary>
-        public event EventHandler<KeyboardEventArgs> KeyUp;
-
-        /// <summary>
-        /// Occurs when a mouse button is been pressed.
-        /// </summary>
-        public event EventHandler<MouseEventArgs> MouseDown;
-
-        /// <summary>
-        /// Occurs when a mouse button is been released.
-        /// </summary>
-        public event EventHandler<MouseEventArgs> MouseUp;
-
-        /// <summary>
-        /// Occurs when the mouse moved.
-        /// </summary>
-        public event EventHandler<MouseEventArgs> MouseMove;
-
-        /// <summary>
-        /// Occurs when the mouse scrolled.
-        /// </summary>
-        public event EventHandler<MouseEventArgs> MouseWheel;
-
-        /// <summary>
-        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been pressed.
-        /// </summary>
-        public event EventHandler<GamePadEventArgs> ButtonDown;
-
-        /// <summary>
-        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been released.
-        /// </summary>
-        public event EventHandler<GamePadEventArgs> ButtonUp;
-
-        internal void InvokeKeyDown(object sender, KeyboardEventArgs e)
-        {
-            OnKeyDown(e);
-            if (KeyDown != null)
-                KeyDown(sender, e);
-        }
-        internal void InvokeKeyUp(object sender, KeyboardEventArgs e)
-        {
-            OnKeyUp(e);
-            if (KeyUp != null)
-                KeyUp(sender, e);
-        }
-        internal void InvokeMouseMove(object sender, MouseEventArgs e)
-        {
-            OnMouseMove(e);
-            if (MouseMove != null)
-                MouseMove(sender, e);
-        }
-        internal void InvokeOnMouseUp(object sender, MouseEventArgs e)
-        {
-            OnMouseUp(e);
-            if (MouseUp != null)
-                MouseUp(sender, e);
-        }
-        internal void InvokeMouseDown(object sender, MouseEventArgs e)
-        {
-            OnMouseDown(e);
-            if (MouseDown != null)
-                MouseDown(sender, e);
-        }
-        internal void InvokeMouseWheel(object sender, MouseEventArgs e)
-        {
-            OnMouseWheel(e);
-            if (MouseWheel != null)
-                MouseWheel(sender, e);
-        }
-        internal void InvokeButtonDown(object sender, GamePadEventArgs e)
-        {
-            OnButtonDown(e);
-            if (ButtonDown != null)
-                ButtonDown(sender, e);
-        }
-        internal void InvokeButtonUp(object sender, GamePadEventArgs e)
-        {
-            OnButtonUp(e);
-            if (ButtonUp != null)
-                ButtonUp(sender, e);
-        }
-
-        protected virtual void OnKeyDown(KeyboardEventArgs e) { }
-        protected virtual void OnKeyUp(KeyboardEventArgs e) { }
-        protected virtual void OnMouseMove(MouseEventArgs e) { }
-        protected virtual void OnMouseUp(MouseEventArgs e) { }
-        protected virtual void OnMouseDown(MouseEventArgs e) { }
-        protected virtual void OnMouseWheel(MouseEventArgs e) { }
-        protected virtual void OnButtonDown(GamePadEventArgs e) { }
-        protected virtual void OnButtonUp(GamePadEventArgs e) { }
-
-        public bool HitTest(Vector2 point)
-        {
-            return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
-        }
-
-        #endregion
-
         #region Measure and Arrange
 
-        public void InvalidateArrange()
-        {
-            var visualParent = this;
-            while (visualParent != null)
-            {
-                visualParent.isArrangeValid = false;
-                visualParent = visualParent.Parent as UIElement;
-            }
-        }
-
-        public void InvalidateMeasure()
-        {
-            var visualParent = this;
-            while (visualParent != null)
-            {
-                visualParent.isMeasureValid = false;
-                visualParent.isArrangeValid = false;
-                visualParent = visualParent.Parent as UIElement;
-            }
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="availableSize"></param>
         public void Measure(Vector2 availableSize)
         {
             if (float.IsNaN(availableSize.X) || float.IsNaN(availableSize.Y))
-                throw new InvalidOperationException("AvailableSize X or Y cannot be NaN");
+                throw new InvalidOperationException("AvailableSize X or Y cannot be NaN.");
 
             if (!this.isMeasureValid || availableSize.IsDifferentFrom(this.previousAvailableSize))
             {
                 Vector2 size = this.MeasureCore(availableSize);
 
                 if (float.IsPositiveInfinity(size.X) || float.IsPositiveInfinity(size.Y))
-                    throw new InvalidOperationException("The implementing element returned a PositiveInfinity");
+                    throw new InvalidOperationException("The implementing element returned a PositiveInfinity.");
 
                 if (float.IsNaN(size.X) || float.IsNaN(size.Y))
-                    throw new InvalidOperationException("The implementing element returned NaN");
+                    throw new InvalidOperationException("The implementing element returned NaN.");
 
                 this.previousAvailableSize = availableSize;
                 this.isMeasureValid = true;
@@ -448,13 +301,17 @@ namespace Nine.Graphics.UI
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="finalRect"></param>
         public void Arrange(BoundingRectangle finalRect)
         {
             if (float.IsNaN(finalRect.Width) || float.IsNaN(finalRect.Height))
-                throw new InvalidOperationException("X and Y must be numbers");
+                throw new InvalidOperationException("FinalRect X and Y cannot be NaN.");
 
             if (float.IsPositiveInfinity(finalRect.Width) || float.IsPositiveInfinity(finalRect.Height))
-                throw new InvalidOperationException("X and Y must be less than infinity");
+                throw new InvalidOperationException("FinalRect X and Y cannot be Infinity.");
 
             if (!this.isArrangeValid || !finalRect.Equals(this.previousFinalRect))
             {
@@ -578,7 +435,7 @@ namespace Nine.Graphics.UI
             availableSizeWithoutMargins.X = MathHelper.Clamp(availableSizeWithoutMargins.X, minMax.MinWidth, minMax.MaxWidth);
             availableSizeWithoutMargins.Y = MathHelper.Clamp(availableSizeWithoutMargins.Y, minMax.MinHeight, minMax.MaxHeight);
 
-            Vector2 size = Visible == Visibility.Collapsed ? 
+            Vector2 size = Visibility == Visibility.Collapsed ? 
                 Vector2.Zero : this.MeasureOverride(availableSizeWithoutMargins);
             size.X = Math.Max(size.X, minMax.MinWidth);
             size.Y = Math.Max(size.Y, minMax.MinHeight);
@@ -618,6 +475,7 @@ namespace Nine.Graphics.UI
 
         #endregion
 
+        // Move this
         internal UIElement ObjectToElement(object element)
         {
             if (element is UIElement)
@@ -627,9 +485,9 @@ namespace Nine.Graphics.UI
             if (isString != null)
             {
                 return new Nine.Graphics.UI.Controls.TextBlock
-                    {
-                        Text = isString
-                    };
+                {
+                    Text = isString
+                };
             }
 
             return null;

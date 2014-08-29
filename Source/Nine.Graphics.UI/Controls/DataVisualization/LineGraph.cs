@@ -69,7 +69,7 @@
 
         protected abstract void Update(float elapsedTime);
 
-        protected override void OnRender(Renderer.Renderer renderer)
+        protected override void OnDraw(Renderer.Renderer renderer)
         {
             elapsedTimeSinceLastUpdate += renderer.ElapsedTime;
             if (elapsedTimeSinceLastUpdate >= UpdateFrequency.TotalSeconds)

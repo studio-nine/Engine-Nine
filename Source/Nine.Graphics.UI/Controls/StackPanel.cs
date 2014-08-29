@@ -79,6 +79,7 @@ namespace Nine.Graphics.UI.Controls
             bool isHorizontalOrientation = this.Orientation == Orientation.Horizontal;
             var finalRect = new BoundingRectangle(0, 0, arrangeSize.X, arrangeSize.Y);
             float width = 0, height = 0;
+
             foreach (UIElement child in Children)
             {
                 if (child != null)
@@ -86,15 +87,13 @@ namespace Nine.Graphics.UI.Controls
                     if (isHorizontalOrientation)
                     {
                         finalRect.X += width;
-                        width = child.DesiredSize.X;
-                        finalRect.Width = width;
+                        finalRect.Width = width = child.DesiredSize.X;
                         finalRect.Height = Math.Max(arrangeSize.Y, child.DesiredSize.Y);
                     }
                     else
                     {
                         finalRect.Y += height;
-                        height = child.DesiredSize.Y;
-                        finalRect.Height = height;
+                        finalRect.Height = height = child.DesiredSize.Y;
                         finalRect.Width = Math.Max(arrangeSize.X, child.DesiredSize.X);
                     }
                     child.Arrange(finalRect);
@@ -106,13 +105,13 @@ namespace Nine.Graphics.UI.Controls
 
         protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
-            var size = new Vector2();
             bool isHorizontalOrientation = this.Orientation == Orientation.Horizontal;
             if (isHorizontalOrientation)
                 availableSize.X = float.PositiveInfinity;
             else
                 availableSize.Y = float.PositiveInfinity;
 
+            var size = new Vector2();
             foreach (UIElement child in Children)
             {
                 child.Measure(availableSize);
@@ -128,6 +127,7 @@ namespace Nine.Graphics.UI.Controls
                     size.Y += desiredSize.Y;
                 }
             }
+
             return size;
         }
 

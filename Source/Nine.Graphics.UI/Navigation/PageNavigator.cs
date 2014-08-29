@@ -24,10 +24,10 @@
             set
             {
                 if (Pages.Count > selectedIndex)
-                    Pages[selectedIndex].Visible = Visibility.Collapsed;
+                    Pages[selectedIndex].Visibility = Visibility.Collapsed;
                 selectedIndex = value;
                 if (Pages.Count > value)
-                    Pages[selectedIndex].Visible = Visibility.Visible;
+                    Pages[selectedIndex].Visibility = Visibility.Visible;
 
                 if (SelectedIndexChanged != null)
                     SelectedIndexChanged();
@@ -122,7 +122,7 @@
             if (element != null)
             {
                 if (Pages.Count == 0)
-                    element.Visible = Visibility.Visible;
+                    element.Visibility = Visibility.Visible;
 
                 element.Window = this;
                 if (Added != null)
@@ -158,7 +158,7 @@
             pages.ForEach<Page>(o => o.Measure(availableSize));
             pages.ForEach<Page>(o => o.Arrange(bounds));
 
-            pages[SelectedIndex].Render(Renderer);
+            pages[SelectedIndex].Draw(Renderer);
             base.Draw(context, drawables);
         }
     }

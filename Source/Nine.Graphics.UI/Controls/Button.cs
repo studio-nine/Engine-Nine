@@ -158,7 +158,7 @@ namespace Nine.Graphics.UI.Controls
 
         #region Methods
 
-        protected override void OnRender(Renderer.Renderer renderer)
+        protected override void OnDraw(Renderer.Renderer renderer)
         {
             renderer.Draw(AbsoluteRenderTransform, InnerBrush);
         }

@@ -36,7 +36,7 @@
             Padding = new Thickness(4);
         }
 
-        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnDraw(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             switch (Orientation)
             {

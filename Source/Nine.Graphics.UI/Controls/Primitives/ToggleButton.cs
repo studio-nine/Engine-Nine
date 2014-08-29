@@ -74,10 +74,10 @@ namespace Nine.Graphics.UI.Controls.Primitives
 
         #region Methods
 
-        protected override void OnRender(Renderer.Renderer renderer)
+        protected override void OnDraw(Renderer.Renderer renderer)
         {
             // TODO: Rendering
-            base.OnRender(renderer);
+            base.OnDraw(renderer);
         }
 
         protected internal virtual void OnToggle()

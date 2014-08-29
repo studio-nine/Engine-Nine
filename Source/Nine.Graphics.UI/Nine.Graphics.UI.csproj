@@ -120,6 +120,8 @@
     <Compile Include="Media\Brushes\SpecialBrush.cs" />
     <Compile Include="Media\Flip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIElementInput.cs" />
+    <Compile Include="UIElementVisual.cs" />
     <Compile Include="WindowManager.cs" />
   </ItemGroup>
   <ItemGroup>

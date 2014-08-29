@@ -461,7 +461,7 @@
             }
             dynamicPrimitive.EndPrimitive();
         }
-        
+
         public static void AddTriangle(this DynamicPrimitive dynamicPrimitive, Triangle triangle, Matrix? world, Color color, float lineWidth)
         {
             dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);

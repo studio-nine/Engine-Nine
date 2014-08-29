@@ -145,7 +145,7 @@
                 player.Stop();
         }
 
-        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnDraw(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             if (player.State != MediaState.Stopped)
                 Texture = player.GetTexture();

@@ -37,7 +37,7 @@
 		public WindowManager()
 		{
 			this.windows = new NotificationCollection<BaseWindow>();
-			this.TrackEvents = true;
+			this.TrackEvents = false;
 
 			EnsureInput();
 		}

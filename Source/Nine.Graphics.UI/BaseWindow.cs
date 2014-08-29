@@ -10,10 +10,7 @@
     /// Holds the functions for the window to render.
     /// </summary>
     public abstract class BaseWindow : Pass, IGraphicsObject
-    {   
-        // TODO: Should I have pass in here or move it to WindowManager?
-        //       How should I also handle the WindowManager? 
-
+    { 
         internal static readonly RasterizerState WithClipping = new RasterizerState { ScissorTestEnable = true };
         internal static readonly RasterizerState WithoutClipping = new RasterizerState { ScissorTestEnable = false };
         

@@ -131,11 +131,11 @@
             Add(FramesPerSecond * 10);
         }
 
-        protected override void OnRender(Renderer renderer)
+        protected override void OnDraw(Renderer renderer)
         {
             counter++;
             currentFrame++;
-            base.OnRender(renderer);
+            base.OnDraw(renderer);
         }
     }
 

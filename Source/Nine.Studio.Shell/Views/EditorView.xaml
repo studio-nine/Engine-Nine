@@ -26,6 +26,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="24"/>
             </Grid.RowDefinitions>
+            
             <Grid Name="ContentFrame" Visibility="{Binding ActiveProject, Converter={n:To IsNotNull}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>

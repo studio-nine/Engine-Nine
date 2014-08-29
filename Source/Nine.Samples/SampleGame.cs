@@ -79,7 +79,7 @@ namespace Nine.Samples
                 //new SkinnedModelTest(),
                 new UITest(),
                 new UIDialogWindowTest(),
-                new UIScrollViewerTest(),
+                //new UIScrollViewerTest(),
             };
             //samples = new List<Sample> { new Tutorial("Scenes/03. Materials.xaml") };
         }

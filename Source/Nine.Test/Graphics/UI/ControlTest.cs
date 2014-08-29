@@ -81,6 +81,32 @@
             Assert.AreEqual(Border2, HitTest(window.Content, new Vector2(100, 200)));
         }
 
+        [TestMethod()]
+        public void MarginLayout()
+        {
+            Border border1, border2, border3;
+            Window window = new Window
+            {
+                Viewport = new Rectangle(0, 0, 200, 200),
+                Content = border1 = new Border() { 
+                    Margin = new Thickness(5),
+                    Content = border2 = new Border() {
+                        Margin = new Thickness(5),
+                        Content = border3 = new Border() {
+                            Margin = new Thickness(5),
+                        }
+                    }
+                }
+            };
+
+            window.Messure();
+
+            
+            Assert.AreEqual(new BoundingRectangle(05, 05, 190, 190), border1.AbsoluteRenderTransform);
+            Assert.AreEqual(new BoundingRectangle(10, 10, 180, 180), border2.AbsoluteRenderTransform);
+            Assert.AreEqual(new BoundingRectangle(15, 15, 170, 170), border3.AbsoluteRenderTransform);
+        }
+
         static UIElement HitTest(UIElement element, Vector2 hit)
         {
             if (element.HitTest(hit))

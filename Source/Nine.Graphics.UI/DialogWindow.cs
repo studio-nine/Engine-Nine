@@ -28,7 +28,7 @@
     /// A draggable window with a frame
     /// </summary>
     [System.Windows.Markup.ContentProperty("Content")]
-    public class DialogWindow : BaseWindow, IContainer
+    public class DialogWindow : BaseWindow, IContainer, IDebugDrawable
     {
         #region Properties
 
@@ -117,6 +117,8 @@
 
         #endregion
 
+        #region Constructor
+
         public DialogWindow()
         {
             windowBorder = new Border(new Media.SolidColorBrush(Color.White), new Thickness(8, 32, 8, 8));
@@ -133,6 +135,8 @@
             windowBorder.MouseDown += WindowMouseDown;
             windowBorder.MouseUp += WindowMouseUp;
         }
+
+        #endregion
 
         #region Input
 
@@ -221,6 +225,8 @@
 
         #endregion
 
+        #region Methods
+
         protected virtual void Resized(float width, float height) 
         { 
             
@@ -249,8 +255,8 @@
 
             Renderer.elapsedTime = context.ElapsedTime;
             Renderer.Begin(context);
-            windowBorder.Render(Renderer);
-            title.Render(Renderer);
+            windowBorder.Draw(Renderer);
+            title.Draw(Renderer);
             Renderer.End(context);
         }
 
@@ -397,5 +403,23 @@
                 return;
             }
         }
+
+        #endregion
+
+        #region IDebugDrawable
+
+        bool IDebugDrawable.Visible
+        {
+            get { return Content != null; }
+        }
+
+        void IDebugDrawable.Draw(DrawingContext context, Primitives.DynamicPrimitive primitive)
+        {
+            this.Renderer.Begin(context);
+            Content.DrawBounds(Renderer, new Color(1, 0, 0, 0.1f));
+            this.Renderer.End(context);
+        }
+
+        #endregion
     }
 }

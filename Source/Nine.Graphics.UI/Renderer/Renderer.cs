@@ -8,6 +8,7 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.UI.Media;
 
+    // I would like to rename this to something better.
     public abstract class Renderer
     {
         public GraphicsDevice GraphicsDevice { get; private set; }

@@ -130,7 +130,7 @@ namespace Nine.Graphics.UI.Controls
             // TODO: (Alert) Mouse position to character
         }
 
-        protected override void OnRender(Nine.Graphics.UI.Renderer.Renderer renderer)
+        protected override void OnDraw(Nine.Graphics.UI.Renderer.Renderer renderer)
         {
             if (Font == null)
                 return;
