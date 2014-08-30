@@ -272,6 +272,54 @@ namespace Nine.Graphics.UI
             return vector;
         }
 
+        protected virtual BoundingRectangle? GetClippingRect(Vector2 finalSize)
+        {
+            if (!this.isClippingRequired)
+                return null;
+
+            var max = new MinMax(this);
+            Vector2 renderSize = this.RenderSize;
+
+            float maxWidth = float.IsPositiveInfinity(max.MaxWidth) ? renderSize.X : max.MaxWidth;
+            float maxHeight = float.IsPositiveInfinity(max.MaxHeight) ? renderSize.Y : max.MaxHeight;
+
+            bool isClippingRequiredDueToMaxSize = maxWidth.IsLessThan(renderSize.X) ||
+                                                  maxHeight.IsLessThan(renderSize.Y);
+
+            renderSize.X = Math.Min(renderSize.X, max.MaxWidth);
+            renderSize.Y = Math.Min(renderSize.Y, max.MaxHeight);
+
+            Thickness margin = this.Margin;
+            float horizontalMargins = margin.Left + margin.Right;
+            float verticalMargins = margin.Top + margin.Bottom;
+
+            var clientSize = new Vector2(
+                (finalSize.X - horizontalMargins).EnsurePositive(),
+                (finalSize.Y - verticalMargins).EnsurePositive());
+
+            bool isClippingRequiredDueToClientSize = clientSize.X.IsLessThan(renderSize.X) ||
+                                                     clientSize.Y.IsLessThan(renderSize.Y);
+
+            if (isClippingRequiredDueToMaxSize && !isClippingRequiredDueToClientSize)
+            {
+                return new BoundingRectangle(0f, 0f, maxWidth, maxHeight);
+            }
+
+            if (!isClippingRequiredDueToClientSize)
+            {
+                return BoundingRectangle.Empty;
+            }
+
+            Vector2 offset = this.ComputeAlignmentOffset(clientSize, renderSize);
+            var clipRect = new BoundingRectangle(-offset.X, -offset.Y, clientSize.X, clientSize.Y);
+
+            if (isClippingRequiredDueToMaxSize)
+            {
+            }
+
+            return clipRect;
+        }
+
         #endregion
 
         #region Measure and Arrange
@@ -435,7 +483,7 @@ namespace Nine.Graphics.UI
             availableSizeWithoutMargins.X = MathHelper.Clamp(availableSizeWithoutMargins.X, minMax.MinWidth, minMax.MaxWidth);
             availableSizeWithoutMargins.Y = MathHelper.Clamp(availableSizeWithoutMargins.Y, minMax.MinHeight, minMax.MaxHeight);
 
-            Vector2 size = Visibility == Visibility.Collapsed ? 
+            Vector2 size = this.Visibility == UI.Visibility.Collapsed ? 
                 Vector2.Zero : this.MeasureOverride(availableSizeWithoutMargins);
             size.X = Math.Max(size.X, minMax.MinWidth);
             size.Y = Math.Max(size.Y, minMax.MinHeight);
@@ -471,6 +519,200 @@ namespace Nine.Graphics.UI
 
             this.unclippedSize = isClippingRequired ? unclippedSize : Vector2.Zero;
             return desiredSizeWithMargins;
+        }
+
+        #endregion
+
+        #region Input
+
+        public event EventHandler<MouseEventArgs> MouseEnter;
+        public event EventHandler<MouseEventArgs> MouseLeave;
+
+        internal void InvokeMouseEnter(object sender, MouseEventArgs e)
+        {
+            //OnKeyDown(e);
+            if (MouseEnter != null)
+                MouseEnter(sender, e);
+        }
+        internal void InvokeMouseLeave(object sender, MouseEventArgs e)
+        {
+            //OnKeyDown(e);
+            if (MouseLeave != null)
+                MouseLeave(sender, e);
+        }
+
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when a key is been pressed.
+        /// </summary>
+        public event EventHandler<KeyboardEventArgs> KeyDown;
+
+        /// <summary>
+        /// Occurs when a key is been released.
+        /// </summary>
+        public event EventHandler<KeyboardEventArgs> KeyUp;
+
+        /// <summary>
+        /// Occurs when a mouse button is been pressed.
+        /// </summary>
+        public event EventHandler<MouseEventArgs> MouseDown;
+
+        /// <summary>
+        /// Occurs when a mouse button is been released.
+        /// </summary>
+        public event EventHandler<MouseEventArgs> MouseUp;
+
+        /// <summary>
+        /// Occurs when the mouse moved.
+        /// </summary>
+        public event EventHandler<MouseEventArgs> MouseMove;
+
+        /// <summary>
+        /// Occurs when the mouse scrolled.
+        /// </summary>
+        public event EventHandler<MouseEventArgs> MouseWheel;
+
+        /// <summary>
+        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been pressed.
+        /// </summary>
+        public event EventHandler<GamePadEventArgs> ButtonDown;
+
+        /// <summary>
+        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been released.
+        /// </summary>
+        public event EventHandler<GamePadEventArgs> ButtonUp;
+
+        #endregion
+
+        #region Invoke Input Methods
+
+        internal void InvokeKeyDown(object sender, KeyboardEventArgs e)
+        {
+            OnKeyDown(e);
+            if (KeyDown != null)
+                KeyDown(sender, e);
+        }
+        internal void InvokeKeyUp(object sender, KeyboardEventArgs e)
+        {
+            OnKeyUp(e);
+            if (KeyUp != null)
+                KeyUp(sender, e);
+        }
+        internal void InvokeMouseMove(object sender, MouseEventArgs e)
+        {
+            OnMouseMove(e);
+            if (MouseMove != null)
+                MouseMove(sender, e);
+        }
+        internal void InvokeOnMouseUp(object sender, MouseEventArgs e)
+        {
+            OnMouseUp(e);
+            if (MouseUp != null)
+                MouseUp(sender, e);
+        }
+        internal void InvokeMouseDown(object sender, MouseEventArgs e)
+        {
+            OnMouseDown(e);
+            if (MouseDown != null)
+                MouseDown(sender, e);
+        }
+        internal void InvokeMouseWheel(object sender, MouseEventArgs e)
+        {
+            OnMouseWheel(e);
+            if (MouseWheel != null)
+                MouseWheel(sender, e);
+        }
+        internal void InvokeButtonDown(object sender, GamePadEventArgs e)
+        {
+            OnButtonDown(e);
+            if (ButtonDown != null)
+                ButtonDown(sender, e);
+        }
+        internal void InvokeButtonUp(object sender, GamePadEventArgs e)
+        {
+            OnButtonUp(e);
+            if (ButtonUp != null)
+                ButtonUp(sender, e);
+        }
+
+        #endregion
+
+        protected virtual void OnKeyDown(KeyboardEventArgs e) { }
+        protected virtual void OnKeyUp(KeyboardEventArgs e) { }
+        protected virtual void OnMouseMove(MouseEventArgs e) { }
+        protected virtual void OnMouseUp(MouseEventArgs e) { }
+        protected virtual void OnMouseDown(MouseEventArgs e) { }
+        protected virtual void OnMouseWheel(MouseEventArgs e) { }
+        protected virtual void OnButtonDown(GamePadEventArgs e) { }
+        protected virtual void OnButtonUp(GamePadEventArgs e) { }
+
+        public bool HitTest(Vector2 point)
+        {
+            return AbsoluteRenderTransform.Contains(point.X, point.Y) == ContainmentType.Contains;
+        }
+
+        #endregion 
+        
+        #region Draw
+
+        internal bool Visible
+        {
+            get { return this.Visibility != Visibility.Visible; }
+        }
+
+        public void Draw(Renderer.Renderer renderer)
+        {
+            // TODO: Fix Clipping
+            renderer.GraphicsDevice.RasterizerState = needsClipping ?
+                BaseWindow.WithClipping : BaseWindow.WithoutClipping;
+            if (clip.HasValue)
+            {
+                var c = clip.Value;
+                c.X += AbsoluteVisualOffset.X;
+                c.Y += AbsoluteVisualOffset.Y;
+                renderer.GraphicsDevice.ScissorRectangle = c;
+            }
+
+            // Should I move this?
+            if (Background != null)
+            {
+                renderer.Draw(AbsoluteRenderTransform, Background);
+            }
+
+            OnDraw(renderer);
+        }
+
+        /// <summary>
+        /// Called when element is drawing.
+        /// </summary>
+        /// <param name="renderer"></param>
+        protected virtual void OnDraw(Renderer.Renderer renderer) { }
+
+
+        /// <summary>
+        /// Draws the RenderTransforms of every element.
+        /// This is useful when debugging.
+        /// </summary>
+        /// <param name="renderer"></param>
+        /// <param name="color"></param>
+        internal void DrawBounds(Renderer.Renderer renderer, Color color)
+        {
+            renderer.Draw(AbsoluteRenderTransform, color);
+
+            var container = this as IContainer;
+            if (container != null)
+            {
+                foreach (var item in container.Children)
+                {
+                    var uiElement = item as UIElement;
+                    if (uiElement != null)
+                    {
+                        uiElement.DrawBounds(renderer, color);
+                    }
+                }
+            }
         }
 
         #endregion

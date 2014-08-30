@@ -34,6 +34,8 @@
 		
 		private Input input;
 
+		private UIElement prevMouseOverElement;
+
 		public WindowManager()
 		{
 			this.windows = new NotificationCollection<BaseWindow>();
@@ -49,11 +51,42 @@
 		void MouseMove(object sender, MouseEventArgs e)
 		{
 			// TODO: Improve this
+			
+			if (prevMouseOverElement != null)
+			{
+				var result = FindElement(prevMouseOverElement, e.X, e.Y);
+				if (result != null)
+				{
+					Debug.WriteLine(prevMouseOverElement.ToString());
+
+					prevMouseOverElement = result;
+					prevMouseOverElement.InvokeMouseMove(this, e);
+					return;
+				}
+				else if (prevMouseOverElement.HitTest(new Vector2(e.X, e.Y)))
+				{
+					Debug.WriteLine(prevMouseOverElement.ToString());
+
+					prevMouseOverElement.InvokeMouseMove(this, e);
+					return;
+				}
+				else
+				{
+					prevMouseOverElement.InvokeMouseLeave(this, e);
+					prevMouseOverElement = null;
+				}
+			}
+			
+
 			UIElement element = FindElement(e.X, e.Y);
 			if (element != null)
 			{
-				if (TrackEvents) Debug.WriteLine(string.Format("Event: {0}, Element: {1}", "MouseMove", element));
+				//if (TrackEvents) Debug.WriteLine(string.Format("Event: {0}, Element: {1}", "MouseMove", element));
+
+				element.InvokeMouseEnter(this, e);
 				element.InvokeMouseMove(this, e);
+
+				prevMouseOverElement = element;
 			}
 		}
 		
@@ -196,12 +229,36 @@
 					if (uiElement != null)
 					{
 						element = HitTest(uiElement, hit);
-						break;
+						if (element != null)
+							break;
 					}
 				}
 			}
 
 			return element;
+		}
+
+		private UIElement FindElement(UIElement elemenet, int x, int y)
+		{
+			Vector2 hit = new Vector2(x, y);
+			UIElement result = null;
+
+			var container = elemenet as IContainer;
+			if (container != null)
+			{
+				foreach (var child in container.Children)
+				{
+					var uiElement = child as UIElement;
+					if (uiElement != null)
+					{
+						result = HitTest(uiElement, hit);
+						if (result != null)
+							break;
+					}
+				}
+			}
+
+			return result;
 		}
 
 		private static UIElement HitTest(UIElement element, Vector2 hit)

@@ -102,7 +102,7 @@ namespace Nine.Graphics.UI.Controls
                 availableSizeForContent.Y = float.PositiveInfinity;
             }
 
-            // TODO: work out what the first visible child is from the scrolldata offset
+            // --: work out what the first visible child is from the scrolldata offset
             int firstVisibleChild = 0;
             bool isLastVisibleChild = false;
             foreach (var child in this.children.GetCursor(firstVisibleChild))

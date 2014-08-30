@@ -49,7 +49,6 @@ namespace Nine
 
         public WindowsInputSource(IntPtr handle)
         {
-            // TODO: MonoGame does not 'currently' support this.
             Mouse.WindowHandle = handle;
             control = Form.FromHandle(handle);
             control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);
@@ -70,15 +69,16 @@ namespace Nine
 
         void control_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            // TODO: Memory Leak
-            MouseEventArgs args = new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta);
-
-            args.IsLeftButtonDown = leftDown;
-            args.IsRightButtonDown = rightDown;
-            args.IsMiddleButtonDown = middleDown;
-
             if (MouseMove != null)
+            {
+                MouseEventArgs args = new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta);
+
+                args.IsLeftButtonDown = leftDown;
+                args.IsRightButtonDown = rightDown;
+                args.IsMiddleButtonDown = middleDown;
+
                 MouseMove(this, args);
+            }
         }
 
         void control_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)

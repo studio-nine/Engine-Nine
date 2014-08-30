@@ -104,9 +104,27 @@
             Grid.SetColumn(border1, 1);
             Grid.SetRow(border1, 1);
 
+            Color defaultButtonBackground = Color.WhiteSmoke;
+            Color hoverButtonBackground = Color.Gray;
+
             for (int i = 0; i < 12; i++)
             {
-                stackPanel.Children.Add(new Button(font, string.Format("Hello World! [{0}]", (i + 1).ToString("00"))));
+                var button = new Button(font, string.Format("Hello World! [{0}]", (i + 1).ToString("00")));
+                button.Background = defaultButtonBackground;
+
+                button.Click += (s, e) => {
+                    button.Background = Color.Red; 
+                };
+
+                button.MouseEnter += (s, e) => {
+                    button.Background = hoverButtonBackground; 
+                };
+
+                button.MouseLeave += (s, e) => {
+                    button.Background = defaultButtonBackground;
+                };
+
+                stackPanel.Children.Add(button);
             }
 
 
