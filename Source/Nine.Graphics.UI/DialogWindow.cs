@@ -119,7 +119,8 @@
 
         #region Constructor
 
-        public DialogWindow()
+        public DialogWindow(Scene scene)
+            : base(scene)
         {
             windowBorder = new Border(new Media.SolidColorBrush(Color.White), new Thickness(8, 32, 8, 8));
             windowBorder.Window = this;

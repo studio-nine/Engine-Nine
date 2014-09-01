@@ -5,12 +5,14 @@
 	using Microsoft.Xna.Framework;
 	using System.Collections;
 	using System.Diagnostics;
+	using System.Xaml;
+	using System;
 
 	/// <summary>
 	/// Handles multiple windows and input.
 	/// </summary>
 	[System.Windows.Markup.ContentProperty("Windows")]
-	public class WindowManager : Nine.Object, IContainer
+	public class WindowManager : Nine.Object
 	{
 		public bool InputEnabled
 		{
@@ -28,10 +30,8 @@
 		{
 			get { return windows; }
 		}
-		private NotificationCollection<BaseWindow> windows;
+		internal NotificationCollection<BaseWindow> windows;
 
-		IList IContainer.Children { get { return windows; } }
-		
 		private Input input;
 
 		private UIElement prevMouseOverElement;
@@ -50,23 +50,20 @@
 
 		void MouseMove(object sender, MouseEventArgs e)
 		{
-			// TODO: Improve this
-			
 			if (prevMouseOverElement != null)
 			{
 				var result = FindElement(prevMouseOverElement, e.X, e.Y);
 				if (result != null)
 				{
-					Debug.WriteLine(prevMouseOverElement.ToString());
+					result.InvokeMouseEnter(this, e);
+					result.InvokeMouseMove(this, e);
 
+					prevMouseOverElement.InvokeMouseLeave(this, e);
 					prevMouseOverElement = result;
-					prevMouseOverElement.InvokeMouseMove(this, e);
 					return;
 				}
 				else if (prevMouseOverElement.HitTest(new Vector2(e.X, e.Y)))
 				{
-					Debug.WriteLine(prevMouseOverElement.ToString());
-
 					prevMouseOverElement.InvokeMouseMove(this, e);
 					return;
 				}
@@ -81,8 +78,6 @@
 			UIElement element = FindElement(e.X, e.Y);
 			if (element != null)
 			{
-				//if (TrackEvents) Debug.WriteLine(string.Format("Event: {0}, Element: {1}", "MouseMove", element));
-
 				element.InvokeMouseEnter(this, e);
 				element.InvokeMouseMove(this, e);
 

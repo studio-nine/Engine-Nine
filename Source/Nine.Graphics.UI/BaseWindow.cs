@@ -18,12 +18,6 @@
 
         #region Properties
 
-        public WindowManager Manager
-        {
-            get { return manager; }
-        }
-        internal WindowManager manager;
-
         /// <summary>
         /// Gets or sets the renderer system.
         /// </summary>
@@ -42,9 +36,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseWindow">RootElement</see> class.
         /// </summary> 
-        protected BaseWindow()
+        protected BaseWindow(Scene scene)
         {
-
+            // TODO: rework on this design
+            scene.GetWindowManager();
         }
 
         #endregion

@@ -65,7 +65,8 @@ namespace Nine.Graphics.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="Window">Window</see> class.
         /// </summary> 
-        public Window()
+        public Window(Scene scene)
+            : base(scene)
         {
             
         }
@@ -74,7 +75,8 @@ namespace Nine.Graphics.UI
         /// Initializes a new instance of the <see cref="Window">Window</see> class.
         /// </summary>
         /// <param name="content"></param>
-        public Window(UIElement content)
+        public Window(Scene scene, UIElement content)
+            : base(scene)
         {
             this.content[0] = content;
         }
@@ -91,7 +93,7 @@ namespace Nine.Graphics.UI
 
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            if (content == null)
+            if (content[0] == null)
                 return;
 
             base.Draw(context, drawables);
@@ -100,6 +102,7 @@ namespace Nine.Graphics.UI
 
             if (Renderer == null)
                 Renderer = new SpriteBatchRenderer(context.GraphicsDevice);
+                //Renderer = new DynamicPrimitiveRenderer(context.GraphicsDevice);
 
             Renderer.elapsedTime = context.ElapsedTime;
             Renderer.Begin(context);
@@ -113,7 +116,7 @@ namespace Nine.Graphics.UI
 
         bool IDebugDrawable.Visible
         {
-            get { return true; }
+            get { return content[0] != null; }
         }
 
         void IDebugDrawable.Draw(DrawingContext context, Primitives.DynamicPrimitive primitive)

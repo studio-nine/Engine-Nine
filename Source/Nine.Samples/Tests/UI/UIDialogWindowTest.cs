@@ -21,7 +21,7 @@
             var scene = new Scene();
             var font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");
 
-            var window1 = new DialogWindow()
+            var window1 = new DialogWindow(scene)
             {
                 Viewport = new Rectangle(20, 50, 340, 195),
                 WindowBorderBrush = new SolidColorBrush(new Color(106, 172, 246)),
@@ -33,7 +33,7 @@
                 }
             };
 
-            var window2 = new DialogWindow()
+            var window2 = new DialogWindow(scene)
             {
                 Viewport = new Rectangle(20, 255, 340, 195),
                 WindowBorderBrush = new SolidColorBrush(new Color(106, 172, 246)),
@@ -45,7 +45,7 @@
                 },
             };
 
-            var window3 = new DialogWindow()
+            var window3 = new DialogWindow(scene)
             {
                 Viewport = new Rectangle(370, 50, 620, 400),
                 WindowBorderBrush = new SolidColorBrush(new Color(106, 172, 246)),
@@ -55,7 +55,7 @@
                 Content = new TabControl(),
             };
 
-            var window4 = new DialogWindow()
+            var window4 = new DialogWindow(scene)
             {
                 Viewport = new Rectangle(1000, 50, 270, 710),
                 WindowBorderBrush = new SolidColorBrush(new Color(106, 172, 246)),
@@ -64,7 +64,7 @@
                 Title = "",
             };
 
-            var window5 = new DialogWindow()
+            var window5 = new DialogWindow(scene)
             {
                 Viewport = new Rectangle(20, 460, 970, 300),
                 WindowBorderBrush = new SolidColorBrush(new Color(106, 172, 246)),

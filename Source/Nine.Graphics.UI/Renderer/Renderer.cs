@@ -11,6 +11,8 @@
     // I would like to rename this to something better.
     public abstract class Renderer
     {
+        #region Properties
+
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         public float ElapsedTime { get { return elapsedTime; } }
@@ -22,10 +24,24 @@
         }
         private bool isRendering = false;
 
+        #endregion
+
+        #region Fields
+
+        private FastList<UIElement> postElements;
+
+        #endregion
+
+        #region Constructor
+
         protected Renderer(GraphicsDevice graphics)
         {
             this.GraphicsDevice = graphics;
+
+            this.postElements = new FastList<UIElement>();
         }
+
+        #endregion
 
         public virtual void Begin(DrawingContext context)
         {
@@ -40,7 +56,26 @@
                 throw new ArgumentException();
             isRendering = false;
         }
-        
+
+        public void AddPostElemenet(UIElement element)
+        {
+            postElements.Add(element);
+        }
+
+        protected void DrawPostElements()
+        {
+            if (postElements.Count == 0)
+                return;
+
+            for (int i = 0; i < postElements.Count; i++)
+            {
+                postElements[i].Draw(this);
+            }
+            postElements.Clear();
+        }
+
+        #region Draw Methods
+
         public virtual void Draw(BoundingRectangle bound, Brush brush)
         {
             brush.OnRender(this, bound);
@@ -128,6 +163,8 @@
         }
 
         public abstract void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale);
+
+        #endregion
 
         #endregion
     }

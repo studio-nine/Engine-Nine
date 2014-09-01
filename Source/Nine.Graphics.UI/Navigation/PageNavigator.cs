@@ -60,7 +60,8 @@
 
         #region Constructer
 
-        public PageNavigator()
+        public PageNavigator(Scene scene)
+            : base(scene)
         {
             pages = new NotificationCollection<Page>();
             pages.Sender = this;

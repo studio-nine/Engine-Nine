@@ -26,6 +26,7 @@
 
         public override void End(DrawingContext context)
         {
+            DrawPostElements();
             spriteBatch.End();
             base.End(context);
         }

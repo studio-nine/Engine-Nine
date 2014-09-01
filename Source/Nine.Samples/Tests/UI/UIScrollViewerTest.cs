@@ -50,7 +50,7 @@
             Grid.SetRow(scrollViewer, 1);
             grid.Children.Add(scrollViewer);
 
-            Window window = new Window();
+            Window window = new Window(scene);
             window.Content = grid;
             scene.Add(window);
 

@@ -42,8 +42,7 @@ namespace Nine.Graphics.UI.Controls
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            // Move to OnMouseDown? then I get the right sender.
-            if (Click != null)
+            if (Click != null && e.Button == MouseButtons.Left)
                 Click(this, e);
             base.OnMouseDown(e);
         }

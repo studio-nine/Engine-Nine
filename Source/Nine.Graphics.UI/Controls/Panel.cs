@@ -103,7 +103,11 @@ namespace Nine.Graphics.UI.Controls
         {
             foreach (var child in children)
             {
-                child.Draw(renderer);
+                var result = this.AbsoluteRenderTransform.Contains(child.AbsoluteRenderTransform);
+                if (result != Microsoft.Xna.Framework.ContainmentType.Disjoint)
+                {
+                    child.Draw(renderer);
+                }
             }
         }
 
