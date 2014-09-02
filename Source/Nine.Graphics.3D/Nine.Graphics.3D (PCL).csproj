@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{88E70C7B-EDDF-4415-B817-F7742E749A34}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nine.Graphics</RootNamespace>
+    <AssemblyName>Nine.Graphics.3D</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile5</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
+    <Compile Include="..\TextTemplates\Nine.Graphics.Materials.3D.Generated.cs">
+      <Link>Nine.Graphics.Materials.3D.Generated.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nine.Graphics.Materials.3D.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AmbientLight.cs" />
+    <Compile Include="Animations\AvatarAnimation.cs" />
+    <Compile Include="Animations\BoneAnimation.cs" />
+    <Compile Include="Animations\BoneAnimationController.cs" />
+    <Compile Include="Animations\BoneAnimationClip.cs" />
+    <Compile Include="Animations\LookAtController.cs" />
+    <Compile Include="Cameras\ChaseCamera.cs" />
+    <Compile Include="ModelSource.cs" />
+    <Compile Include="DirectionalLight.cs" />
+    <Compile Include="DirectionalLightCollection.cs" />
+    <Compile Include="DrawingContext3D.cs" />
+    <Compile Include="Drawing\DrawingPass.cs" />
+    <Compile Include="Fog.cs" />
+    <Compile Include="Light.cs" />
+    <Compile Include="Materials\AlphaTestMaterial.cs" />
+    <Compile Include="Materials\BasicMaterial.cs" />
+    <Compile Include="Materials\MaterialHelper.cs" />
+    <Compile Include="Materials\DualTextureMaterial.cs" />
+    <Compile Include="ModelAttachment.cs" />
+    <Compile Include="Drawing\DepthPrePass.cs" />
+    <Compile Include="Drawing\LightPrePass.cs" />
+    <Compile Include="Materials\DepthAndNormalMaterial.cs" />
+    <Compile Include="Materials\DepthMaterial.cs" />
+    <Compile Include="Materials\MaterialParts\AlphaTestMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DepthAndNormalMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DepthMaterialPart.cs" />
+    <Compile Include="ShadowMap.cs" />
+    <Compile Include="PostEffects\AntiAliasMaterial.cs" />
+    <Compile Include="PostEffects\AntiAliasEffect.cs" />
+    <Compile Include="PostEffects\DepthOfFieldMaterial.cs" />
+    <Compile Include="Materials\MaterialPaintGroup.cs" />
+    <Compile Include="Materials\CustomMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\BeginPaintGroupMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\InstancedMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\TangentTransformMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\EndPaintGroupMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\EndLightMaterialPart.cs" />
+    <Compile Include="Materials\SkyBoxMaterial.cs" />
+    <Compile Include="Materials\EnvironmentMapMaterial.cs" />
+    <Compile Include="Materials\SkinnedMaterial.cs" />
+    <Compile Include="InstancedModel.cs" />
+    <Compile Include="PostEffects\DepthOfFieldEffect.cs" />
+    <Compile Include="Primitives\Cross.cs" />
+    <Compile Include="Decal.cs" />
+    <Compile Include="Model.cs" />
+    <Compile Include="Surface.cs" />
+    <Compile Include="Materials\MaterialParts\DetailMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DeferredLightsMaterialPart.cs" />
+    <Compile Include="Materials\MaterialGroup.cs" />
+    <Compile Include="SurfaceGeometry.cs" />
+    <Compile Include="Materials\MaterialParts\EmissiveMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\SpecularMaterialPart.cs" />
+    <Compile Include="ModelMesh.cs" />
+    <Compile Include="PointLight.cs" />
+    <Compile Include="SpotLight.cs" />
+    <Compile Include="SkyBox.cs" />
+    <Compile Include="Primitives\Cone.cs" />
+    <Compile Include="Primitives\Bezier.cs" />
+    <Compile Include="Primitives\Box.cs" />
+    <Compile Include="Primitives\Plane.cs" />
+    <Compile Include="Primitives\Dome.cs" />
+    <Compile Include="Primitives\Torus.cs" />
+    <Compile Include="Primitives\Teapot.cs" />
+    <Compile Include="Primitives\Cylinder.cs" />
+    <Compile Include="Primitives\Sphere.cs" />
+    <Compile Include="Primitives\Primitive.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Materials\MaterialParts\ColorMatrixMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\SpotLightEffectPart.cs" />
+    <Compile Include="Materials\MaterialParts\PointLightEffectPart.cs" />
+    <Compile Include="Primitives\DynamicPrimitiveExtensions.cs" />
+    <Compile Include="Materials\MaterialParts\DiffuseMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\NormalMapMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\ShadowMapMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\TextureTransformMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\FogMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DualTextureMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\SkinnedMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\VertexTransformMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DirectionalLightMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\BeginLightMaterialPart.cs" />
+    <Compile Include="Materials\MaterialPart.cs" />
+    <Compile Include="ModelCollision.cs" />
+    <Compile Include="Cameras\FreeCamera.cs" />
+    <Compile Include="Cameras\ModelViewerCamera.cs" />
+    <Compile Include="Cameras\BirdEyeCamera.cs" />
+    <Compile Include="Heightmap.cs" />
+    <Compile Include="ModelExtensions.cs" />
+    <Compile Include="ModelSkeleton.cs" />
+    <Compile Include="SurfacePatchCollection.cs" />
+    <Compile Include="SurfacePatch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TextTemplates\Nine.Graphics.Materials.3D.tt">
+      <Link>Nine.Graphics.Materials.3D.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Graphics.Materials.3D.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Shaders\DeferredDirectionalLight.fx" />
+    <None Include="Shaders\DeferredLighting.fxh" />
+    <None Include="Shaders\DeferredPointLight.fx" />
+    <None Include="Shaders\DeferredSpotLight.fx" />
+    <None Include="Shaders\DepthAndNormal.fx" />
+    <None Include="Shaders\Depth.fx" />
+    <None Include="Shaders\SkyBox.fx" />
+    <None Include="Shaders\AntiAlias.fx" />
+    <None Include="Shaders\DepthOfField.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Fxaa3_11.fxh" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28PCL%29.csproj">
+      <Project>{9436af22-6937-4bee-887e-c93a4692bdd7}</Project>
+      <Name>Nine.Graphics %28PCL%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine\Nine %28PCL%29.csproj">
+      <Project>{48ce82db-3676-422e-a572-e5a88f4dcd1e}</Project>
+      <Name>Nine %28PCL%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\packages\MonoGame-Portable.3.2.1\lib\portable-net4+sl4+wp8+win8\MonoGame.Framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\Bin\Nine.Serialization.targets" />
+</Project>
