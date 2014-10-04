@@ -16,3 +16,4 @@ Source/Nine/obj/
 *.suo
 Source/Nine.Studio.Test/obj/
 Source/Packages/
+Source/Nine.Graphics.UI/obj/

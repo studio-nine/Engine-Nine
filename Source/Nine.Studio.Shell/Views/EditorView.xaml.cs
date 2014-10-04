@@ -21,11 +21,6 @@
         public EditorView()
         {
             InitializeComponent();
-
-            Library.Click += (s, e) =>
-            {
-                ShowDialogAsync("TITLE", "HELLO WORLD", new NoDesignView(), "OPTION");
-            };
         }
 
         #region Windows Buttons

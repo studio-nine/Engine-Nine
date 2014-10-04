@@ -76,6 +76,7 @@ namespace Nine.Samples
                 select (Sample)Activator.CreateInstance(type));
 
             samples = new List<Sample> { 
+                new UIPassTest(),
                 //new SkinnedModelTest(),
                 new UITest(),
                 new UIDialogWindowTest(),
