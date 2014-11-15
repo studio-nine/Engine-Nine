@@ -13,15 +13,15 @@ namespace Nine.Samples
 
     public class SpriteTest : Sample
     {
-        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
             scene.Add(new Camera2D(graphics));
 
-            var texture = content.Load<Texture2D>("Textures/Butterfly.png");
+            var texture = content.Load<Texture2D>("Textures/Butterfly");
             var link = new Group();
             scene.Add(link);
-            scene.Add(new TextSprite(graphics) { Text = "Engine Nine", Font = content.Load<SpriteFont>("Fonts/Consolas.spritefont") });
+            scene.Add(new TextSprite(graphics) { Text = "Engine Nine", Font = content.Load<SpriteFont>("Fonts/Consolas") });
 
             var size = 8;
             var step = 50;

@@ -70,7 +70,10 @@ namespace BEPUphysics.Threading
         {
             if (attempt == SleepInterval)
             {
-#if WINDOWS
+
+#if MonoGame
+                // TODO: Thread Sleep
+#elif WINDOWS
                 Thread.Yield();
 #else
                 Thread.Sleep(0);
@@ -82,7 +85,11 @@ namespace BEPUphysics.Threading
             }
             else
             {
+#if MonoGame
+                // TODO: Thread SpinWait
+#else
                 Thread.SpinWait(Math.Min(3 << attempt, MaximumSpinWait));
+#endif
             }
         }
     }

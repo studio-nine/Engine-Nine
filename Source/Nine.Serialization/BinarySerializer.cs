@@ -209,11 +209,13 @@ namespace Nine.Serialization
             UpdateReaders(FindImplementations<IBinaryObjectReader>());
             UpdateWriters(FindImplementations<IBinaryObjectWriter>());
 
+#if !MonoGame
             AppDomain.CurrentDomain.AssemblyLoad += (sender, e) =>
             {
                 UpdateReaders(FindImplementations<IBinaryObjectReader>(e.LoadedAssembly));
                 UpdateWriters(FindImplementations<IBinaryObjectWriter>(e.LoadedAssembly));
             };
+#endif
         }
 
         static Dictionary<int, IBinaryObjectReader> Readers = new Dictionary<int, IBinaryObjectReader>();
@@ -292,6 +294,7 @@ namespace Nine.Serialization
 
         private static IEnumerable<T> FindImplementations<T>()
         {
+#if !MonoGame
             try
             {
                 return from assembly in AppDomain.CurrentDomain.GetAssemblies()
@@ -302,6 +305,9 @@ namespace Nine.Serialization
             {
                 return Enumerable.Empty<T>();
             }
+#else
+            return Enumerable.Empty<T>();
+#endif
         }
 
         private static IEnumerable<T> FindImplementations<T>(Assembly assembly)

@@ -27,7 +27,6 @@
         /// Gets or sets the viewport used by <see cref="BaseWindow">RootElement</see> to layout its content.
         /// </summary>
         public BoundingRectangle Viewport { get; set; }
-        // TODO: Why did I change this to Floats?
 
         #endregion
 

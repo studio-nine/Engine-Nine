@@ -20,9 +20,9 @@
                 textureParameter.SetValue(Texture2);
         }
 
-        public override void SetTexture(TextureUsage usage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage usage, Texture texture)
         {
-            if (usage == TextureUsage.Dual)
+            if (usage == Nine.Graphics.TextureUsage.Dual)
                 Texture2 = texture as Texture2D;
         }
 

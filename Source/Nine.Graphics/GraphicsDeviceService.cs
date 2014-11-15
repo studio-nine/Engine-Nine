@@ -132,7 +132,11 @@ namespace Nine.Graphics
             parameters.BackBufferWidth = Math.Max(parameters.BackBufferWidth, width);
             parameters.BackBufferHeight = Math.Max(parameters.BackBufferHeight, height);
 
+#if PCL
+            // TODO: Apply graphicsdevice parameters
+#else
             graphicsDevice.Reset(parameters);
+#endif
 
             if (DeviceReset != null)
                 DeviceReset(this, EventArgs.Empty);

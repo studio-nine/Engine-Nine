@@ -25,9 +25,12 @@
         {
             if (change.Text.Length == 1)
             {
-                var Char = char.Parse(change.Text);
-                if (char.IsNumber(Char))
-                    return true;
+                char result;
+                if (char.TryParse(change.Text, out result))
+                {
+                    if (char.IsNumber(result))
+                        return true;
+                }
             }
             if (change.Type == TextChange.TextChangeType.CharRemovedNegative ||
                 change.Type == TextChange.TextChangeType.CharRemovedPositive)

@@ -124,7 +124,9 @@
         /// <summary>
         /// Gets the current vertex type used by this surface.
         /// </summary>
+#if !MonoGame
         [TypeConverter(typeof(Nine.Design.SystemTypeConverter))]
+#endif
         public Type VertexType
         {
             get { return vertexType; }

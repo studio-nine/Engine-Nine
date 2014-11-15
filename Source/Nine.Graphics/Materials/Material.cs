@@ -211,7 +211,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Sets the texture based on the texture usage.
         /// </summary>
-        public virtual void SetTexture(TextureUsage textureUsage, Texture texture) { }
+        public virtual void SetTexture(Nine.Graphics.TextureUsage textureUsage, Texture texture) { }
 
         /// <summary>
         /// Applies all the shader parameters before drawing any primitives.

@@ -26,7 +26,7 @@ namespace Nine.Graphics.Materials
         partial void BeginApplyLocalParameters(DrawingContext context, DepthOfFieldMaterial previousMaterial)
         {
             GraphicsDevice.Textures[0] = texture;
-            GraphicsDevice.Textures[2] = context.textures[TextureUsage.DepthBuffer] as Texture2D;
+            GraphicsDevice.Textures[2] = context.textures[Nine.Graphics.TextureUsage.DepthBuffer] as Texture2D;
             GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
                         
             var projectionParams = new Vector3();
@@ -64,9 +64,9 @@ namespace Nine.Graphics.Materials
             passTypes.Add(typeof(DepthPrePass));
         }
 
-        public override void SetTexture(TextureUsage textureUsage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage textureUsage, Texture texture)
         {
-            if (textureUsage == TextureUsage.Blur)
+            if (textureUsage == Nine.Graphics.TextureUsage.Blur)
                 GraphicsDevice.Textures[1] = texture;
         }
     }

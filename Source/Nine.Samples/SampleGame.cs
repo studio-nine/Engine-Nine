@@ -7,23 +7,24 @@ namespace Nine.Samples
     using Nine.Components;
     using Nine.Graphics;
     using Nine.Serialization;
-    using Nine.Physics;
     using System;
     using System.IO;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
+    using Microsoft.Xna.Framework.Content;
+
     public abstract class Sample
     {
         public virtual string Title { get { return GetType().Name; } }
-        public abstract Scene CreateScene(GraphicsDevice graphics, ContentLoader content);
+        public abstract Scene CreateScene(GraphicsDevice graphics, ContentManager content);
     }
     
     public class SampleGame : Microsoft.Xna.Framework.Game
     {
-        Input input;
-        ContentLoader loader;
+        Nine.Input input;
+        ContentManager content;
 
         int nextScene;
         Scene currentScene;
@@ -32,9 +33,6 @@ namespace Nine.Samples
 
         public SampleGame()
         {
-            // Package.BuildDirectory("../Content/", "../Content.n", (filePath, fileIndex, filesCount) => { System.Diagnostics.Trace.TraceError("{0}. {1}", fileIndex, filePath); });
-            // Package.BuildFile(@"D:\Github\Nine\Content\Models\Peon/Peon.X", "../Peon.xnb");
-
             var graphics = new GraphicsDeviceManager(this);
 
             graphics.GraphicsProfile = GraphicsProfile.HiDef;
@@ -51,20 +49,15 @@ namespace Nine.Samples
         
         protected override void LoadContent()
         {
-            loader = new ContentLoader(Services);
-            loader.SearchDirectories.Add("../Content");
+            content = new ContentManager(Services, "./Content");
 
-#if WINDOWS
-            loader.Resolvers.Add(new FileSystemResolver());
-#endif
-
-            Components.Add(new FrameRate(GraphicsDevice, loader.Load<SpriteFont>("Fonts/Consolas.spritefont")));
+            Components.Add(new FrameRate(GraphicsDevice, content.Load<SpriteFont>("Fonts/Consolas")));
             Components.Add(new InputComponent(Window.Handle));  
 
             InitializeSamples();
             InitializeInput();
             LoadNextScene();
-
+            
             base.LoadContent();
         }
 
@@ -75,20 +68,19 @@ namespace Nine.Samples
                 where type.IsSubclassOf(typeof(Sample)) && type != typeof(Tutorial)
                 select (Sample)Activator.CreateInstance(type));
 
-            samples = new List<Sample> { 
-                //new SkinnedModelTest(),
-                new UITest(),
-                new UIDialogWindowTest(),
-                //new UIScrollViewerTest(),
+            samples = new List<Sample> {
+                //new PixelPerfectTest(),
+                new SpriteTest(),
+                new DynamicPrimitiveTest(),
+                //new PrimitiveStressTest(),
             };
-            //samples = new List<Sample> { new Tutorial("Scenes/03. Materials.xaml") };
         }
 
         private void LoadNextScene()
         {
             if (nextScene <= scenes.Count)
             {
-                scenes.Add(currentScene = samples[nextScene].CreateScene(GraphicsDevice, loader));
+                scenes.Add(currentScene = samples[nextScene].CreateScene(GraphicsDevice, content));
 
                 // TODO: rework on this design
                 currentScene.Add(new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40)) { InputEnabled = true });
@@ -103,7 +95,7 @@ namespace Nine.Samples
         {
             // Create an event based input handler.
             // Note that you have to explicitly keep a strong reference to the Input instance.
-            input = new Input();
+            input = new Nine.Input();
 #if XBOX
             input.ButtonDown += (sender, e) =>
             {

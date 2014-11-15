@@ -41,7 +41,11 @@ namespace Nine.Graphics.UI.Controls
     {
         #region Fields
 
+#if MonoGame
+        private static readonly Regex WhiteSpaceRegEx = new Regex(@"\s+", RegexOptions.ECMAScript);
+#else
         private static readonly Regex WhiteSpaceRegEx = new Regex(@"\s+", RegexOptions.Compiled);
+#endif
 
         /// <summary>
         /// Gets or sets the Current Font.

@@ -43,6 +43,7 @@
             if (xamlSchemaContextProvider != null)
                 serviceProvider = xamlSchemaContextProvider.SchemaContext as IServiceProvider;
 #endif
+#if !MonoGame
             var loader = serviceProvider.TryGetService<ContentLoader>();
             if (loader != null)
             {
@@ -52,6 +53,7 @@
                     serializationOverride.SetOverride(result, this);
                 return result;
             }
+#endif
             return null;
         }
     }

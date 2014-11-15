@@ -103,6 +103,7 @@ namespace Nine
             }
         }
 
+#if !MonoGame
         public static string CleanPath(string path)
         {
             if (path == null)
@@ -122,7 +123,7 @@ namespace Nine
 
             return relativePath.Replace('/', Path.DirectorySeparatorChar);
         }
-
+#endif
         public static int UpperPowerOfTwo(int v)
         {
             v--;
@@ -135,6 +136,7 @@ namespace Nine
             return v;
         }
 
+#if !MonoGame
         public static IEnumerable<Type> FindImplementations(Type baseType)
         {
             Type[] types;
@@ -192,8 +194,9 @@ namespace Nine
 
         private static BindingFlags BindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.Instance;
         public static Type[] ServiceProviderTypes = new Type[] { typeof(IServiceProvider) };
-        
-        
+
+#endif
+
         internal static T TryInvokeContentPipelineMethod<T>(string className, string methodName, params object[] paramters)
         {
 #if WINDOWS
@@ -205,6 +208,8 @@ namespace Nine
             return default(T);
 #endif
         }
+#if !MonoGame
         static Assembly PipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "Nine.Content");
+#endif
     }
 }

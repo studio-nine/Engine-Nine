@@ -27,6 +27,7 @@ namespace Nine.Serialization
         }
     }
 
+#if !MonoGame
     public partial class BinarySerializer : IContentImporter
     {
         object IContentImporter.Import(Stream stream, IServiceProvider serviceProvider)
@@ -40,4 +41,5 @@ namespace Nine.Serialization
         }
         static readonly string[] SupportedFileExtensions = new[] { ".n" };
     }
+#endif
 }

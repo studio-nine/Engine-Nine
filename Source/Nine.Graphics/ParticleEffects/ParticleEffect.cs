@@ -570,7 +570,11 @@
             elapsedSeconds = elapsedTime;
 
             numFramesBehind++;
-            
+
+#if MonoGame
+            // TODO: Thread
+            throw new NotImplementedException();
+#else
             if (Thread.VolatileRead(ref isAsync) == 0)
             {
                 Update();
@@ -584,6 +588,7 @@
                     numFramesBehind--;
                 }
             }
+#endif
 
             InsideViewFrustum = false;
         }
@@ -645,7 +650,10 @@
                 eyePosition = context.CameraPosition;
                 viewInverse = context.matrices.viewInverse;
                 primitive.Draw(context, material);
-                
+
+#if MonoGame
+                throw new NotImplementedException();
+#else
                 if (Thread.VolatileRead(ref isAsync) == 1)
                 {
                     // Once this particle effect is drawed, we start the update
@@ -656,6 +664,7 @@
                         numFramesBehind--;
                     }
                 }
+#endif
             }
         }
         #endregion
@@ -690,6 +699,8 @@
                 Windows.System.Threading.ThreadPool.RunAsync(op => ParticleUpdateWorker(), 
                     Windows.System.Threading.WorkItemPriority.Normal, 
                     Windows.System.Threading.WorkItemOptions.TimeSliced);
+#elif MonoGame
+                // TODO: Thread
 #else
                 var ParticleThread = new Thread((ThreadStart)ParticleUpdateWorker);
                 ParticleThread.IsBackground = true;

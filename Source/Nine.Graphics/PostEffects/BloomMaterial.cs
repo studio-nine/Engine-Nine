@@ -29,9 +29,9 @@ namespace Nine.Graphics.Materials
             GraphicsDevice.SamplerStates[1] = context.SamplerState;
         }
 
-        public override void SetTexture(TextureUsage textureUsage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage textureUsage, Texture texture)
         {
-            if (textureUsage == TextureUsage.Bloom)
+            if (textureUsage == Nine.Graphics.TextureUsage.Bloom)
                 GraphicsDevice.Textures[1] = texture;
         }
     }

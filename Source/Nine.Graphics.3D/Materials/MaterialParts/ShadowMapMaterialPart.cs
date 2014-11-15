@@ -118,9 +118,9 @@
             };
         }
 
-        public override void SetTexture(TextureUsage usage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage usage, Texture texture)
         {
-            if (usage == TextureUsage.ShadowMap && texture is Texture2D)
+            if (usage == Nine.Graphics.TextureUsage.ShadowMap && texture is Texture2D)
                 ShadowMap = texture as Texture2D;
         }
 

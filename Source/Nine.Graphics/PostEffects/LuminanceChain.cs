@@ -59,7 +59,7 @@
             }
 
             Effects.Add(adaptationEffect = new AdaptationEffect() { RenderTargetSize = Vector2.One, Speed = 5 });
-            TextureUsage = TextureUsage.Luminance;
+            TextureUsage = Nine.Graphics.TextureUsage.Luminance;
         }
     }
 }

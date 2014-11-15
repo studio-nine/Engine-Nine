@@ -1,4 +1,13 @@
 ﻿
+namespace System.ComponentModel
+{
+    public interface ISupportInitialize
+    {
+        void BeginInit();
+        void EndInit();
+    }
+}
+
 namespace System.Xaml
 {
     using System;
@@ -53,6 +62,41 @@ namespace System.Xaml
         bool RemoveProperty(AttachableMemberIdentifier attachableMemberIdentifier);
         void SetProperty(AttachableMemberIdentifier attachableMemberIdentifier, object value);
         bool TryGetProperty(AttachableMemberIdentifier attachableMemberIdentifier, out object value);
+    }
+
+    public class AttachablePropertyServices
+    {
+        public static bool TryGetProperty(object instance, AttachableMemberIdentifier name, out object value)
+        {
+            var storage = instance as IAttachedPropertyStore;
+            if (storage != null)
+            {
+                return storage.TryGetProperty(name, out value);
+            }
+            value = null;
+            return false;
+        }
+
+        public static bool TryGetProperty<T>(object instance, AttachableMemberIdentifier name, out T value)
+        {
+            object result;
+            if (!TryGetProperty(instance, name, out result)) 
+            {
+                value = default (T);
+                return false;
+            }
+            value = (T)result;
+            return true;
+        }
+
+        public static void SetProperty(object instance, AttachableMemberIdentifier name, object value)
+        {
+            var storage = instance as IAttachedPropertyStore;
+            if (storage != null)
+            {
+                storage.SetProperty(name, value);
+            }
+        }
     }
 }
 

@@ -25,7 +25,9 @@ namespace BEPUphysics.Threading
 
             getToWork = new AutoResetEvent(false);
 
-#if WINRT
+#if MonoGame
+            System.Threading.Tasks.Task.Factory.StartNew(() => Work(), System.Threading.Tasks.TaskCreationOptions.LongRunning);
+#elif WINRT
             Windows.System.Threading.ThreadPool.RunAsync(op => Work(), 
                 Windows.System.Threading.WorkItemPriority.Normal, 
                 Windows.System.Threading.WorkItemOptions.TimeSliced);

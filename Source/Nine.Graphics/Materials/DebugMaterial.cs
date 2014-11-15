@@ -11,7 +11,7 @@ namespace Nine.Graphics.Materials
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
 
-        public TextureUsage TextureUsage { get; set; }
+        public Nine.Graphics.TextureUsage TextureUsage { get; set; }
 
 #if WINDOWS
         [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
@@ -37,7 +37,7 @@ namespace Nine.Graphics.Materials
 
         protected override void OnBeginApply(DrawingContext context, Material previousMaterial)
         {
-            if (effect.TextureEnabled = (TextureUsage != TextureUsage.None))
+            if (effect.TextureEnabled = (TextureUsage != Nine.Graphics.TextureUsage.None))
                 effect.Texture = context.textures[TextureUsage] as Texture2D;
             effect.CurrentTechnique.Passes[0].Apply();
             if (SamplerState != null)

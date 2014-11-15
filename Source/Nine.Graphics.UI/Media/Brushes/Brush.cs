@@ -28,14 +28,15 @@ namespace Nine.Graphics.UI.Media
 {
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
-    using Nine.Design;
     using Nine.Serialization;
 
     /// <summary>
     /// Represents a Brush used to paint to the screen. The type of Brush describes how the area is to be painted.
     /// </summary>
     [BinarySerializable]
-    [TypeConverter(typeof(SolidColorBrushConverter))]
+#if !MonoGame
+    [TypeConverter(typeof(Nine.Design.SolidColorBrushConverter))]
+#endif
     public abstract class Brush
     {
         public float Alpha = 1;

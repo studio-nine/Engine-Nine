@@ -13,10 +13,12 @@
     using Nine.Graphics.UI.Media;
     using Nine.Graphics.UI.Renderer;
 
+    using Microsoft.Xna.Framework.Content;
+
     public class UIDialogWindowTest : Sample
     {
         public override string Title { get { return "[UI] Dialog Window Test"; } }
-        public override Scene CreateScene(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics, Serialization.ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
             var font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");

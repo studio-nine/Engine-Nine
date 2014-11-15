@@ -307,8 +307,8 @@ namespace Nine.Graphics
         private void UpdateDecalMaterial()
         {
             Material.texture = Texture;
-            Material.SetTexture(TextureUsage.Decal, Texture);
-            Material.SetTexture(TextureUsage.NormalMap, NormalMap);
+            Material.SetTexture(Nine.Graphics.TextureUsage.Decal, Texture);
+            Material.SetTexture(Nine.Graphics.TextureUsage.NormalMap, NormalMap);
             
             Material.Alpha = Alpha;
             

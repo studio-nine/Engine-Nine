@@ -99,7 +99,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Sets the texture based on the texture usage.
         /// </summary>
-        public override void SetTexture(TextureUsage textureUsage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage textureUsage, Texture texture)
         {
             var count = materialParts.Count;
             for (int i = 0; i < count; ++i)

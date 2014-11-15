@@ -18,7 +18,7 @@
 
         public override void GetDependentPasses(ICollection<Type> passTypes)
         {
-            // TODO:
+            // TODO: Dependent Pass
             //passTypes.Add(typeof(DepthPrePass));
         }
 
@@ -31,7 +31,7 @@
         partial void BeginApplyLocalParameters(DrawingContext context, SoftParticleMaterial previousMaterial)
         {
             context.graphics.Textures[0] = texture;
-            context.graphics.Textures[1] = context.textures[TextureUsage.DepthBuffer];
+            context.graphics.Textures[1] = context.textures[Nine.Graphics.TextureUsage.DepthBuffer];
             context.graphics.SamplerStates[1] = SamplerState.PointClamp;
 
             Matrix worldView;

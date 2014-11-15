@@ -59,7 +59,7 @@
         public HighDynamicRangeEffect(GraphicsDevice graphics)
         {
             Material = toneMapping = new ToneMappingMaterial(graphics);
-            Passes.Add(new PostEffectChain(TextureUsage.Bloom,
+            Passes.Add(new PostEffectChain(Nine.Graphics.TextureUsage.Bloom,
                 new PostEffect() { Material = threshold = new ThresholdMaterial(graphics), RenderTargetScale = 0.5f, SurfaceFormat = SurfaceFormat.Color },
                 blur = new BlurEffect(graphics),
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }

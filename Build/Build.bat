@@ -11,6 +11,8 @@ call %msbuild% %flags% Source\Nine.Serialization.sln
 call %msbuild% %flags% Source\Nine.sln
 call %msbuild% %flags% Source\Nine.Studio.sln
 
+call %msbuild% %flags% Utilities\EffectCompiler\EffectCompiler.sln
+
 popd
 
 endlocal

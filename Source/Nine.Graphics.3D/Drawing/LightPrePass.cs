@@ -149,8 +149,8 @@ namespace Nine.Graphics.Drawing
             }
             End(context3D);
 
-            context.textures[TextureUsage.DepthBuffer] = depthBuffer;
-            context.textures[TextureUsage.NormalBuffer] = normalBuffer;
+            context.textures[Nine.Graphics.TextureUsage.DepthBuffer] = depthBuffer;
+            context.textures[Nine.Graphics.TextureUsage.NormalBuffer] = normalBuffer;
 
             if (lightQuery == null)
             {
@@ -167,7 +167,7 @@ namespace Nine.Graphics.Drawing
             }
             EndLights(context3D);
 
-            context.textures[TextureUsage.LightBuffer] = lightBuffer;
+            context.textures[Nine.Graphics.TextureUsage.LightBuffer] = lightBuffer;
         }
 
         /// <summary>
@@ -204,8 +204,8 @@ namespace Nine.Graphics.Drawing
 
             Nine.Graphics.GraphicsExtensions.PopRenderTarget(context.graphics);
 
-            context.textures[TextureUsage.DepthBuffer] = DepthBuffer;
-            context.textures[TextureUsage.NormalBuffer] = NormalBuffer;
+            context.textures[Nine.Graphics.TextureUsage.DepthBuffer] = DepthBuffer;
+            context.textures[Nine.Graphics.TextureUsage.NormalBuffer] = NormalBuffer;
             GraphicsDevice.SetRenderTarget(null);
             hasSceneBegin = false;
         }
@@ -254,8 +254,8 @@ namespace Nine.Graphics.Drawing
             if (lightMaterial == null)
                 return;
 
-            lightMaterial.SetTexture(TextureUsage.DepthBuffer, depthBuffer);
-            lightMaterial.SetTexture(TextureUsage.NormalMap, normalBuffer);
+            lightMaterial.SetTexture(Nine.Graphics.TextureUsage.DepthBuffer, depthBuffer);
+            lightMaterial.SetTexture(Nine.Graphics.TextureUsage.NormalMap, normalBuffer);
 
             lightMaterial.BeginApply(context);
 
@@ -285,7 +285,7 @@ namespace Nine.Graphics.Drawing
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = context.SamplerState;
 
-            context.textures[TextureUsage.LightBuffer] = LightBuffer;
+            context.textures[Nine.Graphics.TextureUsage.LightBuffer] = LightBuffer;
             return LightBuffer;
         }
 

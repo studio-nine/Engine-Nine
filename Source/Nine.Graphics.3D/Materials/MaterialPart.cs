@@ -45,7 +45,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Sets the texture based on the texture usage.
         /// </summary>
-        public virtual void SetTexture(TextureUsage textureUsage, Texture texture) { }
+        public virtual void SetTexture(Nine.Graphics.TextureUsage textureUsage, Texture texture) { }
 
         /// <summary>
         /// Applies all the global shader parameters before drawing any primitives.
@@ -150,8 +150,13 @@ namespace Nine.Graphics.Materials
         /// </summary>
         internal static string GetShaderCode(string resourceKey)
         {
+#if MonoGame
+            // TODO: 
+            throw new NotSupportedException();
+#else
             return System.Text.Encoding.UTF8.GetString(
                 Extensions.TryInvokeContentPipelineMethod<byte[]>("MaterialPartShaders", "get_" + resourceKey));
+#endif
         }
         #endregion
     }

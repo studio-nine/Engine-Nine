@@ -33,11 +33,11 @@ namespace Nine.Graphics.Materials
             GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = context.SamplerState;
         }
 
-        public override void SetTexture(TextureUsage textureUsage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage textureUsage, Texture texture)
         {
-            if (textureUsage == TextureUsage.Luminance)
+            if (textureUsage == Nine.Graphics.TextureUsage.Luminance)
                 GraphicsDevice.Textures[1] = texture;
-            else if (textureUsage == TextureUsage.Bloom)
+            else if (textureUsage == Nine.Graphics.TextureUsage.Bloom)
                 GraphicsDevice.Textures[2] = texture;
         }
     }
