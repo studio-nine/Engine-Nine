@@ -139,7 +139,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Graphics.Materials.3D.Generated.cs</LastGenOutput>
     </None>
-    <None Include="packages.config" />
     <None Include="Shaders\DeferredDirectionalLight.fx" />
     <None Include="Shaders\DeferredLighting.fxh" />
     <None Include="Shaders\DeferredPointLight.fx" />
@@ -157,12 +156,6 @@
     <None Include="Shaders\Fxaa3_11.fxh" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>..\packages\MonoGame-Portable.3.2.1\lib\portable-net4+sl4+wp8+win8\MonoGame.Framework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28MonoGame%29.csproj">
       <Project>{9436af22-6937-4bee-887e-c93a4692bdd7}</Project>
       <Name>Nine.Graphics %28MonoGame%29</Name>
@@ -171,6 +164,11 @@
       <Project>{48ce82db-3676-422e-a572-e5a88f4dcd1e}</Project>
       <Name>Nine %28MonoGame%29</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\Packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!--<Import Project="..\..\Bin\Nine.Serialization.targets" />-->

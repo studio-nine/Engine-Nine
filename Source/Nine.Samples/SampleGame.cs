@@ -45,6 +45,7 @@ namespace Nine.Samples
             IsFixedTimeStep = false;
 
             Window.AllowUserResizing = true;
+            Window.Position = new Point(0, 0);
         }
         
         protected override void LoadContent()

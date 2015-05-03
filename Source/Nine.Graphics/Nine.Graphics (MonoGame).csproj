@@ -130,7 +130,6 @@
     <None Include="..\TextTemplates\Nine.Graphics.Materials.tth">
       <Link>Nine.Graphics.Materials.tth</Link>
     </None>
-    <None Include="packages.config" />
     <None Include="Shaders\RestoreDepthBuffer.fx" />
     <None Include="Shaders\VertexPassThrough2.fx" />
     <None Include="Shaders\Decal.fx" />
@@ -156,16 +155,15 @@
     <None Include="Shaders\Bloom.fx" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>..\packages\MonoGame-Portable.3.2.1\lib\portable-net4+sl4+wp8+win8\MonoGame.Framework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Nine\Nine %28MonoGame%29.csproj">
       <Project>{48ce82db-3676-422e-a572-e5a88f4dcd1e}</Project>
       <Name>Nine %28MonoGame%29</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\Packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!--<Import Project="..\..\Bin\Nine.Serialization.targets" />-->
