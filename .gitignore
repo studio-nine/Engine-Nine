@@ -17,3 +17,7 @@ Source/Nine/obj/
 Source/Nine.Studio.Test/obj/
 Source/Packages/
 Source/Nine.Graphics.UI/obj/
+<<<<<<< HEAD
+=======
+Utilities/EffectCompiler/EffectCompiler/obj/
+>>>>>>> feature/PCL

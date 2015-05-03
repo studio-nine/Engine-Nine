@@ -23,7 +23,7 @@
             if (lightBufferParameter != null)
             {
                 halfPixelParameter.SetValue(context.HalfPixel);
-                lightBufferParameter.SetValue(context.textures[TextureUsage.LightBuffer]);
+                lightBufferParameter.SetValue(context.textures[Nine.Graphics.TextureUsage.LightBuffer]);
                 context.graphics.SamplerStates[lightBufferIndex] = SamplerState.PointClamp;
             }
         }

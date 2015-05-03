@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9C99FC5F-4D5C-4740-9DFD-8F2C9288BBBB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nine.Navigation</RootNamespace>
+    <AssemblyName>Nine.Navigation</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile5</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;MonoGame</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;MonoGame</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
+    <Compile Include="PathGraph.cs" />
+    <Compile Include="GraphSearch.cs" />
+    <Compile Include="Navigator.cs" />
+    <Compile Include="PathGrid.cs" />
+    <Compile Include="PriorityQueue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Steering\BasicSteeringBehaviors.cs" />
+    <Compile Include="Steering\BoundAvoidanceBehavior.cs" />
+    <Compile Include="Steering\FlockingBehaviors.cs" />
+    <Compile Include="Steering\Math2D.cs" />
+    <Compile Include="Steering\Steerable.cs" />
+    <Compile Include="Steering\SteerableAvoidanceBehavior.cs" />
+    <Compile Include="Steering\SteeringBehavior.cs" />
+    <Compile Include="Steering\SteeringBehaviorCollection.cs" />
+    <Compile Include="Steering\SteeringHelper.cs" />
+    <Compile Include="Steering\StuckAvoidanceBehavior.cs" />
+    <Compile Include="Steering\WallAvoidanceBehavior.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\Packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28MonoGame%29.csproj">
+      <Project>{9436af22-6937-4bee-887e-c93a4692bdd7}</Project>
+      <Name>Nine.Graphics %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine\Nine %28MonoGame%29.csproj">
+      <Project>{48ce82db-3676-422e-a572-e5a88f4dcd1e}</Project>
+      <Name>Nine %28MonoGame%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!--<Import Project="..\..\Bin\Nine.Serialization.targets" />-->
+</Project>

@@ -83,9 +83,9 @@
             return result;
         }
 
-        public override void SetTexture(TextureUsage usage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage usage, Texture texture)
         {
-            if (usage == TextureUsage.Emissive)
+            if (usage == Nine.Graphics.TextureUsage.Emissive)
                 EmissiveMap = texture as Texture2D;
         }
 

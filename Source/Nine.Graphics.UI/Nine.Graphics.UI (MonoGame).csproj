@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A8519D9A-C5F0-41E1-89D8-5AC6A5F4C351}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nine.Graphics.UI</RootNamespace>
+    <AssemblyName>Nine.Graphics.UI</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile5</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;MonoGame</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;MonoGame</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
+    <Compile Include="BaseWindow.cs" />
+    <Compile Include="Controls\CheckBox.cs" />
+    <Compile Include="Controls\DataVisualization\LineGraph.cs" />
+    <Compile Include="Controls\ListBox.cs" />
+    <Compile Include="Controls\ListBoxItem.cs" />
+    <Compile Include="Controls\NumberBox.cs" />
+    <Compile Include="Controls\Other\ColumnDefinition.cs" />
+    <Compile Include="Controls\EventArgs\SelectionChangedEventArgs.cs" />
+    <Compile Include="Controls\Primitives\PlacementMode.cs" />
+    <Compile Include="Controls\TabControl.cs" />
+    <Compile Include="Controls\TabItem.cs" />
+    <Compile Include="Controls\ToolTipService.cs" />
+    <Compile Include="DialogWindow.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Navigation\Page.cs" />
+    <Compile Include="Navigation\PageNavigator.cs" />
+    <Compile Include="Controls\Primitives\Selector.cs" />
+    <Compile Include="Controls\RangeBase.cs" />
+    <Compile Include="Controls\ProgressBar.cs" />
+    <Compile Include="Controls\TextBox.cs" />
+    <Compile Include="Extensions\DynamicPrimitiveExtensions.cs" />
+    <Compile Include="Extensions\SpriteBatchExtensions.cs" />
+    <Compile Include="Extensions\UIExtensions.cs" />
+    <Compile Include="Internal\BlankTexture.cs" />
+    <Compile Include="Internal\BoundingRectangleExtensions.cs" />
+    <Compile Include="Media\Brushes\GradientBrush.cs" />
+    <Compile Include="Media\Brushes\ImageBrush.cs" />
+    <Compile Include="Media\Brushes\TileBrush.cs" />
+    <Compile Include="Media\Brushes\VisualBrush.cs" />
+    <Compile Include="Media\Brushes\SpecialBrush.cs" />
+    <Compile Include="Media\Flip.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SceneExtensions.cs" />
+    <Compile Include="UIElement_Input.cs" />
+    <Compile Include="UIElement_ToolTip.cs" />
+    <Compile Include="Utilities\TextHelper.cs" />
+    <Compile Include="WindowManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Primitives\ToggleButton.cs" />
+    <Compile Include="Internal\Controls\ScrollData.cs" />
+    <Compile Include="Extensions\IElementExtensions.cs" />
+    <Compile Include="Renderer\DynamicPrimitiveRenderer.cs" />
+    <Compile Include="Renderer\Renderer.cs" />
+    <Compile Include="Renderer\SpriteBatchRenderer.cs" />
+    <Compile Include="Thickness.cs" />
+    <Compile Include="GridLength.cs" />
+    <Compile Include="Controls\ItemsControl.cs" />
+    <Compile Include="Controls\Primitives\IScrollInfo.cs" />
+    <Compile Include="Controls\ScrollContentPresenter.cs" />
+    <Compile Include="Controls\ScrollViewer.cs" />
+    <Compile Include="Controls\VirtualizingStackPanel.cs" />
+    <Compile Include="Internal\FloatExtensions.cs" />
+    <Compile Include="Internal\MinMax.cs" />
+    <Compile Include="Internal\ThicknessExtensions.cs" />
+    <Compile Include="Internal\Vector2Extensions.cs" />
+    <Compile Include="Controls\Button.cs" />
+    <Compile Include="Controls\Primitives\ButtonBase.cs" />
+    <Compile Include="Controls\Control.cs" />
+    <Compile Include="Media\StretchDirection.cs" />
+    <Compile Include="Internal\Controls\Viewbox.cs" />
+    <Compile Include="Controls\Other\Orientation.cs" />
+    <Compile Include="Media\Stretch.cs" />
+    <Compile Include="Media\Brushes\Brush.cs" />
+    <Compile Include="Media\Brushes\SolidColorBrush.cs" />
+    <Compile Include="Controls\Other\SelectionMode.cs" />
+    <Compile Include="Controls\Border.cs" />
+    <Compile Include="Controls\ContentControl.cs" />
+    <Compile Include="Controls\Other\DefinitionBase.cs" />
+    <Compile Include="Controls\Grid.cs" />
+    <Compile Include="Controls\Image.cs" />
+    <Compile Include="Controls\Panel.cs" />
+    <Compile Include="Window.cs" />
+    <Compile Include="Controls\Other\RowDefinition.cs" />
+    <Compile Include="Controls\StackPanel.cs" />
+    <Compile Include="Controls\TextBlock.cs" />
+    <Compile Include="UIElement.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\Packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28MonoGame%29.csproj">
+      <Project>{9436af22-6937-4bee-887e-c93a4692bdd7}</Project>
+      <Name>Nine.Graphics %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine\Nine %28MonoGame%29.csproj">
+      <Project>{48ce82db-3676-422e-a572-e5a88f4dcd1e}</Project>
+      <Name>Nine %28MonoGame%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!--<Import Project="..\..\Bin\Nine.Serialization.targets" />-->
+</Project>

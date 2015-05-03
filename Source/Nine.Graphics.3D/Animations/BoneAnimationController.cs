@@ -120,8 +120,13 @@ namespace Nine.Animations
         /// </summary>
         public BoneSnapshotController(Microsoft.Xna.Framework.Graphics.Model model)
         {
+#if MonoGame
+            // TODO: MonoGame
+            throw new NotSupportedException();
+#else
             transforms = new Matrix[model.Bones.Count];
             model.CopyBoneTransformsTo(transforms);
+#endif
         }
 
         /// <summary>

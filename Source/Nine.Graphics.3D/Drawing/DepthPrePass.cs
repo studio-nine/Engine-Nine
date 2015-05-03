@@ -54,7 +54,7 @@ namespace Nine.Graphics.Drawing
             drawingPass.Draw(context, drawables);
             depthBuffer.End();
 
-            context.textures[TextureUsage.DepthBuffer] = depthBuffer;
+            context.textures[Nine.Graphics.TextureUsage.DepthBuffer] = depthBuffer;
         }
 
         public void Dispose()

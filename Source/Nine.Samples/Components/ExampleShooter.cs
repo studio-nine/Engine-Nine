@@ -7,14 +7,14 @@ namespace Nine.Samples
 
     public class ExampleShooter : Component
     {
-        private Input input;
+        private Nine.Input input;
 
         public string BulletTemplate { get; set; }
         public Keys Trigger { get; set; }
 
         protected override void OnAdded(Group parent)
         {
-            input = new Input();
+            input = new Nine.Input();
             input.KeyDown += new EventHandler<KeyboardEventArgs>(OnKeyDown);
         }
 

@@ -267,7 +267,9 @@ namespace BEPUphysics.Threading
                 this.initializationInformation = initializationInformation;
                 UpdateIndex(index);
 
-#if WINRT
+#if MonoGame
+                System.Threading.Tasks.Task.Factory.StartNew(() => ThreadExecutionLoop(), System.Threading.Tasks.TaskCreationOptions.LongRunning);
+#elif WINRT
                 Windows.System.Threading.ThreadPool.RunAsync(op => ThreadExecutionLoop(), 
                     Windows.System.Threading.WorkItemPriority.Normal, 
                     Windows.System.Threading.WorkItemOptions.TimeSliced);

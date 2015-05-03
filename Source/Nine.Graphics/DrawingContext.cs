@@ -300,7 +300,11 @@ namespace Nine.Graphics
         {
             if (VertexBuffer != vertexBuffer || VertexOffset != vertexOffset)
             {
+#if MonoGame
+                graphics.SetVertexBuffer(vertexBuffer);
+#else
                 graphics.SetVertexBuffer(vertexBuffer, vertexOffset);
+#endif
                 VertexBuffer = vertexBuffer;
                 VertexOffset = vertexOffset;
             }
@@ -530,7 +534,9 @@ namespace Nine.Graphics
         /// </summary>
         private Pass CreatePass(Type passType)
         {
-#if WINRT
+#if MonoGame
+            var defaultConstructor = passType.GetConstructor(null);
+#elif WINRT
             var defaultConstructor = passType.GetTypeInfo().DeclaredConstructors.FirstOrDefault(c => c.GetParameters().Length == 0);
 #else
             var defaultConstructor = passType.GetConstructor(Type.EmptyTypes);

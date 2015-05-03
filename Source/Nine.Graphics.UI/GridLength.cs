@@ -28,9 +28,10 @@ namespace Nine.Graphics.UI
 {
     using System;
     using System.ComponentModel;
-    using Nine.Design;
 
-    [TypeConverter(typeof(GridLengthConverter))]
+#if !MonoGame
+    [TypeConverter(typeof(Nine.Design.GridLengthConverter))]
+#endif
     public struct GridLength
     {
         private readonly GridUnitType gridUnitType;

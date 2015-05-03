@@ -308,6 +308,11 @@
         /// </summary>
         public ModelSkeleton(Microsoft.Xna.Framework.Graphics.Model model)
         {
+#if MonoGame
+            // TODO: MonoGame
+            throw new NotImplementedException();
+#else
+
             if (model == null)
                 throw new ArgumentNullException("model");
 
@@ -322,6 +327,7 @@
             model.CopyBoneTransformsTo(boneTransforms);
             BoneNames = new ReadOnlyCollection<string>(new BoneNameCollection() { Model = model });
             parentBones = new ReadOnlyCollection<int>(new ParentBoneCollection() { Model = model });
+#endif
         }
 
         #region Collections

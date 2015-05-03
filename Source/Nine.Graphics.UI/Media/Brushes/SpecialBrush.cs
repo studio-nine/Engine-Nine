@@ -22,7 +22,9 @@
 
         public Texture2D Texture { get; set; }
 
+#if !MonoGame
         [TypeConverter(typeof(Nine.Design.RectangleConverter))]
+#endif
         public Rectangle SourceArea 
         {
             get { return sourceArea; }

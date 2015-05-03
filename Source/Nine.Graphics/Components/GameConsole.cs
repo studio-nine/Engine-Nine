@@ -47,7 +47,7 @@ namespace Nine.Components
         public float CursorBlinkInterval { get; set; }
         public float FontSize { get; set; }
         public SpriteFont Font { get; set; }
-        public Input Input { get; private set; }
+        public Nine.Input Input { get; private set; }
         public Microsoft.Xna.Framework.Input.Keys ActivateKey { get; set; }
         public IDictionary<string, EventHandler<GameConsoleEventArgs>> Commands { get; private set; }
 
@@ -93,7 +93,7 @@ namespace Nine.Components
             ActivateKey = Microsoft.Xna.Framework.Input.Keys.OemTilde;
             Enabled = Visible = false;
 
-            Input = new Input();
+            Input = new Nine.Input();
             Input.KeyDown += new EventHandler<KeyboardEventArgs>(Input_KeyDown);
 
             Commands = new Dictionary<string, EventHandler<GameConsoleEventArgs>>(StringComparer.CurrentCultureIgnoreCase);

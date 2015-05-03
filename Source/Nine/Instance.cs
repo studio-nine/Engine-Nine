@@ -55,6 +55,7 @@ namespace Nine
             if (string.IsNullOrEmpty(Template))
                 return default(T);
 
+#if !MonoGame
             var contentLoader = serviceProvider.GetService<ContentLoader>();
             var createdInstance = ApplyProperties(contentLoader.Create<T>(Template));
 
@@ -83,6 +84,9 @@ namespace Nine
             }
 
             return createdInstance;
+#else
+            return default(T);
+#endif
         }
 
         /// <summary>

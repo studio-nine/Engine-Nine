@@ -8,7 +8,7 @@ namespace Nine.Graphics.Materials
     {
         partial void ApplyGlobalParameters(DrawingContext context)
         {
-            GraphicsDevice.Textures[0] = context.textures[TextureUsage.DepthBuffer];
+            GraphicsDevice.Textures[0] = context.textures[Nine.Graphics.TextureUsage.DepthBuffer];
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
         }
     }

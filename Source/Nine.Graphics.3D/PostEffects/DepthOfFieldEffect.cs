@@ -59,7 +59,7 @@
         public DepthOfFieldEffect(GraphicsDevice graphics)
         {
             Material = combine = new DepthOfFieldMaterial(graphics);
-            Passes.Add(new PostEffectChain(TextureUsage.Blur,
+            Passes.Add(new PostEffectChain(Nine.Graphics.TextureUsage.Blur,
                 depthScaleEffect = new PostEffect() { Material = depthScale = new DepthOfFieldMaterial(graphics) { IsDownScale = true }, RenderTargetScale = 0.5f },
                 scaleEffect = new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 0.5f, Enabled = false },
                 blur = new BlurEffect(graphics) { DepthBufferEnabled = true },

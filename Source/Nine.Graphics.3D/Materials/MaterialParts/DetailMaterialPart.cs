@@ -56,9 +56,9 @@
             };
         }
 
-        public override void SetTexture(TextureUsage usage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage usage, Texture texture)
         {
-            if (usage == TextureUsage.Detail)
+            if (usage == Nine.Graphics.TextureUsage.Detail)
                 DetailTexture = texture as Texture2D;
         }
 

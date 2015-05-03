@@ -25,7 +25,7 @@
         public bool MouseWheelEnabled { get; set; }
         public MouseButtons RotateButton { get; set; }
 
-        private Input input;
+        private Nine.Input input;
         private Vector3 center;
         private Vector3 start = Vector3.Zero;
         private Vector3 end = Vector3.Zero;
@@ -46,7 +46,7 @@
             WheelSpeed = 1;
             MouseWheelEnabled = true;
 
-            input = new Input();
+            input = new Nine.Input();
 
             input.MouseDown += new EventHandler<MouseEventArgs>(Input_ButtonDown);
             input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);

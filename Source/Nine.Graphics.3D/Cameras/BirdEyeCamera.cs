@@ -40,7 +40,7 @@
             }
         }
 
-        private Input input;
+        private Nine.Input input;
         private Vector3 lookAt = Vector3.Zero;
         private Point startPoint = Point.Zero;
 
@@ -63,7 +63,7 @@
             MaxRadius = 500f;
             Pitch = pitch;
 
-            input = new Input();
+            input = new Nine.Input();
             input.MouseDown += new EventHandler<MouseEventArgs>(Input_MouseDown);
             input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
             input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
@@ -76,7 +76,7 @@
         {
             if (input == null)
             {
-                input = new Input();
+                input = new Nine.Input();
                 input.MouseDown += new EventHandler<MouseEventArgs>(Input_MouseDown);
                 input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
                 input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);

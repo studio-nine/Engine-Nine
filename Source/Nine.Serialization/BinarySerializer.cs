@@ -209,11 +209,13 @@ namespace Nine.Serialization
             UpdateReaders(FindImplementations<IBinaryObjectReader>());
             UpdateWriters(FindImplementations<IBinaryObjectWriter>());
 
+#if !MonoGame
             AppDomain.CurrentDomain.AssemblyLoad += (sender, e) =>
             {
                 UpdateReaders(FindImplementations<IBinaryObjectReader>(e.LoadedAssembly));
                 UpdateWriters(FindImplementations<IBinaryObjectWriter>(e.LoadedAssembly));
             };
+#endif
         }
 
         static Dictionary<int, IBinaryObjectReader> Readers = new Dictionary<int, IBinaryObjectReader>();
@@ -268,7 +270,13 @@ namespace Nine.Serialization
             if (TypeToHash.TryGetValue(type, out result))
                 return result;
 
+#if MonoGame
+            var typeInfo = type.GetTypeInfo();
+            var binarySerializableAttributes = typeInfo.GetCustomAttributes(typeof(BinarySerializableAttribute), false).ToArray();
+#else
             var binarySerializableAttributes = type.GetCustomAttributes(typeof(BinarySerializableAttribute), false);
+#endif
+       
             if (binarySerializableAttributes.Length > 0)
             {
                 var token = ((BinarySerializableAttribute)binarySerializableAttributes[0]).Token;
@@ -292,6 +300,7 @@ namespace Nine.Serialization
 
         private static IEnumerable<T> FindImplementations<T>()
         {
+#if !MonoGame
             try
             {
                 return from assembly in AppDomain.CurrentDomain.GetAssemblies()
@@ -302,10 +311,14 @@ namespace Nine.Serialization
             {
                 return Enumerable.Empty<T>();
             }
+#else
+            return Enumerable.Empty<T>();
+#endif
         }
 
         private static IEnumerable<T> FindImplementations<T>(Assembly assembly)
         {
+#if !MonoGame
             try
             {
                 return from type in assembly.GetTypes()
@@ -314,6 +327,7 @@ namespace Nine.Serialization
                        select CreateInstance<T>(type);
             }
             catch
+#endif
             {
                 return Enumerable.Empty<T>();
             }

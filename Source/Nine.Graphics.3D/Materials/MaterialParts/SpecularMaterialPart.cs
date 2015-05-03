@@ -108,9 +108,9 @@
             return result;
         }
 
-        public override void SetTexture(TextureUsage usage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage usage, Texture texture)
         {
-            if (usage == TextureUsage.Specular)
+            if (usage == Nine.Graphics.TextureUsage.Specular)
                 SpecularMap = texture as Texture2D;
         }
 

@@ -13,7 +13,7 @@ namespace Nine.Samples
 
     public class DynamicPrimitiveTest : Sample
     {
-        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
             var solidPrimitive = new DynamicPrimitive(graphics) { DepthBias = 0 };

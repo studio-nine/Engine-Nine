@@ -44,9 +44,9 @@
             part.NormalMap = this.NormalMap;
         }
 
-        public override void SetTexture(TextureUsage usage, Texture texture)
+        public override void SetTexture(Nine.Graphics.TextureUsage usage, Texture texture)
         {
-            if (usage == TextureUsage.NormalMap)
+            if (usage == Nine.Graphics.TextureUsage.NormalMap)
                 NormalMap = texture as Texture2D;
         }
 

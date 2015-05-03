@@ -411,8 +411,8 @@ namespace Nine.Graphics
     {
         private InstancedModel model;
         private int index;
-        
-#if !WINRT
+
+#if !(WINRT || MonoGame)
         static VertexBufferBinding[] Bindings = new VertexBufferBinding[2];
 #endif
 
@@ -435,7 +435,7 @@ namespace Nine.Graphics
         /// </summary>
         public void Draw(DrawingContext context, Material material)
         {
-#if WINRT
+#if (WINRT || MonoGame)
             throw new NotSupportedException();
 #else
             if (model.template == null)
