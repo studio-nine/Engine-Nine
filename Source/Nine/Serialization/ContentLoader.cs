@@ -5,6 +5,7 @@ namespace Nine.Serialization
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -77,7 +78,7 @@ namespace Nine.Serialization
         public ContentLoader(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
-            this.resolvers.Add(new PackageResolver());
+            //this.resolvers.Add(new PackageResolver());
             this.searchDirectories.Add("");
             this.services.Add(new SerializationOverride());
         }
@@ -93,7 +94,8 @@ namespace Nine.Serialization
         {
             if (workingPath.Count > 0)
                 fileName = Path.Combine(workingPath.Peek(), fileName);
-            fileName = Extensions.CleanPath(fileName);
+            
+            // TODO: fileName = Extensions.CleanPath(fileName);
 
             object result;
             if (cachedContents == null)
@@ -164,15 +166,16 @@ namespace Nine.Serialization
 
         private bool FindStream(string fileName, out Stream stream, out IContentImporter loader)
         {
-            var searchDirectoryCount = searchDirectories.Count;
-            for (int i = 0; i < searchDirectoryCount; i++)
-            {
-                var searchDirectory = string.IsNullOrEmpty(searchDirectories[i]) 
-                    ? Directory.GetCurrentDirectory() : Path.GetFullPath(searchDirectories[i]);
-                CurrentFileName = Path.Combine(searchDirectory, fileName);
-                if (FindStreamInternal(CurrentFileName, out stream, out loader))
-                    return true;
-            }
+            // TODO: FindStream
+            //var searchDirectoryCount = searchDirectories.Count;
+            //for (int i = 0; i < searchDirectoryCount; i++)
+            //{
+            //    var searchDirectory = string.IsNullOrEmpty(searchDirectories[i]) 
+            //        ? Directory.GetCurrentDirectory() : Path.GetFullPath(searchDirectories[i]);
+            //    CurrentFileName = Path.Combine(searchDirectory, fileName);
+            //    if (FindStreamInternal(CurrentFileName, out stream, out loader))
+            //        return true;
+            //}
             stream = null;
             loader = null;
             return false;
@@ -198,7 +201,7 @@ namespace Nine.Serialization
             {
                 for (int i = 0; i < services.Count; i++)
                 {
-                    if ((result = services[i]) != null && serviceType.IsAssignableFrom(result.GetType()))
+                    if ((result = services[i]) != null && serviceType.GetTypeInfo().IsAssignableFrom(result.GetType().GetTypeInfo()))
                         return result;
                 }
             }

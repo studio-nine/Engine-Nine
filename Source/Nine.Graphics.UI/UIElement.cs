@@ -29,7 +29,6 @@ namespace Nine.Graphics.UI
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Xaml;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.UI.Internal;
     using Microsoft.Xna.Framework.Graphics;

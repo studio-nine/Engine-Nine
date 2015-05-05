@@ -26,17 +26,18 @@
 
 namespace Nine.Graphics.UI.Controls
 {
-    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
-    using Nine.Graphics.UI.Internal;
+    using Nine.AttachedProperty;
     using Nine.Graphics.Primitives;
-    using Nine.Graphics.UI.Renderer;
+    using Nine.Graphics.UI.Internal;
     using Nine.Graphics.UI.Media;
+    using Nine.Graphics.UI.Renderer;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Draws a border and/or background around another element.
     /// </summary>
-    [System.Windows.Markup.ContentProperty("Content")]
+    [ContentProperty("Content")]
     public class Border : UIElement, IContainer
     {
         #region Properties

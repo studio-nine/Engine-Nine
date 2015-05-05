@@ -1,12 +1,11 @@
 namespace Nine.Graphics.Materials
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents a basic building block of a material group.

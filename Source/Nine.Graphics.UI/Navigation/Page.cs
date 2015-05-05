@@ -1,13 +1,14 @@
 ﻿namespace Nine.Graphics.UI.Navigation
 {
+    using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
     using System;
     using System.Collections;
-    using Microsoft.Xna.Framework;
 
     /// <summary>
     /// 
     /// </summary>
-    [System.Windows.Markup.ContentProperty("Content")]
+    [ContentProperty("Content")]
     public class Page : UIElement, IContainer
     {
         /// <summary>

@@ -27,7 +27,7 @@ namespace Nine.Serialization
         }
     }
 
-#if !MonoGame
+#if !MonoGame // TODO: MonoGame
     public partial class BinarySerializer : IContentImporter
     {
         object IContentImporter.Import(Stream stream, IServiceProvider serviceProvider)

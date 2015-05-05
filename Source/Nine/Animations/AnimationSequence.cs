@@ -1,10 +1,10 @@
 namespace Nine.Animations
 {
+    using Microsoft.Xna.Framework.Content;
+    using Nine.AttachedProperty;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework.Content;
     
     /// <summary>
     /// Contains several animation clips that are played one after another.

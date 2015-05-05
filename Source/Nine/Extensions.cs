@@ -35,8 +35,6 @@ namespace Nine
             return new Point((int)vector.X, (int)vector.Y);
         }
 
-
-#if WINDOWS
         public static string ToContentString(this Matrix matrix)
         {
             return string.Join(" ", matrix.M11, matrix.M12, matrix.M13, matrix.M14
@@ -44,7 +42,6 @@ namespace Nine
                                   , matrix.M31, matrix.M32, matrix.M33, matrix.M34
                                   , matrix.M41, matrix.M42, matrix.M43, matrix.M44);
         }
-#endif
 
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)
         {

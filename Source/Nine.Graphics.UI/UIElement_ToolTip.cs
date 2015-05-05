@@ -75,7 +75,8 @@
                 tooltipElement.Measure(new Vector2(float.PositiveInfinity, float.PositiveInfinity));
                 tooltipElement.Arrange(new BoundingRectangle(position.X, position.Y, tooltipElement.DesiredSize.X, tooltipElement.DesiredSize.Y));
 
-                renderer.AddPostElemenet(tooltipElement);
+                // TODO: Revert Render to previus version
+                //renderer.AddPostElemenet(tooltipElement);
             }
         }
 

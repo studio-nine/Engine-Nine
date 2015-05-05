@@ -1,8 +1,8 @@
 ﻿namespace Nine.Graphics.UI
 {
+    using Nine.AttachedProperty;
     using System;
     using System.ComponentModel;
-    using System.Xaml;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class SceneExtensions

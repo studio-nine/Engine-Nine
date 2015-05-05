@@ -1,12 +1,13 @@
 ﻿namespace Nine.Graphics.UI.Media
 {
     using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
 
     /// <summary>
     /// A Brush that allows you to render a <see cref="UIElement"/> inside an area 
     /// (this will remove all the input functions etc). 
     /// </summary>
-    [System.Windows.Markup.ContentProperty("Visual")]
+    [ContentProperty("Visual")]
     public sealed class VisualBrush : Brush
     {
         public UIElement Visual { get; set; }

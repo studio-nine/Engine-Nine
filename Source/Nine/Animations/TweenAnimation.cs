@@ -1,9 +1,10 @@
 namespace Nine.Animations
 {
-    using System;
-    using System.Reflection;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
+    using System;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Defines in which direction will the transition be eased.
@@ -235,11 +236,10 @@ namespace Nine.Animations
         {
             // This is a generic limitation,
             // we have to assign the lerp using reflection.
-#if WINRT
-            var field = typeof(TweenAnimation<T>).GetTypeInfo().GetDeclaredField("lerp");
-#else
-            var field = typeof(TweenAnimation<T>).GetField("lerp", BindingFlags.NonPublic | BindingFlags.Instance);
-#endif
+
+            var fields = typeof(TweenAnimation<T>).GetRuntimeFields();
+            var field = fields.Where(e => e.Name == "lerp" && (e.IsPrivate || e.IsInitOnly)).First();
+
             if (typeof(T) == typeof(float))
                 field.SetValue(this, (Interpolate<float>)MathHelper.Lerp);
             else if (typeof(T) == typeof(double))
@@ -282,11 +282,10 @@ namespace Nine.Animations
         {
             // This is a generic limitation,
             // we have to assign the lerp using reflection.
-#if WINRT
-            var field = typeof(TweenAnimation<T>).GetTypeInfo().GetDeclaredField("add");
-#else
-            var field = typeof(TweenAnimation<T>).GetField("add", BindingFlags.NonPublic | BindingFlags.Instance);
-#endif
+
+            var fields = typeof(TweenAnimation<T>).GetRuntimeFields();
+            var field = fields.Where(e => e.Name == "add" && (e.IsPrivate || e.IsInitOnly)).First();
+
             if (typeof(T) == typeof(float))
                 field.SetValue(this, (Operator<float>)AddHelper.Add);
             else if (typeof(T) == typeof(double))

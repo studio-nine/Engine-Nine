@@ -122,7 +122,7 @@
                 {
                     var button = new Button(font, string.Format("Menu {0}", (i + 1)));
                     button.Background = defltButtonBackground;
-                    button.Width = 256; // TODO: 
+                    button.Width = 256;
 
                     button.Click += (s, e) => System.Diagnostics.Debug.WriteLine(string.Format("Mouse.Click: '{0}'", button.Text));
 

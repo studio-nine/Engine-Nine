@@ -1,11 +1,11 @@
 namespace Nine.Graphics
 {
+    using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using Microsoft.Xna.Framework;
-    using System;
-    using System.Windows.Markup;
 
     /// <summary>
     /// Defines an object that can be bound to a specific bone of a model.

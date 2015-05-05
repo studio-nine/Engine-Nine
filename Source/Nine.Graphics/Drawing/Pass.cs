@@ -3,8 +3,6 @@ namespace Nine.Graphics.Drawing
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Windows.Markup;
-    using System.Xaml;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;

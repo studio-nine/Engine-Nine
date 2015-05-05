@@ -1,15 +1,15 @@
 namespace Nine.Graphics
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Materials.MaterialParts;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
 
     #region ISupportInstancing
     /// <summary>

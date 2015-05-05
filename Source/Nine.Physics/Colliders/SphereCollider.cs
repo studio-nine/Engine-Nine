@@ -1,13 +1,12 @@
 namespace Nine.Physics.Colliders
 {
-    using System.Collections.Generic;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework;
-    using BEPUphysics.Entities;
-    using BEPUphysics.Entities.Prefabs;
     using BEPUphysics.Collidables;
     using BEPUphysics.Collidables.MobileCollidables;
     using BEPUphysics.CollisionShapes.ConvexShapes;
+    using BEPUphysics.Entities;
+    using BEPUphysics.Entities.Prefabs;
+    using Microsoft.Xna.Framework;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a sphere shaped collider.

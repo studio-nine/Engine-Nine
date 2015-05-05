@@ -1,15 +1,16 @@
 namespace Nine.Graphics
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Animations;
+    using Nine.AttachedProperty;
     using Nine.Graphics.Materials;
+    using Nine.Serialization;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
 
     /// <summary>
     /// Defines a basic model that can be rendered using the renderer with a designated material.

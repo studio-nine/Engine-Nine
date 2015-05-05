@@ -1,14 +1,13 @@
 namespace Nine.Graphics.Materials
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Windows.Markup;
-    using System.Xaml;
-    using System.Linq;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
     using Nine.Graphics.Drawing;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Defines a material part that is a layer of a material group.

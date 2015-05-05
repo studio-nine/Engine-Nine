@@ -1,9 +1,9 @@
 namespace Nine.Animations
 {
-    using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics;
+    using System;
     
     /// <summary>
     /// Controls the bone transforms of a model based on predefined skeleton animation tracks.

@@ -1,13 +1,13 @@
 ﻿namespace Nine.Graphics.Primitives
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
+    using Nine.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
-    using Nine.Graphics;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Enables a group of dynamic primitives to be drawn.

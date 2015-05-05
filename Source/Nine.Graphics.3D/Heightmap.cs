@@ -1,12 +1,12 @@
 ﻿namespace Nine.Graphics
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Xaml;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
+    using Nine.AttachedProperty;
     using Nine.Serialization;
-using System.ComponentModel;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
 
     /// <summary>
     /// Represents a height field in 3d space.

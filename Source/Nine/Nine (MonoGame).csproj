@@ -28,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;MonoGame;WINRT</DefineConstants>
+    <DefineConstants>TRACE;MonoGame</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -54,15 +54,17 @@
     </Compile>
     <Compile Include="Animations\AnimationReference.cs" />
     <Compile Include="Animations\TweenAnimations.cs" />
-    <Compile Include="ContentReference.cs" />
-    <Compile Include="PCL.cs" />
+    <Compile Include="AttachedProperty\AttachableMemberIdentifier.cs" />
+    <Compile Include="AttachedProperty\AttachablePropertyServices.cs" />
+    <Compile Include="AttachedProperty\IAttachedPropertyStore.cs" />
+    <Compile Include="Serialization\ContentLoader.cs" />
+    <Compile Include="Serialization\ContentLoaderExtensions.cs" />
     <Compile Include="WeakReferenceEqualtyComparer.cs" />
     <Compile Include="Serialization\SerializationOverride.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="AttachedPropertyChangedEventArgs.cs" />
+    <Compile Include="AttachedProperty\AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="Serialization\ContentProperties.cs" />
-    <Compile Include="Serialization\AttachableMemberIdentifierExtensions.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Serialization\BinaryReaderExtensions2.cs" />
     <Compile Include="Serialization\BinaryWriterExtensions2.cs" />
@@ -82,7 +84,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Transformable.cs" />
-    <Compile Include="WeakReference.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="OctreeSceneManager.cs" />
     <Compile Include="UniformGrid.cs" />
     <Compile Include="NotificationCollection.cs" />
-    <Compile Include="Attributes.cs" />
+    <Compile Include="AttachedProperty\Attributes.cs" />
     <Compile Include="Input\InputEventArgs.cs" />
     <Compile Include="Input\IInputSource.cs" />
     <Compile Include="LineSegment.cs" />

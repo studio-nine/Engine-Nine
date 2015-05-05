@@ -1,12 +1,12 @@
 ﻿namespace Nine.Graphics.PostEffects
 {
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
+    using Nine.Graphics;
+    using Nine.Graphics.Drawing;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.Drawing;
-    using Nine.Graphics;
 
     /// <summary>
     /// Represents post processing effects.

@@ -1,14 +1,14 @@
 ﻿namespace Nine.Animations
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Nine.Graphics;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
-    using Nine.Graphics;
 
     /// <summary>
     /// Defines a bone animation clip.

@@ -1,13 +1,13 @@
 namespace Nine.Physics
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Windows.Markup;
     using BEPUphysics;
     using BEPUphysics.Entities;
     using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
     using Nine.Physics.Colliders;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
 
     public enum RigidBodyType
     {

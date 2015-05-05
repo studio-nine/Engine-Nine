@@ -7,10 +7,10 @@ namespace Nine.Physics
     using BEPUphysics.Settings;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.Xaml;
     
     /// <summary>
     /// Contains extension methods related to physics.

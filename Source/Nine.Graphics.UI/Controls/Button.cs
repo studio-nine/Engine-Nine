@@ -28,6 +28,7 @@ namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
     using Nine.Graphics.UI.Controls.Primitives;
     using Nine.Graphics.UI.Media;
 
@@ -36,7 +37,7 @@ namespace Nine.Graphics.UI.Controls
     /// <summary>
     /// A Control that represent a clickable button.
     /// </summary>
-    [System.Windows.Markup.ContentProperty("Text")]
+    [ContentProperty("Text")]
     public class Button : Control
     {
         #region Properties

@@ -1,13 +1,13 @@
 namespace Nine.Graphics
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Xaml;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
     using Nine.Graphics.Drawing;
+    using System;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
     
     /// <summary>
     /// Contains extension methods related to graphics.

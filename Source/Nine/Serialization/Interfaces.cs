@@ -70,4 +70,11 @@
         /// </returns>
         string Share(object target, string key);
     }
+
+    // TODO: ISupportInitialize
+    public interface ISupportInitialize
+    {
+        void BeginInit();
+        void EndInit();
+    }
 }

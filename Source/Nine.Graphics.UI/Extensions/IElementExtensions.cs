@@ -26,14 +26,15 @@
 namespace Nine.Graphics.UI.Extensions
 {
     using System;
+    using System.Reflection;
 
     /// <summary>
-    ///     UIElement Extensions for XPF.
+    /// UIElement Extensions for XPF.
     /// </summary>
     public static class IElementExtensions
     {
         /// <summary>
-        ///     Returns the nearest ancestor of the specified type, which maybe itself or null if there is no ancestor of the requested type.
+        /// Returns the nearest ancestor of the specified type, which maybe itself or null if there is no ancestor of the requested type.
         /// </summary>
         /// <typeparam name = "T">The Type of the ancestor to find.</typeparam>
         /// <param name = "element">The element from which to start the search.</param>
@@ -44,7 +45,7 @@ namespace Nine.Graphics.UI.Extensions
         }
 
         /// <summary>
-        ///     Returns the nearest ancestor of the specified type, which maybe itself or null if there is no ancestor of the requested type.
+        /// Returns the nearest ancestor of the specified type, which maybe itself or null if there is no ancestor of the requested type.
         /// </summary>
         /// <param name = "element">The element from which to start the search.</param>
         /// <param name = "ancestorType">The Type of the ancestor to find.</param>
@@ -57,7 +58,7 @@ namespace Nine.Graphics.UI.Extensions
             }
 
             UIElement ancestor = element;
-            while (ancestor != null && !ancestorType.IsAssignableFrom(ancestor.GetType()))
+            while (ancestor != null && !ancestorType.GetTypeInfo().IsAssignableFrom(ancestor.GetType().GetTypeInfo()))
             {
                 ancestor = ancestor.Parent;
             }
@@ -66,7 +67,7 @@ namespace Nine.Graphics.UI.Extensions
         }
 
         /// <summary>
-        ///     Assert whether this element is a descendant of the specified ancestor.
+        /// Assert whether this element is a descendant of the specified ancestor.
         /// </summary>
         /// <param name = "element">This instance of <see cref = "UIElement">UIElement</see>.</param>
         /// <param name = "ancestor">The ancestor to query against.</param>

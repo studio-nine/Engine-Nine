@@ -1,8 +1,8 @@
 ﻿namespace Nine.Graphics.UI.Controls
 {
-    using System;
-    using System.Xaml;
+    using Nine.AttachedProperty;
     using Nine.Graphics.UI.Controls.Primitives;
+    using System;
 
     public static class ToolTipService
     {

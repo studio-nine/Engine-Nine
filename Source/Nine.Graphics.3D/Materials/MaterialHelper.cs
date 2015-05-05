@@ -1,10 +1,5 @@
 namespace Nine.Graphics.Materials
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 

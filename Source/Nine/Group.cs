@@ -5,10 +5,10 @@ namespace Nine
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Nine.Animations;
+    using Nine.AttachedProperty;
 
     /// <summary>
     /// Defines a logic group of transformable objects to create a transform and bounding box hierarchy.

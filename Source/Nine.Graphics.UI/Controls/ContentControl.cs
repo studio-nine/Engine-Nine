@@ -27,14 +27,15 @@
 namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
-    using System.Collections.Generic;
+    using Nine.AttachedProperty;
     using Nine.Graphics.Primitives;
     using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a control with a single piece of content.
     /// </summary>
-    [System.Windows.Markup.ContentProperty("Content")]
+    [ContentProperty("Content")]
     public class ContentControl : Control, IContainer
     {
         /// <summary>

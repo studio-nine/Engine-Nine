@@ -1,14 +1,15 @@
 ﻿namespace Nine.Graphics.UI.Controls
 {
-    using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
+    using Nine.AttachedProperty;
     using Nine.Graphics.UI.Media;
+    using System;
 
     // TODO: Marker only work on single Line
 
-    [System.Windows.Markup.ContentProperty("Content")]
+    [ContentProperty("Content")]
     public class TextBox : Control
     {
         #region Properties

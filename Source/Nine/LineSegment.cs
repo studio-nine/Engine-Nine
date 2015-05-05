@@ -8,7 +8,7 @@ namespace Nine
     /// Defines a line segment in 2D space.
     /// </summary>
 #if WINDOWS
-    [Serializable()]
+    [Serializable()] 
 #endif
     public struct LineSegment : IEquatable<LineSegment>
     {

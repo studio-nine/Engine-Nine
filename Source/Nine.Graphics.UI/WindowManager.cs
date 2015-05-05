@@ -1,17 +1,17 @@
 ﻿namespace Nine.Graphics.UI
 {
-	using System.Linq;
-	using System.Collections.Generic;
 	using Microsoft.Xna.Framework;
-	using System.Collections;
-	using System.Diagnostics;
-	using System.Xaml;
+	using Nine.AttachedProperty;
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.Diagnostics;
+	using System.Linq;
 
 	/// <summary>
 	/// Handles multiple windows and input.
 	/// </summary>
-	[System.Windows.Markup.ContentProperty("Windows")]
+	[ContentProperty("Windows")]
 	public class WindowManager : Nine.Object
 	{
 		public bool InputEnabled

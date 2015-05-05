@@ -1,11 +1,10 @@
 namespace Nine.Animations
 {
+    using Microsoft.Xna.Framework.Content;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework.Content;
 
     /// <summary>
     /// Represents a basic animation player that can play multiple animation

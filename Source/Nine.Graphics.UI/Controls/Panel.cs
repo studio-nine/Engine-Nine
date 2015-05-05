@@ -26,10 +26,11 @@
 
 namespace Nine.Graphics.UI.Controls
 {
+    using Nine.AttachedProperty;
     using System;
     using System.Collections.Generic;
 
-    [System.Windows.Markup.ContentProperty("Children")]
+    [ContentProperty("Children")]
     public abstract class Panel : UIElement, IContainer, INotifyCollectionChanged<UIElement>
     {
         #region Properties

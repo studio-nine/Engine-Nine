@@ -1,15 +1,14 @@
 namespace Nine.Physics.Colliders
 {
-    using System.Linq;
-    using System.Collections.Generic;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework;
-    using BEPUphysics.Entities;
-    using BEPUphysics.Entities.Prefabs;
-    using BEPUphysics.DataStructures;
     using BEPUphysics.Collidables;
     using BEPUphysics.CollisionShapes;
+    using BEPUphysics.DataStructures;
+    using BEPUphysics.Entities;
+    using BEPUphysics.Entities.Prefabs;
     using BEPUphysics.MathExtensions;
+    using Microsoft.Xna.Framework;
+    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents a collider based on triangle meshes.

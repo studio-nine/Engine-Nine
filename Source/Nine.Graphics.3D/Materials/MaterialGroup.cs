@@ -1,16 +1,16 @@
 namespace Nine.Graphics.Materials
 {
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
+    using Nine.Graphics.Drawing;
+    using Nine.Serialization;
     using System;
-    using System.Linq;
-    using System.Reflection;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework.Content;
-    using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.Drawing;
-    using Nine.Serialization;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Defines a material that is grouped by material fragments.

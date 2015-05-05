@@ -1,16 +1,16 @@
 namespace Nine.Graphics
 {
-    using System;
-    using System.Collections;
-    using System.Collections.ObjectModel;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Animations;
     using Nine.Graphics.Materials;
+    using Nine.Serialization;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
     
     #region IModelSource
     /// <summary>

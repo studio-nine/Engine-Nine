@@ -26,10 +26,10 @@
 
 namespace Nine.Graphics.UI.Media
 {
-    using System;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
     using Nine.Graphics.UI.Internal;
+    using System;
 
     /// <summary>
     /// Represents a <see cref="Brush">Brush</see> of the specified <see cref="Vector3">Vector3</see> 

@@ -1,16 +1,17 @@
 ﻿namespace Nine.Graphics.UI.Navigation
 {
+    using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
     using System;
-    using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Xna.Framework;
+    using System.Linq;
 
     /// <summary>
     /// A Control that lets you navigate <see cref="Page">Pages</see>.
     /// </summary>
     [Obsolete]
-    [System.Windows.Markup.ContentProperty("Pages")]
+    [ContentProperty("Pages")]
     public class PageNavigator : BaseWindow, IContainer, INotifyCollectionChanged<UIElement>
     {
         #region Properties

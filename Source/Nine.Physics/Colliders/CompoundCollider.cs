@@ -1,8 +1,5 @@
 namespace Nine.Physics.Colliders
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Markup;
     using BEPUphysics.Collidables;
     using BEPUphysics.Collidables.MobileCollidables;
     using BEPUphysics.CollisionShapes;
@@ -10,6 +7,9 @@ namespace Nine.Physics.Colliders
     using BEPUphysics.Entities.Prefabs;
     using BEPUphysics.MathExtensions;
     using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a collider that is an aggregate of several colliders.

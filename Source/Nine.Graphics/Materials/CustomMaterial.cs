@@ -1,14 +1,14 @@
 namespace Nine.Graphics.Materials
 {
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
+    using Nine.Graphics.Drawing;
+    using Nine.Serialization;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework.Content;
-    using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.Drawing;
-    using Nine.Serialization;
 
     /// <summary>
     /// Represents a type of material that are build from custom shader files.

@@ -1,8 +1,8 @@
 ﻿namespace Nine.Graphics.UI.Media
 {
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
 
     /// <summary>
     /// A Brush that draws a Image.

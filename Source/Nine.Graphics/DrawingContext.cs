@@ -534,15 +534,9 @@ namespace Nine.Graphics
         /// </summary>
         private Pass CreatePass(Type passType)
         {
-#if MonoGame
-            var defaultConstructor = passType.GetConstructor(null);
-#elif WINRT
-            var defaultConstructor = passType.GetTypeInfo().DeclaredConstructors.FirstOrDefault(c => c.GetParameters().Length == 0);
-#else
-            var defaultConstructor = passType.GetConstructor(Type.EmptyTypes);
-#endif
+            var defaultConstructor = passType.GetRuntimeMethods().Where(e => e.IsConstructor && e.GetParameters().Length == 0).First();
             if (defaultConstructor != null)
-                return (Pass)defaultConstructor.Invoke(null);
+                return (Pass)defaultConstructor.Invoke(null, new object[] { null });
             return (Pass)Activator.CreateInstance(passType, new object[] { graphics });
         }
 

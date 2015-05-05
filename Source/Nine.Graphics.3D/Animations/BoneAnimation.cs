@@ -1,15 +1,15 @@
 ﻿namespace Nine.Animations
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Nine.AttachedProperty;
+    using Nine.Graphics;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
-    using Nine.Graphics;
 
     /// <summary>
     /// Represents a controller that manipulates the bone transforms of a model.

@@ -1,15 +1,14 @@
 namespace Nine.Graphics
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
 
     /// <summary>
     /// Defines a base class for a light used by the render system.

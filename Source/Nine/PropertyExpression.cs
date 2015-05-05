@@ -2,6 +2,7 @@ namespace Nine
 {
     using System;
     using System.ComponentModel;
+    using System.Linq;
     using System.Reflection;
 
     /// <summary>
@@ -47,7 +48,7 @@ namespace Nine
         /// </summary>
         public PropertyExpression(object target, string property)
         {
-#if WINRT
+#if WINRT || MonoGame // TODO: MonoGame Delegate.CreateDelegate
             throw new NotImplementedException();
 #else
             Parse(target, property, out invocationTarget, out invocationMember);
@@ -108,17 +109,18 @@ namespace Nine
                 else
                     invocationTarget = GetValue(target, GetMember(targetType, currentProperty));
 
+                var properties = invocationTarget.GetType().GetRuntimeProperties();
                 if ((content.StartsWith("\"") && content.EndsWith("\"")) ||
                     (content.StartsWith("'") && content.EndsWith("'")))
                 {
                     // String dictionary
-                    invocationMember = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(string) });
+                    invocationMember = properties.Where(e => e.Name == "Item" && e.PropertyType == typeof(string)).First();
                     invocationTarget = GetValue(invocationTarget, invocationMember, content.Substring(1, content.Length - 2));
                 }
                 else
                 {
                     // List
-                    invocationMember = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(int) });
+                    invocationMember = properties.Where(e => e.Name == "Item" && e.PropertyType == typeof(int)).First();
                     invocationTarget = GetValue(invocationTarget, invocationMember, Convert.ToInt32(content));
                 }
             }
@@ -131,7 +133,8 @@ namespace Nine
                 if (dot >= 0 && invocationMember == null)
                 {
                     // String dictionary
-                    var items = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(string) });
+                    var properties = invocationTarget.GetType().GetRuntimeProperties();
+                    var items = properties.Where(e => e.Name == "Item" && e.PropertyType == typeof(string)).First();
                     if (items != null)
                     {
                         invocationTarget = GetValue(target, items, currentProperty);
@@ -160,13 +163,24 @@ namespace Nine
 #endif
         }
 
-        private static MemberInfo GetMember(Type targetType, string property)
+        private static MemberInfo GetMember(Type targetType, string propertyName)
         {
-#if WINRT
-            throw new NotImplementedException();
-#else
-            return (MemberInfo)targetType.GetProperty(property) ?? targetType.GetField(property);
-#endif
+            var targetProperties = targetType.GetRuntimeProperties();
+            var targetFields = targetType.GetRuntimeFields();
+
+            var properties = targetProperties.Where(e => e.Name == propertyName);
+            if (properties.Count() > 0)
+            {
+                return properties.First();
+            }
+
+            var fields = targetFields.Where(e => e.Name == propertyName);
+            if (fields.Count() > 0)
+            {
+                return fields.First();
+            }
+
+            throw new ArgumentException("Should never get here");
         }
 
         private static object GetValue(object target, MemberInfo member)

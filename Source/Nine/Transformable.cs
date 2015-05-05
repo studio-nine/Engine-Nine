@@ -1,12 +1,7 @@
 namespace Nine
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Markup;
-    using System.Xaml;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
-    using Nine.Serialization;
+    using System;
 
     /// <summary>
     /// Base class for all objects that has a transform and a bounds.

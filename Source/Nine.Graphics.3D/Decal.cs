@@ -500,7 +500,7 @@ namespace Nine.Graphics
         bool IDrawableObject.CastShadow { get { return false; } }
         #endregion
 
-        #region Dispose        
+        #region Dispose
         /// <summary>
         /// Frees resources used by this object.
         /// </summary>

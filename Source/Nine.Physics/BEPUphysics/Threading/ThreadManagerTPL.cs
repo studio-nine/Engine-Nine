@@ -79,7 +79,12 @@ namespace BEPUphysics.Threading
         /// <param name="loopBody">Function that handles an individual iteration of the loop.</param>
         public void ForLoop(int startIndex, int endIndex, Action<int> loopBody)
         {
-            Parallel.For(startIndex, endIndex, loopBody);
+            //Parallel.For(startIndex, endIndex, loopBody);
+
+            var tasks = new System.Collections.Generic.List<Task>();
+            for (int i = 0; i < endIndex; i++)
+                tasks.Add(Task.Factory.StartNew(state => loopBody((int)state), i));
+            Task.WaitAll(tasks.ToArray());
         }
 
         /// <summary>

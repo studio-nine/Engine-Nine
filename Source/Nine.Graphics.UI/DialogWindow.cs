@@ -1,12 +1,13 @@
 ﻿namespace Nine.Graphics.UI
 {
-    using System;
-    using System.Collections;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
     using Nine.Graphics.UI.Controls;
     using Nine.Graphics.UI.Media;
     using Nine.Graphics.UI.Renderer;
+    using System;
+    using System.Collections;
 
     public enum ResizeMode
     {
@@ -27,7 +28,7 @@
     /// <summary>
     /// A draggable window with a frame
     /// </summary>
-    [System.Windows.Markup.ContentProperty("Content")]
+    [ContentProperty("Content")]
     public class DialogWindow : BaseWindow, IContainer, IDebugDrawable
     {
         #region Properties

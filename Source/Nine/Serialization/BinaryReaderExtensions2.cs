@@ -7,7 +7,6 @@ namespace Nine.Serialization
     using System.Linq;
     using System.Text;
     using System.Collections;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
 
     /// <summary>
@@ -17,9 +16,7 @@ namespace Nine.Serialization
     {
         static partial void AfterReadObject(ref object value, IServiceProvider serviceProvider)
         {
-            var markupExtension = value as MarkupExtension;
-            if (markupExtension != null)
-                value = markupExtension.ProvideValue(serviceProvider);
+
         }
 
         public static Color ReadColor(this BinaryReader input)

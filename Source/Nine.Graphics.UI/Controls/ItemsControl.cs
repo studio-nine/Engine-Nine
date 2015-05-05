@@ -27,11 +27,11 @@
 namespace Nine.Graphics.UI.Controls
 {
     using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
+    using Nine.Graphics.Primitives;
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Windows.Markup;
-    using Nine.Graphics.Primitives;
 
     /// <summary>
     /// <see cref="ItemsControl">ItemsControl</see> allows you to represent a collection of items and provides scaffolding to generate the UI for each item.

@@ -1,16 +1,17 @@
 ﻿namespace Nine.Graphics.UI.Controls
 {
-    using System;
-    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
     using Nine.Graphics.Primitives;
     using Nine.Graphics.UI.Controls.Primitives;
     using Nine.Graphics.UI.Media;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// A Control that display's a list of selectable elements.
     /// </summary>
-    [System.Windows.Markup.ContentProperty("Children")]
+    [ContentProperty("Children")]
     public class ListBox : Selector
     {
         /// <summary>

@@ -27,6 +27,7 @@
 namespace Nine.Graphics.UI
 {
     using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
     using Nine.Graphics.UI.Renderer;
     using System.Collections;
     using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Nine.Graphics.UI
     /// <summary>
     /// Window is the main host for all <see cref="UIElement">UIElement</see>s, it manages the  user input and is the target for Update/Draw calls.
     /// </summary>
-    [System.Windows.Markup.ContentProperty("Content")]
+    [ContentProperty("Content")]
     public class Window : BaseWindow, IContainer, IDebugDrawable
     {
         #region Properties

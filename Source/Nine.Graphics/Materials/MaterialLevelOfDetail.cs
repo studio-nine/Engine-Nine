@@ -1,10 +1,10 @@
 namespace Nine.Graphics.Materials
 {
+    using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework;
 
     /// <summary>
     /// Defines a list of materials that are sorted from lowest quality to highest quality.

@@ -5,12 +5,11 @@ namespace Nine
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Xaml;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Nine.Animations;
     using Nine.Serialization;
+    using Nine.AttachedProperty;
 
     /// <summary>
     /// Defines a instance that is created from a template.
@@ -55,6 +54,7 @@ namespace Nine
             if (string.IsNullOrEmpty(Template))
                 return default(T);
 
+            // TODO: MonoGame Content Pipeline
 #if !MonoGame
             var contentLoader = serviceProvider.GetService<ContentLoader>();
             var createdInstance = ApplyProperties(contentLoader.Create<T>(Template));

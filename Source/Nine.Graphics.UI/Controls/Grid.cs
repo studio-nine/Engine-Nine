@@ -26,13 +26,12 @@
 
 namespace Nine.Graphics.UI.Controls
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using System.Xaml;
-
     using Microsoft.Xna.Framework;
+    using Nine.AttachedProperty;
     using Nine.Graphics.UI.Internal;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// A Grid layout panel consisting of columns and rows.

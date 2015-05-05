@@ -17,10 +17,13 @@ namespace Nine.Serialization
     {
         public static T Load<T>(this IContentImporter loader, string fileName, IServiceProvider serviceProvider) where T : class
         {
-            using (var stream = File.OpenRead(fileName))
-            {
-                return loader.Import(stream, serviceProvider) as T;
-            }
+            // TODO: 
+            //using (var stream = File.OpenRead(fileName))
+            //{
+            //    return loader.Import(stream, serviceProvider) as T;
+            //}
+
+            return null;
         }
 
         public static T Load<T>(this IContentImporter loader, Stream stream, IServiceProvider serviceProvider) where T : class

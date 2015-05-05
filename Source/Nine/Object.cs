@@ -3,10 +3,9 @@ namespace Nine
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Windows.Markup;
-    using System.Xaml;
     using Microsoft.Xna.Framework.Content;
     using Nine.Serialization;
+    using Nine.AttachedProperty;
 
     /// <summary>
     /// Defines a basic named object that can be extended using attached properties.
@@ -16,6 +15,7 @@ namespace Nine
     public class Object : IAttachedPropertyStore
     {
         #region Properties
+
         /// <summary>
         /// Gets or sets the name of this transformable.
         /// </summary>
@@ -26,9 +26,9 @@ namespace Nine
         }
         internal string name = string.Empty;
 
-        /// <summary>
-        /// Gets a dictionary of all the attached properties.
-        /// </summary>
+         /// <summary>
+         /// Gets a dictionary of all the attached properties.
+         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public IDictionary<AttachableMemberIdentifier, object> AttachedProperties
         {
@@ -41,18 +41,20 @@ namespace Nine
             }
         }
         private AttachableMemberIdentifierCollection attachedProperties;
+
         #endregion
 
         #region IAttachedPropertyStore
-        void IAttachedPropertyStore.CopyPropertiesTo(KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
-        {
-            if (attachedProperties != null)
-                ((ICollection<KeyValuePair<AttachableMemberIdentifier, object>>)attachedProperties).CopyTo(array, index);
-        }
 
         int IAttachedPropertyStore.PropertyCount
         {
             get { return attachedProperties != null ? attachedProperties.Count : 0; }
+        }
+
+        void IAttachedPropertyStore.CopyPropertiesTo(KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
+        {
+            if (attachedProperties != null)
+                ((ICollection<KeyValuePair<AttachableMemberIdentifier, object>>)attachedProperties).CopyTo(array, index);
         }
 
         bool IAttachedPropertyStore.RemoveProperty(AttachableMemberIdentifier attachableMemberIdentifier)
@@ -109,9 +111,11 @@ namespace Nine
         /// Occurs when any of the attached property changed.
         /// </summary>
         internal event EventHandler<AttachedPropertyChangedEventArgs> AttachedPropertyChanged;
+
         #endregion
 
         #region ToString
+
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
@@ -119,6 +123,7 @@ namespace Nine
         {
             return name != null && name != "" ? name : base.ToString();
         }
+
         #endregion
     }
 }

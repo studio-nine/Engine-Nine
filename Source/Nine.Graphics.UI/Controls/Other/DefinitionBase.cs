@@ -27,6 +27,7 @@
 namespace Nine.Graphics.UI.Controls
 {
     using System;
+    using System.Reflection;
 
     [Nine.Serialization.BinarySerializable]
     public abstract class DefinitionBase
@@ -87,7 +88,7 @@ namespace Nine.Graphics.UI.Controls
 
         private T GetValue<T>(string Name) where T : struct
         {
-            var Property = this.GetType().GetProperty(Name);
+            var Property = this.GetType().GetRuntimeProperty(Name);
             if (Property == null)
                 throw new ArgumentNullException("name");
             return (T)Property.GetValue(this, null);

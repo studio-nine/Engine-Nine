@@ -1,16 +1,16 @@
 ﻿namespace Nine.Graphics.ParticleEffects
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.AttachedProperty;
+    using Nine.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.Primitives;
     using System;
     using System.Collections.Concurrent;
     using System.ComponentModel;
     using System.Threading;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.Drawing;
-    using Nine.Graphics.Materials;
-    using Nine.Graphics;
-    using Nine.Graphics.Primitives;
 
     /// <summary>
     /// Defines how each particle should be rendered.
@@ -695,18 +695,7 @@
             {
                 ParticleQueueSyncEvent = new AutoResetEvent(false);
                 ActiveUpdates = new ConcurrentQueue<ParticleEffect>();
-#if WINRT
-                Windows.System.Threading.ThreadPool.RunAsync(op => ParticleUpdateWorker(), 
-                    Windows.System.Threading.WorkItemPriority.Normal, 
-                    Windows.System.Threading.WorkItemOptions.TimeSliced);
-#elif MonoGame
-                // TODO: Thread
-#else
-                var ParticleThread = new Thread((ThreadStart)ParticleUpdateWorker);
-                ParticleThread.IsBackground = true;
-                ParticleThread.Name = "ParticleEffect";
-                ParticleThread.Start();
-#endif
+                System.Threading.Tasks.Task.Run(() => ParticleUpdateWorker());
             }
             ActiveUpdates.Enqueue(particleEffect);
             ParticleQueueSyncEvent.Set();
