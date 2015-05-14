@@ -11,6 +11,7 @@ namespace Nine.Graphics.Materials
     public class TextureMaterial : Material
     {
         #region Properties
+
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         public Vector3 DiffuseColor
@@ -36,22 +37,23 @@ namespace Nine.Graphics.Materials
             set { samplerState = value; }
         }
         private SamplerState samplerState;
+
         #endregion
 
         #region Fields
+
         private BasicEffect effect;
-        private EffectPass pass;
 
         private static Texture2D previousTexture;
-        #endregion
 
-        #region Methods
+#endregion
+
+#region Methods
         public TextureMaterial(GraphicsDevice graphics)
         {
-            effect = GraphicsResources<BasicEffect>.GetInstance(graphics, typeof(TextureMaterial));
-            effect.LightingEnabled = false;            
-            pass = effect.CurrentTechnique.Passes[0];
-            GraphicsDevice = graphics;
+            this.GraphicsDevice = graphics;
+            this.effect = GraphicsResources<BasicEffect>.GetInstance(graphics, typeof(TextureMaterial));
+            this.effect.LightingEnabled = false;
         }
 
         protected override void OnBeginApply(DrawingContext context, Material previousMaterial)
@@ -76,7 +78,7 @@ namespace Nine.Graphics.Materials
             effect.VertexColorEnabled = vertexColorEnabled;
 
             // Finally apply the shader.
-            pass.Apply();
+            effect.CurrentTechnique.Passes[0].Apply();
 
             // Update sampler state
             if (samplerState != null)
@@ -93,6 +95,6 @@ namespace Nine.Graphics.Materials
             if (samplerState != null)
                 GraphicsDevice.SamplerStates[0] = context.SamplerState;
         }
-        #endregion
+#endregion
     }
 }

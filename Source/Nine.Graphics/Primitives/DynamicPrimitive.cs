@@ -72,7 +72,7 @@
         private VertexPositionColorNormalTexture[] vertexData;
         private ushort[] indexData;
 
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || PCL)
         private int lastLineVertex;
         private int currentLineVertex;
         private ThickLineMaterial thickLineMaterial;
@@ -145,7 +145,7 @@
         /// <summary>
         /// Begins a new primitive.
         /// </summary>
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || PCL
         /// <param name="lineWidth">This value will always be 1 on Windows Phone.</param>
 #endif
         public void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture, Matrix? world, float lineWidth)
@@ -168,7 +168,7 @@
 
             beginSegment = currentSegment;
 
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || PCL)
             lineIndices.Clear();
             currentLineVertex = 0;
             lastLineVertex = -1;
@@ -219,7 +219,7 @@
         /// </summary>
         public void AddVertex(ref VertexPositionColorTexture vertex)
         {
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || PCL)
             if (currentPrimitive.PrimitiveType == PrimitiveType.LineList ||
                 currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
             {
@@ -262,7 +262,7 @@
         /// </summary>
         public void AddIndex(int index)
         {
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || PCL)
             if (currentPrimitive.PrimitiveType == PrimitiveType.LineList ||
                 currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
             {
@@ -319,7 +319,7 @@
         /// </summary>
         public void EndPrimitive()
         {
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || PCL)
             if (currentPrimitive.PrimitiveType == PrimitiveType.LineList ||
                 currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
             {
@@ -360,7 +360,7 @@
             batches.Add(currentPrimitive);
         }
 
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || PCL)
         /// <summary>
         /// Copy the line vertices to the real vertex data buffer.
         /// </summary>
@@ -508,7 +508,7 @@
             material.world = entry.World.HasValue ? entry.World.Value * AbsoluteTransform : AbsoluteTransform;
             material.BeginApply(context);
 
-#if !WINDOWS_PHONE
+#if !(WINDOWS_PHONE || PCL)
             if (entry.LineWidth > 0)
             {
                 if (thickLineMaterial == null)

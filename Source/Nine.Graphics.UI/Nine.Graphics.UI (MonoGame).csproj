@@ -18,16 +18,16 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;MonoGame</DefineConstants>
+    <OutputPath>..\..\References\MonoGame\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;MonoGame;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;MonoGame</DefineConstants>
+    <OutputPath>..\..\References\MonoGame\Release\</OutputPath>
+    <DefineConstants>TRACE;MonoGame;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -58,7 +58,6 @@
     <Compile Include="Extensions\DynamicPrimitiveExtensions.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Extensions\UIExtensions.cs" />
-    <Compile Include="Internal\BlankTexture.cs" />
     <Compile Include="Internal\BoundingRectangleExtensions.cs" />
     <Compile Include="Media\Brushes\GradientBrush.cs" />
     <Compile Include="Media\Brushes\ImageBrush.cs" />

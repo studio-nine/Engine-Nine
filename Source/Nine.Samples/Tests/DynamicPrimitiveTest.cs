@@ -1,15 +1,10 @@
 namespace Nine.Samples
 {
-    using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine;
-    using Nine.Components;
-    using Nine.Graphics;
-    using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
-    using Nine.Serialization;
 
     public class DynamicPrimitiveTest : Sample
     {

@@ -237,9 +237,11 @@ namespace Nine.Animations
             // This is a generic limitation,
             // we have to assign the lerp using reflection.
 
-            var fields = typeof(TweenAnimation<T>).GetRuntimeFields();
-            var field = fields.Where(e => e.Name == "lerp" && (e.IsPrivate || e.IsInitOnly)).First();
-
+#if WINRT || PCL
+            var field = typeof(TweenAnimation<T>).GetTypeInfo().GetDeclaredField("lerp");
+#else
+            var field = typeof(TweenAnimation<T>).GetField("lerp", BindingFlags.NonPublic | BindingFlags.Instance);
+#endif
             if (typeof(T) == typeof(float))
                 field.SetValue(this, (Interpolate<float>)MathHelper.Lerp);
             else if (typeof(T) == typeof(double))
@@ -283,9 +285,11 @@ namespace Nine.Animations
             // This is a generic limitation,
             // we have to assign the lerp using reflection.
 
-            var fields = typeof(TweenAnimation<T>).GetRuntimeFields();
-            var field = fields.Where(e => e.Name == "add" && (e.IsPrivate || e.IsInitOnly)).First();
-
+#if WINRT || PCL
+            var field = typeof(TweenAnimation<T>).GetTypeInfo().GetDeclaredField("add");
+#else
+            var field = typeof(TweenAnimation<T>).GetField("add", BindingFlags.NonPublic | BindingFlags.Instance);
+#endif
             if (typeof(T) == typeof(float))
                 field.SetValue(this, (Operator<float>)AddHelper.Add);
             else if (typeof(T) == typeof(double))

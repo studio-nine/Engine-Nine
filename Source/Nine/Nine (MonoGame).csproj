@@ -19,8 +19,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;MonoGame;WINRT</DefineConstants>
+    <OutputPath>..\..\References\MonoGame\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;MonoGame;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>

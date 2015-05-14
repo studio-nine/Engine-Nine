@@ -79,12 +79,14 @@ namespace BEPUphysics.Threading
         /// <param name="loopBody">Function that handles an individual iteration of the loop.</param>
         public void ForLoop(int startIndex, int endIndex, Action<int> loopBody)
         {
-            //Parallel.For(startIndex, endIndex, loopBody);
-
+#if PCL
             var tasks = new System.Collections.Generic.List<Task>();
             for (int i = 0; i < endIndex; i++)
                 tasks.Add(Task.Factory.StartNew(state => loopBody((int)state), i));
             Task.WaitAll(tasks.ToArray());
+#else
+            Parallel.For(startIndex, endIndex, loopBody);
+#endif
         }
 
         /// <summary>
@@ -96,7 +98,7 @@ namespace BEPUphysics.Threading
         }
 
 
-        #region IDisposable Members
+#region IDisposable Members
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -107,7 +109,7 @@ namespace BEPUphysics.Threading
             TaskManager.Dispose();
         }
 
-        #endregion
+#endregion
     }
 }
 

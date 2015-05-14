@@ -18,16 +18,16 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;MonoGame</DefineConstants>
+    <OutputPath>..\..\References\MonoGame\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;MonoGame;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;MonoGame</DefineConstants>
+    <OutputPath>..\..\References\MonoGame\Release\</OutputPath>
+    <DefineConstants>TRACE;MonoGame;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -49,6 +49,7 @@
       <DependentUpon>Nine.Graphics.Materials.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\SpriteAnimation.cs" />
+    <Compile Include="BlankTexture.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="corefx\ConcurrentQueue.cs" />

@@ -1,4 +1,4 @@
-﻿namespace Nine.Graphics.UI.Internal
+﻿namespace Nine.Graphics
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +10,7 @@
         public BlankTexture(GraphicsDevice defaultGraphics)
         {
             Texture = new Texture2D(defaultGraphics, 1, 1);
-            Texture.SetData<Color>(new Color[] { Color.White });
+            Texture.SetData(new Color[] { Color.White });
         }
     }
 }
