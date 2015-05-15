@@ -42,7 +42,9 @@ namespace Nine.Samples
             graphics.PreferredBackBufferHeight = 800;
 
             IsMouseVisible = true;
-            IsFixedTimeStep = false;
+
+            this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 120);
+            this.IsFixedTimeStep = true;
 
             Window.AllowUserResizing = true;
             Window.Position = new Point(0, 0);
