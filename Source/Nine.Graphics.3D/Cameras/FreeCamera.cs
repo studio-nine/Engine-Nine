@@ -70,11 +70,19 @@
                 GamePadState gamePad = GamePad.GetState(PlayerIndex.One);
                 if (gamePad.IsConnected)
                 {
+#if MonoGame
+                    angle.X += gamePad.ThumbSticks.Right.Y * TurnSpeed * 0.001f;
+                    angle.Y += gamePad.ThumbSticks.Right.X * TurnSpeed * 0.001f;
+
+                    move.X = -gamePad.ThumbSticks.Left.Y * Speed * elapsedTime;
+                    move.Y = -gamePad.ThumbSticks.Left.X * Speed * elapsedTime;
+#else
                     angle.X -= gamePad.ThumbSticks.Right.Y * TurnSpeed * 0.001f;
                     angle.Y += gamePad.ThumbSticks.Right.X * TurnSpeed * 0.001f;
 
                     move.X = gamePad.ThumbSticks.Left.Y * Speed * elapsedTime;
                     move.Y = gamePad.ThumbSticks.Left.X * Speed * elapsedTime;
+#endif
                 }
                 else
                 {

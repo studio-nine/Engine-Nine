@@ -72,10 +72,10 @@ namespace Nine.Samples
                 select (Sample)Activator.CreateInstance(type));
 
             samples = new List<Sample> {
-                //new PixelPerfectTest(),
-                new SpriteTest(),
-                new DynamicPrimitiveTest(),
-                new PrimitiveStressTest(),
+                //new PixelPerfectTest(),           // Issue: It's just white...
+                //new SpriteTest(),                 // Works!
+                new DynamicPrimitiveTest(),         // Works! (Issue with GamePad.IsConnected)
+                new PrimitiveStressTest(),          // Works!
             };
         }
 
