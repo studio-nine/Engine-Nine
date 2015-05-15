@@ -51,6 +51,49 @@ float4 PSDepth11(float2 texCoord : TEXCOORD0) : COLOR0 { return PSDepth(texCoord
 float4 PSDepth13(float2 texCoord : TEXCOORD0) : COLOR0 { return PSDepth(texCoord,13); }
 float4 PSDepth15(float2 texCoord : TEXCOORD0) : COLOR0 { return PSDepth(texCoord,15); }
 
+
+#if DirectX
+
+technique t1 { pass p0 { PixelShader = compile ps_4_0 PS1(); } }
+technique t2 { pass p0 { PixelShader = compile ps_4_0 PS3(); } }
+technique t3 { pass p0 { PixelShader = compile ps_4_0 PS5(); } }
+technique t4 { pass p0 { PixelShader = compile ps_4_0 PS7(); } }
+technique t5 { pass p0 { PixelShader = compile ps_4_0 PS9(); } }
+technique t6 { pass p0 { PixelShader = compile ps_4_0 PS11(); } }
+technique t7 { pass p0 { PixelShader = compile ps_4_0 PS13(); } }
+technique t8 { pass p0 { PixelShader = compile ps_4_0 PS15(); } }
+
+technique td1 { pass p0 { PixelShader = compile ps_4_0 PSDepth1(); } }
+technique td2 { pass p0 { PixelShader = compile ps_4_0 PSDepth3(); } }
+technique td3 { pass p0 { PixelShader = compile ps_4_0 PSDepth5(); } }
+technique td4 { pass p0 { PixelShader = compile ps_4_0 PSDepth7(); } }
+technique td5 { pass p0 { PixelShader = compile ps_4_0 PSDepth9(); } }
+technique td6 { pass p0 { PixelShader = compile ps_4_0 PSDepth11(); } }
+technique td7 { pass p0 { PixelShader = compile ps_4_0 PSDepth13(); } }
+technique td8 { pass p0 { PixelShader = compile ps_4_0 PSDepth15(); } }
+
+#elif OpenGL
+
+technique t1 { pass p0 { PixelShader = compile ps_3_0 PS1(); } }
+technique t2 { pass p0 { PixelShader = compile ps_3_0 PS3(); } }
+technique t3 { pass p0 { PixelShader = compile ps_3_0 PS5(); } }
+technique t4 { pass p0 { PixelShader = compile ps_3_0 PS7(); } }
+technique t5 { pass p0 { PixelShader = compile ps_3_0 PS9(); } }
+technique t6 { pass p0 { PixelShader = compile ps_3_0 PS11(); } }
+technique t7 { pass p0 { PixelShader = compile ps_3_0 PS13(); } }
+technique t8 { pass p0 { PixelShader = compile ps_3_0 PS15(); } }
+
+technique td1 { pass p0 { PixelShader = compile ps_3_0 PSDepth1(); } }
+technique td2 { pass p0 { PixelShader = compile ps_3_0 PSDepth3(); } }
+technique td3 { pass p0 { PixelShader = compile ps_3_0 PSDepth5(); } }
+technique td4 { pass p0 { PixelShader = compile ps_3_0 PSDepth7(); } }
+technique td5 { pass p0 { PixelShader = compile ps_3_0 PSDepth9(); } }
+technique td6 { pass p0 { PixelShader = compile ps_3_0 PSDepth11(); } }
+technique td7 { pass p0 { PixelShader = compile ps_3_0 PSDepth13(); } }
+technique td8 { pass p0 { PixelShader = compile ps_3_0 PSDepth15(); } }
+
+#else
+
 technique t1 { pass p0 { PixelShader = compile ps_2_0 PS1(); } }
 technique t2 { pass p0 { PixelShader = compile ps_2_0 PS3(); } }
 technique t3 { pass p0 { PixelShader = compile ps_2_0 PS5(); } }
@@ -60,7 +103,6 @@ technique t6 { pass p0 { PixelShader = compile ps_2_0 PS11(); } }
 technique t7 { pass p0 { PixelShader = compile ps_2_0 PS13(); } }
 technique t8 { pass p0 { PixelShader = compile ps_2_0 PS15(); } }
 
-
 technique td1 { pass p0 { PixelShader = compile ps_2_0 PSDepth1(); } }
 technique td2 { pass p0 { PixelShader = compile ps_2_0 PSDepth3(); } }
 technique td3 { pass p0 { PixelShader = compile ps_2_0 PSDepth5(); } }
@@ -69,3 +111,5 @@ technique td5 { pass p0 { PixelShader = compile ps_2_0 PSDepth9(); } }
 technique td6 { pass p0 { PixelShader = compile ps_2_0 PSDepth11(); } }
 technique td7 { pass p0 { PixelShader = compile ps_2_0 PSDepth13(); } }
 technique td8 { pass p0 { PixelShader = compile ps_2_0 PSDepth15(); } }
+
+#endif

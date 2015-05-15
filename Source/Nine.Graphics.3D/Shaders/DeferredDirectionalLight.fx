@@ -30,11 +30,20 @@ void PS(float2 uv:TEXCOORD0, out float4 Color:COLOR, uniform bool specularEnable
     Color = specularEnabled ? float4(diffuse, specularIntenisty) : float4(diffuse, 0);
 }
 
+void PSUS(float2 uv:TEXCOORD0, out float4 Color : COLOR) { PS(uv, Color, true); }
+void PSNS(float2 uv:TEXCOORD0, out float4 Color : COLOR) { PS(uv, Color, false); }
+
 Technique Specular
 {
     Pass
     {
-        PixelShader	 = compile ps_2_0 PS(true);
+#if DirectX
+        PixelShader = compile ps_4_0 PSUS();
+#elif OpenGL
+        PixelShader = compile ps_3_0 PSUS();
+#else
+        PixelShader = compile ps_2_0 PSUS();
+#endif
     }
 }
 
@@ -42,6 +51,12 @@ Technique NoSpecular
 {
     Pass
     {
-        PixelShader	 = compile ps_2_0 PS(false);
+#if DirectX
+        PixelShader = compile ps_4_0 PSNS();
+#elif OpenGL
+        PixelShader = compile ps_3_0 PSNS();
+#else
+        PixelShader = compile ps_2_0 PSNS();
+#endif
     }
 }

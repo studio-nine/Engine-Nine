@@ -11,6 +11,12 @@ Technique T3
 {
     Pass
     {
+#if DirectX
+        VertexShader = compile vs_4_0 VS();
+#elif OpenGL
         VertexShader = compile vs_3_0 VS();
+#else
+        VertexShader = compile vs_3_0 VS();
+#endif
     }
 }

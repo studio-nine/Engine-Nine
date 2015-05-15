@@ -11,7 +11,7 @@ namespace Nine.Samples
         public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
-            scene.Add(new Camera2D(graphics));
+            scene.Add(new Camera2D(graphics) { InputEnabled = true });
 
             var texture = content.Load<Texture2D>("Textures/Butterfly");
             var link = new Group();

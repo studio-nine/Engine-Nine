@@ -53,7 +53,15 @@ Technique BasicEffect
 {
     Pass
     {
+#if DirectX
+        VertexShader = compile vs_4_0 Vert();
+        PixelShader	 = compile ps_4_0 Pix();
+#elif OpenGL
+        VertexShader = compile vs_3_0 Vert();
+        PixelShader	 = compile ps_3_0 Pix();
+#else
         VertexShader = compile vs_2_0 Vert();
         PixelShader	 = compile ps_2_0 Pix();
+#endif
     }
 }

@@ -73,7 +73,7 @@ namespace Nine.Samples
                 //new PixelPerfectTest(),
                 new SpriteTest(),
                 new DynamicPrimitiveTest(),
-                //new PrimitiveStressTest(),
+                new PrimitiveStressTest(),
             };
         }
 

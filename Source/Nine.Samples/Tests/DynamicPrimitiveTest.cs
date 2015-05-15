@@ -10,6 +10,8 @@ namespace Nine.Samples
     {
         public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
         {
+            // https://github.com/mono/MonoGame/issues/1770
+
             var scene = new Scene();
             var solidPrimitive = new DynamicPrimitive(graphics) { DepthBias = 0 };
             var linePrimitive = new DynamicPrimitive(graphics) { DepthBias = 0.0002f };

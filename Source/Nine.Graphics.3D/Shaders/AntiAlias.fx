@@ -34,6 +34,10 @@ technique Default
 {
     pass Pass1
     {
+#if DirectX
+        PixelShader = compile ps_4_0 PS();
+#else
         PixelShader = compile ps_3_0 PS();
+#endif
     }
 }

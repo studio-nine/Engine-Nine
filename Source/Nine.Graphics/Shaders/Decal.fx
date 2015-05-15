@@ -58,7 +58,15 @@ technique DefaultTechnique
 {
     pass DefaultPass
     {
+#if DirectX
+        VertexShader = compile vs_4_0 VS();
+        PixelShader = compile ps_4_0 PS();
+#elif OpenGL
+        VertexShader = compile vs_3_0 VS();
+        PixelShader = compile ps_3_0 PS();
+#else
         VertexShader = compile vs_2_0 VS();
         PixelShader = compile ps_2_0 PS();
+#endif
     }
 }

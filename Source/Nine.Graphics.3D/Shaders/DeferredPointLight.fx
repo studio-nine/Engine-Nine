@@ -50,13 +50,23 @@ void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR, uniform bool s
     Color = specularEnabled ? float4(diffuse, specularIntenisty) : float4(diffuse, 0);
 }
 
+void PSUS(float4 PosProjection : TEXCOORD0, out float4 Color : COLOR) { PS(PosProjection, Color, true); }
+void PSNS(float4 PosProjection : TEXCOORD0, out float4 Color : COLOR) { PS(PosProjection, Color, false); }
 
 Technique Specular
 {
     Pass
     {
+#if DirectX
+        VertexShader = compile vs_4_0 VS();
+        PixelShader	 = compile ps_4_0 PSUS();
+#elif OpenGL
+        VertexShader = compile vs_3_0 VS();
+        PixelShader  = compile ps_3_0 PSUS();
+#else
         VertexShader = compile vs_2_0 VS();
-        PixelShader	 = compile ps_2_0 PS(true);
+        PixelShader  = compile ps_2_0 PSUS();
+#endif
     }
 }
 
@@ -64,7 +74,15 @@ Technique NoSpecular
 {
     Pass
     {
+#if DirectX
+        VertexShader = compile vs_4_0 VS();
+        PixelShader	 = compile ps_4_0 PSNS();
+#elif OpenGL
+        VertexShader = compile vs_3_0 VS();
+        PixelShader	 = compile ps_3_0 PSNS();
+#else
         VertexShader = compile vs_2_0 VS();
-        PixelShader	 = compile ps_2_0 PS(false);
+        PixelShader  = compile ps_2_0 PSNS();
+#endif
     }
 }

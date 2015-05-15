@@ -23,6 +23,12 @@ technique Scale4x4
 {
    pass p0
    {
+#if DirectX
+       PixelShader = compile ps_4_0 SoftwareScale4x4PS();
+#elif OpenGL
+       PixelShader = compile ps_3_0 SoftwareScale4x4PS();
+#else
        PixelShader = compile ps_2_0 SoftwareScale4x4PS();
+#endif
    }
 } 

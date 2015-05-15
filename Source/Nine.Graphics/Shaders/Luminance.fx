@@ -37,5 +37,19 @@ float4 LuminanceScalePS(float2 TexCoord:TEXCOORD0) : COLOR0
     return average.xxxx;
 }
 
+#if DirectX
+
+technique t1 { pass p0 { PixelShader = compile ps_4_0 LuminancePS(); } }
+technique t2 { pass p0 { PixelShader = compile ps_4_0 LuminanceScalePS(); } }
+
+#elif OpenGL
+
+technique t1 { pass p0 { PixelShader = compile ps_3_0 LuminancePS(); } }
+technique t2 { pass p0 { PixelShader = compile ps_3_0 LuminanceScalePS(); } }
+
+#else
+
 technique t1 { pass p0 { PixelShader = compile ps_2_0 LuminancePS(); } }
 technique t2 { pass p0 { PixelShader = compile ps_2_0 LuminanceScalePS(); } }
+
+#endif

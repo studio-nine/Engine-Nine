@@ -67,5 +67,19 @@ void Pix(       float2 Depth : TEXCOORD0,
     oDepth = float4(Depth.x / Depth.y, 0, 0, 0);
 }
 
-Technique t1 { Pass { VertexShader = compile vs_2_0 Vert(); PixelShader = compile ps_2_0 Pix(); } }
-Technique t2 { Pass { VertexShader = compile vs_2_0 VertSkinned(); PixelShader = compile ps_2_0 Pix(); } }
+#if DirectX
+
+Technique t1{ Pass{ VertexShader = compile vs_4_0 Vert();        PixelShader = compile ps_4_0 Pix(); } }
+Technique t2{ Pass{ VertexShader = compile vs_4_0 VertSkinned(); PixelShader = compile ps_4_0 Pix(); } }
+
+#elif OpenGL
+
+Technique t1{ Pass{ VertexShader = compile vs_3_0 Vert();        PixelShader = compile ps_3_0 Pix(); } }
+Technique t2{ Pass{ VertexShader = compile vs_3_0 VertSkinned(); PixelShader = compile ps_3_0 Pix(); } }
+
+#else
+
+Technique t1{ Pass{ VertexShader = compile vs_2_0 Vert();        PixelShader = compile ps_2_0 Pix(); } }
+Technique t2{ Pass{ VertexShader = compile vs_2_0 VertSkinned(); PixelShader = compile ps_2_0 Pix(); } }
+
+#endif

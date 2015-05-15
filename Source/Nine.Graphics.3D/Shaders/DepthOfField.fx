@@ -54,7 +54,13 @@ Technique Default
 {
     Pass
     {
-        PixelShader	 = compile ps_2_0 PS();
+#if DirectX
+        PixelShader = compile ps_4_0 PS();
+#elif OpenGL
+        PixelShader = compile ps_3_0 PS();
+#else
+        PixelShader = compile ps_2_0 PS();
+#endif
     }
 }
 
@@ -63,6 +69,10 @@ Technique Scale
 {
     Pass
     {
-        PixelShader	 = compile ps_3_0 PSScale();
+#if DirectX
+        PixelShader = compile ps_4_0 PSScale();
+#else
+        PixelShader = compile ps_3_0 PSScale();
+#endif
     }
 }

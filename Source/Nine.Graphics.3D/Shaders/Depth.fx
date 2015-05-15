@@ -146,7 +146,26 @@ void PixDepthTexture(float2 TexCoord : TEXCOORD0, float2 Depth : TEXCOORD1,
     Color = Depth.x / Depth.y;
 }
 
-Technique t1 { Pass { VertexShader = compile vs_2_0 VertDepth(); PixelShader = compile ps_2_0 PixDepth(); } }
-Technique t2 { Pass { VertexShader = compile vs_2_0 VertDepthSkinned(); PixelShader = compile ps_2_0 PixDepth(); } }
-Technique t3 { Pass { VertexShader = compile vs_2_0 VertDepthTexture(); PixelShader = compile ps_2_0 PixDepthTexture(); } }
-Technique t4 { Pass { VertexShader = compile vs_2_0 VertDepthSkinnedTexture(); PixelShader = compile ps_2_0 PixDepthTexture(); } }
+
+#if DirectX
+
+Technique t1{ Pass{ VertexShader = compile vs_4_0 VertDepth();               PixelShader = compile ps_4_0 PixDepth(); } }
+Technique t2{ Pass{ VertexShader = compile vs_4_0 VertDepthSkinned();        PixelShader = compile ps_4_0 PixDepth(); } }
+Technique t3{ Pass{ VertexShader = compile vs_4_0 VertDepthTexture();        PixelShader = compile ps_4_0 PixDepthTexture(); } }
+Technique t4{ Pass{ VertexShader = compile vs_4_0 VertDepthSkinnedTexture(); PixelShader = compile ps_4_0 PixDepthTexture(); } }
+
+#elif OpenGL
+
+Technique t1{ Pass{ VertexShader = compile vs_3_0 VertDepth();               PixelShader = compile ps_3_0 PixDepth(); } }
+Technique t2{ Pass{ VertexShader = compile vs_3_0 VertDepthSkinned();        PixelShader = compile ps_3_0 PixDepth(); } }
+Technique t3{ Pass{ VertexShader = compile vs_3_0 VertDepthTexture();        PixelShader = compile ps_3_0 PixDepthTexture(); } }
+Technique t4{ Pass{ VertexShader = compile vs_3_0 VertDepthSkinnedTexture(); PixelShader = compile ps_3_0 PixDepthTexture(); } }
+
+#else
+
+Technique t1{ Pass{ VertexShader = compile vs_2_0 VertDepth();               PixelShader = compile ps_2_0 PixDepth(); } }
+Technique t2{ Pass{ VertexShader = compile vs_2_0 VertDepthSkinned();        PixelShader = compile ps_2_0 PixDepth(); } }
+Technique t3{ Pass{ VertexShader = compile vs_2_0 VertDepthTexture();        PixelShader = compile ps_2_0 PixDepthTexture(); } }
+Technique t4{ Pass{ VertexShader = compile vs_2_0 VertDepthSkinnedTexture(); PixelShader = compile ps_2_0 PixDepthTexture(); } }
+
+#endif
