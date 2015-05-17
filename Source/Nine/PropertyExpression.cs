@@ -48,7 +48,7 @@ namespace Nine
         /// </summary>
         public PropertyExpression(object target, string property)
         {
-#if WINRT || MonoGame // TODO: MonoGame Delegate.CreateDelegate
+#if WINRT || PCL // TODO: MonoGame Delegate.CreateDelegate
             throw new NotImplementedException();
 #else
             Parse(target, property, out invocationTarget, out invocationMember);
@@ -109,18 +109,27 @@ namespace Nine
                 else
                     invocationTarget = GetValue(target, GetMember(targetType, currentProperty));
 
-                var properties = invocationTarget.GetType().GetRuntimeProperties();
                 if ((content.StartsWith("\"") && content.EndsWith("\"")) ||
                     (content.StartsWith("'") && content.EndsWith("'")))
                 {
                     // String dictionary
+#if PCL
+                    var properties = invocationTarget.GetType().GetRuntimeProperties();
                     invocationMember = properties.Where(e => e.Name == "Item" && e.PropertyType == typeof(string)).First();
+#else
+                    invocationMember = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(string) });
+#endif
                     invocationTarget = GetValue(invocationTarget, invocationMember, content.Substring(1, content.Length - 2));
                 }
                 else
                 {
                     // List
+#if PCL
+                    var properties = invocationTarget.GetType().GetRuntimeProperties();
                     invocationMember = properties.Where(e => e.Name == "Item" && e.PropertyType == typeof(int)).First();
+#else
+                    invocationMember = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(int) });
+#endif
                     invocationTarget = GetValue(invocationTarget, invocationMember, Convert.ToInt32(content));
                 }
             }
@@ -133,8 +142,12 @@ namespace Nine
                 if (dot >= 0 && invocationMember == null)
                 {
                     // String dictionary
+#if PCL
                     var properties = invocationTarget.GetType().GetRuntimeProperties();
                     var items = properties.Where(e => e.Name == "Item" && e.PropertyType == typeof(string)).First();
+#else
+                    var items = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(string) });
+#endif
                     if (items != null)
                     {
                         invocationTarget = GetValue(target, items, currentProperty);
@@ -165,6 +178,7 @@ namespace Nine
 
         private static MemberInfo GetMember(Type targetType, string propertyName)
         {
+#if PCL
             var targetProperties = targetType.GetRuntimeProperties();
             var targetFields = targetType.GetRuntimeFields();
 
@@ -179,6 +193,10 @@ namespace Nine
             {
                 return fields.First();
             }
+            
+#else
+            return (MemberInfo)targetType.GetProperty(propertyName) ?? targetType.GetField(propertyName);
+#endif
 
             throw new ArgumentException("Should never get here");
         }

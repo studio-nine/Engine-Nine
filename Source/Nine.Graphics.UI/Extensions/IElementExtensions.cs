@@ -58,7 +58,11 @@ namespace Nine.Graphics.UI.Extensions
             }
 
             UIElement ancestor = element;
+#if PCL
             while (ancestor != null && !ancestorType.GetTypeInfo().IsAssignableFrom(ancestor.GetType().GetTypeInfo()))
+#else
+            while (ancestor != null && !ancestorType.IsAssignableFrom(ancestor.GetType()))
+#endif
             {
                 ancestor = ancestor.Parent;
             }

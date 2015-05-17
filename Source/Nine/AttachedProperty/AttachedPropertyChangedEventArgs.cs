@@ -3,6 +3,10 @@ namespace Nine.AttachedProperty
     using System;
     using System.ComponentModel;
 
+#if !PCL
+    using System.Xaml;
+#endif
+
     /// <summary>
     /// Provides data for various property changed events.
     /// </summary>

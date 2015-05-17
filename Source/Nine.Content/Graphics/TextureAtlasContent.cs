@@ -13,18 +13,17 @@
     /// </summary>
     public class TextureAtlasContent
     {
-        // Single texture contains many separate sprite images.
+        /// <summary> Single texture contains many separate sprite images. </summary>
         public List<Texture2DContent> Textures { get; set; }
 
-        // Remember where in the texture each sprite has been placed.
+        /// <summary> Remember where in the texture each sprite has been placed. </summary>
         public List<Rectangle> SpriteRectangles { get; set; }
 
-        // Index to each of the texture.
+        /// <summary> Index to each of the texture. </summary>
         public List<int> SpriteTextures { get; set; }
 
-        // Store the original sprite filenames, so we can look up sprites by name.
+        /// <summary> Store the original sprite filenames, so we can look up sprites by name. </summary>
         public Dictionary<string, int> SpriteNames { get; set; }
-
 
         public TextureAtlasContent()
         {

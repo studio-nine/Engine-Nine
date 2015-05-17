@@ -29,7 +29,11 @@
 
             if (!fileName.EndsWith(".xnb", StringComparison.OrdinalIgnoreCase))
                 fileName = fileName + ".xnb";
+#if PCL
+            return Microsoft.Xna.Framework.TitleContainer.OpenStream(fileName);
+#else
             return File.OpenRead(fileName);
+#endif
         }
     }
 

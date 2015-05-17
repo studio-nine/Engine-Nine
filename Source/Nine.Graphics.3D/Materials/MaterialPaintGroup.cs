@@ -9,6 +9,10 @@ namespace Nine.Graphics.Materials
     using System.Linq;
     using System.Reflection;
 
+#if !PCL
+    using System.Xaml;
+#endif
+
     /// <summary>
     /// Defines a material part that is a layer of a material group.
     /// </summary>

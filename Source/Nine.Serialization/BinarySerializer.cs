@@ -209,7 +209,7 @@ namespace Nine.Serialization
             UpdateReaders(FindImplementations<IBinaryObjectReader>());
             UpdateWriters(FindImplementations<IBinaryObjectWriter>());
 
-#if !MonoGame
+#if !PCL
             AppDomain.CurrentDomain.AssemblyLoad += (sender, e) =>
             {
                 UpdateReaders(FindImplementations<IBinaryObjectReader>(e.LoadedAssembly));
@@ -270,7 +270,7 @@ namespace Nine.Serialization
             if (TypeToHash.TryGetValue(type, out result))
                 return result;
 
-#if MonoGame
+#if PCL
             var typeInfo = type.GetTypeInfo();
             var binarySerializableAttributes = typeInfo.GetCustomAttributes(typeof(BinarySerializableAttribute), false).ToArray();
 #else
@@ -300,7 +300,7 @@ namespace Nine.Serialization
 
         private static IEnumerable<T> FindImplementations<T>()
         {
-#if !MonoGame
+#if !PCL
             try
             {
                 return from assembly in AppDomain.CurrentDomain.GetAssemblies()
@@ -318,7 +318,7 @@ namespace Nine.Serialization
 
         private static IEnumerable<T> FindImplementations<T>(Assembly assembly)
         {
-#if !MonoGame
+#if !PCL
             try
             {
                 return from type in assembly.GetTypes()

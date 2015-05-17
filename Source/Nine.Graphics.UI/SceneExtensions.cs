@@ -4,6 +4,10 @@
     using System;
     using System.ComponentModel;
 
+#if !PCL
+    using System.Xaml;
+#endif
+
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class SceneExtensions
     {

@@ -17,7 +17,12 @@
 
         public override TextureContent Import(string filename, ContentImporterContext context)
         {
-            using (FileStream file = new FileStream(filename, FileMode.Open))
+            using (Stream file =
+#if PCL
+                Microsoft.Xna.Framework.TitleContainer.OpenStream(filename))
+#else
+                new FileStream(filename, FileMode.Open)) // TODO: Can we use TitleContainer?
+#endif
             {
                 byte[] bytes = new byte[file.Length];
 

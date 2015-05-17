@@ -33,6 +33,10 @@ namespace Nine.Graphics.UI.Controls
     using System.Collections.Generic;
     using System.Linq;
 
+#if !PCL
+    using System.Xaml;
+#endif
+
     /// <summary>
     /// A Grid layout panel consisting of columns and rows.
     /// </summary>

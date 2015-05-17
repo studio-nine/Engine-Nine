@@ -113,7 +113,6 @@
     <Compile Include="Extensions\DynamicPrimitiveExtensions.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Extensions\UIExtensions.cs" />
-    <Compile Include="Internal\BlankTexture.cs" />
     <Compile Include="Internal\BoundingRectangleExtensions.cs" />
     <Compile Include="Media\Brushes\GradientBrush.cs" />
     <Compile Include="Media\Brushes\ImageBrush.cs" />

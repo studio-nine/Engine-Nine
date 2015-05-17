@@ -8,7 +8,11 @@ namespace Nine.Graphics
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    
+
+#if !PCL
+    using System.Xaml;
+#endif
+
     /// <summary>
     /// Contains extension methods related to graphics.
     /// </summary>

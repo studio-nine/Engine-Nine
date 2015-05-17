@@ -695,7 +695,7 @@
             {
                 ParticleQueueSyncEvent = new AutoResetEvent(false);
                 ActiveUpdates = new ConcurrentQueue<ParticleEffect>();
-                System.Threading.Tasks.Task.Run(() => ParticleUpdateWorker());
+                System.Threading.Tasks.Task.Factory.StartNew(() => ParticleUpdateWorker());
             }
             ActiveUpdates.Enqueue(particleEffect);
             ParticleQueueSyncEvent.Set();

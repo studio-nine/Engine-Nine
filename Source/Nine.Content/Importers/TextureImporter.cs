@@ -1,6 +1,5 @@
 namespace Nine.Serialization.Importers
 {
-    using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Processors;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Content.Pipeline;

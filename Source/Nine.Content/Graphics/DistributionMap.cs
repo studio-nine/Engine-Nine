@@ -2,11 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Xaml;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-    using Nine.Serialization;
     using Nine.Content.Pipeline;
 
     public class DistributionMap
@@ -118,6 +116,7 @@
             model.SetInstanceTransforms(transforms.ToArray());
         }
 
+#if !PCL
         public static void SetDistributionMap(InstancedModel model, DistributionMap value)
         {
             if (value != null)
@@ -128,6 +127,7 @@
         {
             return null;
         }
-        private static AttachableMemberIdentifier DistributionMapProperty = new AttachableMemberIdentifier(typeof(DistributionMap), "DistributionMap");
+        private static System.Xaml.AttachableMemberIdentifier DistributionMapProperty = new System.Xaml.AttachableMemberIdentifier(typeof(DistributionMap), "DistributionMap");
+#endif
     }
 }

@@ -11,6 +11,10 @@ namespace Nine
     using Nine.Serialization;
     using Nine.AttachedProperty;
 
+#if !PCL
+    using System.Xaml;
+#endif
+
     /// <summary>
     /// Defines a instance that is created from a template.
     /// </summary>

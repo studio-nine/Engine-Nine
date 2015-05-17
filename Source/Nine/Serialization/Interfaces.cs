@@ -71,10 +71,14 @@
         string Share(object target, string key);
     }
 
+#if PCL
+
     // TODO: ISupportInitialize
     public interface ISupportInitialize
     {
         void BeginInit();
         void EndInit();
     }
+
+#endif
 }

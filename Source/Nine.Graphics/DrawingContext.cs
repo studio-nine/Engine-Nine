@@ -534,7 +534,15 @@ namespace Nine.Graphics
         /// </summary>
         private Pass CreatePass(Type passType)
         {
-            var defaultConstructor = passType.GetRuntimeMethods().Where(e => e.IsConstructor && e.GetParameters().Length == 0).First();
+#if PCL
+            // TODO: Overlook!
+            //if (defaultConstructor != null)
+            //    return (Pass)defaultConstructor.Invoke(null);
+            //var defaultConstructor = passType.GetRuntimeMethods().Where(e => e.IsConstructor && e.GetParameters().Length == 0).First();
+            var defaultConstructor = passType.GetTypeInfo().DeclaredConstructors.FirstOrDefault(c => c.GetParameters().Length == 0);
+#else
+            var defaultConstructor = passType.GetConstructor(Type.EmptyTypes);
+#endif
             if (defaultConstructor != null)
                 return (Pass)defaultConstructor.Invoke(null, new object[] { null });
             return (Pass)Activator.CreateInstance(passType, new object[] { graphics });

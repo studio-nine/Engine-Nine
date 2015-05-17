@@ -1,10 +1,9 @@
 ﻿namespace Nine.Graphics
 {
     using System.Collections.Generic;
-    using System.Windows.Markup;
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-    using Nine.Content.Pipeline.Processors;
+    using Nine.AttachedProperty;
 
     [ContentProperty("Layers")]
     public class Splatter

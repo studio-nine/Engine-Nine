@@ -13,8 +13,6 @@ namespace Nine.Samples
     using System.Linq;
     using System.Reflection;
 
-    using Microsoft.Xna.Framework.Content;
-
     public abstract class Sample
     {
         public virtual string Title { get { return GetType().Name; } }
@@ -47,7 +45,10 @@ namespace Nine.Samples
             this.IsFixedTimeStep = true;
 
             Window.AllowUserResizing = true;
+
+#if MonoGame
             Window.Position = new Point(0, 0);
+#endif
         }
         
         protected override void LoadContent()
@@ -55,7 +56,7 @@ namespace Nine.Samples
             content = new ContentLoader(Services);
             content.SearchDirectories.Add("../Content");
 
-#if WINDOWS
+#if !PCL
             content.Resolvers.Add(new FileSystemResolver());
 #endif
 
@@ -77,11 +78,15 @@ namespace Nine.Samples
                 where type.IsSubclassOf(typeof(Sample)) && type != typeof(Tutorial)
                 select (Sample)Activator.CreateInstance(type));
 
+            // Issues (MonoGame): 
+            //  * GamePad.IsConnected
+            //  * PixelPerfectTest is just white
+
             samples = new List<Sample> {
-                //new PixelPerfectTest(),           // Issue: It's just white...
-                //new SpriteTest(),                 // Works!
-                new DynamicPrimitiveTest(),         // Works! (Issue with GamePad.IsConnected)
-                new PrimitiveStressTest(),          // Works!
+                //new PixelPerfectTest(), 
+                //new SpriteTest(),
+                new DynamicPrimitiveTest(),
+                new PrimitiveStressTest(),
             };
         }
 

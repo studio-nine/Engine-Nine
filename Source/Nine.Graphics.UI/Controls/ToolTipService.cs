@@ -4,6 +4,10 @@
     using Nine.Graphics.UI.Controls.Primitives;
     using System;
 
+#if !PCL
+    using System.Xaml;
+#endif
+
     public static class ToolTipService
     {
         static readonly AttachableMemberIdentifier IsEnabledMember = new AttachableMemberIdentifier(typeof(bool), "IsEnabled");

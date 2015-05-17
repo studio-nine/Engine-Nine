@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{926CE988-9E75-40DD-80F1-1709A91F8C35}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nine</RootNamespace>
+    <AssemblyName>Nine.Content</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\References\MonoGame\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PCL;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\References\MonoGame\Release\</OutputPath>
+    <DefineConstants>TRACE;PCL;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MonoGame.Framework, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
+    <Compile Include="Graphics\Materials\EffectCompiler.cs" />
+    <Compile Include="Graphics\Materials\MaterialGroupBuilderLexer.cs" />
+    <Compile Include="Graphics\Materials\MaterialPartShaders.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MaterialPartShaders.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Importers\VideoImporter.cs" />
+    <Compile Include="Pipeline\ContentPipeline.cs" />
+    <Compile Include="Serialization\PipelineObjectWriter.cs" />
+    <Compile Include="Serialization\FileSystemResolver.cs" />
+    <Compile Include="EmbeddedAssemblies.cs" />
+    <Compile Include="EmbeddedAssemblies.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmbeddedAssemblies.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Importers\TextureImporter.cs" />
+    <Compile Include="Importers\XModelImporter.cs" />
+    <Compile Include="Importers\FbxModelImporter.cs" />
+    <Compile Include="Importers\EffectImporter.cs" />
+    <Compile Include="Importers\SpriteFontImporter.cs" />
+    <Compile Include="Importers\HeightmapImporter.cs" />
+    <Compile Include="Pipeline\PipelineBuilder.cs" />
+    <Compile Include="Pipeline\PipelineBuildLogger.cs" />
+    <Compile Include="Pipeline\PipelineContentManager.cs" />
+    <Compile Include="Pipeline\PipelineImporterContext.cs" />
+    <Compile Include="Pipeline\PipelineProcessorContext.cs" />
+    <Compile Include="Serialization\XamlSerializer.cs" />
+    <Compile Include="Design\TransformConverter.cs" />
+    <Compile Include="Graphics\Materials\MaterialPaintGroupBuilder.cs" />
+    <Compile Include="Serialization\Package.cs" />
+    <Compile Include="Pipeline\Processors\InstancedModelProcessor.cs" />
+    <Compile Include="Transform2D.cs" />
+    <Compile Include="Graphics\DistributionMap.cs" />
+    <Compile Include="Graphics\Splatter.cs" />
+    <Compile Include="Graphics\Materials\MaterialGroupBuilder.cs" />
+    <Compile Include="Pipeline\PipelineGraphics.cs" />
+    <Compile Include="Design\ContentReferenceConverter.cs" />
+    <Compile Include="Graphics\ProceduralTextureGenerator.cs" />
+    <Compile Include="Pipeline\Processors\ManifestProcessor.cs" />
+    <Compile Include="Pipeline\Processors\ModelCollisionProcessor.cs" />
+    <Compile Include="Pipeline\Processors\NormalTextureProcessor.cs" />
+    <Compile Include="Degrees.cs" />
+    <Compile Include="TextureTransform.cs" />
+    <Compile Include="Transform.cs" />
+    <Compile Include="Serialization\TreeWriter.cs" />
+    <Compile Include="Graphics\TextureAtlasContent.cs" />
+    <Compile Include="Pipeline\Processors\ModelAnimationProcessor.cs" />
+    <Compile Include="Pipeline\Processors\ModelSkeletonProcessor.cs" />
+    <Compile Include="Pipeline\Processors\TextureAtlasProcessor.cs" />
+    <Compile Include="Importers\RawTextureImporter.cs" />
+    <Compile Include="Pipeline\Processors\GrayScaleTextureProcessor.cs" />
+    <Compile Include="Pipeline\Processors\SplatterTextureProcessor.cs" />
+    <Compile Include="Pipeline\Processors\ExtendedModelProcessor.cs" />
+    <Compile Include="Pipeline\Processors\HeightmapProcessor.cs" />
+    <Compile Include="Pipeline\Processors\GeometryProcessor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics.3D\Nine.Graphics.3D %28MonoGame%29.csproj">
+      <Project>{88e70c7b-eddf-4415-b817-f7742e749a34}</Project>
+      <Name>Nine.Graphics.3D %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28MonoGame%29.csproj">
+      <Project>{9436af22-6937-4bee-887e-c93a4692bdd7}</Project>
+      <Name>Nine.Graphics %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Navigation\Nine.Navigation %28MonoGame%29.csproj">
+      <Project>{9c99fc5f-4d5c-4740-9dfd-8f2c9288bbbb}</Project>
+      <Name>Nine.Navigation %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Physics\Nine.Physics %28MonoGame%29.csproj">
+      <Project>{ed1627f0-b4fa-46d9-88ec-176f69c93c0d}</Project>
+      <Name>Nine.Physics %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine\Nine %28MonoGame%29.csproj">
+      <Project>{48ce82db-3676-422e-a572-e5a88f4dcd1e}</Project>
+      <Name>Nine %28MonoGame%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedAssemblies.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>EmbeddedAssemblies.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Graphics\Materials\MaterialPartShaders.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>MaterialPartShaders.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\Materials\Shaders\BeginPaintGroup.fragment" />
+    <None Include="Graphics\Materials\Shaders\AlphaTest.fragment" />
+    <None Include="Graphics\Materials\Shaders\Depth.fragment" />
+    <None Include="Graphics\Materials\Shaders\InstanceTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\TangentTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\EndPaintGroup.fragment" />
+    <None Include="Graphics\Materials\Shaders\DiffuseTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\BeginLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\DeferredLightBuffer.fragment" />
+    <None Include="Graphics\Materials\Shaders\DepthAndNormal.fragment" />
+    <None Include="Graphics\Materials\Shaders\DetailTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\DeferredLights.fragment" />
+    <None Include="Graphics\Materials\Shaders\EmissiveMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\SpecularMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\SpotLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\PointLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\NormalMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\ShadowMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\EnvironmentMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\DirectionalLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\DualTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\EndLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\Fog.fragment" />
+    <None Include="Graphics\Materials\Shaders\SkinTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\ColorMatrix.fragment" />
+    <None Include="Graphics\Materials\Shaders\TextureTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\VertexTransform.fragment" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+</Project>

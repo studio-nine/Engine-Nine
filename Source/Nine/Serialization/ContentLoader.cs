@@ -36,7 +36,7 @@ namespace Nine.Serialization
         /// <param name="fileName">
         /// The normalized name of the asset including file extension.
         /// </param>
-        bool TryResolveContent(string fileName, IServiceProvider serviceProvider, out Stream stream, out IContentImporter contentLoader);
+        bool TryResolveContent(string fileName, IServiceProvider serviceProvider, out Stream stream, out IContentImporter contentImporter);
     }
 
     /// <summary>
@@ -221,8 +221,13 @@ namespace Nine.Serialization
             {
                 for (int i = 0; i < services.Count; i++)
                 {
+#if PCL
                     if ((result = services[i]) != null && serviceType.GetTypeInfo().IsAssignableFrom(result.GetType().GetTypeInfo()))
                         return result;
+#else
+                    if ((result = services[i]) != null && serviceType.IsAssignableFrom(result.GetType()))
+                        return result;
+#endif
                 }
             }
 

@@ -88,7 +88,11 @@ namespace Nine.Graphics.UI.Controls
 
         private T GetValue<T>(string Name) where T : struct
         {
+#if PCL
             var Property = this.GetType().GetRuntimeProperty(Name);
+#else
+            var Property = this.GetType().GetProperty(Name);
+#endif
             if (Property == null)
                 throw new ArgumentNullException("name");
             return (T)Property.GetValue(this, null);

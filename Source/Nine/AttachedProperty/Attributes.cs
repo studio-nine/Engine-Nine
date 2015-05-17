@@ -4,6 +4,10 @@ namespace Nine.AttachedProperty
     using System;
     using System.Collections.Generic;
 
+#if !PCL
+    using System.Xaml;
+#endif
+
     // TODO: check classes
 
     public class ContentPropertyAttribute : Attribute

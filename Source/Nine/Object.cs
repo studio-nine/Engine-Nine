@@ -7,6 +7,11 @@ namespace Nine
     using Nine.Serialization;
     using Nine.AttachedProperty;
 
+#if !PCL
+    using System.Windows.Markup;
+    using System.Xaml;
+#endif
+
     /// <summary>
     /// Defines a basic named object that can be extended using attached properties.
     /// </summary>

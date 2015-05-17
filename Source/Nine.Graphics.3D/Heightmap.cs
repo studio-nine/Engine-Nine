@@ -8,6 +8,10 @@
     using System.Collections.Generic;
     using System.ComponentModel;
 
+#if !PCL
+    using System.Xaml;
+#endif
+
     /// <summary>
     /// Represents a height field in 3d space.
     /// </summary>
