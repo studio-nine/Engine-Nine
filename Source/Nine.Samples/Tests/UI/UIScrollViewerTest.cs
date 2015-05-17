@@ -14,11 +14,12 @@
     using Nine.Graphics.UI.Renderer;
 
     using Microsoft.Xna.Framework.Content;
+    using Nine.Serialization;
 
     public class UIScrollViewerTest : Sample
     {
         public override string Title { get { return "[UI] ScrollViewer Test"; } }
-        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             var font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");

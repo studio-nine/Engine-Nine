@@ -100,7 +100,7 @@ namespace Nine
             }
         }
 
-#if !MonoGame
+#if !PCL
         public static string CleanPath(string path)
         {
             if (path == null)
@@ -121,6 +121,7 @@ namespace Nine
             return relativePath.Replace('/', Path.DirectorySeparatorChar);
         }
 #endif
+
         public static int UpperPowerOfTwo(int v)
         {
             v--;
@@ -133,7 +134,7 @@ namespace Nine
             return v;
         }
 
-#if !MonoGame
+#if !PCL
         public static IEnumerable<Type> FindImplementations(Type baseType)
         {
             Type[] types;
@@ -205,7 +206,7 @@ namespace Nine
             return default(T);
 #endif
         }
-#if !MonoGame
+#if !PCL
         static Assembly PipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "Nine.Content");
 #endif
     }

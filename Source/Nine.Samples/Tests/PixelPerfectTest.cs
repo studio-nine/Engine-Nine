@@ -14,7 +14,7 @@ namespace Nine.Samples
 
     public class PixelPerfectTest : Sample
     {
-        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             var bits = content.Load<Texture2D>("Textures/Bits");

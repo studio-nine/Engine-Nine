@@ -5,10 +5,11 @@ namespace Nine.Samples
     using Microsoft.Xna.Framework.Graphics;
     using Nine;
     using Nine.Graphics.Primitives;
+    using Nine.Serialization;
 
     public class DynamicPrimitiveTest : Sample
     {
-        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             // https://github.com/mono/MonoGame/issues/1770
 

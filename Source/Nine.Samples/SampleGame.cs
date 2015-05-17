@@ -18,13 +18,13 @@ namespace Nine.Samples
     public abstract class Sample
     {
         public virtual string Title { get { return GetType().Name; } }
-        public abstract Scene CreateScene(GraphicsDevice graphics, ContentManager content);
+        public abstract Scene CreateScene(GraphicsDevice graphics, ContentLoader content);
     }
     
     public class SampleGame : Microsoft.Xna.Framework.Game
     {
-        Nine.Input input;
-        ContentManager content;
+        Input input;
+        ContentLoader content;
 
         int nextScene;
         Scene currentScene;
@@ -52,7 +52,13 @@ namespace Nine.Samples
         
         protected override void LoadContent()
         {
-            content = new ContentManager(Services, "./Content");
+            content = new ContentLoader(Services);
+            content.SearchDirectories.Add("../Content");
+
+#if WINDOWS
+            content.Resolvers.Add(new FileSystemResolver());
+#endif
+
 
             Components.Add(new FrameRate(GraphicsDevice, content.Load<SpriteFont>("Fonts/Consolas")));
             Components.Add(new InputComponent(Window.Handle));  
@@ -99,27 +105,26 @@ namespace Nine.Samples
         {
             // Create an event based input handler.
             // Note that you have to explicitly keep a strong reference to the Input instance.
-            input = new Nine.Input();
-#if XBOX
+            input = new Input();
+
             input.ButtonDown += (sender, e) =>
             {
                 if (e.Button == Buttons.A)
                     LoadNextScene();
             };
-#elif WINDOWS_PHONE
+#if WINDOWS_PHONE
             input.EnabledGestures = Microsoft.Xna.Framework.Input.Touch.GestureType.DoubleTap;
             input.GestureSampled += (sender, e) =>
             {
                 if (e.GestureType == Microsoft.Xna.Framework.Input.Touch.GestureType.DoubleTap)
                     LoadNextScene();
             };
-#else
+#endif
             input.KeyDown += (sender, e) =>
             {
                 if (e.Key == Keys.F1)
                     LoadNextScene();
             };
-#endif
         }
 
 

@@ -5,10 +5,11 @@ namespace Nine.Samples
     using Microsoft.Xna.Framework.Graphics;
     using Nine;
     using Nine.Graphics;
+    using Nine.Serialization;
 
     public class SpriteTest : Sample
     {
-        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             scene.Add(new Camera2D(graphics) { InputEnabled = true });

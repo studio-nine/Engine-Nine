@@ -16,6 +16,7 @@
     using Nine.Graphics.UI.Controls.Primitives;
 
     using Microsoft.Xna.Framework.Content;
+    using Nine.Serialization;
 
     class ScrollViewerComponent : Component
     {
@@ -43,7 +44,7 @@
     public class UITest : Sample
     {
         public override string Title { get { return "[UI] Window Test"; } }
-        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             var font = content.Load<SpriteFont>("Fonts/Consolas.spritefont");

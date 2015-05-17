@@ -13,7 +13,7 @@ namespace Nine.Samples
 
     public class TransparencyTest : Sample
     {
-        public override Scene CreateScene(GraphicsDevice graphics, Microsoft.Xna.Framework.Content.ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             scene.Add(new Nine.Graphics.ModelViewerCamera(graphics) { Center = new Vector3(10, 10, 10) });

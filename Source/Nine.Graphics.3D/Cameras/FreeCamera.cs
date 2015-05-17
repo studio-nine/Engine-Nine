@@ -83,6 +83,12 @@
                     move.X = gamePad.ThumbSticks.Left.Y * Speed * elapsedTime;
                     move.Y = gamePad.ThumbSticks.Left.X * Speed * elapsedTime;
 #endif
+
+                    if (gamePad.IsButtonDown(Buttons.LeftShoulder))
+                        position += Vector3.Down * speed * elapsedTime;
+                    if (gamePad.IsButtonDown(Buttons.RightShoulder))
+                        position += Vector3.Up * speed * elapsedTime;
+
                 }
                 else
                 {

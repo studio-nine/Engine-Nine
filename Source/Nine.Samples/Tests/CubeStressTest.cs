@@ -13,7 +13,7 @@ namespace Nine.Samples
 
     public class CubeStressTest : Sample
     {
-        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             //scene = new Scene(new PassThroughSceneManager(), null);

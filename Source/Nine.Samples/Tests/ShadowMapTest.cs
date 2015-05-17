@@ -13,7 +13,7 @@ namespace Nine.Samples
 
     public class ShadowMapTest : Sample
     {
-        public override Scene CreateScene(GraphicsDevice graphics, ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
 

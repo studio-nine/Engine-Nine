@@ -12,7 +12,7 @@ namespace Nine.Samples
 
     public class TriangleTest : Sample
     {
-        public override Scene CreateScene(GraphicsDevice graphics, Microsoft.Xna.Framework.Content.ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             var scene = new Scene();
             var tank = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/Palm/AlphaPalm.x");

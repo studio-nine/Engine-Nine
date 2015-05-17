@@ -7,7 +7,7 @@ namespace Nine.Serialization
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
-
+    
     /// <summary>
     /// Defines an interface that imports an object from a stream.
     /// </summary>
@@ -72,6 +72,8 @@ namespace Nine.Serialization
         private Dictionary<string, object> cachedContents;
         private Stack<string> workingPath = new Stack<string>();
 
+        private readonly string executablePath;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentLoader"/> class.
         /// </summary>
@@ -81,6 +83,11 @@ namespace Nine.Serialization
             //this.resolvers.Add(new PackageResolver());
             this.searchDirectories.Add("");
             this.services.Add(new SerializationOverride());
+
+#if PCL
+            // A bit of a MonoGame hack here
+            this.executablePath = (string)typeof(Microsoft.Xna.Framework.TitleContainer).GetRuntimeFields().First().GetValue(null);
+#endif
         }
 
         /// <summary>
@@ -94,8 +101,10 @@ namespace Nine.Serialization
         {
             if (workingPath.Count > 0)
                 fileName = Path.Combine(workingPath.Peek(), fileName);
-            
-            // TODO: fileName = Extensions.CleanPath(fileName);
+
+#if !PCL // TODO: PCL?
+            fileName = Extensions.CleanPath(fileName);
+#endif
 
             object result;
             if (cachedContents == null)
@@ -166,16 +175,27 @@ namespace Nine.Serialization
 
         private bool FindStream(string fileName, out Stream stream, out IContentImporter loader)
         {
-            // TODO: FindStream
-            //var searchDirectoryCount = searchDirectories.Count;
-            //for (int i = 0; i < searchDirectoryCount; i++)
-            //{
-            //    var searchDirectory = string.IsNullOrEmpty(searchDirectories[i]) 
-            //        ? Directory.GetCurrentDirectory() : Path.GetFullPath(searchDirectories[i]);
-            //    CurrentFileName = Path.Combine(searchDirectory, fileName);
-            //    if (FindStreamInternal(CurrentFileName, out stream, out loader))
-            //        return true;
-            //}
+#if PCL
+            var searchDirectoryCount = searchDirectories.Count;
+            for (int i = 0; i < searchDirectoryCount; i++)
+            {
+                var searchDirectory = string.IsNullOrEmpty(searchDirectories[i])
+                    ? this.executablePath : Path.Combine(executablePath, searchDirectories[i]);
+                CurrentFileName = Path.Combine(searchDirectory, fileName);
+                if (FindStreamInternal(CurrentFileName, out stream, out loader))
+                    return true;
+            }
+#else
+            var searchDirectoryCount = searchDirectories.Count;
+            for (int i = 0; i < searchDirectoryCount; i++)
+            {
+                var searchDirectory = string.IsNullOrEmpty(searchDirectories[i]) 
+                    ? Directory.GetCurrentDirectory() : Path.GetFullPath(searchDirectories[i]);
+                CurrentFileName = Path.Combine(searchDirectory, fileName);
+                if (FindStreamInternal(CurrentFileName, out stream, out loader))
+                    return true;
+            }
+#endif
             stream = null;
             loader = null;
             return false;
@@ -214,7 +234,7 @@ namespace Nine.Serialization
         }
         static readonly Type ContentLoaderType = typeof(ContentLoader);
         
-        #region IDisposable
+#region IDisposable
         public void Dispose()
         {
             Dispose(true);
@@ -227,6 +247,6 @@ namespace Nine.Serialization
             {
             }
         }
-        #endregion
+#endregion
     }
 }

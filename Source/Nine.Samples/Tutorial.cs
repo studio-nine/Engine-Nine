@@ -18,7 +18,7 @@ namespace Nine.Samples
             get { return assetName.Replace(".xaml", ""); }
         }
 
-        public override Scene CreateScene(GraphicsDevice graphics, Microsoft.Xna.Framework.Content.ContentManager content)
+        public override Scene CreateScene(GraphicsDevice graphics, ContentLoader content)
         {
             return content.Load<Scene>(assetName);
         }
