@@ -1,0 +1,4 @@
+﻿<#
+    var shaderFolder = @"..\Nine.Graphics\Shaders";
+#>
+<#@ include file="Nine.Graphics.Materials.Xna.tth" #>

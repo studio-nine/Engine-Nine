@@ -4,7 +4,14 @@
 <#@ assembly name="Microsoft.Xna.Framework" #>
 <#@ assembly name="Microsoft.Xna.Framework.Graphics" #>
 <#@ assembly name="Microsoft.Xna.Framework.Content.Pipeline" #>
-<#@ assembly name="%XNAGSv4%References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" #>
+<# 
+
+/* For some reason I have to hard code this in! 
+ * Otherwise it should be "XNAGSv4References\Windows\x86 ..."
+ */ 
+    
+#>
+<#@ assembly name="C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" #>
 <#@ assembly name="System.Windows.Forms" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.IO" #>

@@ -82,11 +82,11 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\TextTemplates\Nine.Graphics.Materials.3D.Generated.cs">
-      <Link>Nine.Graphics.Materials.3D.Generated.cs</Link>
+    <Compile Include="..\TextTemplates\Nine.Graphics.Materials.3D.Xna.Generated.cs">
+      <Link>Nine.Graphics.Materials.3D.Xna.Generated.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Graphics.Materials.3D.tt</DependentUpon>
+      <DependentUpon>Nine.Graphics.Materials.3D.Xna.tt</DependentUpon>
     </Compile>
     <Compile Include="AmbientLight.cs" />
     <Compile Include="Animations\AvatarAnimation.cs" />
@@ -191,11 +191,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TextTemplates\Nine.Graphics.Materials.3D.tt">
-      <Link>Nine.Graphics.Materials.3D.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Graphics.Materials.3D.Generated.cs</LastGenOutput>
-    </None>
     <None Include="Shaders\DeferredDirectionalLight.fx" />
     <None Include="Shaders\DeferredLighting.fxh" />
     <None Include="Shaders\DeferredPointLight.fx" />
@@ -212,6 +207,13 @@
   <ItemGroup>
     <None Include="Shaders\Fxaa3_11.fxh" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\TextTemplates\Nine.Graphics.Materials.3D.Xna.tt">
+      <Link>Nine.Graphics.Materials.3D.Xna.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Graphics.Materials.3D.Xna.Generated.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\Bin\Nine.Serialization.targets" />
+  <!--<Import Project="..\..\Bin\Nine.Serialization.targets" />-->
 </Project>

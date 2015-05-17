@@ -40,18 +40,14 @@
       <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MonoGame.Framework, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="MonoGame.Framework.Content.Pipeline, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Content.Pipeline.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.Content.Pipeline.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Build\Version.cs">
@@ -68,12 +64,6 @@
     <Compile Include="Pipeline\ContentPipeline.cs" />
     <Compile Include="Serialization\PipelineObjectWriter.cs" />
     <Compile Include="Serialization\FileSystemResolver.cs" />
-    <Compile Include="EmbeddedAssemblies.cs" />
-    <Compile Include="EmbeddedAssemblies.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EmbeddedAssemblies.resx</DependentUpon>
-    </Compile>
     <Compile Include="Importers\TextureImporter.cs" />
     <Compile Include="Importers\XModelImporter.cs" />
     <Compile Include="Importers\FbxModelImporter.cs" />
@@ -86,23 +76,17 @@
     <Compile Include="Pipeline\PipelineImporterContext.cs" />
     <Compile Include="Pipeline\PipelineProcessorContext.cs" />
     <Compile Include="Serialization\XamlSerializer.cs" />
-    <Compile Include="Design\TransformConverter.cs" />
     <Compile Include="Graphics\Materials\MaterialPaintGroupBuilder.cs" />
     <Compile Include="Serialization\Package.cs" />
     <Compile Include="Pipeline\Processors\InstancedModelProcessor.cs" />
-    <Compile Include="Transform2D.cs" />
     <Compile Include="Graphics\DistributionMap.cs" />
     <Compile Include="Graphics\Splatter.cs" />
     <Compile Include="Graphics\Materials\MaterialGroupBuilder.cs" />
     <Compile Include="Pipeline\PipelineGraphics.cs" />
-    <Compile Include="Design\ContentReferenceConverter.cs" />
     <Compile Include="Graphics\ProceduralTextureGenerator.cs" />
     <Compile Include="Pipeline\Processors\ManifestProcessor.cs" />
     <Compile Include="Pipeline\Processors\ModelCollisionProcessor.cs" />
     <Compile Include="Pipeline\Processors\NormalTextureProcessor.cs" />
-    <Compile Include="Degrees.cs" />
-    <Compile Include="TextureTransform.cs" />
-    <Compile Include="Transform.cs" />
     <Compile Include="Serialization\TreeWriter.cs" />
     <Compile Include="Graphics\TextureAtlasContent.cs" />
     <Compile Include="Pipeline\Processors\ModelAnimationProcessor.cs" />
@@ -115,28 +99,6 @@
     <Compile Include="Pipeline\Processors\HeightmapProcessor.cs" />
     <Compile Include="Pipeline\Processors\GeometryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Nine.Graphics.3D\Nine.Graphics.3D %28MonoGame%29.csproj">
-      <Project>{88e70c7b-eddf-4415-b817-f7742e749a34}</Project>
-      <Name>Nine.Graphics.3D %28MonoGame%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28MonoGame%29.csproj">
-      <Project>{9436af22-6937-4bee-887e-c93a4692bdd7}</Project>
-      <Name>Nine.Graphics %28MonoGame%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nine.Navigation\Nine.Navigation %28MonoGame%29.csproj">
-      <Project>{9c99fc5f-4d5c-4740-9dfd-8f2c9288bbbb}</Project>
-      <Name>Nine.Navigation %28MonoGame%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nine.Physics\Nine.Physics %28MonoGame%29.csproj">
-      <Project>{ed1627f0-b4fa-46d9-88ec-176f69c93c0d}</Project>
-      <Name>Nine.Physics %28MonoGame%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nine\Nine %28MonoGame%29.csproj">
-      <Project>{48ce82db-3676-422e-a572-e5a88f4dcd1e}</Project>
-      <Name>Nine %28MonoGame%29</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -161,11 +123,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EmbeddedAssemblies.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>EmbeddedAssemblies.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Graphics\Materials\MaterialPartShaders.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -205,6 +162,31 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics.3D\Nine.Graphics.3D %28MonoGame%29.csproj">
+      <Project>{88e70c7b-eddf-4415-b817-f7742e749a34}</Project>
+      <Name>Nine.Graphics.3D %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Graphics.UI\Nine.Graphics.UI %28MonoGame%29.csproj">
+      <Project>{a8519d9a-c5f0-41e1-89d8-5ac6a5f4c351}</Project>
+      <Name>Nine.Graphics.UI %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28MonoGame%29.csproj">
+      <Project>{9436af22-6937-4bee-887e-c93a4692bdd7}</Project>
+      <Name>Nine.Graphics %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Navigation\Nine.Navigation %28MonoGame%29.csproj">
+      <Project>{9c99fc5f-4d5c-4740-9dfd-8f2c9288bbbb}</Project>
+      <Name>Nine.Navigation %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Physics\Nine.Physics %28MonoGame%29.csproj">
+      <Project>{ed1627f0-b4fa-46d9-88ec-176f69c93c0d}</Project>
+      <Name>Nine.Physics %28MonoGame%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine\Nine %28MonoGame%29.csproj">
+      <Project>{48ce82db-3676-422e-a572-e5a88f4dcd1e}</Project>
+      <Name>Nine %28MonoGame%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

@@ -82,11 +82,11 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\TextTemplates\Nine.Graphics.Materials.Generated.cs">
-      <Link>Nine.Graphics.Materials.Generated.cs</Link>
+    <Compile Include="..\TextTemplates\Nine.Graphics.Materials.Xna.Generated.cs">
+      <Link>Nine.Graphics.Materials.Xna.Generated.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Graphics.Materials.tt</DependentUpon>
+      <DependentUpon>Nine.Graphics.Materials.Xna.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="BlankTexture.cs" />
@@ -175,13 +175,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TextTemplates\Nine.Graphics.Materials.tt">
-      <Link>Nine.Graphics.Materials.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
-    </None>
-    <None Include="..\TextTemplates\Nine.Graphics.Materials.tth">
-      <Link>Nine.Graphics.Materials.tth</Link>
+    <None Include="..\TextTemplates\Nine.Graphics.Materials.Xna.tth">
+      <Link>Nine.Graphics.Materials.Xna.tth</Link>
     </None>
     <None Include="Shaders\RestoreDepthBuffer.fx" />
     <None Include="Shaders\VertexPassThrough2.fx" />
@@ -207,6 +202,13 @@
   <ItemGroup>
     <None Include="Shaders\Bloom.fx" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\TextTemplates\Nine.Graphics.Materials.Xna.tt">
+      <Link>Nine.Graphics.Materials.Xna.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Graphics.Materials.Xna.Generated.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\Bin\Nine.Serialization.targets" />
+  <!--<Import Project="..\..\Bin\Nine.Serialization.targets" />-->
 </Project>

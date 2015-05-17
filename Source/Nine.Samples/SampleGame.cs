@@ -61,7 +61,7 @@ namespace Nine.Samples
 #endif
 
 
-            Components.Add(new FrameRate(GraphicsDevice, content.Load<SpriteFont>("Fonts/Consolas")));
+            Components.Add(new FrameRate(GraphicsDevice, content.Load<SpriteFont>("Fonts/Consolas.spritefont")));
             Components.Add(new InputComponent(Window.Handle));  
 
             InitializeSamples();
@@ -81,6 +81,7 @@ namespace Nine.Samples
             // Issues (MonoGame): 
             //  * GamePad.IsConnected
             //  * PixelPerfectTest is just white
+            //  * PrimitiveStressTest is red, should be white
 
             samples = new List<Sample> {
                 //new PixelPerfectTest(), 

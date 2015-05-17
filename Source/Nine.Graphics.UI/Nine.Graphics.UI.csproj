@@ -182,5 +182,5 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\Bin\Nine.Serialization.targets" />
+  <!--<Import Project="..\..\Bin\Nine.Serialization.targets" />-->
 </Project>
